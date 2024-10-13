@@ -1,5 +1,8 @@
+## Project Structure(at the beginning)
+
 Open to be changed but beginning structure and why
 
+```plaintext
 transcendence/
 │
 ├── backend/                      # Backend code (Django application)
@@ -47,3 +50,4 @@ transcendence/
 │
 ├── .env                          # Environment variables (DB credentials, secret keys)
 └── requirements.txt              # Python dependencies for backend (Django, PostgreSQL)
+```
