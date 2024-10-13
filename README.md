@@ -107,3 +107,7 @@ make down
 ```
 
 ## Authors
+
+- **Ashley Fletcher** - *Developer* - [GitHub Profile](https://github.com/ashleyfletcher76)
+- **Muhammet Köse** - *Developer* - [GitHub Profile](https://github.com/masummmm54)
+- **Felix Federolf** - *Developer* - [GitHub Profile](https://github.com/ffederol)
