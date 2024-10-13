@@ -15,13 +15,13 @@
 
 ## Project Overview
 
-**ft_transcende** is a full-stack web application project that aims to build an interactive multiplayer game experience, along with real-time features such as live chat. The core of the project is to develop a **server-side Pong game** that allows players to compete remotely, with additional functionalities such as user authentication (including OAuth and Two-Factor Authentication), gameplay tracking, and potential AI opponents.
+**ft_transcendence** is a full-stack web application project that aims to build an interactive multiplayer game experience, along with real-time features such as live chat. The core of the project is to develop a **server-side Pong game** that allows players to compete remotely, with additional functionalities such as user authentication (including OAuth and Two-Factor Authentication), gameplay tracking, and potential AI opponents.
 
 The project leverages modern web development practices and frameworks like **Django** for the backend, while the frontend will be handled separately using modern JavaScript frameworks (like React, to be managed by a frontend developer).
 
 ## What We Are Trying to Solve
 
-The goal of **ft_transcende** is to create a scalable and secure multiplayer game platform where users can:
+The goal of **ft_transcendence** is to create a scalable and secure multiplayer game platform where users can:
 - Compete in a **server-side Pong game**.
 - Authenticate using both **standard** and **OAuth** mechanisms.
 - Communicate via **live chat**.
@@ -89,8 +89,8 @@ We may implement these **optional modules** based on project scope, time, and us
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/yourusername/ft_transcende.git
-cd ft_transcende
+git clone https://github.com/yourusername/ft_transcendence.git
+cd ft_transcendence
 ```
 2. Build and start the project:
 ```bash
