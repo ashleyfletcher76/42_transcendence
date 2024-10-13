@@ -89,8 +89,8 @@ We may implement these **optional modules** based on project scope, time, and us
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/ashleyfletcher76/42_ft_transcendence.git
-cd 42_ft_transcendence
+git clone https://github.com/ashleyfletcher76/42_transcendence.git
+cd 42_transcendence
 ```
 2. Build and start the project:
 ```bash
