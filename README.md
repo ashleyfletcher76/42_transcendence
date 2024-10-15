@@ -92,6 +92,20 @@ We may implement these **optional modules** based on project scope, time, and us
 git clone https://github.com/ashleyfletcher76/42_transcendence.git
 cd 42_transcendence
 ```
+
+To now(15.10.24) open the virtual environment and run the server, type these commands:
+```bash
+cd backend
+source venv/bin/activate
+python manage.py runserver
+```
+
+To deactivate the server, run this command:
+```bash
+deactivate
+```
+
+----------Still to be implemented---------------
 2. Build and start the project:
 ```bash
 make new
