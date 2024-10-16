@@ -23,6 +23,7 @@ services:
   
   backend:
     build: ./../backend
+    container_name: backend
     environment:
       DJANGO_SECRET_KEY: ${DJANGO_SECRET_KEY}
       DJANGO_DEBUG: ${DJANGO_DEBUG}

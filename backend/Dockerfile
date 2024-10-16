@@ -14,6 +14,8 @@ COPY requirements.txt /app/
 # Install dependencies
 RUN pip install --no-cache-dir -r requirements.txt
 
+RUN pip install psycopg2-binary
+
 # Copy the rest of the Django project code to the container
 COPY . /app/
 
@@ -21,4 +23,4 @@ COPY . /app/
 RUN chmod +x /app/manage.py
 
 # Run migrations and collect static files as part of the image build process
-CMD ["sh", "-c", "python manage.py migrate && python manage.py collectstatic --noinput && python manage.py runserver 0.0.0.0:8000"]
+CMD ["sh", "-c", "python manage.py migrate && python manage.py runserver 0.0.0.0:8000"]

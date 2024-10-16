@@ -10,17 +10,26 @@ new:
 	$(DOCKER_COMPOSE) build --no-cache
 	$(DOCKER_COMPOSE) up -d
 
-# rebuild the service
-re: fclean build up
+# rebuild the service but not remove all
+re: down build up
+
+re-new: fclean build up
 
 # full clean of all the volumes etc
 fclean:
-	$(DOCKER_COMPOSE) down -v --rmi all
-	docker system prune -f --volumes
+	@read -p "Are you sure you want to clean everything? (y/n): " confirm && if [ "$$confirm" = "y" ]; then \
+		$(DOCKER_COMPOSE) down -v --rmi all; \
+		docker system prune -f --volumes; \
+	else \
+		echo "Aborted fclean."; \
+	fi
 
 # view logs of the running service
 logs:
 	$(DOCKER_COMPOSE) logs -f $(SERVICE)
+
+logs-%:
+	$(DOCKER_COMPOSE) logs -f $*
 
 # stop the running services but leave volumes intact
 down:
@@ -37,5 +46,9 @@ clean-images:
 # remove dangling images, volumes, containers, networks
 clean-all:
 	@docker system prune --volumes -f
+
+rebuild-%:
+	$(DOCKER_COMPOSE) build --no-cache $*
+	$(DOCKER_COMPOSE) up -d $*
 
 .PHONY: up build-nocache re fclean logs down clean-volumes clean-images clean-all
