@@ -1,45 +1,41 @@
-DOCKER_COMPOSE_FILE = docker/docker-compose.yml
-DOCKER_BACKEND_SERVICE = web
+DOCKER_COMPOSE = docker-compose -f docker/docker-compose.yml
+SERVICE=db
 
-#  build the project with cache
-all: build
+# default
+up:
+	$(DOCKER_COMPOSE) up -d
 
-build:
-	docker-compose -f $(DOCKER_COMPOSE_FILE) up --build
-
-#  build the project without cache (forces a new build)
+# build the service without using cache
 new:
-	docker-compose -f $(DOCKER_COMPOSE_FILE) build --no-cache
-	docker-compose -f $(DOCKER_COMPOSE_FILE) up
+	$(DOCKER_COMPOSE) build --no-cache
+	$(DOCKER_COMPOSE) up -d
 
-# stop all the running containers
-down:
-	docker-compose -f $(DOCKER_COMPOSE_FILE) down
-
-clean:
-	docker system prune -f --volumes
+# rebuild the service
+re: fclean build up
 
 # full clean of all the volumes etc
 fclean:
-	docker-compose -f $(DOCKER_COMPOSE_FILE) down -v --rmi all
+	$(DOCKER_COMPOSE) down -v --rmi all
 	docker system prune -f --volumes
 
-# shortcuts for cDjabngo backend management
-backend:
-	docker-compose -f $(DOCKER_COMPOSE_FILE) exec $(DOCKER_BACKEND_SERVICE) bash
-
-# run migrations in the backend container, research this??
-migrate:
-	docker-compose -f$(DOCKER_COMPOSE_FILE) exec $(DOCKER_BACKEND_SERVICE) python manage.py migrate
-
-# make and apply migrations in the backend container, research this??
-makemigrate:
-	docker-compose -f$(DOCKER_COMPOSE_FILE) exec $(DOCKER_BACKEND_SERVICE) python manage.py makemigrations
-
-# check status of the services
-status:
-	docker-compose -f $(DOCKER_COMPOSE_FILE) ps
-
-# show logs
+# view logs of the running service
 logs:
-	docker-compose -f $(DOCKER_COMPOSE_FILE) logs -f $(DOCKER_BACKEND_SERVICE)
+	$(DOCKER_COMPOSE) logs -f $(SERVICE)
+
+# stop the running services but leave volumes intact
+down:
+	$(DOCKER_COMPOSE) down
+
+# remove only the volumes
+clean-volumes:
+	@docker volume prune -f
+
+# remove dangling images
+clean-images:
+	@docker image prune -f
+
+# remove dangling images, volumes, containers, networks
+clean-all:
+	@docker system prune --volumes -f
+
+.PHONY: up build-nocache re fclean logs down clean-volumes clean-images clean-all
