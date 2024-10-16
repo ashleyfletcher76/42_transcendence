@@ -84,7 +84,16 @@ We may implement these **optional modules** based on project scope, time, and us
 
 ### Prerequisites
 - **Docker** and **Docker Compose** must be installed.
-- A `.env` file with your database credentials and secret keys should be placed in the root directory of the project.
+- A `.env` file with your database credentials and secret keys should be placed in the docker directory.
+
+Example .env file:
+```plaintext
+DJANGO_SECRET_KEY=mysecret
+POSTGRES_DB=mydb
+POSTGRES_USER=myuser
+POSTGRES_PASSWORD=mypassword
+DJANGO_DEBUG=True
+```
 
 ### Running the Project
 
