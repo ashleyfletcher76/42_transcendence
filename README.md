@@ -9,6 +9,7 @@
   - [Prerequisites](#prerequisites)
   - [Running the Project](#running-the-project)
   - [Stopping the Project](#stopping-the-project)
+  - [List of Commands](#list-of-commands)
 - [Authors](#authors)
 
 ---
@@ -95,9 +96,13 @@ cd 42_transcendence
 
 To now(15.10.24) open the virtual environment and run the server, type these commands:
 ```bash
-cd backend
-source venv/bin/activate
-python manage.py runserver
+make new
+```
+
+or 
+
+```bash
+make up
 ```
 
 To deactivate the server, run this command:
@@ -105,19 +110,51 @@ To deactivate the server, run this command:
 deactivate
 ```
 
-----------Still to be implemented---------------
-2. Build and start the project:
+2. Access the application at:
 ```bash
-make new
+http://0.0.0.0:8000
 ```
-3. Access the application at:
+
+followed by the page you want to locate, one example would be:
 ```bash
-http://localhost:8000
+http://0.0.0.0:8000/api/users/profile/
 ```
+
+I will give out more information as I go.
 
 ### Stopping the Project
 ```bash
 make down
+```
+
+### List of Commands
+
+```bash
+make new
+```
+
+```bash
+make up
+```
+
+```bash
+make fclean
+```
+
+```bash
+make logs-backend
+```
+
+```bash
+make logs-backend
+```
+
+```bash
+make rebuild-backend
+```
+
+```bash
+make rebuild-postgres_db
 ```
 
 ## Authors
