@@ -5,15 +5,23 @@ SERVICE=db
 up:
 	$(DOCKER_COMPOSE) up -d
 
+# normal build
+build-up:
+	$(DOCKER_COMPOSE) build
+	$(DOCKER_COMPOSE) up -d
+
 # build the service without using cache
 new:
 	$(DOCKER_COMPOSE) build --no-cache
 	$(DOCKER_COMPOSE) up -d
+	@echo "Waiting for PostgreSQL health check to pass..."
+	$(DOCKER_COMPOSE) exec backend python manage.py makemigrations
+	$(DOCKER_COMPOSE) exec backend python manage.py migrate
 
 # rebuild the service but not remove all
-re: down build up
+re: down up
 
-re-new: fclean build up
+re-new: fclean new
 
 # full clean of all the volumes etc
 fclean:
@@ -54,5 +62,21 @@ rebuild-%:
 # create a Django superuser
 superuser:
 	$(DOCKER_COMPOSE) exec backend python manage.py createsuperuser
+
+# make migration
+makemigrate:
+	$(DOCKER_COMPOSE) exec backend python manage.py makemigrations
+
+# apply migration
+migrate:
+	$(DOCKER_COMPOSE) exec backend python manage.py migrate
+
+# apply migration
+exec-%:
+	@if [ "$*" = "postgres_db" ]; then \
+		echo "You are about to enter the postgres_db container."; \
+		echo "To access PostgreSQL, run: psql -U \$$POSTGRES_USER -d \$$POSTGRES_DB"; \
+	fi && \
+	docker exec -it $* bash
 
 .PHONY: up build-nocache re fclean logs down clean-volumes clean-images clean-all superuser
