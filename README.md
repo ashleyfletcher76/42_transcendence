@@ -40,7 +40,7 @@ We are initially focusing on the following **major modules** to ensure the core 
 
 2. **OAuth 42 (Major)**
    - OAuth integration using the 42 API for seamless authentication.
-   
+
 3. **Remote Players (Major)**
    - Multiplayer system where users can play Pong remotely.
 
@@ -100,6 +100,8 @@ DJANGO_DEBUG=True
 make superuser
 ```
 
+The project has lots of Makefile functionality, if I have missed something, read the Makefile and figure it out. A new feature is for ---- "make exec-%", i.e. the % being the name of your container and then you can easily enter it. 
+
 ### Running the Project
 
 1. Clone the repository:
@@ -113,7 +115,7 @@ To now(15.10.24) open the virtual environment and run the server, type these com
 make new
 ```
 
-or 
+or
 
 ```bash
 make up
@@ -169,6 +171,10 @@ make rebuild-backend
 
 ```bash
 make rebuild-postgres_db
+```
+
+```bash
+make exec-postgres_db
 ```
 
 ## Authors
