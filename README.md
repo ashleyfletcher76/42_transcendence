@@ -11,6 +11,7 @@
   - [Stopping the Project](#stopping-the-project)
   - [List of Commands](#list-of-commands)
 - [Update List](#update-list)
+- [To Note List](#to-note-list)
 - [Example Curl Commands](#example-curl-commands)
 - [Authors](#authors)
 
@@ -95,9 +96,14 @@ POSTGRES_DB=mydb
 POSTGRES_USER=myuser
 POSTGRES_PASSWORD=mypassword
 DJANGO_DEBUG=True
+
+# Django superuser
+DJANGO_SUPERUSER_USERNAME=admin
+DJANGO_SUPERUSER_EMAIL=admin@example.com
+DJANGO_SUPERUSER_PASSWORD=hello
 ```
 
-- Run this command to create a superuser:
+- Run this command to create a superuser-----no longer needed, will be done at compilation:
 ```bash
 make superuser
 ```
@@ -181,8 +187,20 @@ make exec-postgres_db
 
 ## Update List
 - The database uses the Django default table but only taking username and password
+
 - Login feature usable
+
 - Now we have a JWT token for the frontend, token lasts 5 mins and the refresh token lasts 1 day. The frontend can use this and store it tell if the user was logged in already. If 401 is returned they either dont exist or token has timed out
+
+- .env file updated with DJANGO superuser values.
+
+- Superuser is now created at compialtion time, admin page can be accessesed at this URL:
+```plaintext
+http://localhost:8000/admin/
+```
+
+## To Note List
+- Regarding the web chat, frontend should check if a user is interacting with web chat, if so tehy request a refresh on their JWT token to keep the player logged in regardless of their web chat usage time
 
 ## Example Curl Commands
 

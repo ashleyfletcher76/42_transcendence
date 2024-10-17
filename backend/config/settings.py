@@ -29,6 +29,8 @@ DEBUG = os.environ.get('DJANGO_DEBUG') == 'True'
 
 ALLOWED_HOSTS = ['*']
 
+ASGI_APPLICATION = 'config.ascgi.application'
+
 # Application definition
 
 INSTALLED_APPS = [
@@ -65,6 +67,12 @@ SIMPLE_JWT = {
 	'ALGORITHM': 'HS256',
 	'SIGNING_KEY': SECRET_KEY,
 	'AUTH_HEADER_TYPES': ('BEARER',),
+}
+
+CHANNEL_LAYERS = {
+	'default': {
+		'BACKEND': 'channels.layers.InMemoryChannelLayer',
+	}
 }
 
 MIDDLEWARE = [

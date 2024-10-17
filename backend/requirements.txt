@@ -9,3 +9,5 @@ passlib==1.7.4
 djangorestframework-simplejwt==5.2.2
 setuptools>=65.5.0
 pip>=21.0
+channels==4.0.0
+daphne==4.0.0

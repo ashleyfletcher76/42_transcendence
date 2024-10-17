@@ -20,7 +20,7 @@ services:
     restart: always
     ports:
       - "5432:5432"
-  
+
   backend:
     build: ./../backend
     container_name: backend
@@ -30,6 +30,9 @@ services:
       POSTGRES_DB: ${POSTGRES_DB}
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      DJANGO_SUPERUSER_USERNAME: ${DJANGO_SUPERUSER_USERNAME}
+      DJANGO_SUPERUSER_EMAIL: ${DJANGO_SUPERUSER_EMAIL}
+      DJANGO_SUPERUSER_PASSWORD: ${DJANGO_SUPERUSER_PASSWORD}
     networks:
       my_network:
     volumes:
@@ -40,6 +43,7 @@ services:
     restart: always
     ports:
       - "8000:8000"
+    # command: ["sh", "/app/init_superuser.sh"]
 
 networks:
   my_network:
