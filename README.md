@@ -95,6 +95,11 @@ POSTGRES_PASSWORD=mypassword
 DJANGO_DEBUG=True
 ```
 
+- Run this command to create a superuser:
+```bash
+make superuser
+```
+
 ### Running the Project
 
 1. Clone the repository:
