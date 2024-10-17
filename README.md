@@ -10,6 +10,8 @@
   - [Running the Project](#running-the-project)
   - [Stopping the Project](#stopping-the-project)
   - [List of Commands](#list-of-commands)
+- [Update List](#update-list)
+- [Example Curl Commands](#example-curl-commands)
 - [Authors](#authors)
 
 ---
@@ -100,7 +102,7 @@ DJANGO_DEBUG=True
 make superuser
 ```
 
-The project has lots of Makefile functionality, if I have missed something, read the Makefile and figure it out. A new feature is for ---- "make exec-%", i.e. the % being the name of your container and then you can easily enter it. 
+The project has lots of Makefile functionality, if I have missed something, read the Makefile and figure it out. A new feature is for ---- "make exec-%", i.e. the % being the name of your container and then you can easily enter it.
 
 ### Running the Project
 
@@ -175,6 +177,39 @@ make rebuild-postgres_db
 
 ```bash
 make exec-postgres_db
+```
+
+## Update List
+- The database uses the Django default table but only taking username and password
+- Login feature usable
+
+## Example Curl Commands
+
+These commands should be done in the terminal, this is just to test the backend without the frontend being ready.
+
+Create a user:
+```plaintext
+curl -X POST http://localhost:8000/api/users/register/ \
+-H "Content-Type: application/json" \
+-d '{
+  "username": "newuser",
+  "password": "newpassword123"
+}'
+```
+
+Login with user:
+```plaintext
+curl -X POST http://localhost:8000/api/users/login/ \
+-H "Content-Type: application/json" \
+-d '{
+  "username": "newuser",
+  "password": "newpassword123"
+}'
+```
+
+Logout user:
+```plaintext
+curl -X POST http://localhost:8000/api/users/logout/
 ```
 
 ## Authors
