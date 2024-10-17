@@ -182,6 +182,7 @@ make exec-postgres_db
 ## Update List
 - The database uses the Django default table but only taking username and password
 - Login feature usable
+- Now we have a JWT token for the frontend, token lasts 5 mins and the refresh token lasts 1 day. The frontend can use this and store it tell if the user was logged in already. If 401 is returned they either dont exist or token has timed out
 
 ## Example Curl Commands
 
