@@ -51,4 +51,8 @@ rebuild-%:
 	$(DOCKER_COMPOSE) build --no-cache $*
 	$(DOCKER_COMPOSE) up -d $*
 
-.PHONY: up build-nocache re fclean logs down clean-volumes clean-images clean-all
+# create a Django superuser
+superuser:
+	$(DOCKER_COMPOSE) exec backend python manage.py createsuperuser
+
+.PHONY: up build-nocache re fclean logs down clean-volumes clean-images clean-all superuser
