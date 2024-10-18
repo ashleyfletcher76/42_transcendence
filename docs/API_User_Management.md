@@ -30,9 +30,9 @@ Response:
 - When username is already taken or the input is invalid:
 
 ```json
-		{
-			"username": ["A user with that username already exists."]
-		}
+{
+	"username": ["A user with that username already exists."]
+}
 ```
 
 2. User Login (Token Generation)
@@ -64,9 +64,9 @@ Response:
 - Failure (401 Unauthorized):
 
 ```json
-	{
-		"detail": "No active account found with the given credentials"
-	}
+{
+	"detail": "No active account found with the given credentials"
+}
 ```
 
 3. Token Refresh
@@ -96,9 +96,9 @@ Response:
 - Failure (401 Unauthorized):
 
 ```json
-	{
-		"detail": "Token is invalid or expired"
-	}
+{
+	"detail": "Token is invalid or expired"
+}
 ```
 
 4. User Logout
@@ -112,9 +112,9 @@ Response:
 - Success (200 OK):
 
 ```json
-	{
-		"message": "Logged out successfully"
-	}
+{
+	"message": "Logged out successfully"
+}
 ```
 
 Authentication Flow:
