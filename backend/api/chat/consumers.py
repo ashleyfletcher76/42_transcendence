@@ -3,8 +3,11 @@ from channels.generic.websocket import AsyncWebsocketConsumer
 
 class ChatConsumer(AsyncWebsocketConsumer):
 	async def connect(self):
+		print("WebSocket connection initiated")
 		self.room_name = self.scope['url_route']['kwargs']['room_name']
 		self.room_group_name = f'chat_{self.room_name}'
+
+		print(f"Connecting to room: {self.room_name}")
 
 		# join room group
 		await self.channel_layer.group_add(
@@ -21,19 +24,27 @@ class ChatConsumer(AsyncWebsocketConsumer):
 			self.channel_name
 		)
 
-	# recive message form socket
-	async def recieve(self, text_data):
+	# receive message form socket
+async def receive(self, text_data):
+	try:
+		# attempt to decode the incoming message
 		text_data_json = json.loads(text_data)
-		message = text_data_json['message']
+		message = text_data_json.get('message', None)
 
-		# send to room
-		await self.channel_layer.group_Send(
-			self.room_group_name,
-			{
-				'type': 'chat_message',
-				'message': message
-			}
-		)
+		if message:
+			# broadcast message to room group
+			await self.channel_layer.group_send(
+				self.room_group_name,
+				{
+					'type': 'chat_message',
+					'message': message
+				}
+			)
+		else:
+			print("Invalid message format: No 'message' field.")
+    except json.JSONDecodeError as e:
+		print(f"JSON decoding failed: {str(e)}")
+
 
 	# receive message from room group
 	async def chat_message(self, event):

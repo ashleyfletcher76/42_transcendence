@@ -29,7 +29,7 @@ DEBUG = os.environ.get('DJANGO_DEBUG') == 'True'
 
 ALLOWED_HOSTS = ['*']
 
-ASGI_APPLICATION = 'config.ascgi.application'
+ASGI_APPLICATION = 'config.asgi.application'
 
 # Application definition
 
@@ -50,6 +50,7 @@ INSTALLED_APPS = [
 	# third-party app for rest framework
 	'rest_framework',
 	'rest_framework_simplejwt.token_blacklist',
+	'channels',
 ]
 
 REST_FRAMEWORK = {
