@@ -10,6 +10,7 @@
   - [Running the Project](#running-the-project)
   - [Stopping the Project](#stopping-the-project)
   - [List of Commands](#list-of-commands)
+  - [Simluating Live Chat](#simulating-live-chat)
 - [Update List](#update-list)
 - [To Note List](#to-note-list)
 - [Example Curl Commands](#example-curl-commands)
@@ -185,6 +186,49 @@ make rebuild-postgres_db
 make exec-postgres_db
 ```
 
+### Simluating Live Chat
+
+## Requirements
+
+To simulate the chat using WebSockets in the terminal, you’ll need to use `wscat`, a WebSocket client for the terminal. Follow the steps below to install and use it.
+
+### Install wscat
+
+- To install `wscat`, you need Node.js and npm installed. You can install `wscat` globally using npm:
+
+```bash
+npm install -g wscat
+```
+
+## Simulating in the terminal
+After installing wscat, you can connect to the WebSocket server running on your backend using the following command:
+
+1. Open a terminal and run:
+```bash
+wscat -c ws://localhost:8000/ws/chat/testroom/
+```
+
+2. Once connected, you can start typing messages directly into the terminal. Every message you type will be sent to the chat room.
+
+## Sending a message
+When connected via wscat, you can send a message in JSON format like this:
+
+```plaintext
+{"message": "Hello everyone!"}
+```
+
+## Receiving a message
+Whenever a message is sent by another user, it will appear in your terminal as a JSON object. For example:
+```plaintext
+{"message": "Hello everyone!", "username": "JohnDoe"}
+```
+
+## Disconnecting
+
+```plaintext
+CTRL+C
+```
+
 ## Update List
 - The database uses the Django default table but only taking username and password
 
@@ -193,6 +237,8 @@ make exec-postgres_db
 - Now we have a JWT token for the frontend, token lasts 5 mins and the refresh token lasts 1 day. The frontend can use this and store it tell if the user was logged in already. If 401 is returned they either dont exist or token has timed out
 
 - .env file updated with DJANGO superuser values.
+
+- Live chat now working and I created Daphne to be our server.
 
 - Superuser is now created at compialtion time, admin page can be accessesed at this URL:
 ```plaintext
