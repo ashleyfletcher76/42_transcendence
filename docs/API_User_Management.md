@@ -125,3 +125,12 @@ Authentication Flow:
 - Refresh the token when it expires by making a POST request to /api/users/token/refresh/ with the refresh token.
 - Logout the user by making a POST request to /api/users/logout/.
 
+In Summary:
+
+1. Send a POST request to /api/users/register/.
+2. Include a JSON payload with:
+- username: The chosen username.
+- password: The chosen password.
+3. Handle the response:
+- If successful, the frontend will display the success message.
+- If there's an error (e.g., username already exists), handle the error message.

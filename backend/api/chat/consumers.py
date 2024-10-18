@@ -24,27 +24,26 @@ class ChatConsumer(AsyncWebsocketConsumer):
 			self.channel_name
 		)
 
-	# receive message form socket
-async def receive(self, text_data):
-	try:
-		# attempt to decode the incoming message
-		text_data_json = json.loads(text_data)
-		message = text_data_json.get('message', None)
+	# receive message from socket
+	async def receive(self, text_data):
+		try:
+			# attempt to decode the incoming message
+			text_data_json = json.loads(text_data)
+			message = text_data_json.get('message', None)
 
-		if message:
-			# broadcast message to room group
-			await self.channel_layer.group_send(
-				self.room_group_name,
-				{
-					'type': 'chat_message',
-					'message': message
-				}
-			)
-		else:
-			print("Invalid message format: No 'message' field.")
-    except json.JSONDecodeError as e:
-		print(f"JSON decoding failed: {str(e)}")
-
+			if message:
+				# broadcast message to room group
+				await self.channel_layer.group_send(
+					self.room_group_name,
+					{
+						'type': 'chat_message',
+						'message': message
+					}
+				)
+			else:
+				print("Invalid message format: No 'message' field.")
+		except json.JSONDecodeError as e:
+			print(f"JSON decoding failed: {str(e)}")
 
 	# receive message from room group
 	async def chat_message(self, event):

@@ -79,4 +79,16 @@ exec-%:
 	fi && \
 	docker exec -it $* bash
 
+# to run unit testing for all
+test:
+	$(DOCKER_COMPOSE) exec backend python manage.py test
+
+# to run unit testing for specifc API
+test-%:
+	$(DOCKER_COMPOSE) exec backend python manage.py test "$*"
+
+test-api.users:
+	$(DOCKER_COMPOSE) exec backend python manage.py test api.users.tests.test_user_login
+	$(DOCKER_COMPOSE) exec backend python manage.py test api.users.tests.test_user_registration
+
 .PHONY: up build-nocache re fclean logs down clean-volumes clean-images clean-all superuser

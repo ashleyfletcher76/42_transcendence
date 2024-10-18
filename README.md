@@ -11,8 +11,10 @@
   - [Stopping the Project](#stopping-the-project)
   - [List of Commands](#list-of-commands)
   - [Simluating Live Chat](#simulating-live-chat)
-- [Update List](#update-list)
-- [To Note List](#to-note-list)
+- [Project Progress Updates/To Do's](#project-progress-updates/to-do's)
+  - [Recent Changes List](#recent-changes-list)
+  - [To Note List](#to-note-list)
+  - [To Do List](#to-do-list)
 - [Example Curl Commands](#example-curl-commands)
 - [Authors](#authors)
 
@@ -229,7 +231,9 @@ Whenever a message is sent by another user, it will appear in your terminal as a
 CTRL+C
 ```
 
-## Update List
+## Project Progress Updates/To Do's
+
+### Recent Changes List
 - The database uses the Django default table but only taking username and password
 
 - Login feature usable
@@ -245,8 +249,11 @@ CTRL+C
 http://localhost:8000/admin/
 ```
 
-## To Note List
+### To Note List
 - Regarding the web chat, frontend should check if a user is interacting with web chat, if so tehy request a refresh on their JWT token to keep the player logged in regardless of their web chat usage time
+
+### To Do List
+- Update the unit testing so that it can run any test inside the tests directory for each app
 
 ## Example Curl Commands
 
@@ -276,6 +283,13 @@ Logout user:
 ```plaintext
 curl -X POST http://localhost:8000/api/users/logout/
 ```
+
+To run tests for the user management you can run:
+```bash
+make test-api.users
+```
+^^
+This will be updated fully in the future
 
 ## Authors
 
