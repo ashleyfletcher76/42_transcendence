@@ -7,6 +7,8 @@ export default class Router extends EmberRouter {
 }
 
 Router.map(function () {
-	this.route('about');
-	this.route('contact', { path: '/getting-in-touch' });
-  });
+  this.route('livechat');
+  this.route('game');
+  this.route('rank');
+  this.route('profile');
+});

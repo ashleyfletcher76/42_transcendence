@@ -1,0 +1,86 @@
+@import 'bootstrap/dist/css/bootstrap.min.css';
+
+h1, h2, h3, p {
+	padding: 10px;
+}
+.container {
+  background-color: #85b9b9;
+}
+
+.full-height {
+	height: 100vh; /* 100% of the viewport height */
+  }
+  
+  .mid-container {
+	background-color: #f9f9f9;
+	padding: 20px;
+	border: 1px solid #ddd;
+	flex-grow: 1; /* Ensures all containers grow equally */
+  }
+  
+  .col-6 {
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between; /* Distributes space evenly */
+  }
+
+.header-menu {
+  background-color: #2d5154; /* Background color for the header menu */
+  padding: 10px; /* Padding around the menu */
+}
+
+.header-menu ul {
+  display: flex; /* Use Flexbox for layout */
+  justify-content: space-between; /* Space out the items */
+  list-style-type: none; /* Remove bullet points */
+  margin: 0; /* Remove margin */
+  padding: 0; /* Remove padding */
+  align-items: center; /* Center items vertically */
+}
+
+.header-menu li {
+  margin: 0 10px; /* Space between the items */
+}
+
+.header-menu .profile-button {
+  margin-left: auto; /* Push the Profile button to the right */
+}
+
+.header-menu button {
+  background: none; /* Remove default button background */
+  border: 1px solid transparent; /* Default border */
+  padding: 10px 15px; /* Button padding */
+  color: white; /* Text color */
+  cursor: pointer; /* Pointer on hover */
+}
+
+.header-menu button:hover {
+  background-color: #016aba; /* Change background on hover */
+}
+
+/* New styles for the fields */
+.fields-container {
+	display: flex; /* Use flexbox for equal distribution */
+	height: 90vh; /* Adjust height to account for header menu */
+}
+  
+.field {
+	flex: 1; /* Each field takes up equal space */
+	border: 1px solid #ccc; /* Optional: border for visibility */
+	display: flex; /* Center content vertically */
+	align-items: center; /* Align items vertically */
+	justify-content: center; /* Align items horizontally */
+	background-color: #e6e6e6; /* Optional: background color */
+	margin: 5px; /* Optional: space between fields */
+	font-size: 20px; /* Font size for visibility */
+}
+
+/* Specific styles for outer fields */
+.outer {
+	flex: 1; /* Outer fields take 1 part of space */
+}
+
+  /* Specific styles for the middle field */
+.middle {
+	flex: 1.5; /* Middle field takes 1.5 parts of space */
+}

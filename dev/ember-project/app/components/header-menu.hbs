@@ -1,0 +1,12 @@
+{{!-- app/components/header-menu.hbs --}}
+<nav class="header-menu">
+  <ul>
+    <li><button type="button" {{on "click" (fn this.navigateTo "/")}}>Home</button></li>
+    <li><button type="button" {{on "click" (fn this.navigateTo "livechat")}}>Live Chat</button></li>
+    <li><button type="button" {{on "click" (fn this.navigateTo "game")}}>Game</button></li>
+    <li><button type="button" {{on "click" (fn this.navigateTo "rank")}}>Rank</button></li>
+    <li class="profile-button">
+      <button type="button" {{on "click" (fn this.navigateTo "profile")}}>Profile</button>
+    </li>
+  </ul>
+</nav>
