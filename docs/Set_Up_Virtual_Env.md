@@ -31,6 +31,12 @@ Create a new virtual environment in the project directory:
 python -m venv venv
 ```
 
+or
+
+```bash
+python3 -m venv venv
+```
+
 This will create a new folder called venv in your project directory, containing the virtual environment.
 
 3. Activate the Virtual Environment:
@@ -62,10 +68,10 @@ pip install django
 
 5. Create a New Django Project:
 
-With Django installed, you can create a new project. Replace myproject with the desired name for your project:
+With Django installed, you can create a new project:
 
 ```bash
-django-admin startproject myproject
+django-admin startproject config .
 ```
 
 6. Navigate Into the Project Folder:
