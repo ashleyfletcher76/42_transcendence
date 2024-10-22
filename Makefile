@@ -14,9 +14,9 @@ build-up:
 new:
 	$(DOCKER_COMPOSE) build --no-cache
 	$(DOCKER_COMPOSE) up -d
-	@echo "Waiting for PostgreSQL health check to pass..."
-	$(DOCKER_COMPOSE) exec backend python manage.py makemigrations
-	$(DOCKER_COMPOSE) exec backend python manage.py migrate
+	# @echo "Waiting for PostgreSQL health check to pass..."
+	# $(DOCKER_COMPOSE) exec backend python manage.py makemigrations
+	# $(DOCKER_COMPOSE) exec backend python manage.py migrate
 
 # rebuild the service but not remove all
 re: down up
@@ -65,11 +65,11 @@ superuser:
 
 # make migration
 makemigrate:
-	$(DOCKER_COMPOSE) exec backend python manage.py makemigrations
+	$(DOCKER_COMPOSE) exec auth-service python manage.py makemigrations
 
 # apply migration
 migrate:
-	$(DOCKER_COMPOSE) exec backend python manage.py migrate
+	$(DOCKER_COMPOSE) exec auth-service python manage.py migrate
 
 # apply migration
 exec-%:

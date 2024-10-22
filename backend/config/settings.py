@@ -44,7 +44,7 @@ DATABASES = {
         'NAME': os.environ.get('POSTGRES_DB'),
         'USER': os.environ.get('POSTGRES_USER'),
         'PASSWORD': os.environ.get('POSTGRES_PASSWORD'),
-        'HOST': 'db',  # This should match your Docker service name in docker-compose.yml
+        'HOST': 'db',
         'PORT': '5432',
     }
 }

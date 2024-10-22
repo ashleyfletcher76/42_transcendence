@@ -3,7 +3,7 @@ version: '3.9'
 services:
   db:
     container_name: postgres_db
-    build: ./postgres
+    build: ./../backend/postgres
     environment:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
@@ -21,9 +21,9 @@ services:
     ports:
       - "5432:5432"
 
-  backend:
-    build: ./../backend
-    container_name: backend
+  auth-service:
+    build: ./../backend/auth-service
+    container_name: auth-service
     environment:
       DJANGO_SECRET_KEY: ${DJANGO_SECRET_KEY}
       DJANGO_DEBUG: ${DJANGO_DEBUG}
@@ -35,19 +35,67 @@ services:
       DJANGO_SUPERUSER_PASSWORD: ${DJANGO_SUPERUSER_PASSWORD}
     networks:
       my_network:
-    volumes:
-      - backend_data:/app
     depends_on:
       db:
         condition: service_healthy
     restart: always
     ports:
-      - "8000:8000"
-    # command: ["sh", "/app/init_superuser.sh"]
+      - "8001:8000"
+
+  user-service:
+    build: ./../backend/user-service
+    container_name: user-service
+    environment:
+      DJANGO_SECRET_KEY: ${DJANGO_SECRET_KEY}
+      DJANGO_DEBUG: ${DJANGO_DEBUG}
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      DJANGO_SUPERUSER_USERNAME: ${DJANGO_SUPERUSER_USERNAME}
+      DJANGO_SUPERUSER_EMAIL: ${DJANGO_SUPERUSER_EMAIL}
+      DJANGO_SUPERUSER_PASSWORD: ${DJANGO_SUPERUSER_PASSWORD}
+    networks:
+      my_network:
+    depends_on:
+      db:
+        condition: service_healthy
+    restart: always
+    ports:
+      - "8002:8000"
+
+  chat-service:
+    build: ./../backend/chat-service
+    container_name: chat-service
+    environment:
+      DJANGO_SECRET_KEY: ${DJANGO_SECRET_KEY}
+      DJANGO_DEBUG: ${DJANGO_DEBUG}
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      DJANGO_SUPERUSER_USERNAME: ${DJANGO_SUPERUSER_USERNAME}
+      DJANGO_SUPERUSER_EMAIL: ${DJANGO_SUPERUSER_EMAIL}
+      DJANGO_SUPERUSER_PASSWORD: ${DJANGO_SUPERUSER_PASSWORD}
+      REDIS_URL: "redis://redis:6379"
+    networks:
+      my_network:
+    depends_on:
+      db:
+        condition: service_healthy
+    restart: always
+    ports:
+      - "8003:8000"
+
+  redis:
+    image: "redis:alpine"
+    container_name: redis
+    networks:
+      my_network:
+    ports:
+      - "6379:6379"
+    restart: always
 
 networks:
   my_network:
 
 volumes:
   db_data:
-  backend_data:
