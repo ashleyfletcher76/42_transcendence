@@ -1,4 +1,4 @@
-## 42_Transendence
+# 42_Transcendence
 
 ## Table of Contents
 - [Project Overview](#project-overview)
@@ -10,8 +10,8 @@
   - [Running the Project](#running-the-project)
   - [Stopping the Project](#stopping-the-project)
   - [List of Commands](#list-of-commands)
-  - [Simluating Live Chat](#simulating-live-chat)
-- [Project Progress Updates/To Do's](#project-progress-updates/to-do's)
+  - [Simulating Live Chat](#simulating-live-chat)
+- [Project Progress Updates/To Do's](#project-progress-updates-to-dos)
   - [Recent Changes List](#recent-changes-list)
   - [To Note List](#to-note-list)
   - [To Do List](#to-do-list)
@@ -26,6 +26,8 @@
 
 The project leverages modern web development practices and frameworks like **Django** for the backend, while the frontend will be handled separately using modern JavaScript frameworks (like React, to be managed by a frontend developer).
 
+---
+
 ## What We Are Trying to Solve
 
 The goal of **ft_transcendence** is to create a scalable and secure multiplayer game platform where users can:
@@ -35,6 +37,8 @@ The goal of **ft_transcendence** is to create a scalable and secure multiplayer 
 - Track their gameplay stats and history.
 
 Additionally, we plan to explore features like **AI opponents** and **game customization** to enhance the user experience. This project will also focus on security features like **Two-Factor Authentication** to ensure a safe gaming environment.
+
+---
 
 ## Modules to Be Implemented
 
@@ -65,6 +69,8 @@ We are initially focusing on the following **major modules** to ensure the core 
 8. **Support for All Devices (Minor)**
    - Ensure the game is responsive and works across different devices (mobile, desktop, tablet).
 
+---
+
 ## Potential Modules (Future Consideration)
 
 We may implement these **optional modules** based on project scope, time, and user feedback:
@@ -92,7 +98,7 @@ We may implement these **optional modules** based on project scope, time, and us
 - **Docker** and **Docker Compose** must be installed.
 - A `.env` file with your database credentials and secret keys should be placed in the docker directory.
 
-Example .env file:
+Example `.env` file:
 ```plaintext
 DJANGO_SECRET_KEY=mysecret
 POSTGRES_DB=mydb
@@ -106,13 +112,6 @@ DJANGO_SUPERUSER_EMAIL=admin@example.com
 DJANGO_SUPERUSER_PASSWORD=hello
 ```
 
-- Run this command to create a superuser-----no longer needed, will be done at compilation:
-```bash
-make superuser
-```
-
-The project has lots of Makefile functionality, if I have missed something, read the Makefile and figure it out. A new feature is for ---- "make exec-%", i.e. the % being the name of your container and then you can easily enter it.
-
 ### Running the Project
 
 1. Clone the repository:
@@ -121,7 +120,7 @@ git clone https://github.com/ashleyfletcher76/42_transcendence.git
 cd 42_transcendence
 ```
 
-To now(15.10.24) open the virtual environment and run the server, type these commands:
+2. To set up and run the containers:
 ```bash
 make new
 ```
@@ -137,17 +136,10 @@ To deactivate the server, run this command:
 deactivate
 ```
 
-2. Access the application at:
+3. Access the application at:
 ```bash
 http://0.0.0.0:8000
 ```
-
-followed by the page you want to locate, one example would be:
-```bash
-http://0.0.0.0:8000/api/users/profile/
-```
-
-I will give out more information as I go.
 
 ### Stopping the Project
 ```bash
@@ -156,34 +148,36 @@ make down
 
 ### List of Commands
 
+* Creates and runs the Docker containers:
 ```bash
 make new
 ```
 
+* Starts the Docker containers without rebuilding them:
 ```bash
 make up
 ```
 
+* Cleans up all Docker containers and volumes:
 ```bash
 make fclean
 ```
 
+* Shows us some of the logs:
 ```bash
-make logs-backend
+make logs
+```
+* We can also show logs for specific container, just write "make logs-" followed by the container name:
+```bash
+make logs-
 ```
 
+* Similary to previous make logs that can be specific to containers, we can also do the same with rebuilding a container, just write the container name following the "-"
 ```bash
-make logs-backend
+make rebuild-
 ```
 
-```bash
-make rebuild-backend
-```
-
-```bash
-make rebuild-postgres_db
-```
-
+* Similary to previous make logs and rebuild, that can be specific to containers, we can also do the same with entering a container, just write the container name following the "-"
 ```bash
 make exec-postgres_db
 ```
@@ -192,7 +186,7 @@ make exec-postgres_db
 
 ## Requirements
 
-To simulate the chat using WebSockets in the terminal, you’ll need to use `wscat`, a WebSocket client for the terminal. Follow the steps below to install and use it.
+To simulate the chat using WebSockets in the terminal, you’ll need to use wscat, a WebSocket client for the terminal. Follow the steps below to install and use it.
 
 ### Install wscat
 
@@ -242,9 +236,9 @@ CTRL+C
 
 - .env file updated with DJANGO superuser values.
 
-- Live chat now working and I created Daphne to be our server.
+- Live chat now working and I created Daphne to be our server for live chat container.
 
-- Superuser is now created at compialtion time, admin page can be accessesed at this URL:
+- Superuser is now created at compialtion time, admin page can be accessesed at this URL: ??? Not yet
 ```plaintext
 http://localhost:8000/admin/
 ```
@@ -261,7 +255,7 @@ These commands should be done in the terminal, this is just to test the backend 
 
 Create a user:
 ```plaintext
-curl -X POST http://localhost:8000/api/users/register/ \
+curl -X POST http://localhost:8002/users/register/ \
 -H "Content-Type: application/json" \
 -d '{
   "username": "newuser",
@@ -271,7 +265,7 @@ curl -X POST http://localhost:8000/api/users/register/ \
 
 Login with user:
 ```plaintext
-curl -X POST http://localhost:8000/api/users/login/ \
+curl -X POST http://localhost:8001/auth/login/ \
 -H "Content-Type: application/json" \
 -d '{
   "username": "newuser",
@@ -281,15 +275,8 @@ curl -X POST http://localhost:8000/api/users/login/ \
 
 Logout user:
 ```plaintext
-curl -X POST http://localhost:8000/api/users/logout/
+curl -X POST http://localhost:8001/auth/logout/
 ```
-
-To run tests for the user management you can run:
-```bash
-make test-api.users
-```
-^^
-This will be updated fully in the future
 
 ## Authors
 
