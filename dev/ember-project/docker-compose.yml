@@ -2,7 +2,7 @@ version: '2'
 
 services:
   ember:
-    image: danlynn/ember-cli:latest
+    image: danlynn/ember-cli:3.28.2-node_16.11
     volumes:
       - .:/myapp
       - .bash_history:/root/.bash_history

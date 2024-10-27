@@ -7,8 +7,5 @@ export default class Router extends EmberRouter {
 }
 
 Router.map(function () {
-  this.route('livechat');
-  this.route('game');
-  this.route('rank');
-  this.route('profile');
+  this.route('login');
 });

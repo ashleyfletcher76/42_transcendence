@@ -1,86 +1,70 @@
-@import 'bootstrap/dist/css/bootstrap.min.css';
+/* styles.css */
 
-h1, h2, h3, p {
-	padding: 10px;
-}
-.container {
-  background-color: #85b9b9;
-}
-
-.full-height {
-	height: 100vh; /* 100% of the viewport height */
-  }
-  
-  .mid-container {
-	background-color: #f9f9f9;
-	padding: 20px;
-	border: 1px solid #ddd;
-	flex-grow: 1; /* Ensures all containers grow equally */
-  }
-  
-  .col-6 {
-	display: flex;
-	flex-direction: column;
-	justify-content: space-between; /* Distributes space evenly */
-  }
-
-.header-menu {
-  background-color: #2d5154; /* Background color for the header menu */
-  padding: 10px; /* Padding around the menu */
+/* Overall body styling */
+body {
+  font-family: Arial, sans-serif; /* Set a sans-serif font for the body */
+  background-color: #f4f4f4; /* Light gray background color */
+  margin: 0; /* Remove default margins */
+  padding: 0; /* Remove default padding */
 }
 
-.header-menu ul {
-  display: flex; /* Use Flexbox for layout */
-  justify-content: space-between; /* Space out the items */
-  list-style-type: none; /* Remove bullet points */
-  margin: 0; /* Remove margin */
-  padding: 0; /* Remove padding */
-  align-items: center; /* Center items vertically */
+/* Container for the login form */
+h2 {
+  text-align: center; /* Center the heading */
+  color: #333; /* Dark gray color for the heading */
+  margin-top: 50px; /* Margin at the top */
 }
 
-.header-menu li {
-  margin: 0 10px; /* Space between the items */
+/* Form styling */
+form {
+  max-width: 400px; /* Maximum width for the form */
+  margin: 0 auto; /* Center the form */
+  padding: 20px; /* Padding inside the form */
+  background-color: white; /* White background for the form */
+  border-radius: 5px; /* Rounded corners for the form */
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
 }
 
-.header-menu .profile-button {
-  margin-left: auto; /* Push the Profile button to the right */
+/* Label styling */
+label {
+  display: block; /* Block-level for full width */
+  margin-bottom: 5px; /* Space between label and input */
+  color: #666; /* Light gray color for labels */
 }
 
-.header-menu button {
-  background: none; /* Remove default button background */
-  border: 1px solid transparent; /* Default border */
-  padding: 10px 15px; /* Button padding */
-  color: white; /* Text color */
-  cursor: pointer; /* Pointer on hover */
+/* Input field styling */
+input[type="text"],
+input[type="password"] {
+  width: 100%; /* Full width */
+  padding: 10px; /* Padding inside input */
+  margin-bottom: 20px; /* Space below input */
+  border: 1px solid #ddd; /* Light gray border */
+  border-radius: 4px; /* Slightly rounded corners */
+  box-sizing: border-box; /* Include padding and border in total width/height */
+  font-size: 16px; /* Font size for input */
 }
 
-.header-menu button:hover {
-  background-color: #016aba; /* Change background on hover */
+/* Button styling */
+button {
+  width: 100%; /* Full width */
+  padding: 10px; /* Padding inside button */
+  background-color: #28a745; /* Bootstrap green color */
+  border: none; /* No border */
+  border-radius: 4px; /* Rounded corners */
+  color: white; /* White text color */
+  font-size: 16px; /* Font size for button */
+  cursor: pointer; /* Pointer cursor on hover */
+  transition: background-color 0.3s; /* Smooth background transition */
 }
 
-/* New styles for the fields */
-.fields-container {
-	display: flex; /* Use flexbox for equal distribution */
-	height: 90vh; /* Adjust height to account for header menu */
-}
-  
-.field {
-	flex: 1; /* Each field takes up equal space */
-	border: 1px solid #ccc; /* Optional: border for visibility */
-	display: flex; /* Center content vertically */
-	align-items: center; /* Align items vertically */
-	justify-content: center; /* Align items horizontally */
-	background-color: #e6e6e6; /* Optional: background color */
-	margin: 5px; /* Optional: space between fields */
-	font-size: 20px; /* Font size for visibility */
+/* Button hover effect */
+button:hover {
+  background-color: #218838; /* Darker green on hover */
 }
 
-/* Specific styles for outer fields */
-.outer {
-	flex: 1; /* Outer fields take 1 part of space */
-}
-
-  /* Specific styles for the middle field */
-.middle {
-	flex: 1.5; /* Middle field takes 1.5 parts of space */
+/* Error message styling */
+.error {
+  color: red; /* Red color for error messages */
+  text-align: center; /* Center the error message */
+  margin-top: 15px; /* Margin at the top */
 }
