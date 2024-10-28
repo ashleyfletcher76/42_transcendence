@@ -1,6 +1,5 @@
 <nav>
-    {{!-- app/templates/application.hbs --}}
-    {{#if session.isAuthenticated}}
+    {{#if this.session.isAuthenticated}}
         <button type="button" {{on "click" this.logout}}>Logout</button>
     {{/if}}
 </nav>

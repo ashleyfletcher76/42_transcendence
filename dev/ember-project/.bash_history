@@ -42,3 +42,26 @@ ember install ember-simple-auth
 exit
 npm install --save-dev ember-auto-import@^2.0.0
 exit
+ember install ember-bootstrap
+ember install ember-simple-auth
+exit
+npm install
+exit
+npm install
+ember generate component navi
+ember generate component-class navi
+ember g route login
+exit
+ember install ember-simple-auth
+ember serve
+exit
+ember install ember-bootstrap
+exit
+npm install bootstrap
+exit
+ember uninstall ember-bootstrap
+[200~npm uninstall ember-bootstrap
+npm uninstall ember-bootstrap
+exit
+npm install bootstrap
+exit

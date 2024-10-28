@@ -24,7 +24,5 @@ export default Base.extend({
     }
   },
 
-  async invalidate(data) {
-    
-  }
+  async invalidate(data) {},
 });

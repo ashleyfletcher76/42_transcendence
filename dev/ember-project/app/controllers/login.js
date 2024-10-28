@@ -23,7 +23,7 @@ export default class LoginController extends Controller {
       await this.session.authenticate(
         'authenticator:token',
         this.username,
-        this.password
+        this.password,
       );
     } catch (error) {
       this.error = error;
