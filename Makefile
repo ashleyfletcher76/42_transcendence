@@ -65,11 +65,11 @@ superuser:
 
 # make migration
 makemigrate:
-	$(DOCKER_COMPOSE) exec auth-service python manage.py makemigrations
+	$(DOCKER_COMPOSE) exec chat-service python manage.py makemigrations
 
 # apply migration
 migrate:
-	$(DOCKER_COMPOSE) exec auth-service python manage.py migrate
+	$(DOCKER_COMPOSE) exec chat-service python manage.py migrate
 
 # apply migration
 exec-%:

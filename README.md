@@ -201,7 +201,7 @@ After installing wscat, you can connect to the WebSocket server running on your 
 
 1. Open a terminal and run:
 ```bash
-wscat -c ws://localhost:8000/ws/chat/testroom/
+wscat -c ws://localhost:8003/ws/chat/testroom/
 ```
 
 2. Once connected, you can start typing messages directly into the terminal. Every message you type will be sent to the chat room.

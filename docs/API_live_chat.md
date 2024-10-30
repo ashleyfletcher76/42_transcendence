@@ -11,7 +11,7 @@ The live chat service allows users to send real-time messages in specific chat r
 Description: Establishes a WebSocket connection for a user to a specified chat room.
 
 ```bash
-ws://localhost:8003/ws/chat/{room_name}/
+wscat -c ws://localhost:8003/ws/chat/testroom/
 ```
 
 - Method: WebSocket
