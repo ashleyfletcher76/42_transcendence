@@ -1,3 +1,4 @@
 from django.db import models
 
-# Create your models here.
+class GameStat(models.Model):
+	user_id = models.IntegerField()
