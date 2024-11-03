@@ -63,6 +63,27 @@ services:
     ports:
       - "9443:443"
 
+  pong-game:
+    build: ./../backend/pong
+    container_name: pong
+    environment:
+      DJANGO_SECRET_KEY: ${DJANGO_SECRET_KEY}
+      DJANGO_DEBUG: ${DJANGO_DEBUG}
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      DJANGO_SUPERUSER_USERNAME: ${DJANGO_SUPERUSER_USERNAME}
+      DJANGO_SUPERUSER_EMAIL: ${DJANGO_SUPERUSER_EMAIL}
+      DJANGO_SUPERUSER_PASSWORD: ${DJANGO_SUPERUSER_PASSWORD}
+    networks:
+      my_network:
+    depends_on:
+      db:
+        condition: service_healthy
+    restart: always
+    ports:
+      - "11443:443"
+
   chat-service:
     build: ./../backend/chat-service
     container_name: chat-service
