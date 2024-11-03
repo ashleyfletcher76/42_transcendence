@@ -40,7 +40,7 @@ services:
         condition: service_healthy
     restart: always
     ports:
-      - "8001:8000"
+      - "8443:443"
 
   user-service:
     build: ./../backend/user-service
@@ -61,7 +61,7 @@ services:
         condition: service_healthy
     restart: always
     ports:
-      - "8002:8000"
+      - "9443:443"
 
   chat-service:
     build: ./../backend/chat-service
@@ -83,7 +83,7 @@ services:
         condition: service_healthy
     restart: always
     ports:
-      - "8003:8000"
+      - "10443:443"
 
   redis:
     image: "redis:alpine"

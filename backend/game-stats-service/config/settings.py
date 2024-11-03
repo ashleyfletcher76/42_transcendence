@@ -41,7 +41,8 @@ INSTALLED_APPS = [
 
 
 	## SETUP REDIS CONNECTION FROM OTHERCONTAIENR
-	'game_stats'
+	'game_stats',
+    'django_extensions',
 ]
 
 MIDDLEWARE = [
@@ -83,6 +84,9 @@ DATABASES = {
         'PASSWORD': os.environ.get('POSTGRES_PASSWORD'),
         'HOST': 'db',
         'PORT': '5432',
+        'OPTIONS':{
+            'sslmode': 'require', # we use this to enforce ssl on the database also
+		}
     }
 }
 
@@ -95,6 +99,9 @@ if 'test' in sys.argv:
         'PASSWORD': os.environ.get('POSTGRES_PASSWORD'),
         'HOST': 'db',
         'PORT': '5432',
+        'OPTIONS':{
+            'sslmode': 'require', # we use this to enforce ssl on the database also
+		}
     }
 
 

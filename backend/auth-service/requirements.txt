@@ -6,3 +6,6 @@ psycopg2-binary==2.9.10
 PyJWT==2.9.0
 sqlparse==0.5.1
 setuptools>=65.5.0
+django-extensions==3.2.3
+Werkzeug==2.3.7
+pyOpenSSL==23.2.0

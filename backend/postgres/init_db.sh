@@ -22,6 +22,12 @@ if [ ! -f "/var/lib/postgresql/data/.db_ready" ]; then
 	# repalced with Django first table set up
 	# psql -U $POSTGRES_USER -d $POSTGRES_DB -f /docker-entrypoint-initdb.d/init.sql
 
+	 # enable SSL in the PostgreSQL config
+	psql -U $POSTGRES_USER -d $POSTGRES_DB -c "ALTER SYSTEM SET ssl = 'on';"
+	psql -U $POSTGRES_USER -d $POSTGRES_DB -c "ALTER SYSTEM SET ssl_cert_file = '/var/lib/postgresql/server.crt';"
+	psql -U $POSTGRES_USER -d $POSTGRES_DB -c "ALTER SYSTEM SET ssl_key_file = '/var/lib/postgresql/server.key';"
+
+
 	touch /var/lib/postgresql/data/.db_ready
 	chown postgres:postgres /var/lib/postgresql/data/.db_ready
 	chmod 644 /var/lib/postgresql/data/.db_ready

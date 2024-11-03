@@ -1,4 +1,5 @@
 import os
+import sys
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -41,6 +42,7 @@ INSTALLED_APPS = [
 
 	'chat',
 	'channels',
+	'django_extensions',
 ]
 
 MIDDLEWARE = [
@@ -83,10 +85,7 @@ CHANNEL_LAYERS = {
     },
 }
 
-
-# Database
-# https://docs.djangoproject.com/en/5.1/ref/settings/#databases
-
+# Default database setup for production and development
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
@@ -95,8 +94,25 @@ DATABASES = {
         'PASSWORD': os.environ.get('POSTGRES_PASSWORD'),
         'HOST': 'db',
         'PORT': '5432',
+        'OPTIONS':{
+            'sslmode': 'require', # we use this to enforce ssl on the database also
+		}
     }
 }
+
+# Overwrite the database settings when running tests
+if 'test' in sys.argv:
+    DATABASES['default'] = {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'test_' + os.environ.get('POSTGRES_DB'),
+        'USER': os.environ.get('POSTGRES_USER'),
+        'PASSWORD': os.environ.get('POSTGRES_PASSWORD'),
+        'HOST': 'db',
+        'PORT': '5432',
+        'OPTIONS':{
+            'sslmode': 'require', # we use this to enforce ssl on the database also
+		}
+    }
 
 
 

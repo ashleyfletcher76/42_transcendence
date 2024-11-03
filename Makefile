@@ -64,12 +64,12 @@ superuser:
 	$(DOCKER_COMPOSE) exec backend python manage.py createsuperuser
 
 # make migration
-makemigrate:
-	$(DOCKER_COMPOSE) exec postgres_db python manage.py makemigrations
+makemigrate-%:
+	$(DOCKER_COMPOSE) exec $* python manage.py makemigrations
 
 # apply migration
-migrate:
-	$(DOCKER_COMPOSE) exec postgres_db python manage.py migrate
+migrate-%:
+	$(DOCKER_COMPOSE) exec $* python manage.py migrate
 
 # apply migration
 exec-%:

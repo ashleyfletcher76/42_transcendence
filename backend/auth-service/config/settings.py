@@ -43,6 +43,7 @@ INSTALLED_APPS = [
 	'rest_framework',
     'rest_framework_simplejwt.token_blacklist',
     'custom_auth',
+    'django_extensions',
 ]
 
 MIDDLEWARE = [
@@ -84,6 +85,9 @@ DATABASES = {
         'PASSWORD': os.environ.get('POSTGRES_PASSWORD'),
         'HOST': 'db',
         'PORT': '5432',
+        'OPTIONS':{
+            'sslmode': 'require', # we use this to enforce ssl on the database also
+		}
     }
 }
 
@@ -96,6 +100,9 @@ if 'test' in sys.argv:
         'PASSWORD': os.environ.get('POSTGRES_PASSWORD'),
         'HOST': 'db',
         'PORT': '5432',
+        'OPTIONS':{
+            'sslmode': 'require', # we use this to enforce ssl on the database also
+		}
     }
 
 # Django REST Framework settings
