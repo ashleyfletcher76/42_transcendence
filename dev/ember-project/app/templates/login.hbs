@@ -1,15 +1,17 @@
-<h2>Login</h2>
-<form {{on "submit" this.login}}>
-  <label>Username:</label>
-  <input type="text" name="username" {{on "change" (fn this.update "username")}} />
+<div class="overlay">
+  <div class="overlay-content">
+    <form {{on "submit" this.login}}>
+      <label>Username:</label>
+      <input type="text" name="username" {{on "change" (fn this.update "username")}} />
 
-  <label>Password:</label>
-  <input type="password" name="password" {{on "change" (fn this.update "password")}} />
+      <label>Password:</label>
+      <input type="password" name="password" {{on "change" (fn this.update "password")}} />
 
-  <button type="submit">Login</button>
-</form>
+      <button type="submit">Login</button>
+    </form>
 
-{{#if this.error}}
-  <p><strong>{{this.error}}</strong></p>
-{{/if}}
-
+    {{#if this.error}}
+      <p><strong>{{this.error}}</strong></p>
+    {{/if}}
+  </div>
+</div>

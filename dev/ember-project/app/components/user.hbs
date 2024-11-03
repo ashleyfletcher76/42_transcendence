@@ -1,0 +1,8 @@
+{{!-- app/components/user-card.hbs --}}
+<div class="user-card" role="button" tabindex="0" onclick={{this.selectUser}}>
+    <img src={{@profilePicture}} alt="Profile Picture" class="user-pic user" />
+    <div class="profile-details">
+        <h2 class="name">{{@name}}</h2>
+        <h2 class="points">{{@points}}🏆</h2>
+    </div>
+</div>
