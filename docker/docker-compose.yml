@@ -107,12 +107,23 @@ services:
       - "10443:443"
 
   redis:
-    image: "redis:alpine"
+    image: redis:alpine
     container_name: redis
     networks:
       my_network:
+    volumes:
+      - redis_data:/data
     ports:
       - "6379:6379"
+    restart: always
+
+  stunnel:
+    build: ./../backend/stunnel
+    container_name: stunnel
+    networks:
+      my_network:
+    ports:
+      - "6380:6380" # Redis TLS port
     restart: always
 
 networks:
@@ -120,3 +131,4 @@ networks:
 
 volumes:
   db_data:
+  redis_data:
