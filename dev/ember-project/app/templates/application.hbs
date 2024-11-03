@@ -1,4 +1,6 @@
 {{!-- app/templates/application.hbs --}}
+<main>
+
 <div id="ember-bootstrap-wormhole"></div>
 
 <div class="container-fluid">
@@ -15,9 +17,7 @@
       <button class="nav-button" type="button">Create Tournament</button>
     </div>
     <div class="col-6 pong-game">
-      <div class="paddle paddle-left"></div>
-      <div class="ball"></div>
-      <div class="paddle paddle-right"></div>
+		{{outlet}}
     </div>
     <div class="col">
       <NavigationBar />
@@ -37,8 +37,4 @@
   </div>    
 </div>
 
-<main>
-  {{outlet}}
 </main>
-
-

@@ -9,12 +9,12 @@ body {
 }
 
 h1 {
-    text-align: center; /* Center the heading */
-    color: #333; /* Dark gray color for the heading */
-    font-size: 5rem; /* Increase font size */
-    font-weight: bold; /* Make the font bold */
-    font-family: Arial, sans-serif; /* Set a modern font family */
-  }
+  text-align: center; /* Center the heading */
+  color: #333; /* Dark gray color for the heading */
+  font-size: 5rem; /* Increase font size */
+  font-weight: bold; /* Make the font bold */
+  font-family: Arial, sans-serif; /* Set a modern font family */
+}
 
 h2 {
   text-align: center; /* Center the heading */
@@ -81,11 +81,12 @@ button:hover {
   margin: 5px; /* Adds a small margin between columns */
   border-radius: 5px; /* Optional: gives rounded corners */
 }
+
 /* Make the Pong game container fill the available height */
 .container-fluid .col-6.pong-game {
-    background-color: #000; /* Set black background for pong-game */
-    border: 2px solid white; /* Optional: border for visibility */
-  }
+  background-color: #000; /* Set black background for pong-game */
+  border: 2px solid white; /* Optional: border for visibility */
+}
 
 /* Make the Pong game container fill the available height */
 .pong-game {
@@ -107,11 +108,11 @@ button:hover {
 }
 
 .paddle-left {
-  left: 2vw; /* Positions the left paddle at 2% of the viewport width */
+  left: 23vw; /* Positions the left paddle at 2% of the viewport width */
 }
 
 .paddle-right {
-  right: 2vw; /* Positions the right paddle at 2% of the viewport width */
+  right: 23vw; /* Positions the right paddle at 2% of the viewport width */
 }
 
 /* Style the ball */
@@ -121,6 +122,7 @@ button:hover {
   background-color: white;
   border-radius: 50%;
   position: absolute;
+  transition: transform 50ms linear; /* Adjust as needed */
 }
 
 .profile-header {
@@ -195,7 +197,7 @@ button:hover {
   margin: 0.5vw; /* Margin using viewport width */
   cursor: pointer; /* Pointer cursor on hover */
   font-size: 1.8vw; /* Adjusted font size for better visibility */
-  padding: 5px 5px; /* Padding for buttons to make them larger */
+  padding: 5px; /* Padding for buttons to make them larger */
   transition:
     background-color 0.3s,
     color 0.3s,
@@ -288,16 +290,16 @@ button:hover {
 }
 
 .register-button {
-	background-color: orange;    /* Set the background color to orange */
-	color: white;                /* Set text color to white for contrast */
-	border: none;                /* Remove default border */
-	padding: 10px 20px;          /* Add padding for better appearance */
-	border-radius: 4px;          /* Rounded corners */
-	cursor: pointer;             /* Change cursor to pointer on hover */
-	font-size: 1em;              /* Adjust font size as needed */
-	margin-top: 5px;
-  }
-  
-  .orange-button:hover {
-	background-color: darkorange; /* Darken the color on hover for effect */
-  }
+  background-color: orange; /* Set the background color to orange */
+  color: white; /* Set text color to white for contrast */
+  border: none; /* Remove default border */
+  padding: 10px 20px; /* Add padding for better appearance */
+  border-radius: 4px; /* Rounded corners */
+  cursor: pointer; /* Change cursor to pointer on hover */
+  font-size: 1em; /* Adjust font size as needed */
+  margin-top: 5px;
+}
+
+.orange-button:hover {
+  background-color: darkorange; /* Darken the color on hover for effect */
+}

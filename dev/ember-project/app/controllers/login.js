@@ -5,6 +5,7 @@ import { action } from '@ember/object';
 
 export default class LoginController extends Controller {
   @service session;
+  @service router;
 
   @tracked username;
   @tracked password;
@@ -25,6 +26,7 @@ export default class LoginController extends Controller {
         this.username,
         this.password,
       );
+      this.router.transitionTo('pong-game'); // Redirect here after successful authentication
     } catch (error) {
       this.error = error;
     }
@@ -54,7 +56,7 @@ export default class LoginController extends Controller {
         this.username,
         this.password,
       );
-
+      this.router.transitionTo('pong-game'); // Redirect here after successful authentication
     } catch (error) {
       this.error = error.message || 'An error occurred during registration';
     }
