@@ -2,7 +2,9 @@
 
 ## Summary:
 
-The User Service is responsible for handling user-related data and functionality, such as registration and managing user profiles. The service manages the storage, retrieval, and modification of user information in a centralized manner. This service does not handle authentication but focuses on user details.
+The User Service is responsible for handling user-related data and functionality, such as registration and managing user profiles. The service manages the storage, retrieval, and modification of user information in a centralized manner. This service does not handle authentication but requires valid JWT tokens for protected routes.
+
+Note: All endpoints require HTTPS for secure communication. In development, if using self-signed certificates, you may need to disable certificate verification when testing with tools like curl.
 
 ## HTTP Endpoints
 1. User Registration
@@ -11,7 +13,14 @@ Description: Registers a new user in the system. This endpoint accepts user deta
 
 
 ```plaintext
-POST /users/register/
+POST https://localhost:9443/users/register/
+```
+
+Here is the full command to make life simpler:
+```bash
+curl -k -X POST https://localhost:9443/users/register/ \
+    -H "Content-Type: application/json" \
+    -d '{"username": "newuser", "password": "password123"}'
 ```
 
 - Request Payload:
@@ -48,7 +57,7 @@ json
 Description: Retrieves the profile of the currently authenticated user. This requires the user to be authenticated using a valid JWT.
 
 ```plaintext
-GET /users/profile/
+GET https://localhost:9443/users/profile/
 ```
 
 - Request Headers:
@@ -78,7 +87,7 @@ Authorization: Bearer your_access_token
 Description: Updates the user’s profile information, such as their username or email. This endpoint also requires authentication.
 
 ```plaintext
-PUT /users/profile/
+PUT https://localhost:9443/users/profile/
 ```
 
 - Request Headers:
@@ -121,6 +130,8 @@ Authorization: Bearer your_access_token
 
 ## Summary for Frontend:
 
-- User Registration: Use /users/register/ to create new users.
-- Profile Management: Access user details using the /users/profile/ endpoint, which will return the user's current data. You can also update user information using the same route.
-- Authentication Requirement: All requests, except for registration, require JWT tokens in the headers. Ensure the tokens are sent correctly in all authenticated requests.
+* User Registration: Use /users/register/ to create new users over HTTPS.
+* Profile Management: Access user details using the /users/profile/ endpoint, which will return the user's current data. You can also update user information using the same route.
+* Authentication Requirement: All requests, except for registration, require JWT tokens in the headers. Ensure tokens are securely sent in all authenticated requests.
+
+- Security Note: Always use HTTPS for requests and securely store JWT tokens to prevent unauthorized access.

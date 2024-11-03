@@ -4,17 +4,19 @@
 
 The authentication service is responsible for user authentication, token issuance, and handling user logouts. It uses JWT (JSON Web Tokens) to authenticate users and manage sessions. This service is critical for ensuring secure access to other microservices by issuing tokens that validate a user's identity.
 
+Note: All endpoints require HTTPS for secure communication. In development, if using self-signed certificates, you may need to disable certificate verification when testing with tools like curl or wscat.
+
 ## Authentication Flow
 
 The authentication service utilizes JWT to handle user sessions. A user logs in using their credentials, and the service returns a token. This token is then passed in the headers of future requests to access protected resources across the application.
 
-## HTTP Endpoints
+## HTTPS Endpoints
 1. User Login
 
 Description: Authenticates a user by their username and password and returns a JWT token pair (access and refresh tokens).
 
 ```plaintext
-POST /auth/login/
+POST https://localhost:8443/auth/login/
 ```
 
 - Request Payload:
@@ -48,7 +50,7 @@ POST /auth/login/
 Description: Refreshes the access token by providing the valid refresh token, extending the user's session without requiring them to log in again.
 
 ```plaintext
-POST /auth/token/refresh/
+POST https://localhost:8443/auth/token/refresh/
 ```
 
 - Request Payload:
@@ -74,7 +76,7 @@ POST /auth/token/refresh/
 Description: Logs out the user by blacklisting the provided refresh token, invalidating it for future use.
 
 ```plaintext
-POST /auth/logout/
+POST https://localhost:8443/auth/logout/
 ```
 
 - Request Payload:
@@ -118,7 +120,9 @@ Authorization: Bearer your_access_token
 
 ## Summary for Frontend:
 
-- Login Flow: Use /auth/login/ to obtain access and refresh tokens upon user login.
-- Token Management: The frontend should store the tokens (e.g., in localStorage or sessionStorage) and send the access token in the Authorization header for all authenticated API requests.
-- Token Refresh: Use /auth/token/refresh/ to refresh the access token before it expires, keeping the user session active without requiring them to log in again.
-- Logout Flow: Call /auth/logout/ and send the refresh token to ensure the user is logged out and their session invalidated.
+* Login Flow: Use /auth/login/ to obtain access and refresh tokens upon user login.
+* Token Management: The frontend should store the tokens (e.g., in localStorage or sessionStorage) and send the access token in the Authorization header for all authenticated API requests.
+* Token Refresh: Use /auth/token/refresh/ to refresh the access token before it expires, keeping the user session active without requiring them to log in again.
+* Logout Flow: Call /auth/logout/ and send the refresh token to ensure the user is logged out and their session invalidated.
+
+- Security Note: Always use HTTPS for requests and securely store JWT tokens to prevent unauthorized access.

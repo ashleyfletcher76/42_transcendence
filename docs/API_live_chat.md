@@ -2,7 +2,9 @@
 
 Summary:
 
-The live chat service allows users to send real-time messages in specific chat rooms using WebSockets. This service manages WebSocket connections for a room, broadcasts messages, and can retrieve chat history through HTTP endpoints. This service is built with Django Channels and integrated with Redis for managing the chat room state.
+The live chat service enables users to send real-time messages in specific chat rooms using WebSockets. This service manages WebSocket connections, broadcasts messages, and can retrieve chat history through HTTP endpoints. It is built with Django Channels and integrated with Redis for managing chat room states.
+
+Note: All WebSocket and HTTP connections should use HTTPS for secure communication. In development, if using self-signed certificates, disable certificate verification when testing with wscat or similar tools.
 
 ## WebSocket Endpoints
 
@@ -11,7 +13,7 @@ The live chat service allows users to send real-time messages in specific chat r
 Description: Establishes a WebSocket connection for a user to a specified chat room.
 
 ```bash
-wscat -c ws://localhost:8003/ws/chat/testroom/
+wscat -c wss://localhost:10443/ws/chat/room_name/ --no-check
 ```
 
 - Method: WebSocket
@@ -22,7 +24,7 @@ wscat -c ws://localhost:8003/ws/chat/testroom/
 
 Description: Send a message to a specific chat room. The message is broadcast to all users connected to the room.
 
-- Message Format:
+- Message Format(sent via WebSocket):
 
 ```bash
 {
@@ -45,13 +47,13 @@ Description: Clients receive real-time messages sent by others in the chat room.
 }
 ```
 
-## HTTP Endpoints
+## HTTPS Endpoints
 1. Send Message via API
 
-Description: Sends a message to the chat service via HTTP. This API is primarily used for testing purposes or non-WebSocket-based interactions.
+Description: Sends a message to the chat service via HTTPS. This API is primarily used for testing purposes or non-WebSocket-based interactions.
 
-```plaintext
-POST /chat/send/
+```bash
+wscat -c wss://localhost:10443/ws/chat/room_name/ --no-check
 ```
 
 - Request Payload:
@@ -64,7 +66,7 @@ POST /chat/send/
 
 - Response:
 
-```bash
+```plaintext
 {
 	"message": "Message sent!"
 }
@@ -75,12 +77,12 @@ POST /chat/send/
 Description: Fetches the chat history for a specific chat room (currently returns an empty array as a placeholder).
 
 ```plaintext
-GET /chat/history/
+GET https://localhost:10443/chat/history/               ?????Does it work
 ```
 
 - Response:
 
-```bash
+```plaintext
 {
 	"chat_history": []
 }
@@ -92,6 +94,12 @@ The live chat service relies on Redis to manage the state of active chat rooms a
 
 ## Summary for Frontend:
 
-- WebSocket URL: Connect to the WebSocket endpoint ws://localhost:8003/ws/chat/{room_name}/ to join a chat room.
-- Message Sending: Messages should be sent as JSON in the WebSocket connection. On receiving messages, the frontend should listen for message events in the WebSocket stream.
-- HTTP API: For sending messages via HTTP (if needed for fallback scenarios), use the /chat/send/ endpoint.
+* WebSocket URL: Use wss://localhost:10443/ws/chat/{room_name}/ to securely connect to a chat room.
+* Message Sending: Send messages as JSON over the WebSocket connection. For message reception, listen for events on the WebSocket stream.
+* HTTP API: For fallback or testing, use the /chat/send/ endpoint to send messages via HTTPS.     ????? Check this
+
+- Security Note: Always use HTTPS and securely manage any sensitive data transmitted over WebSocket or HTTPS connections.
+
+Additional Notes:
+
+* Self-Signed Certificate: In development environments, if using self-signed certificates, include the --no-check flag with wscat or set NODE_TLS_REJECT_UNAUTHORIZED=0 in your environment to avoid SSL verification errors.

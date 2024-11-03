@@ -112,6 +112,8 @@ DJANGO_SUPERUSER_EMAIL=admin@example.com
 DJANGO_SUPERUSER_PASSWORD=hello
 ```
 
+**Note**: All services use HTTPS for secure communication. If using self-signed certificates, use `-k` in `curl` commands or `--no-check` in `wscat` to bypass certificate verification.
+
 ### Running the Project
 
 1. Clone the repository:
@@ -138,7 +140,7 @@ deactivate
 
 3. Access the application at:
 ```bash
-http://0.0.0.0:8000
+https://0.0.0.0:443
 ```
 
 ### Stopping the Project
@@ -201,7 +203,7 @@ After installing wscat, you can connect to the WebSocket server running on your 
 
 1. Open a terminal and run:
 ```bash
-wscat -c ws://localhost:8003/ws/chat/testroom/
+wscat -c wss://localhost:10443/ws/chat/room_name/ --no-check
 ```
 
 2. Once connected, you can start typing messages directly into the terminal. Every message you type will be sent to the chat room.
@@ -236,12 +238,14 @@ CTRL+C
 
 - .env file updated with DJANGO superuser values.
 
-- Live chat now working and I created Daphne to be our server for live chat container.
+- Live chat now working and I created uvicorn to be our server for live chat container.
 
 - Superuser is now created at compialtion time, admin page can be accessesed at this URL: ??? Not yet
 ```plaintext
-http://localhost:8000/admin/
+https://localhost:443/admin/
 ```
+
+- I just changed all the working containers to HTTPS and now running securely
 
 ### To Note List
 - Regarding the web chat, frontend should check if a user is interacting with web chat, if so tehy request a refresh on their JWT token to keep the player logged in regardless of their web chat usage time
@@ -255,27 +259,23 @@ These commands should be done in the terminal, this is just to test the backend 
 
 Create a user:
 ```plaintext
-curl -X POST http://localhost:8002/users/register/ \
--H "Content-Type: application/json" \
--d '{
-  "username": "newuser",
-  "password": "newpassword123"
-}'
+curl -k -X POST https://localhost:9443/users/register/ \
+    -H "Content-Type: application/json" \
+    -d '{"username": "newuser", "password": "password123"}'
 ```
 
 Login with user:
 ```plaintext
-curl -X POST http://localhost:8001/auth/login/ \
--H "Content-Type: application/json" \
--d '{
-  "username": "newuser",
-  "password": "newpassword123"
-}'
+curl -k -X POST https://localhost:8443/auth/login/ \
+    -H "Content-Type: application/json" \
+    -d '{"username": "newuser", "password": "password123"}'
 ```
 
 Logout user:
 ```plaintext
-curl -X POST http://localhost:8001/auth/logout/
+curl -k -X POST https://localhost:8443/auth/logout/ \
+    -H "Content-Type: application/json" \
+    -d '{"refresh_token": "your_refresh_token_here"}'
 ```
 
 ## Authors
