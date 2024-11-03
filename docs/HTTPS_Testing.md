@@ -13,6 +13,7 @@ This document provides example commands to verify that each service is correctly
   - [Send a Message](#send-a-message)
   - [Receive a Message](#receive-a-message)
 - [PostgreSQL SSL Verification](#postgresql-ssl-verification)
+- [Redis (Stunnel) SSL Verification](#redis-(stunnel)-ssl-verification)
 - [Summary](#summary)
 
 ---
@@ -146,11 +147,42 @@ SELECT * FROM pg_stat_ssl;
  123 | t   | TLSv1.3 | TLS_AES_256_GCM_SHA384 |  256 |           |               |
  ...
 ```
+
+## Redis (Stunnel) SSL Verification
+To verify that Redis is operating securely over TLS using Stunnel, follow these steps.
+1. Enter the Stunnel container:
+```bash
+docker exec -it stunnel /bin/sh
+```
+
+2. Use the redis-cli command with TLS options to connect to the Redis server via Stunnel on the secure port (6380):
+
+```bash
+redis-cli -h localhost -p 6380 --tls --cert /etc/stunnel/stunnel.crt --key /etc/stunnel/stunnel.key --cacert /etc/stunnel/stunnel.crt
+```
+
+* Expected Prompt: After connecting successfully, you should see a prompt like localhost:6380>.
+
+3. Test Redis Connection: To confirm the connection is working, run the following command in the redis-cli prompt:
+
+```plaintext
+PING
+```
+
+* Expected Response:
+
+```plaintext
+PONG
+```
+
+This indicates that Redis is accessible over a secure TLS connection through Stunnel.
+
 ## Summary
 
 This document demonstrates example commands for:
 
 * Verifying HTTPS functionality on user-service, auth-service, and chat-service.
 * Checking SSL usage in postgres_db.
+* Testing secure TLS connection to Redis through Stunnel.
 
 These commands validate the secure configuration of each container and ensure encrypted communication across the application.

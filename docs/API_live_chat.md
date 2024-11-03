@@ -88,9 +88,35 @@ GET https://localhost:10443/chat/history/               ?????Does it work
 }
 ```
 
-## Redis Integration
+## Redis Integration for Secure Chat
+The live chat service utilizes Redis to maintain the state of active chat rooms, manage WebSocket channels, and ensure message synchronization across users. Here’s how Redis integrates with the live chat service:
 
-The live chat service relies on Redis to manage the state of active chat rooms and WebSocket channels. Ensure Redis is running and correctly configured in the environment variables.
+1. Redis with Stunnel for Security: The live chat service uses Redis to manage real-time chat operations. To secure the connection between Django Channels and Redis, the Redis traffic is encrypted through Stunnel, which acts as a TLS proxy. Redis itself listens on a non-TLS port, while Stunnel handles the secure TLS layer.
+
+2. Redis Channel Layer: The Django Channels library uses Redis as a channel layer, which enables the service to broadcast messages across multiple instances of the application if needed. Stunnel encrypts this communication, securing data flow from Django Channels to Redis.
+
+3. How It Works:
+- Stunnel listens on port 6380, configured to accept secure connections and forward them to Redis on its standard port (6379).
+- When the chat service sends or receives messages, it connects to Redis via Stunnel using rediss://localhost:6380.
+- This configuration ensures that all Redis-related traffic is encrypted, protecting sensitive chat data in transit.
+
+4. Testing Secure Redis Connection: To confirm the Redis connection is secure, use redis-cli with TLS options:
+
+```bash
+redis-cli -h localhost -p 6380 --tls --cert /etc/stunnel/stunnel.crt --key /etc/stunnel/stunnel.key --cacert /etc/stunnel/stunnel.crt
+```
+
+You should see a prompt localhost:6380> indicating a secure connection. Use PING to confirm connectivity:
+
+```plaintext
+PING
+```
+
+* Expected Response:
+
+```plaintext
+PONG
+```
 
 ## Summary for Frontend:
 
