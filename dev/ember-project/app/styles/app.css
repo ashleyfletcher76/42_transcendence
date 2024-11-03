@@ -286,3 +286,18 @@ button:hover {
 .logout-button:hover {
   background-color: #e5533d; /* Darker shade on hover */
 }
+
+.register-button {
+	background-color: orange;    /* Set the background color to orange */
+	color: white;                /* Set text color to white for contrast */
+	border: none;                /* Remove default border */
+	padding: 10px 20px;          /* Add padding for better appearance */
+	border-radius: 4px;          /* Rounded corners */
+	cursor: pointer;             /* Change cursor to pointer on hover */
+	font-size: 1em;              /* Adjust font size as needed */
+	margin-top: 5px;
+  }
+  
+  .orange-button:hover {
+	background-color: darkorange; /* Darken the color on hover for effect */
+  }

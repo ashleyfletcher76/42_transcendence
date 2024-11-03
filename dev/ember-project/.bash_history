@@ -65,3 +65,5 @@ npm uninstall ember-bootstrap
 exit
 npm install bootstrap
 exit
+npm install
+exit

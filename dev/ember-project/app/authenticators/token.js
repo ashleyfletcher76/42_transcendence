@@ -5,7 +5,7 @@ export default Base.extend({
   restore(data) {},
 
   async authenticate(username, password) {
-    let response = await fetch('/api/token.json', {
+    let response = await fetch('/api2/auth/login/', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

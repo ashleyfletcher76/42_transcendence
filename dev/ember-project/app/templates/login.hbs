@@ -8,6 +8,7 @@
       <input type="password" name="password" {{on "change" (fn this.update "password")}} />
 
       <button type="submit">Login</button>
+      <button type="button" class="register-button" {{on "click" this.register}}>Register</button>
     </form>
 
     {{#if this.error}}

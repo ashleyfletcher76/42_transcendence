@@ -29,4 +29,34 @@ export default class LoginController extends Controller {
       this.error = error;
     }
   }
+
+  @action
+  async register() {
+    try {
+      const response = await fetch('/api1/users/register/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          username: this.username,
+          password: this.password,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Registration failed');
+      }
+
+      // Optionally, log in the user directly after registration
+      await this.session.authenticate(
+        'authenticator:token',
+        this.username,
+        this.password,
+      );
+
+    } catch (error) {
+      this.error = error.message || 'An error occurred during registration';
+    }
+  }
 }
