@@ -37,7 +37,7 @@
     restore(data) {},
     async authenticate(username, password) {
       //let response = await fetch('/api/token.json', {
-      let response = await fetch('/api2/auth/login/', {
+      let response = await fetch('/auth/auth/login/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -82,7 +82,7 @@
   const __COLOCATED_TEMPLATE__ = (0, _templateFactory.createTemplateFactory)(
   /*
     <div class="ball" style={{this.ballStyle}}></div>
-  
+
   */
   {
     "id": "ftKo66ND",
@@ -114,7 +114,7 @@
       <button class="nav-button" type="button">All</button>
       <button class="nav-button" type="button">Last</button>
   </nav>
-  
+
   */
   {
     "id": "tLPJ+48H",
@@ -135,7 +135,7 @@
   const __COLOCATED_TEMPLATE__ = (0, _templateFactory.createTemplateFactory)(
   /*
     <div class="paddle {{this.args.side}}" style={{this.paddleStyle}}></div>
-  
+
   */
   {
     "id": "S8zvLVaU",
@@ -172,7 +172,7 @@
     <div class="col-3">
       <img src="/images/default-profile.jpeg" alt="Profile Picture" class="profile-pic" />
     </div>
-  
+
     {{!-- Profile details column (3 parts) --}}
     <div class="col-9">
       {{!-- First row of profile details --}}
@@ -180,20 +180,20 @@
         <h2 class="name">Other User</h2>
         <h2 class="points">1000🏆</h2>
       </div>
-  
+
       {{!-- Second row of profile details --}}
       <div class="profile-details">
         <h2 class="name">Some</h2>
         <h2 class="name">Other</h2>
         <h2 class="name">Stuff</h2>
       </div>
-  
+
       <div class="profile-details">
         <h2 class="name">Some</h2>
         <h2 class="name">Other</h2>
         <h2 class="name">Stuff</h2>
       </div>
-      
+
     </div>
   </div>
   */
@@ -233,7 +233,7 @@
     <div class="col-3">
       <img src="/images/default-profile.jpeg" alt="Profile Picture" class="profile-pic" />
     </div>
-  
+
     {{!-- Profile details column (3 parts) --}}
     <div class="col-9">
       {{!-- First row of profile details --}}
@@ -243,25 +243,25 @@
           <button class="logout-button" type="button" {{on "click" this.logout}}>Logout</button>
         {{/if}}
         <h2 class="points">1000🏆</h2>
-    
+
       </div>
-  
+
       {{!-- Second row of profile details --}}
       <div class="profile-details">
         <h2 class="name">Some</h2>
         <h2 class="name">Other</h2>
         <h2 class="name">Stuff</h2>
       </div>
-  
+
       <div class="profile-details">
         <h2 class="name">Some</h2>
         <h2 class="name">Other</h2>
         <h2 class="name">Stuff</h2>
       </div>
-      
+
     </div>
   </div>
-  
+
   */
   {
     "id": "NZRAgy+7",
@@ -295,26 +295,26 @@
   0; //eaimeta@70e063a35619d71f0,"@ember/component/template-only",0,"@ember/template-factory",0,"@ember/component"eaimeta@70e063a35619d71f
   const __COLOCATED_TEMPLATE__ = (0, _templateFactory.createTemplateFactory)(
   /*
-    
+
     {{!-- Profile picture column (1 part) --}}
     <div class="col-3">
       <h2 class="name">Next Match</h2>
       <User />
       <User />
     </div>
-  
+
     {{!-- Profile details column (3 parts) --}}
     <div class="col-6">
       <h1>3:1</h1>
     </div>
-  
+
     <div class="col-3">
      <h2 class="name">Tournament Rank</h2>
       <User />
       <User />
     </div>
-  
-  
+
+
   */
   {
     "id": "lWxHSrTw",
@@ -398,7 +398,7 @@
           <h2 class="points">{{@points}}🏆</h2>
       </div>
   </div>
-  
+
   */
   {
     "id": "TimdHeR6",
@@ -481,7 +481,7 @@
     }
     async register() {
       try {
-        const response = await fetch('/api1/users/register/', {
+        const response = await fetch('/register/users/register/', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
@@ -585,7 +585,7 @@
 
         // Log the request body to the console
         console.log('Request body sent to API:', requestBody);
-        const response = await fetch('/api3/pong/pong/game/', {
+        const response = await fetch('/pong/pong/pong/game/', {
           //fetch('/api/gamestate.json'
           method: 'POST',
           headers: {
@@ -1049,9 +1049,9 @@
   /*
     {{!-- app/templates/application.hbs --}}
   <main>
-  
+
   <div id="ember-bootstrap-wormhole"></div>
-  
+
   <div class="container-fluid">
     <div class="row">
       <div class="col profile-header">
@@ -1083,11 +1083,11 @@
       <div class="col profile-footer">
         3 of 3
       </div>
-    </div>    
+    </div>
   </div>
-  
+
   </main>
-  
+
   */
   {
     "id": "6IrkQQ7M",
@@ -1106,7 +1106,7 @@
   0; //eaimeta@70e063a35619d71f0,"@ember/template-factory"eaimeta@70e063a35619d71f
   var _default = _exports.default = (0, _templateFactory.createTemplateFactory)(
   /*
-    
+
   */
   {
     "id": "WC9lYDjz",
@@ -1130,14 +1130,14 @@
       <form {{on "submit" this.login}}>
         <label>Username:</label>
         <input type="text" name="username" {{on "change" (fn this.update "username")}} />
-  
+
         <label>Password:</label>
         <input type="password" name="password" {{on "change" (fn this.update "password")}} />
-  
+
         <button type="submit">Login</button>
         <button type="button" class="register-button" {{on "click" this.register}}>Register</button>
       </form>
-  
+
       {{#if this.error}}
         <p><strong>{{this.error}}</strong></p>
       {{/if}}
@@ -1347,5 +1347,5 @@ catch(err) {
           if (!runningTests) {
             require("myapp/app")["default"].create({"name":"myapp","version":"0.0.0"});
           }
-        
+
 //# sourceMappingURL=myapp.map

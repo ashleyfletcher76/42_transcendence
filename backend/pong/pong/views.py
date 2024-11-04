@@ -4,6 +4,8 @@ from rest_framework import status
 from .models import GameState
 from .serializers import GameStateSerializer
 import random
+from django.http import JsonResponse
+from django.db import connection
 
 class GameStateView(APIView):
     def get(self, request):
@@ -42,3 +44,11 @@ class GameStateView(APIView):
         game_state.save()
         serializer = GameStateSerializer(game_state)
         return Response(serializer.data, status=status.HTTP_200_OK)
+
+def health_check(request):
+    try:
+        connection.ensure_connection()
+    except Exception as e:
+        return JsonResponse({"status": "error", "message": str(e)}, status=500)
+
+    return JsonResponse({"status": "ok"}, status=200)
