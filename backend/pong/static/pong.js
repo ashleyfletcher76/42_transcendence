@@ -41,7 +41,7 @@ function drawGame() {
 // Function to fetch the game state from the server
 async function fetchGameState() {
     try {
-        const response = await fetch('http://127.0.0.1:8000/pong/pong/game/');
+        const response = await fetch('https://0.0.0.0:11443/pong/game/');
         if (response.ok) {
             const data = await response.json();
             gameState = data;
@@ -55,7 +55,7 @@ async function fetchGameState() {
 // Function to update the game state on the server (move ball)
 async function updateGameState() {
     try {
-        await fetch('http://127.0.0.1:8000/pong/pong/game/', {
+        await fetch('https://0.0.0.0:11443/pong/game/', {
             method: 'POST'
         });
         fetchGameState();

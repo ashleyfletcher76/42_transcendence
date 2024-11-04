@@ -4,6 +4,8 @@ from rest_framework import status
 from .models import GameState
 from .serializers import GameStateSerializer
 import random
+from django.views.generic import TemplateView
+
 
 class GameStateView(APIView):
     def get(self, request):
