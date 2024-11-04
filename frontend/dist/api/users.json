@@ -1,0 +1,56 @@
+[
+    {
+        "id": 1,
+        "name": "John",
+        "points": 150,
+        "profilePicture": "/images/default-profile.jpeg"
+    },
+    {
+        "id": 2,
+        "name": "Jane",
+        "points": 200,
+        "profilePicture": "/images/default-profile.jpeg"
+    },
+    {
+        "id": 3,
+        "name": "Alice",
+        "points": 250,
+        "profilePicture": "/images/default-profile.jpeg"
+    },
+    {
+        "id": 4,
+        "name": "Bob_Brown",
+        "points": 100,
+        "profilePicture": "/images/default-profile.jpeg"
+    },
+    {
+        "id": 4,
+        "name": "Bob_Black",
+        "points": 1000,
+        "profilePicture": "/images/default-profile.jpeg"
+    },
+    {
+        "id": 4,
+        "name": "Bob_Red",
+        "points": 50,
+        "profilePicture": "/images/default-profile.jpeg"
+    },
+    {
+        "id": 4,
+        "name": "Bob_Green",
+        "points": 150,
+        "profilePicture": "/images/default-profile.jpeg"
+    },
+    {
+        "id": 4,
+        "name": "Bob_Blue",
+        "points": 130,
+        "profilePicture": "/images/default-profile.jpeg"
+    },
+    {
+        "id": 4,
+        "name": "Bob_Grey",
+        "points": 121,
+        "profilePicture": "/images/default-profile.jpeg"
+    }
+]
