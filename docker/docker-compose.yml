@@ -35,7 +35,11 @@ services:
       DJANGO_SUPERUSER_PASSWORD: ${DJANGO_SUPERUSER_PASSWORD}
     networks:
       my_network:
-    
+    healthcheck:
+      test: ["CMD-SHELL", "curl -k -f https://localhost:443/auth/health/ || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
     depends_on:
       db:
         condition: service_healthy
@@ -57,6 +61,11 @@ services:
       DJANGO_SUPERUSER_PASSWORD: ${DJANGO_SUPERUSER_PASSWORD}
     networks:
       my_network:
+    healthcheck:
+      test: ["CMD-SHELL", "curl -k -f https://localhost:443/users/health/ || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
     depends_on:
       db:
         condition: service_healthy
@@ -79,6 +88,11 @@ services:
       REDIS_URL: "redis://redis:6379"
     networks:
       my_network:
+    healthcheck:
+        test: ["CMD-SHELL", "curl -k -f https://localhost:443/chat/health/ || exit 1"]
+        interval: 10s
+        timeout: 5s
+        retries: 5
     depends_on:
       db:
         condition: service_healthy
@@ -100,8 +114,19 @@ services:
       DJANGO_SUPERUSER_PASSWORD: ${DJANGO_SUPERUSER_PASSWORD}
     networks:
       my_network:
+    # healthcheck:
+    #     test: ["CMD-SHELL", "curl -k -f https://localhost:443/chat/health/ || exit 1"]
+    #     interval: 10s
+    #     timeout: 5s
+    #     retries: 5
     depends_on:
       db:
+        condition: service_healthy
+      auth-service:
+        condition: service_healthy
+      user-service:
+        condition: service_healthy
+      chat-service:
         condition: service_healthy
     restart: always
     ports:
@@ -126,6 +151,30 @@ services:
     ports:
       - "6380:6380" # Redis TLS port
     restart: always
+
+  # nginx:
+  #   build: ./../frontend
+  #   container_name: nginx
+  #   depends_on:
+  #     db:
+  #       condition: service_healthy
+  #     auth-service:
+  #       condition: service_healthy
+  #     user-service:
+  #       condition: service_healthy
+  #     chat-service:
+  #       condition: service_healthy
+  #   #   pong-game:
+  #   #     condition: service_healthy
+  #   networks:
+  #     my_network:
+  #   ports:
+  #     - "80:80"
+  #     - "443:443"
+  #   restart: always
+
+
+
 
 networks:
   my_network:
