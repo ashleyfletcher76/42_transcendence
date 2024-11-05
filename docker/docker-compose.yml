@@ -69,6 +69,8 @@ services:
     depends_on:
       db:
         condition: service_healthy
+      auth-service:
+        condition: service_healthy
     restart: always
     ports:
       - "9443:443"
@@ -96,6 +98,10 @@ services:
     depends_on:
       db:
         condition: service_healthy
+      auth-service:
+        condition: service_healthy
+      user-service:
+        condition: service_healthy
     restart: always
     ports:
       - "10443:443"
@@ -121,6 +127,12 @@ services:
         retries: 5
     depends_on:
       db:
+        condition: service_healthy
+      auth-service:
+        condition: service_healthy
+      user-service:
+        condition: service_healthy
+      chat-service:
         condition: service_healthy
     restart: always
     ports:
@@ -166,9 +178,6 @@ services:
       - "80:80"
       - "443:443"
     restart: always
-
-
-
 
 networks:
   my_network:
