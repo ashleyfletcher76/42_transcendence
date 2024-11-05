@@ -11,7 +11,7 @@
   - [Stopping the Project](#stopping-the-project)
   - [List of Commands](#list-of-commands)
   - [Simulating Live Chat](#simulating-live-chat)
-  - [Makefile: Working with exec Commands](#makefile:-working-with-exec-commands)
+  - [Makefile: Working with exec Commands](#makefile-working-with-exec-commands)
 - [Project Progress Updates/To Do's](#project-progress-updates-to-dos)
   - [Recent Changes List](#recent-changes-list)
   - [To Note List](#to-note-list)
