@@ -35,6 +35,11 @@ services:
       DJANGO_SUPERUSER_PASSWORD: ${DJANGO_SUPERUSER_PASSWORD}
     networks:
       my_network:
+    healthcheck:
+      test: ["CMD-SHELL", "curl -k -f https://localhost:443/auth/health/ || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
     depends_on:
       db:
         condition: service_healthy
@@ -56,33 +61,17 @@ services:
       DJANGO_SUPERUSER_PASSWORD: ${DJANGO_SUPERUSER_PASSWORD}
     networks:
       my_network:
+    healthcheck:
+      test: ["CMD-SHELL", "curl -k -f https://localhost:443/users/health/ || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
     depends_on:
       db:
         condition: service_healthy
     restart: always
     ports:
       - "9443:443"
-
-  pong-game:
-    build: ./../backend/pong
-    container_name: pong
-    environment:
-      DJANGO_SECRET_KEY: ${DJANGO_SECRET_KEY}
-      DJANGO_DEBUG: ${DJANGO_DEBUG}
-      POSTGRES_DB: ${POSTGRES_DB}
-      POSTGRES_USER: ${POSTGRES_USER}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-      DJANGO_SUPERUSER_USERNAME: ${DJANGO_SUPERUSER_USERNAME}
-      DJANGO_SUPERUSER_EMAIL: ${DJANGO_SUPERUSER_EMAIL}
-      DJANGO_SUPERUSER_PASSWORD: ${DJANGO_SUPERUSER_PASSWORD}
-    networks:
-      my_network:
-    depends_on:
-      db:
-        condition: service_healthy
-    restart: always
-    ports:
-      - "11443:443"
 
   chat-service:
     build: ./../backend/chat-service
@@ -99,6 +88,11 @@ services:
       REDIS_URL: "redis://redis:6379"
     networks:
       my_network:
+    healthcheck:
+        test: ["CMD-SHELL", "curl -k -f https://localhost:443/chat/health/ || exit 1"]
+        interval: 10s
+        timeout: 5s
+        retries: 5
     depends_on:
       db:
         condition: service_healthy
@@ -106,17 +100,79 @@ services:
     ports:
       - "10443:443"
 
+  pong-game:
+    build: ./../backend/pong
+    container_name: pong
+    environment:
+      DJANGO_SECRET_KEY: ${DJANGO_SECRET_KEY}
+      DJANGO_DEBUG: ${DJANGO_DEBUG}
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      DJANGO_SUPERUSER_USERNAME: ${DJANGO_SUPERUSER_USERNAME}
+      DJANGO_SUPERUSER_EMAIL: ${DJANGO_SUPERUSER_EMAIL}
+      DJANGO_SUPERUSER_PASSWORD: ${DJANGO_SUPERUSER_PASSWORD}
+    networks:
+      my_network:
+    healthcheck:
+        test: ["CMD-SHELL", "curl -k -f https://localhost:443/pong/health/ || exit 1"]
+        interval: 10s
+        timeout: 5s
+        retries: 5
+    depends_on:
+      db:
+        condition: service_healthy
+    restart: always
+    ports:
+      - "11443:443"
+
   redis:
-    image: "redis:alpine"
+    image: redis:alpine
     container_name: redis
     networks:
       my_network:
+    volumes:
+      - redis_data:/data
     ports:
       - "6379:6379"
     restart: always
+
+  stunnel:
+    build: ./../backend/stunnel
+    container_name: stunnel
+    networks:
+      my_network:
+    ports:
+      - "6380:6380" # Redis TLS port
+    restart: always
+
+  nginx:
+    build: ./../frontend
+    container_name: nginx
+    depends_on:
+      db:
+        condition: service_healthy
+      auth-service:
+        condition: service_healthy
+      user-service:
+        condition: service_healthy
+      chat-service:
+        condition: service_healthy
+      pong-game:
+        condition: service_healthy
+    networks:
+      my_network:
+    ports:
+      - "80:80"
+      - "443:443"
+    restart: always
+
+
+
 
 networks:
   my_network:
 
 volumes:
   db_data:
+  redis_data:

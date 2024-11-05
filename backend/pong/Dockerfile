@@ -1,7 +1,7 @@
 FROM python:3.13-slim
 
 # Needed for PostgreSQL dev libraries
-RUN apt-get update && apt-get install -y libpq-dev gcc openssl && \
+RUN apt-get update && apt-get install -y libpq-dev gcc openssl curl && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Set environment variables
