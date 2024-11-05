@@ -247,6 +247,8 @@ https://localhost:443/admin/
 
 - I just changed all the working containers to HTTPS and now running securely
 
+- Health check added inside the apps for each backend service and now nginx is also added into the main docker-compose file. With a self-signed certificate be automatically created
+
 ### To Note List
 - Regarding the web chat, frontend should check if a user is interacting with web chat, if so tehy request a refresh on their JWT token to keep the player logged in regardless of their web chat usage time
 
