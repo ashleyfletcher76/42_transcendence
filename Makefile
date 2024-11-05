@@ -1,5 +1,4 @@
 DOCKER_COMPOSE = docker-compose -f docker/docker-compose.yml
-SERVICE=db
 
 # default
 up:
@@ -28,10 +27,6 @@ fclean:
 	else \
 		echo "Aborted fclean."; \
 	fi
-
-# view logs of the running service
-logs:
-	$(DOCKER_COMPOSE) logs -f $(SERVICE)
 
 logs-%:
 	$(DOCKER_COMPOSE) logs -f $*
@@ -68,13 +63,28 @@ makemigrate-%:
 migrate-%:
 	$(DOCKER_COMPOSE) exec $* python manage.py migrate
 
-# apply migration
+# exec into container with custom instructions for database containers
 exec-%:
-	@if [ "$*" = "postgres_db" ]; then \
-		echo "You are about to enter the postgres_db container."; \
-		echo "To access PostgreSQL, run: psql -U \$$POSTGRES_USER -d \$$POSTGRES_DB"; \
-	fi && \
-	docker exec -it $* bash
+	@if [ "$*" = "chat-db" ]; then \
+		echo "You are about to enter the chat-db container."; \
+		echo "To access PostgreSQL, run: psql -U mychatuser -d mychatdb"; \
+		docker exec -it $* bash; \
+	elif [ "$*" = "user-db" ]; then \
+		echo "You are about to enter the user-db container."; \
+		echo "To access PostgreSQL, run: psql -U myuser -d myuserdb"; \
+		docker exec -it $* bash; \
+	elif [ "$*" = "auth-db" ]; then \
+		echo "You are about to enter the auth-db container."; \
+		echo "To access PostgreSQL, run: psql -U myauthuser -d myauthdb"; \
+		docker exec -it $* bash; \
+	elif [ "$*" = "pong-db" ]; then \
+		echo "You are about to enter the pong-db container."; \
+		echo "To access PostgreSQL, run: psql -U myponguser -d mypongdb"; \
+		docker exec -it $* bash; \
+	else \
+		echo "You are about to enter the $* container."; \
+		docker exec -it $* bash; \
+	fi
 
 # to run unit testing for all
 test:

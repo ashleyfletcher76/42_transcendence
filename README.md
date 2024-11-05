@@ -101,15 +101,35 @@ We may implement these **optional modules** based on project scope, time, and us
 Example `.env` file:
 ```plaintext
 DJANGO_SECRET_KEY=mysecret
-POSTGRES_DB=mydb
-POSTGRES_USER=myuser
-POSTGRES_PASSWORD=mypassword
-DJANGO_DEBUG=True
+
+# Database configurations
+AUTH_SERVICE_DB=myauthdb
+AUTH_SERVICE_USER=myauthuser
+AUTH_SERVICE_PASSWORD=myauthpassword
+AUTH_DB_PORT=5432
+
+USER_SERVICE_DB=myuserdb
+USER_SERVICE_USER=myuser
+USER_SERVICE_PASSWORD=mypassword
+USER_DB_PORT=5433
+
+
+CHAT_SERVICE_DB=mychatdb
+CHAT_SERVICE_USER=mychatuser
+CHAT_SERVICE_PASSWORD=mychatpassword
+CHAT_DB_PORT=5434
+
+PONG_SERVICE_DB=mypongdb
+PONG_SERVICE_USER=myponguser
+PONG_SERVICE_PASSWORD=mypongpassword
+PONG_DB_PORT=5435
 
 # Django superuser
 DJANGO_SUPERUSER_USERNAME=admin
 DJANGO_SUPERUSER_EMAIL=admin@example.com
 DJANGO_SUPERUSER_PASSWORD=hello
+
+DJANGO_DEBUG=True
 ```
 
 **Note**: All services use HTTPS for secure communication. If using self-signed certificates, use `-k` in `curl` commands or `--no-check` in `wscat` to bypass certificate verification.
@@ -248,6 +268,8 @@ https://localhost:443/admin/
 - I just changed all the working containers to HTTPS and now running securely
 
 - Health check added inside the apps for each backend service and now nginx is also added into the main docker-compose file. With a self-signed certificate be automatically created
+
+- New database created for each django service, new set of env variables. See env variables
 
 ### To Note List
 - Regarding the web chat, frontend should check if a user is interacting with web chat, if so tehy request a refresh on their JWT token to keep the player logged in regardless of their web chat usage time
