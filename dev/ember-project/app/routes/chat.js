@@ -1,8 +1,8 @@
 import Route from '@ember/routing/route';
 import { inject as service } from '@ember/service';
 
-export default class PongGameRoute extends Route {
-  @service session;
+export default class ChatRoute extends Route {
+    @service session;
 
   async beforeModel(transition) {
     if (!this.session.isAuthenticated) {

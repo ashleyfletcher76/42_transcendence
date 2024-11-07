@@ -204,6 +204,7 @@ button:hover {
     transform 0.2s; /* Smooth transition */
 
   box-shadow: 0 4px 8px rgb(0 0 0 / 20%); /* Subtle shadow for depth */
+  text-decoration: none;
 }
 
 .nav-button:hover {
@@ -302,4 +303,41 @@ button:hover {
 
 .orange-button:hover {
   background-color: darkorange; /* Darken the color on hover for effect */
+}
+
+.user-count {
+  color: #c7b6b6;
+  font-size: 2rem;
+  font-weight: bold;
+  margin: 3rem; /* Space between count and user list */
+  text-align: center; /* Center-aligns the count text */
+}
+
+.button-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Center-aligns buttons */
+  gap: 3rem; /* Adds space between buttons */
+  margin: 3rem;
+}
+
+.spacing{
+  gap: 1rem;
+  margin: 1rem;
+}
+
+.cancel{
+  background-color: rgba(241, 36, 29, 0.938); /* Bright orange background */
+}
+
+.start{
+  background-color: #28a745; /* Bootstrap green color */
+}
+
+.cancel:hover{
+  background-color: rgba(255, 10, 2, 0.938); /* Bright orange background */
+}
+
+.start:hover{
+  background-color: #1eca46; /* Bootstrap green color */
 }
