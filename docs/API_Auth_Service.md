@@ -4,6 +4,8 @@
 
 The authentication service is responsible for user authentication, token issuance, and handling user logouts. It uses JWT (JSON Web Tokens) to authenticate users and manage sessions. This service is critical for ensuring secure access to other microservices by issuing tokens that validate a user's identity.
 
+Each microservice, including the authentication service, is now backed by its own dedicated PostgreSQL database, enhancing data separation and security. The authentication service connects to its own database container, auth-db, for storing and managing user authentication data. This separation provides a modular, scalable architecture, allowing each service to maintain its data independently.
+
 Note: All endpoints require HTTPS for secure communication. In development, if using self-signed certificates, you may need to disable certificate verification when testing with tools like curl or wscat.
 
 ## Authentication Flow

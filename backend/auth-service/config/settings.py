@@ -79,10 +79,10 @@ WSGI_APPLICATION = "config.wsgi.application"
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
-        "NAME": os.environ.get("POSTGRES_DB"),
-        "USER": os.environ.get("POSTGRES_USER"),
-        "PASSWORD": os.environ.get("POSTGRES_PASSWORD"),
-        "HOST": "db",
+        "NAME": os.environ.get("AUTH_SERVICE_DB"),
+        "USER": os.environ.get("AUTH_SERVICE_USER"),
+        "PASSWORD": os.environ.get("AUTH_SERVICE_PASSWORD"),
+        "HOST": "auth-db",
         "PORT": "5432",
         "OPTIONS": {
             "sslmode": "require",  # we use this to enforce ssl on the database also
@@ -95,9 +95,9 @@ if "test" in sys.argv:
     DATABASES["default"] = {
         "ENGINE": "django.db.backends.postgresql",
         "NAME": "test_" + os.environ.get("POSTGRES_DB"),
-        "USER": os.environ.get("POSTGRES_USER"),
-        "PASSWORD": os.environ.get("POSTGRES_PASSWORD"),
-        "HOST": "db",
+        "USER": os.environ.get("AUTH_SERVICE_USER"),
+        "PASSWORD": os.environ.get("AUTH_SERVICE_PASSWORD"),
+        "HOST": "auth-db",
         "PORT": "5432",
         "OPTIONS": {
             "sslmode": "require",  # we use this to enforce ssl on the database also
