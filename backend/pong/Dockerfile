@@ -26,4 +26,4 @@ RUN openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
 EXPOSE 443
 
 # Run the dev server
-CMD ["sh", "-c", "python manage.py makemigrations && python manage.py migrate && python manage.py runserver_plus --cert-file /app/server.crt --key-file /app/server.key 0.0.0.0:443"]
+CMD ["uvicorn", "config.asgi:application", "--host", "0.0.0.0", "--port", "443", "--ssl-keyfile", "/app/server.key", "--ssl-certfile", "/app/server.crt"]

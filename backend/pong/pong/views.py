@@ -7,12 +7,16 @@ import random
 import math
 from django.http import JsonResponse
 from django.db import connection
+from django.shortcuts import render
+
 
 SCREEN_WIDTH = 800
 SCREEN_HEIGHT = 400
 BALL_RADIUS = 10
 PADDLE_WIDTH = 10
 PADDLE_HEIGHT = 100
+
+
 
 class GameStateView(APIView):
     def get(self, request):
@@ -107,7 +111,8 @@ class GameStateView(APIView):
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 
-
+def index(request):
+    return render(request, 'game/index.html')
 
 
 
