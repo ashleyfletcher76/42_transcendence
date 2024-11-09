@@ -1,8 +1,8 @@
 ## API Documentation for Live Chat Service
 
-Summary:
+## Summary
 
-The live chat service enables users to send real-time messages in specific chat rooms using WebSockets. This service manages WebSocket connections, broadcasts messages, and can retrieve chat history through HTTP endpoints. It is built with Django Channels and integrated with Redis for managing chat room states.
+he live chat service enables users to send real-time messages in specific chat rooms using WebSockets. This service manages WebSocket connections, broadcasts messages, and can retrieve chat history through HTTP endpoints. It is built with Django Channels and integrated with Redis for managing chat room states. Each service, including the live chat, is now backed by its own dedicated PostgreSQL database container, chat-db, allowing for data isolation, scalability, and improved security.
 
 Note: All WebSocket and HTTP connections should use HTTPS for secure communication. In development, if using self-signed certificates, disable certificate verification when testing with wscat or similar tools.
 
@@ -87,6 +87,16 @@ GET https://localhost:10443/chat/history/               ?????Does it work
 	"chat_history": []
 }
 ```
+
+## Database Integration
+
+The live chat service now uses a dedicated PostgreSQL database container, chat-db, to store chat messages and user interactions. This setup allows the live chat service to operate independently, securely managing its data without impacting other services.
+
+* Database Details:
+- Database Name: Specified in CHAT_SERVICE_DB environment variable.
+- Username: Specified in CHAT_SERVICE_USER environment variable.
+- Password: Specified in CHAT_SERVICE_PASSWORD environment variable.
+- Connection: The chat service connects to the database at the hostname chat-db using the standard PostgreSQL port 5432.
 
 ## Redis Integration for Secure Chat
 The live chat service utilizes Redis to maintain the state of active chat rooms, manage WebSocket channels, and ensure message synchronization across users. Here’s how Redis integrates with the live chat service:

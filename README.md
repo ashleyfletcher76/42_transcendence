@@ -11,6 +11,7 @@
   - [Stopping the Project](#stopping-the-project)
   - [List of Commands](#list-of-commands)
   - [Simulating Live Chat](#simulating-live-chat)
+  - [Makefile: Working with exec Commands](#makefile-working-with-exec-commands)
 - [Project Progress Updates/To Do's](#project-progress-updates-to-dos)
   - [Recent Changes List](#recent-changes-list)
   - [To Note List](#to-note-list)
@@ -98,18 +99,38 @@ We may implement these **optional modules** based on project scope, time, and us
 - **Docker** and **Docker Compose** must be installed.
 - A `.env` file with your database credentials and secret keys should be placed in the docker directory.
 
-Example `.env` file:
+Each service (auth, user, chat, pong) has its own dedicated PostgreSQL database container. Ensure the .env file contains separate database credentials for each service as shown below:
 ```plaintext
 DJANGO_SECRET_KEY=mysecret
-POSTGRES_DB=mydb
-POSTGRES_USER=myuser
-POSTGRES_PASSWORD=mypassword
-DJANGO_DEBUG=True
+
+# Database configurations
+AUTH_SERVICE_DB=myauthdb
+AUTH_SERVICE_USER=myauthuser
+AUTH_SERVICE_PASSWORD=myauthpassword
+AUTH_DB_PORT=5432
+
+USER_SERVICE_DB=myuserdb
+USER_SERVICE_USER=myuser
+USER_SERVICE_PASSWORD=mypassword
+USER_DB_PORT=5433
+
+
+CHAT_SERVICE_DB=mychatdb
+CHAT_SERVICE_USER=mychatuser
+CHAT_SERVICE_PASSWORD=mychatpassword
+CHAT_DB_PORT=5434
+
+PONG_SERVICE_DB=mypongdb
+PONG_SERVICE_USER=myponguser
+PONG_SERVICE_PASSWORD=mypongpassword
+PONG_DB_PORT=5435
 
 # Django superuser
 DJANGO_SUPERUSER_USERNAME=admin
 DJANGO_SUPERUSER_EMAIL=admin@example.com
 DJANGO_SUPERUSER_PASSWORD=hello
+
+DJANGO_DEBUG=True
 ```
 
 **Note**: All services use HTTPS for secure communication. If using self-signed certificates, use `-k` in `curl` commands or `--no-check` in `wscat` to bypass certificate verification.
@@ -227,6 +248,27 @@ Whenever a message is sent by another user, it will appear in your terminal as a
 CTRL+C
 ```
 
+### Makefile: Working with exec Commands
+
+The Makefile includes commands for interacting with each specific service container. Notably, the make exec-<container_name> command allows you to enter each container and provides custom instructions for database access when entering database containers.
+
+For example, to enter the chat-db container:
+
+```bash
+make exec-chat-db
+```
+
+Upon execution, you will see a message providing guidance on accessing PostgreSQL for that specific service:
+
+```plaintext
+You are about to enter the chat-db container.
+To access PostgreSQL, run: psql -U mychatuser -d mychatdb
+```
+
+This structure applies to all database containers (auth-db, user-db, chat-db, pong-db), making it easy to work directly with the databases associated with each microservice.
+
+For other containers, make exec-<container_name> simply opens a shell without any database access instructions.
+
 ## Project Progress Updates/To Do's
 
 ### Recent Changes List
@@ -240,14 +282,11 @@ CTRL+C
 
 - Live chat now working and I created uvicorn to be our server for live chat container.
 
-- Superuser is now created at compialtion time, admin page can be accessesed at this URL: ??? Not yet
-```plaintext
-https://localhost:443/admin/
-```
-
-- I just changed all the working containers to HTTPS and now running securely
-
-- Health check added inside the apps for each backend service and now nginx is also added into the main docker-compose file. With a self-signed certificate be automatically created
+- Each Django service now operates with a dedicated PostgreSQL database container, each with its unique set of environment variables. This separation supports the microservice architecture and simplifies database management across services.
+- Updated .env file structure to include separate environment variables for each database.
+- Health checks added for each backend service and now integrated with NGINX, which is configured to run all traffic securely over HTTPS.
+- Database initialization scripts for each service ensure proper setup and security for individual databases at startup.
+- New Makefile commands to facilitate managing individual containers, including make exec-<container_name> for specific database access instructions.
 
 ### To Note List
 - Regarding the web chat, frontend should check if a user is interacting with web chat, if so tehy request a refresh on their JWT token to keep the player logged in regardless of their web chat usage time
