@@ -1,15 +1,15 @@
 version: '3.9'
 
 services:
-  db:
-    container_name: postgres_db
-    build: ./../backend/postgres
+  auth-db:
+    container_name: auth-db
+    build: ./../backend/auth-service/postgres
     environment:
-      POSTGRES_USER: ${POSTGRES_USER}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${AUTH_SERVICE_USER}
+      POSTGRES_PASSWORD: ${AUTH_SERVICE_PASSWORD}
+      POSTGRES_DB: ${AUTH_SERVICE_DB}
     volumes:
-      - db_data:/var/lib/postgresql/data
+      - auth_data:/var/lib/postgresql/data
     networks:
       my_network:
     healthcheck:
@@ -22,7 +22,7 @@ services:
       - "5432:5432"
 
   user-db:
-    container_name: user_db
+    container_name: user-db
     build: ./../backend/user-service/postgres
     environment:
       POSTGRES_USER: ${USER_SERVICE_USER}
@@ -41,15 +41,75 @@ services:
     ports:
       - "5433:5432"
 
+  db:
+    container_name: db
+    build: ./../backend/postgres
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    networks:
+      my_network:
+    healthcheck:
+      test: [ "CMD-SHELL", "[ -f /var/lib/postgresql/data/.db_ready ] || exit 1" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: always
+    ports:
+      - "5434:5432"
+
+  # chat-db:
+  #   container_name: chat-db
+  #   build: ./../backend/chat-service/postgres
+  #   environment:
+  #     POSTGRES_USER: ${CHAT_SERVICE_USER}
+  #     POSTGRES_PASSWORD: ${CHAT_SERVICE_PASSWORD}
+  #     POSTGRES_DB: ${CHAT_SERVICE_DB}
+  #   volumes:
+  #     - chat_data:/var/lib/postgresql/data
+  #   networks:
+  #     my_network:
+  #   healthcheck:
+  #     test: [ "CMD-SHELL", "[ -f /var/lib/postgresql/data/.db_ready ] || exit 1" ]
+  #     interval: 10s
+  #     timeout: 5s
+  #     retries: 5
+  #   restart: always
+  #   ports:
+  #     - "5434:5432"
+
+  # pong-db:
+  #   container_name: pong-db
+  #   build: ./../backend/pong/postgres
+  #   environment:
+  #     POSTGRES_USER: ${PONG_SERVICE_USER}
+  #     POSTGRES_PASSWORD: ${PONG_SERVICE_PASSWORD}
+  #     POSTGRES_DB: ${PONG_SERVICE_DB}
+  #   volumes:
+  #     - pong_data:/var/lib/postgresql/data
+  #   networks:
+  #     my_network:
+  #   healthcheck:
+  #     test: [ "CMD-SHELL", "[ -f /var/lib/postgresql/data/.db_ready ] || exit 1" ]
+  #     interval: 10s
+  #     timeout: 5s
+  #     retries: 5
+  #   restart: always
+  #   ports:
+  #     - "5435:5432"
+
   auth-service:
     build: ./../backend/auth-service
     container_name: auth-service
     environment:
       DJANGO_SECRET_KEY: ${DJANGO_SECRET_KEY}
       DJANGO_DEBUG: ${DJANGO_DEBUG}
-      POSTGRES_DB: ${POSTGRES_DB}
-      POSTGRES_USER: ${POSTGRES_USER}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      AUTH_SERVICE_DB: ${AUTH_SERVICE_DB}
+      AUTH_SERVICE_USER: ${AUTH_SERVICE_USER}
+      AUTH_SERVICE_PASSWORD: ${AUTH_SERVICE_PASSWORD}
       DJANGO_SUPERUSER_USERNAME: ${DJANGO_SUPERUSER_USERNAME}
       DJANGO_SUPERUSER_EMAIL: ${DJANGO_SUPERUSER_EMAIL}
       DJANGO_SUPERUSER_PASSWORD: ${DJANGO_SUPERUSER_PASSWORD}
@@ -61,7 +121,7 @@ services:
       timeout: 5s
       retries: 5
     depends_on:
-      db:
+      auth-db:
         condition: service_healthy
     restart: always
     ports:
@@ -99,9 +159,9 @@ services:
     environment:
       DJANGO_SECRET_KEY: ${DJANGO_SECRET_KEY}
       DJANGO_DEBUG: ${DJANGO_DEBUG}
-      POSTGRES_DB: ${POSTGRES_DB}
-      POSTGRES_USER: ${POSTGRES_USER}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      CHAT_SERVICE_DB: ${CHAT_SERVICE_DB}
+      CHAT_SERVICE_USER: ${CHAT_SERVICE_USER}
+      CHAT_SERVICE_PASSWORD: ${CHAT_SERVICE_PASSWORD}
       DJANGO_SUPERUSER_USERNAME: ${DJANGO_SUPERUSER_USERNAME}
       DJANGO_SUPERUSER_EMAIL: ${DJANGO_SUPERUSER_EMAIL}
       DJANGO_SUPERUSER_PASSWORD: ${DJANGO_SUPERUSER_PASSWORD}
@@ -116,8 +176,6 @@ services:
     depends_on:
       db:
         condition: service_healthy
-      auth-service:
-        condition: service_healthy
     restart: always
     ports:
       - "10443:443"
@@ -128,9 +186,9 @@ services:
     environment:
       DJANGO_SECRET_KEY: ${DJANGO_SECRET_KEY}
       DJANGO_DEBUG: ${DJANGO_DEBUG}
-      POSTGRES_DB: ${POSTGRES_DB}
-      POSTGRES_USER: ${POSTGRES_USER}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      PONG_SERVICE_DB: ${PONG_SERVICE_DB}
+      PONG_SERVICE_USER: ${PONG_SERVICE_USER}
+      PONG_SERVICE_PASSWORD: ${PONG_SERVICE_PASSWORD}
       DJANGO_SUPERUSER_USERNAME: ${DJANGO_SUPERUSER_USERNAME}
       DJANGO_SUPERUSER_EMAIL: ${DJANGO_SUPERUSER_EMAIL}
       DJANGO_SUPERUSER_PASSWORD: ${DJANGO_SUPERUSER_PASSWORD}
@@ -143,8 +201,6 @@ services:
       retries: 5
     depends_on:
       db:
-        condition: service_healthy
-      auth-service:
         condition: service_healthy
       chat-service:
         condition: service_healthy
@@ -176,8 +232,6 @@ services:
     build: ./../frontend
     container_name: nginx
     depends_on:
-      db:
-        condition: service_healthy
       auth-service:
         condition: service_healthy
       user-service:
@@ -198,6 +252,9 @@ networks:
 
 
 volumes:
-  db_data:
   user_data:
+  auth_data:
+  db_data:
+  # chat_data:
+  # pong_data:
   redis_data:

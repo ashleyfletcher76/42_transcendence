@@ -75,13 +75,13 @@ WSGI_APPLICATION = "config.wsgi.application"
 
 # Default database setup for production and development
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.getenv('USER_SERVICE_DB'),
-        'USER': os.getenv('USER_SERVICE_USER'),
-        'PASSWORD': os.getenv('USER_SERVICE_PASSWORD'),
-        'HOST': 'user-db',
-        'PORT': '5432',
+    "default": {
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": os.environ.get("USER_SERVICE_DB"),
+        "USER": os.environ.get("USER_SERVICE_USER"),
+        "PASSWORD": os.environ.get("USER_SERVICE_PASSWORD"),
+        "HOST": "user-db",
+        "PORT": "5432",
         "OPTIONS": {
             "sslmode": "require",  # we use this to enforce ssl on the database also
         },

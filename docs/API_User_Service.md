@@ -122,6 +122,24 @@ Authorization: Bearer your_access_token
 }
 ```
 
+## Database Information for User Service
+
+The User Service connects to its own dedicated PostgreSQL database (user-db). This setup isolates user-related data within this service, ensuring database-level separation from other services. Each microservice uses its specific database credentials for improved security and scalability.
+
+* Database Access: To manually access the User Service database, run the following command inside the user-db container:
+
+```bash
+psql -U $USER_SERVICE_USER -d $USER_SERVICE_DB
+```
+
+or just run:
+
+```bash
+make exec-user-db
+```
+
+and then follow the prompt.
+
 ## Error Codes
 
 - 400 Bad Request: Validation errors, such as duplicate usernames or invalid field values.
