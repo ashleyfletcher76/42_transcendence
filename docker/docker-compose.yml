@@ -41,15 +41,15 @@ services:
     ports:
       - "5433:5432"
 
-  db:
-    container_name: db
-    build: ./../backend/postgres
+  chat-db:
+    container_name: chat-db
+    build: ./../backend/chat-service/postgres
     environment:
-      POSTGRES_USER: ${POSTGRES_USER}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${CHAT_SERVICE_USER}
+      POSTGRES_PASSWORD: ${CHAT_SERVICE_PASSWORD}
+      POSTGRES_DB: ${CHAT_SERVICE_DB}
     volumes:
-      - db_data:/var/lib/postgresql/data
+      - chat_data:/var/lib/postgresql/data
     networks:
       my_network:
     healthcheck:
@@ -59,47 +59,27 @@ services:
       retries: 5
     restart: always
     ports:
-      - "5434:5432"
+      - "5436:5432"
 
-  # chat-db:
-  #   container_name: chat-db
-  #   build: ./../backend/chat-service/postgres
-  #   environment:
-  #     POSTGRES_USER: ${CHAT_SERVICE_USER}
-  #     POSTGRES_PASSWORD: ${CHAT_SERVICE_PASSWORD}
-  #     POSTGRES_DB: ${CHAT_SERVICE_DB}
-  #   volumes:
-  #     - chat_data:/var/lib/postgresql/data
-  #   networks:
-  #     my_network:
-  #   healthcheck:
-  #     test: [ "CMD-SHELL", "[ -f /var/lib/postgresql/data/.db_ready ] || exit 1" ]
-  #     interval: 10s
-  #     timeout: 5s
-  #     retries: 5
-  #   restart: always
-  #   ports:
-  #     - "5434:5432"
-
-  # pong-db:
-  #   container_name: pong-db
-  #   build: ./../backend/pong/postgres
-  #   environment:
-  #     POSTGRES_USER: ${PONG_SERVICE_USER}
-  #     POSTGRES_PASSWORD: ${PONG_SERVICE_PASSWORD}
-  #     POSTGRES_DB: ${PONG_SERVICE_DB}
-  #   volumes:
-  #     - pong_data:/var/lib/postgresql/data
-  #   networks:
-  #     my_network:
-  #   healthcheck:
-  #     test: [ "CMD-SHELL", "[ -f /var/lib/postgresql/data/.db_ready ] || exit 1" ]
-  #     interval: 10s
-  #     timeout: 5s
-  #     retries: 5
-  #   restart: always
-  #   ports:
-  #     - "5435:5432"
+  pong-db:
+    container_name: pong-db
+    build: ./../backend/pong/postgres
+    environment:
+      POSTGRES_USER: ${PONG_SERVICE_USER}
+      POSTGRES_PASSWORD: ${PONG_SERVICE_PASSWORD}
+      POSTGRES_DB: ${PONG_SERVICE_DB}
+    volumes:
+      - pong_data:/var/lib/postgresql/data
+    networks:
+      my_network:
+    healthcheck:
+      test: [ "CMD-SHELL", "[ -f /var/lib/postgresql/data/.db_ready ] || exit 1" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: always
+    ports:
+      - "5435:5432"
 
   auth-service:
     build: ./../backend/auth-service
@@ -174,7 +154,7 @@ services:
       timeout: 5s
       retries: 5
     depends_on:
-      db:
+      pong-db:
         condition: service_healthy
     restart: always
     ports:
@@ -200,9 +180,7 @@ services:
       timeout: 5s
       retries: 5
     depends_on:
-      db:
-        condition: service_healthy
-      chat-service:
+      pong-db:
         condition: service_healthy
     restart: always
     ports:
@@ -255,6 +233,6 @@ volumes:
   user_data:
   auth_data:
   db_data:
-  # chat_data:
-  # pong_data:
+  chat_data:
+  pong_data:
   redis_data:
