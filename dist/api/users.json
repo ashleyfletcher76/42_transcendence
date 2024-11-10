@@ -3,7 +3,7 @@
         "id": 1,
         "name": "John",
         "points": 150,
-        "profilePicture": "/images/profile.png"
+        "profilePicture": "/images/default-profile.jpeg"
     },
     {
         "id": 2,
@@ -15,19 +15,19 @@
         "id": 3,
         "name": "Alice",
         "points": 250,
-        "profilePicture": "/images/profile.png"
+        "profilePicture": "/images/default-profile.jpeg"
     },
     {
         "id": 4,
         "name": "Bob_Brown",
         "points": 100,
-        "profilePicture": "/images/profile.png"
+        "profilePicture": "/images/default-profile.jpeg"
     },
     {
         "id": 4,
         "name": "Bob_Black",
         "points": 1000,
-        "profilePicture": "/images/profile.png"
+        "profilePicture": "/images/default-profile.jpeg"
     },
     {
         "id": 4,
@@ -39,7 +39,7 @@
         "id": 4,
         "name": "Bob_Green",
         "points": 150,
-        "profilePicture": "/images/profile.png"
+        "profilePicture": "/images/default-profile.jpeg"
     },
     {
         "id": 4,

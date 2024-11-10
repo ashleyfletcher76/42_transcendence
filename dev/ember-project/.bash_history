@@ -67,3 +67,5 @@ npm install bootstrap
 exit
 npm install
 exit
+npm install
+exit

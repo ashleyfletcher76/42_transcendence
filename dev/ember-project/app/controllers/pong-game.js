@@ -43,7 +43,7 @@ export default class PongGameController extends Controller {
       // Log the request body to the console
       console.log('Request body sent to API:', requestBody);
 
-      const response = await fetch('/api3/pong/pong/game/', {
+      const response = await fetch('/api/gamestate.json', {
         //fetch('/api/gamestate.json'
         method: 'POST',
         headers: {

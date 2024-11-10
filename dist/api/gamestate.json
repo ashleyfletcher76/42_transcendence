@@ -1,0 +1,9 @@
+{
+	"ball_x": 20,
+	"ball_y": -100,
+	"left_paddle_y": 240,
+	"right_paddle_y": -240,
+	"left_score": 1,
+	"right_score": 2
+  }
+  
