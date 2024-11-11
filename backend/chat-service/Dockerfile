@@ -2,7 +2,7 @@ FROM python:3.13-slim
 
 # install PostgreSQL development libraries
 RUN apt-get update && apt-get install -y libpq-dev gcc openssl curl iputils-ping postgresql-client && \
-    apt-get clean && rm -rf /var/lib/apt/lists/*
+	apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # set environment variables
 ENV PYTHONDONTWRITEBYTECODE 1

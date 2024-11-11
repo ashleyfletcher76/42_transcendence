@@ -59,7 +59,7 @@ services:
       retries: 5
     restart: always
     ports:
-      - "5434:5432"
+      - "5436:5432"
 
   pong-db:
     container_name: pong-db
@@ -154,7 +154,7 @@ services:
       timeout: 5s
       retries: 5
     depends_on:
-      chat-db:
+      pong-db:
         condition: service_healthy
     restart: always
     ports:
@@ -187,7 +187,7 @@ services:
         condition: service_healthy
     restart: always
     ports:
-      - "11443:443"
+      - "8002:8000"
 
   redis:
     image: redis:alpine
@@ -235,6 +235,7 @@ networks:
 volumes:
   user_data:
   auth_data:
+  db_data:
   chat_data:
   pong_data:
   redis_data:

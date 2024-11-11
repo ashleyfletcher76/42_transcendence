@@ -1,7 +1,5 @@
 FROM postgres:14
 
-COPY init.sql /docker-entrypoint-initdb.d/
-
 COPY init_db.sh /usr/local/bin/
 
 # generate self signed SSL certificates
