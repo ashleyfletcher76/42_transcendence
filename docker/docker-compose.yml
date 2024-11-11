@@ -216,8 +216,8 @@ services:
         condition: service_healthy
       chat-service:
         condition: service_healthy
-      pong-game:
-        condition: service_healthy
+      # pong-game:
+      #   condition: service_healthy
     networks:
       my_network:
     ports:
