@@ -5,10 +5,12 @@ from rest_framework.views import APIView
 from .serializer import UserSerializer
 from django.http import JsonResponse
 from django.db import connection
-from django.contrib.auth import authenticate
+from django.contrib.auth import authenticate, get_user_model
+from django.views import View
 from rest_framework.decorators import api_view
 
 logger = logging.getLogger(__name__)
+User = get_user_model()
 
 class UserRegisterView(APIView):
     def post(self, request):
@@ -36,6 +38,15 @@ def verify_user(request):
     if user:
         return Response({"user_id": user.id, "message": "User verified"}, status=status.HTTP_200_OK)
     return Response({"error": "Invalid credentials"}, status=status.HTTP_401_UNAUTHORIZED)
+
+class UserExistsView(View):
+    def get(self, request, user_id):
+        try:
+            # check if exists
+            user = User.objects.get(id=user_id)
+            return JsonResponse({"exists": True}, status=200)
+        except User.DoesNotExist:
+            return JsonResponse({"exists": False}, status=404)
 
 def health_check(request):
     try:
