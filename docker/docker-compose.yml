@@ -96,7 +96,7 @@ services:
     networks:
       my_network:
     healthcheck:
-      test: [ "CMD-SHELL", "curl -k -f https://localhost:443/auth/health/ || exit 1" ]
+      test: [ "CMD-SHELL", "curl -k -f http://localhost:8000/auth/health/ || exit 1" ]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -105,7 +105,7 @@ services:
         condition: service_healthy
     restart: always
     ports:
-      - "8443:443"
+      - "8000:8000"
 
   user-service:
     build: ./../backend/user-service
@@ -122,7 +122,7 @@ services:
     networks:
       my_network:
     healthcheck:
-      test: [ "CMD-SHELL", "curl -k -f https://localhost:443/users/health/ || exit 1" ]
+      test: [ "CMD-SHELL", "curl -k -f http://localhost:8000/users/health/ || exit 1" ]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -131,7 +131,7 @@ services:
         condition: service_healthy
     restart: always
     ports:
-      - "9443:443"
+      - "8001:8000"
 
   chat-service:
     build: ./../backend/chat-service

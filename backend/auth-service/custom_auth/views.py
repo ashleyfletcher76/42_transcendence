@@ -7,24 +7,28 @@ from rest_framework_simplejwt.exceptions import InvalidToken, TokenError
 from rest_framework.views import APIView
 from django.http import JsonResponse
 from django.db import connection
-from django.contrib.auth import get_user_model
 import requests
 
-User = get_user_model()
 
 class ValidateTokenView(APIView):
-    permission_classes = [IsAuthenticated]
+    authentication_classes = [JWTAuthentication]
+    permission_classes = []
 
     def post(self, request):
+        print("Authorization header:", request.headers.get("Authorization"))
         token = request.data.get("token")
         jwt_auth = JWTAuthentication()
+        print("after JWT auth")
         try:
             # Authenticate the token
             validated_token = jwt_auth.get_validated_token(token)
-            # If token is valid, return success response
+            user_id = validated_token.get("user_id")
+            print(f"Token user_id: {user_id}")
+
+
+            # verify if user exists
             return Response({"detail": "Token is valid"}, status=status.HTTP_200_OK)
         except (InvalidToken, TokenError) as e:
-            # If token is invalid, return error response
             return Response({"detail": "Invalid or expired token"}, status=status.HTTP_401_UNAUTHORIZED)
 
 class LoginView(APIView):
@@ -33,26 +37,33 @@ class LoginView(APIView):
         password = request.data.get("password")
 
         # send verification to user-service
-        verification_url = "http://user-service:9443/users/verify-user/"
+        verification_url = "http://user-service:8000/users/verify/"
         response = requests.post(verification_url, json={"username": username, "password": password})
+
+        print("Verification Status Code:", response.status_code)
+        print("Verification Response JSON:", response.json())
 
         if response.status_code == 200:
             # verifed, now extract
             user_data = response.json()
             user_id = user_data["user_id"]
 
-            try:
-                user = User.objects.get(id=user_id)
-                refresh = RefreshToken.for_user(user)
-                return Response(
-                        {"refresh": str(refresh), "access": str(refresh.access_token), "user_id": user_id},
-                    status=status.HTTP_200_OK
-                )
-            except User.DoesNotExist:
-                return Response({"error": "User not found"}, status=status.HTTP_404_NOT_FOUND)
+            refresh = RefreshToken()
+            refresh["user_id"] = user_id
+            access_token = refresh.access_token
 
+            print("Tokens created for user_id:", user_id)
+            return Response(
+                {
+                    "refresh": str(refresh),
+                    "access": str(access_token),
+                    "user_id": user_id
+				},
+                status=status.HTTP_200_OK
+			)
         else:
-            # failed
+            # failed verification
+            print("Invalid credentials provided for username:", username)
             return Response({"error": "Invalid credentials"}, status=status.HTTP_401_UNAUTHORIZED)
 
 class LogoutView(APIView):
