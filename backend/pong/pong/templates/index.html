@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Pong Game</title>
+	<style>
+		/* Add your styles here */
+	</style>
+</head>
+
+<body>
+	<div>
+		<h1>Pong Game</h1>
+		<button onclick="createRoom()">Create Game Room</button>
+		<button onclick="searchRoom()">Search Game Room</button>
+		<button onclick="playAgainstAI()">Play Against AI</button>
+	</div>
+
+	<script>
+		let roomName = null;
+
+		// Function to create a room
+		async function createRoom() {
+			const response = await fetch('https://0.0.0.0:11443/pong/api/game/create-room/', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',  // Ensure Content-Type is set to JSON
+				},
+				body: JSON.stringify({ player2_is_ai: false })  // Send the player2_is_ai parameter if needed
+			});
+			if (response.ok) {
+				const data = await response.json();
+				roomName = data.room_name;
+				alert('Room created: ' + roomName);
+				joinRoom(roomName);
+			} else {
+				alert('Failed to create room');
+			}
+		}
+
+		// Function to search for a game room
+		async function searchRoom() {
+			const response = await fetch('https://0.0.0.0:11443/pong/api/game/search-room/', { method: 'POST' });
+			const data = await response.json();
+			if (data.room_name) {
+				roomName = data.room_name;
+				alert('Joining room: ' + roomName);
+				joinRoom(roomName);
+			} else {
+				alert('No available rooms to join.');
+			}
+		}
+
+		// Function to play against AI
+		async function playAgainstAI() {
+			const response = await fetch('https://0.0.0.0:11443/pong/api/game/create-room/', { method: 'POST' });
+			const data = await response.json();
+			roomName = data.room_name;
+			alert('Room created: ' + roomName + '. Waiting for AI...');
+			joinRoom(roomName, true);
+		}
+
+		// Function to join a room (auto-joins)
+		function joinRoom(room, isAI = false) {
+			fetch(`api/game/${room}/update/`, {
+				method: 'POST',
+				body: JSON.stringify({ player2_is_ai: isAI }),
+				headers: { 'Content-Type': 'application/json' },
+			})
+				.then(response => response.json())
+				.then(data => {
+					console.log('Joined room:', room);
+				})
+				.catch(err => {
+					console.log('Error joining room:', err);
+				});
+		}
+	</script>
+</body>
+
+</html>

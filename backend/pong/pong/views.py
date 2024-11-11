@@ -7,6 +7,9 @@ import random
 import math
 from django.http import JsonResponse
 from django.db import connection
+from django.shortcuts import render
+from django.views.decorators.csrf import csrf_exempt
+
 
 SCREEN_WIDTH = 800
 SCREEN_HEIGHT = 400
@@ -14,103 +17,7 @@ BALL_RADIUS = 10
 PADDLE_WIDTH = 10
 PADDLE_HEIGHT = 100
 
-class GameStateView(APIView):
-    def get(self, request):
-        game_state = GameState.objects.first() or GameState.objects.create()
-        serializer = GameStateSerializer(game_state)
-        return Response(serializer.data)
-
-    def post(self, request):
-        game_state = GameState.objects.first()
-        # Move the ball
-        game_state.ball_x += game_state.ball_speed_x
-        game_state.ball_y += game_state.ball_speed_y
-
-        # Bounce off the top and bottom
-        if game_state.ball_y <= 0 or game_state.ball_y >= 1:
-            game_state.ball_speed_y = -game_state.ball_speed_y
-            
-        if game_state.ball_x <= 0.08:  # Left paddle
-            if game_state.left_paddle_y - 0.5 * PADDLE_HEIGHT / SCREEN_HEIGHT <= game_state.ball_y <= game_state.left_paddle_y + 0.5 * PADDLE_HEIGHT / SCREEN_HEIGHT:
-                self.handle_paddle_hit(game_state, "left")
-
-        if game_state.ball_x >= 0.92:  # Right paddle
-            if game_state.right_paddle_y - 0.5 * PADDLE_HEIGHT / SCREEN_HEIGHT <= game_state.ball_y <= game_state.right_paddle_y + 0.5 * PADDLE_HEIGHT / SCREEN_HEIGHT:
-                self.handle_paddle_hit(game_state, "right")  # Prevent the ball from getting stuck in the paddle
-
-        # Check for scoring
-        if game_state.ball_x <= 0:
-            game_state.right_score += 1
-            self.reset_ball(game_state)
-        elif game_state.ball_x >= 1:
-            game_state.left_score += 1
-            self.reset_ball(game_state)
-
-        # Save the updated game state
-        game_state.save()
-        serializer = GameStateSerializer(game_state)
-        return Response(serializer.data, status=status.HTTP_200_OK)
-
-    def handle_paddle_hit(self, game_state, paddle_side):
-        # Calculate hit position relative to the paddle's center
-        if paddle_side == "left":
-            paddle_center = game_state.left_paddle_y * SCREEN_HEIGHT
-            hit_position = paddle_center - (game_state.ball_y * SCREEN_HEIGHT)
-
-            # Calculate angle based on hit position
-            angle_factor = hit_position / (PADDLE_HEIGHT / 2)  # Normalize to [-1, 1]
-            angle = angle_factor * (math.pi / 3)  # Max angle of 60 degrees
-
-            game_state.ball_speed_x = -game_state.ball_speed_x  # Reverse X direction
-            game_state.ball_speed_y = math.sin(angle) * 0.005  # Set new Y speed based on angle
-
-        elif paddle_side == "right":
-            paddle_center = game_state.right_paddle_y * SCREEN_HEIGHT
-            hit_position = paddle_center - (game_state.ball_y * SCREEN_HEIGHT)
-
-            # Calculate angle based on hit position
-            angle_factor = hit_position / (PADDLE_HEIGHT / 2)  # Normalize to [-1, 1]
-            angle = angle_factor * (math.pi / 3)  # Max angle of 60 degrees
-
-            game_state.ball_speed_x = -game_state.ball_speed_x  # Reverse X direction
-            game_state.ball_speed_y = math.sin(angle) * 0.005  # Set new Y speed based on angle
-
-        # Increase ball speed (acceleration)
-        game_state.ball_speed_x *= 1.1  # Increase X speed
-        game_state.ball_speed_y *= 1.1  # Increase Y speed
-
-    def reset_ball(self, game_state):
-        game_state.ball_x = 0.5
-        game_state.ball_y = 0.5
-        game_state.ball_speed_x = random.choice([0.005, -0.005])
-        game_state.ball_speed_y = random.choice([0.005, -0.005])
-
-    def move_left_paddle(self, game_state, direction):
-        game_state.left_paddle_y += direction * 0.01
-        # Keep paddle within bounds
-        game_state.left_paddle_y = max(0.10, min(0.90, game_state.left_paddle_y))
-
-    def move_right_paddle(self, game_state, direction):
-        game_state.right_paddle_y += direction * 0.01
-        # Keep paddle within bounds
-        game_state.right_paddle_y = max(0.10, min(0.90, game_state.right_paddle_y))
-
-    def update_ai(self, game_state):
-        # Simple AI to follow the ball
-        if game_state.ball_y < game_state.right_paddle_y - 0.5 * PADDLE_HEIGHT / SCREEN_HEIGHT:
-            game_state.move_right_paddle(-1)
-        elif game_state.ball_y > game_state.right_paddle_y + 0.5 * PADDLE_HEIGHT / SCREEN_HEIGHT:
-            game_state.move_right_paddle(1)
-
-        game_state.save()
-        serializer = GameStateSerializer(game_state)
-        return Response(serializer.data, status=status.HTTP_200_OK)
-
-
-
-
-
-
+# Health check view to ensure the database connection is healthy
 def health_check(request):
     try:
         connection.ensure_connection()
@@ -118,3 +25,115 @@ def health_check(request):
         return JsonResponse({"status": "error", "message": str(e)}, status=500)
 
     return JsonResponse({"status": "ok"}, status=200)
+
+# Game view (renders the game HTML)
+def game_view(request):
+    return render(request, 'index.html')
+
+# View for getting the game state
+class GameStateView(APIView):
+    def get(self, request, room_name):
+        try:
+            game = GameState.objects.get(room_name=room_name)
+            serializer = GameStateSerializer(game)
+            return Response(serializer.data)
+        except GameState.DoesNotExist:
+            return Response({'error': 'Game not found'}, status=status.HTTP_404_NOT_FOUND)
+
+# View for updating the game state (e.g., updating ball position, handling collisions, etc.)
+class UpdateGameView(APIView):
+    def post(self, request, room_name):
+        try:
+            game_state = GameState.objects.get(room_name=room_name)
+            game_state.ball_position_x += game_state.ball_speed_x
+            game_state.ball_position_y += game_state.ball_speed_y
+
+            if game_state.ball_position_y <= 0 or game_state.ball_position_y >= 1:
+                game_state.ball_speed_y = -game_state.ball_speed_y
+
+            if game_state.ball_position_x <= 0.08:
+                if self.is_paddle_hit(game_state.left_paddle_y, game_state.ball_position_y):
+                    self.handle_paddle_hit(game_state, "left")
+
+            if game_state.ball_position_x >= 0.92:
+                if game_state.player2 == 'AI':  # AI control
+                    self.update_ai(game_state)
+                elif self.is_paddle_hit(game_state.right_paddle_y, game_state.ball_position_y):
+                    self.handle_paddle_hit(game_state, "right")
+
+            if game_state.ball_position_x <= 0:
+                game_state.score_player2 += 1
+                self.reset_ball(game_state)
+            elif game_state.ball_position_x >= 1:
+                game_state.score_player1 += 1
+                self.reset_ball(game_state)
+            if game_state.player2 == "ai":
+                self.update_ai()
+
+            game_state.save()
+            serializer = GameStateSerializer(game_state)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+
+        except GameState.DoesNotExist:
+            return Response({'error': 'Game not found'}, status=status.HTTP_404_NOT_FOUND)
+
+    def is_paddle_hit(self, paddle_y, ball_y):
+        return paddle_y - 0.5 * PADDLE_HEIGHT / SCREEN_HEIGHT <= ball_y <= paddle_y + 0.5 * PADDLE_HEIGHT / SCREEN_HEIGHT
+
+    def handle_paddle_hit(self, game_state, paddle_side):
+        paddle_y = game_state.left_paddle_y if paddle_side == "left" else game_state.right_paddle_y
+        hit_position = (paddle_y * SCREEN_HEIGHT) - (game_state.ball_position_y * SCREEN_HEIGHT)
+        angle_factor = hit_position / (PADDLE_HEIGHT / 2)
+        angle = angle_factor * (math.pi / 3)
+        game_state.ball_speed_x = -game_state.ball_speed_x
+        game_state.ball_speed_y = math.sin(angle) * 0.005
+        game_state.ball_speed_x *= 1.1
+        game_state.ball_speed_y *= 1.1
+
+    def reset_ball(self, game_state):
+        game_state.ball_position_x = 0.5
+        game_state.ball_position_y = 0.5
+        game_state.ball_speed_x = random.choice([0.005, -0.005])
+        game_state.ball_speed_y = random.choice([0.005, -0.005])
+
+    def update_ai(self, game_state):
+        if game_state.ball_position_y < game_state.right_paddle_y:
+            self.move_right_paddle(game_state, -1)
+        elif game_state.ball_position_y > game_state.right_paddle_y:
+            self.move_right_paddle(game_state, 1)
+
+    def move_right_paddle(self, game_state, direction):
+        game_state.right_paddle_y += direction * 0.01
+        game_state.right_paddle_y = max(0.05, min(0.95, game_state.right_paddle_y))
+
+# View for creating a new game room
+class CreateRoomView(APIView):
+    def post(self, request):
+        player2_is_ai = request.data.get("player2_is_ai", False)
+        room_name = 'room-' + str(random.randint(1000, 9999))  # Generate a random room name
+        print(room_name, " name of the room ______________________")
+        game_state = GameState.objects.create(
+            room_name=room_name,
+            ball_position_x=0.5,
+            ball_position_y=0.5,
+            ball_speed_x=random.choice([0.005, -0.005]),
+            ball_speed_y=random.choice([0.005, -0.005]),
+            left_paddle_y=0.5,
+            right_paddle_y=0.5,
+            score_player1=0,
+            score_player2=0,
+            player1="Player1",
+            player2="AI" if player2_is_ai else None
+        )
+        serializer = GameStateSerializer(game_state)
+        return Response({'room_name': room_name}, status=status.HTTP_201_CREATED)
+
+# View for searching a room that is waiting for an opponent
+class SearchRoomView(APIView):
+    def get(self, request):
+        waiting_room = GameState.objects.filter(player2=None).first()
+        if waiting_room:
+            waiting_room.player2 = "Player2"
+            waiting_room.save()
+            return Response({'room_name': waiting_room.room_name}, status=status.HTTP_200_OK)
+        return Response({'room_name': None}, status=status.HTTP_404_NOT_FOUND)

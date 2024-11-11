@@ -1,7 +1,12 @@
 from django.db import models
+import uuid
 
 # Create your models here.
 class GameState(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    room_name = models.CharField(max_length=255, unique=True)
+    player1 = models.CharField(max_length=255, unique=True, default="Player 1")
+    player2 = models.CharField(max_length=255, unique=True, default="Player 2")
     ball_x = models.FloatField(default = 0.5)
     ball_y = models.FloatField(default = 0.5)
     ball_speed_x = models.FloatField(default = 0.01)

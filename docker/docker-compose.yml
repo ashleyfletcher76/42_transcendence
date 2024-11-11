@@ -163,6 +163,8 @@ services:
   pong-game:
     build: ./../backend/pong
     container_name: pong
+    volumes:
+        - ./../backend/pong:/app
     environment:
       DJANGO_SECRET_KEY: ${DJANGO_SECRET_KEY}
       DJANGO_DEBUG: ${DJANGO_DEBUG}
@@ -172,6 +174,7 @@ services:
       DJANGO_SUPERUSER_USERNAME: ${DJANGO_SUPERUSER_USERNAME}
       DJANGO_SUPERUSER_EMAIL: ${DJANGO_SUPERUSER_EMAIL}
       DJANGO_SUPERUSER_PASSWORD: ${DJANGO_SUPERUSER_PASSWORD}
+    working_dir: /app
     networks:
       my_network:
     healthcheck:
