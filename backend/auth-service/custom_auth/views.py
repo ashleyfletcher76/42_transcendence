@@ -4,6 +4,38 @@ from rest_framework import status
 from rest_framework.views import APIView
 from django.http import JsonResponse
 from django.db import connection
+from django.contrib.auth import get_user_model
+import requests
+
+User = get_user_model()
+
+class LoginView(APIView):
+    def post(self, request):
+        username = request.data.get("username")
+        password = request.data.get("password")
+
+        # send verification to user-service
+        verification_url = "http://user-service:9443/users/verify-user/"
+        response = requests.post(verification_url, json={"username": username, "password": password})
+
+        if response.status_code == 200:
+            # verifed, now extract
+            user_data = response.json()
+            user_id = user_data["user_id"]
+
+            try:
+                user = User.objects.get(id=user_id)
+                refresh = RefreshToken.for_user(user)
+                return Response(
+                        {"refresh": str(refresh), "access": str(refresh.access_token), "user_id": user_id},
+                    status=status.HTTP_200_OK
+                )
+            except User.DoesNotExist:
+                return Response({"error": "User not found"}, status=status.HTTP_404_NOT_FOUND)
+
+        else:
+            # failed
+            return Response({"error": "Invalid credentials"}, status=status.HTTP_401_UNAUTHORIZED)
 
 class LogoutView(APIView):
     def post(self, request):
