@@ -2,9 +2,11 @@
 
 ## Summary:
 
-The User Service is responsible for handling user-related data and functionality, such as registration and managing user profiles. The service manages the storage, retrieval, and modification of user information in a centralized manner. This service does not handle authentication but requires valid JWT tokens for protected routes.
+The User Service handles user-related operations such as registration and profile management, managing storage, retrieval, and updates to user data. This service does not manage authentication but requires valid JWT tokens for access to protected routes.
 
-Note: All endpoints require HTTPS for secure communication. In development, if using self-signed certificates, you may need to disable certificate verification when testing with tools like curl.
+Each microservice has its dedicated PostgreSQL database, with the User Service connecting to its user-db container for user data management. This architecture enables isolated data storage, improving both security and scalability.
+
+Note: While internal communication occurs over HTTP, NGINX ensures that all external requests use HTTPS, securing client interactions. During development with self-signed certificates, you may need to disable certificate verification when using tools like curl.
 
 ## HTTP Endpoints
 1. User Registration
@@ -13,12 +15,12 @@ Description: Registers a new user in the system. This endpoint accepts user deta
 
 
 ```plaintext
-POST https://localhost:9443/users/register/
+POST http://localhost:8001/users/register/
 ```
 
 Here is the full command to make life simpler:
 ```bash
-curl -k -X POST https://localhost:9443/users/register/ \
+curl -X POST http://localhost:8001/users/register/ \
     -H "Content-Type: application/json" \
     -d '{"username": "newuser", "password": "password123"}'
 ```
@@ -54,10 +56,10 @@ json
 
 2. User Profile
 
-Description: Retrieves the profile of the currently authenticated user. This requires the user to be authenticated using a valid JWT.
+Description: Retrieves the profile of the currently authenticated user. This requires the user to be authenticated using a valid JWT. ----------- Not yet implemented!!
 
 ```plaintext
-GET https://localhost:9443/users/profile/
+GET http://localhost:8001/users/profile/
 ```
 
 - Request Headers:
@@ -87,7 +89,7 @@ Authorization: Bearer your_access_token
 Description: Updates the user’s profile information, such as their username or email. This endpoint also requires authentication.
 
 ```plaintext
-PUT https://localhost:9443/users/profile/
+PUT http://localhost:8001/users/profile/
 ```
 
 - Request Headers:
@@ -148,8 +150,8 @@ and then follow the prompt.
 
 ## Summary for Frontend:
 
-* User Registration: Use /users/register/ to create new users over HTTPS.
+* User Registration:  Use /users/register/ to create new users (HTTPS enforced externally)
 * Profile Management: Access user details using the /users/profile/ endpoint, which will return the user's current data. You can also update user information using the same route.
-* Authentication Requirement: All requests, except for registration, require JWT tokens in the headers. Ensure tokens are securely sent in all authenticated requests.
+* Authentication Requirement: Except for registration, all endpoints require JWT tokens in headers. Ensure secure handling of tokens in authenticated requests.
 
-- Security Note: Always use HTTPS for requests and securely store JWT tokens to prevent unauthorized access.
+- Security Note: Ensure that tokens are securely stored and use HTTPS externally through NGINX. Internal service communication over HTTP is secured by the isolated network.
