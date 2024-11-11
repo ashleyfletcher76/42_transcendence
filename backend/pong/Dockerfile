@@ -1,7 +1,8 @@
 FROM python:3.13-slim
 
 # Needed for PostgreSQL dev libraries
-RUN apt-get update && apt-get install -y libpq-dev gcc openssl curl && \
+RUN apt-get update && apt-get install -y \
+    libpq-dev gcc openssl curl zsh && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Set environment variables
@@ -18,8 +19,10 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Copy the rest of the application code
 COPY . /app/
 
+RUN chsh -s /bin/zsh
+
 # Expose port
 EXPOSE 8000
 
 # Run the dev server
-CMD ["sh", "-c", "python manage.py makemigrations && python manage.py migrate && python manage.py 0.0.0.0:8000"]
+CMD ["sh", "-c", "python manage.py makemigrations && python manage.py migrate && python manage.py runserver 0.0.0.0:8000"]

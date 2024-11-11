@@ -178,7 +178,7 @@ services:
     networks:
       my_network:
     healthcheck:
-      test: [ "CMD-SHELL", "curl -k -f https://localhost:443/pong/health/ || exit 1" ]
+      test: [ "CMD-SHELL", "curl -k -f http://localhost:8002/pong/health/ || exit 1" ]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -212,15 +212,6 @@ services:
   nginx:
     build: ./../frontend
     container_name: nginx
-    depends_on:
-      auth-service:
-        condition: service_healthy
-      user-service:
-        condition: service_healthy
-      chat-service:
-        condition: service_healthy
-      pong-game:
-        condition: service_healthy
     networks:
       my_network:
     ports:

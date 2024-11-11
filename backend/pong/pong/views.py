@@ -9,6 +9,7 @@ from django.http import JsonResponse
 from django.db import connection
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
+import json
 
 
 SCREEN_WIDTH = 800
@@ -107,26 +108,42 @@ class UpdateGameView(APIView):
         game_state.right_paddle_y = max(0.05, min(0.95, game_state.right_paddle_y))
 
 # View for creating a new game room
-class CreateRoomView(APIView):
-    def post(self, request):
-        player2_is_ai = request.data.get("player2_is_ai", False)
-        room_name = 'room-' + str(random.randint(1000, 9999))  # Generate a random room name
-        print(room_name, " name of the room ______________________")
-        game_state = GameState.objects.create(
-            room_name=room_name,
-            ball_position_x=0.5,
-            ball_position_y=0.5,
-            ball_speed_x=random.choice([0.005, -0.005]),
-            ball_speed_y=random.choice([0.005, -0.005]),
-            left_paddle_y=0.5,
-            right_paddle_y=0.5,
-            score_player1=0,
-            score_player2=0,
-            player1="Player1",
-            player2="AI" if player2_is_ai else None
-        )
-        serializer = GameStateSerializer(game_state)
-        return Response({'room_name': room_name}, status=status.HTTP_201_CREATED)
+@csrf_exempt
+def create_room(request):
+    if request.method == 'POST':
+        try:
+            data = json.loads(request.body)
+            player2_is_ai = data.get("player2_is_ai", False)
+            print("Checkpoint 1: Data Retrieved Successfully")
+            room_name = 'room-' + str(random.randint(1000, 9999))
+            game_state = GameState.objects.create(
+                room_name=room_name,
+                ball_position_x=0.5,
+                ball_position_y=0.5,
+                ball_speed_x=random.choice([0.005, -0.005]),
+                ball_speed_y=random.choice([0.005, -0.005]),
+                left_paddle_y=0.5,
+                right_paddle_y=0.5,
+                score_player1=0,
+                score_player2=0,
+                player1="Player1",
+                player2="AI" if player2_is_ai else None
+            )
+            print("Checkpoint 2: GameState Object Created")
+            serializer = GameStateSerializer(game_state)
+            return JsonResponse({
+                "message": "Room created successfully",
+                "room_name": room_name,
+                "game_state": serializer.data
+            })
+        except Exception as e:
+            return JsonResponse({
+                "error": str(e)
+            }, status=500)
+    else:
+        print("am i here")
+        return JsonResponse({"error": "is it coming from here ?"}, status=405)
+
 
 # View for searching a room that is waiting for an opponent
 class SearchRoomView(APIView):
@@ -137,3 +154,8 @@ class SearchRoomView(APIView):
             waiting_room.save()
             return Response({'room_name': waiting_room.room_name}, status=status.HTTP_200_OK)
         return Response({'room_name': None}, status=status.HTTP_404_NOT_FOUND)
+
+class TestPostView(APIView):
+    def post(self, request):
+        print("Received data:", request.data)
+        return Response({"message": "Data received"}, status=status.HTTP_200_OK)
