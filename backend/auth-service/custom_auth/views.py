@@ -1,6 +1,9 @@
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.response import Response
 from rest_framework import status
+from rest_framework_simplejwt.authentication import JWTAuthentication
+from rest_framework.permissions import IsAuthenticated
+from rest_framework_simplejwt.exceptions import InvalidToken, TokenError
 from rest_framework.views import APIView
 from django.http import JsonResponse
 from django.db import connection
@@ -8,6 +11,21 @@ from django.contrib.auth import get_user_model
 import requests
 
 User = get_user_model()
+
+class ValidateTokenView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+        token = request.data.get("token")
+        jwt_auth = JWTAuthentication()
+        try:
+            # Authenticate the token
+            validated_token = jwt_auth.get_validated_token(token)
+            # If token is valid, return success response
+            return Response({"detail": "Token is valid"}, status=status.HTTP_200_OK)
+        except (InvalidToken, TokenError) as e:
+            # If token is invalid, return error response
+            return Response({"detail": "Invalid or expired token"}, status=status.HTTP_401_UNAUTHORIZED)
 
 class LoginView(APIView):
     def post(self, request):

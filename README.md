@@ -319,6 +319,16 @@ curl -k -X POST https://localhost:8443/auth/logout/ \
     -d '{"refresh_token": "your_refresh_token_here"}'
 ```
 
+Validate token:
+```bash
+https://localhost:8443/auth/validate-token/
+```
+
+Refresh token:
+```bash
+https://localhost:8443/auth/token/refresh/
+```
+
 ## Authors
 
 - **Ashley Fletcher** - *Developer* - [GitHub Profile](https://github.com/ashleyfletcher76)
