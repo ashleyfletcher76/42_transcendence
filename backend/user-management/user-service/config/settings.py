@@ -28,6 +28,10 @@ SECURE_CONTENT_TYPE_NOSNIFF = True
 # Enable the browser XSS protection
 SECURE_BROWSER_XSS_FILTER = True
 
+# media files for user uploads
+MEDIA_URL = "/media/"
+MEDIA_ROOT = BASE_DIR / "media"
+
 # Application definition
 
 INSTALLED_APPS = [
@@ -37,8 +41,9 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+
+	"users.apps.UsersConfig",
     "rest_framework",
-    "users",
     "django_extensions",
 ]
 
@@ -88,20 +93,6 @@ DATABASES = {
     }
 }
 
-# DATABASES = {
-#     "default": {
-#         "ENGINE": "django.db.backends.postgresql",
-#         "NAME": os.environ.get("POSTGRES_DB"),
-#         "USER": os.environ.get("POSTGRES_USER"),
-#         "PASSWORD": os.environ.get("POSTGRES_PASSWORD"),
-#         "HOST": "db",
-#         "PORT": "5432",
-#         "OPTIONS": {
-#             "sslmode": "require",  # we use this to enforce ssl on the database also
-#         },
-#     }
-# }
-
 # Overwrite the database settings when running tests
 if "test" in sys.argv:
     DATABASES["default"] = {
@@ -112,7 +103,7 @@ if "test" in sys.argv:
         "HOST": "user-db",
         "PORT": "5432",
         "OPTIONS": {
-            "sslmode": "require",  # we use this to enforce ssl on the database also
+            "sslmode": "disable",  # we use this to enforce ssl on the database also
         },
     }
 
@@ -160,6 +151,16 @@ LOGGING = {
         },
     },
 }
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ],
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated',
+    ],
+}
+
 
 # Internationalization
 # https://docs.djangoproject.com/en/5.1/topics/i18n/
