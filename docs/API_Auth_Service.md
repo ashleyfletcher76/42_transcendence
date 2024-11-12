@@ -2,15 +2,15 @@
 
 ## Summary:
 
-The authentication service is responsible for user authentication, token issuance, and handling user logouts. It uses JWT (JSON Web Tokens) to authenticate users and manage sessions. This service is critical for ensuring secure access to other microservices by issuing tokens that validate a user's identity.
+The authentication service handles user authentication, token issuance, and user logout. It uses JWT (JSON Web Tokens) to validate users’ identities across microservices. This service is pivotal in enforcing secure access control through token-based authentication.
 
-Each microservice, including the authentication service, is now backed by its own dedicated PostgreSQL database, enhancing data separation and security. The authentication service connects to its own database container, auth-db, for storing and managing user authentication data. This separation provides a modular, scalable architecture, allowing each service to maintain its data independently.
+Each microservice has its own PostgreSQL database to enhance data separation and security. The authentication service connects to its own auth-db container for managing authentication data independently. This modular approach keeps each service isolated, ensuring better scalability and security.
 
-Note: All endpoints require HTTPS for secure communication. In development, if using self-signed certificates, you may need to disable certificate verification when testing with tools like curl or wscat.
+Note: The backend only works with HTTP between services, but NGINX manages external threats and enforces HTTPS for requests reaching the services from outside. In development, if using self-signed certificates with NGINX, you may need to disable certificate verification when testing with tools like curl.
 
 ## Authentication Flow
 
-The authentication service utilizes JWT to handle user sessions. A user logs in using their credentials, and the service returns a token. This token is then passed in the headers of future requests to access protected resources across the application.
+The authentication service utilizes JWT to manage user sessions. Users authenticate using credentials, and the service issues a token. This token must be included in the Authorization header for accessing protected endpoints across the application.
 
 ## HTTPS Endpoints
 1. User Login
@@ -18,7 +18,7 @@ The authentication service utilizes JWT to handle user sessions. A user logs in 
 Description: Authenticates a user by their username and password and returns a JWT token pair (access and refresh tokens).
 
 ```plaintext
-POST https://localhost:8443/auth/login/
+POST http://localhost:8000/auth/login/
 ```
 
 - Request Payload:
@@ -52,7 +52,7 @@ POST https://localhost:8443/auth/login/
 Description: Refreshes the access token by providing the valid refresh token, extending the user's session without requiring them to log in again.
 
 ```plaintext
-POST https://localhost:8443/auth/token/refresh/
+POST http://localhost:8000/auth/token/refresh/
 ```
 
 - Request Payload:
@@ -73,12 +73,48 @@ POST https://localhost:8443/auth/token/refresh/
 
 - Error Response: If the refresh token is expired or invalid, you will receive a 401 Unauthorized error.
 
-3. User Logout
+3. Validate Token
+
+Description: Validates the access token by checking it against the user-service to confirm user existence.
+
+```bash
+POST http://localhost:8000/auth/validate-token/
+```
+
+Request Header:
+
+Authorization: Bearer your_access_token
+
+Response (If token is valid and user exists):
+
+```json
+{
+    "detail": "Token is valid"
+}
+```
+
+Error Responses:
+
+- User not found:
+```json
+{
+    "error": "User not found"
+}
+```
+- Invalid or expired token:
+
+```json
+{
+    "detail": "Invalid or expired token"
+}
+```
+
+4. User Logout
 
 Description: Logs out the user by blacklisting the provided refresh token, invalidating it for future use.
 
 ```plaintext
-POST https://localhost:8443/auth/logout/
+POST http://localhost:8000/auth/logout/
 ```
 
 - Request Payload:
@@ -127,4 +163,4 @@ Authorization: Bearer your_access_token
 * Token Refresh: Use /auth/token/refresh/ to refresh the access token before it expires, keeping the user session active without requiring them to log in again.
 * Logout Flow: Call /auth/logout/ and send the refresh token to ensure the user is logged out and their session invalidated.
 
-- Security Note: Always use HTTPS for requests and securely store JWT tokens to prevent unauthorized access.
+- Security Note: Ensure all user-facing requests are HTTPS-secured through NGINX, even though backend services communicate over HTTP. Store JWT tokens securely to prevent unauthorized access.

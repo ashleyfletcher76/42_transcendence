@@ -12,6 +12,7 @@
   - [List of Commands](#list-of-commands)
   - [Simulating Live Chat](#simulating-live-chat)
   - [Makefile: Working with exec Commands](#makefile-working-with-exec-commands)
+  - [Internal HTTP Communication and NGINX Security Layer](#internal-http-communication-and-nginx-security-layer)
 - [Project Progress Updates/To Do's](#project-progress-updates-to-dos)
   - [Recent Changes List](#recent-changes-list)
   - [To Note List](#to-note-list)
@@ -269,6 +270,20 @@ This structure applies to all database containers (auth-db, user-db, chat-db, po
 
 For other containers, make exec-<container_name> simply opens a shell without any database access instructions.
 
+### Internal HTTP Communication and NGINX Security Layer
+* Internal Service Communication
+
+In 42_Transcendence, backend services (auth, user, chat, pong) communicate internally over HTTP to streamline and simplify service-to-service communication. Each service operates within an isolated containerized environment, allowing HTTP connections to remain secure within the Docker network without exposure to external threats.
+
+* NGINX Security Layer for Frontend Requests
+
+To protect the backend from unauthorized access and external threats, all external communication to backend services is directed through an NGINX reverse proxy. This NGINX proxy:
+
+1. Enforces HTTPS for any incoming requests from the frontend, ensuring that data transmitted to and from users is securely encrypted.
+2. Filters requests: Only legitimate frontend requests with proper JWT tokens are routed to the backend services. NGINX manages HTTP-to-HTTPS redirection, ensuring that only HTTPS requests reach the backend from external sources.
+
+Thus, even though the backend services use HTTP for internal communication, external requests are filtered and secured by NGINX, making the entire architecture secure for users.
+
 ## Project Progress Updates/To Do's
 
 ### Recent Changes List
@@ -287,6 +302,8 @@ For other containers, make exec-<container_name> simply opens a shell without an
 - Health checks added for each backend service and now integrated with NGINX, which is configured to run all traffic securely over HTTPS.
 - Database initialization scripts for each service ensure proper setup and security for individual databases at startup.
 - New Makefile commands to facilitate managing individual containers, including make exec-<container_name> for specific database access instructions.
+- JWT Token for Authentication: Tokens are issued for frontend authentication, with a 5-minute expiry for the access token and a 1-day expiry for the refresh token.
+- nternal Service Communication Over HTTP: Services communicate via HTTP within the Docker network, while NGINX handles HTTPS for external requests.
 
 ### To Note List
 - Regarding the web chat, frontend should check if a user is interacting with web chat, if so tehy request a refresh on their JWT token to keep the player logged in regardless of their web chat usage time
@@ -300,33 +317,36 @@ These commands should be done in the terminal, this is just to test the backend 
 
 Create a user:
 ```plaintext
-curl -k -X POST https://localhost:9443/users/register/ \
-    -H "Content-Type: application/json" \
-    -d '{"username": "newuser", "password": "password123"}'
+curl -X POST http://localhost:8001/users/register/ \
+     -H "Content-Type: application/json" \
+     -d '{"username": "newuser", "password": "mypassword"}'
 ```
 
 Login with user:
 ```plaintext
-curl -k -X POST https://localhost:8443/auth/login/ \
-    -H "Content-Type: application/json" \
-    -d '{"username": "newuser", "password": "password123"}'
+curl -X POST http://localhost:8000/auth/login/ \
+     -H "Content-Type: application/json" \
+     -d '{"username": "newuser", "password": "mypassword"}'
 ```
 
 Logout user:
 ```plaintext
-curl -k -X POST https://localhost:8443/auth/logout/ \
-    -H "Content-Type: application/json" \
-    -d '{"refresh_token": "your_refresh_token_here"}'
+curl -k -X POST http://localhost:8000/auth/logout/ \
 ```
 
 Validate token:
 ```bash
-https://localhost:8443/auth/validate-token/
+curl -X POST http://localhost:8000/auth/validate-token/ \
+     -H "Authorization: Bearer <access_token>" \
+     -H "Content-Type: application/json" \
+     -d '{}'
 ```
 
 Refresh token:
 ```bash
-https://localhost:8443/auth/token/refresh/
+curl -X POST http://localhost:8000/auth/token/refresh/ \
+     -H "Content-Type: application/json" \
+     -d '{"refresh": "<refresh_token>"}'
 ```
 
 ## Authors

@@ -1,10 +1,10 @@
 FROM python:3.13-slim
 
 # needed for PostgreSQL dev libraries
-RUN apt-get update && apt-get install -y libpq-dev gcc openssl curl && \
-	apt-get clean && rm -rf /var/lib/apt/lists/*
+RUN apt-get update && apt-get install -y libpq-dev gcc curl && \
+    apt-get clean && rm -rf /var/lib/apt/lists/*
 
-# set environent variables
+# set environment variables
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
 
@@ -18,12 +18,8 @@ RUN pip install --no-cache-dir -r requirements.txt
 # copy the rest
 COPY . /app/
 
-# generate a self signed SSL certificate
-RUN openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
-	-keyout /app/server.key -out /app/server.crt -subj "/CN=localhost"
+# expose HTTP port
+EXPOSE 8000
 
-# expose port
-EXPOSE 443
-
-# run dev server
-CMD ["sh", "-c", "python manage.py migrate && python manage.py runserver_plus --cert-file /app/server.crt --key-file /app/server.key 0.0.0.0:443"]
+# run dev server without SSL
+CMD ["sh", "-c", "python manage.py migrate && python manage.py runserver 0.0.0.0:8000"]
