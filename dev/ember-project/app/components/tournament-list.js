@@ -3,23 +3,23 @@ import { tracked } from '@glimmer/tracking';
 import { action } from '@ember/object';
 
 export default class TournamentListComponent extends Component {
-  @tracked users = [];
+  @tracked tournaments = [];
 
   constructor() {
     super(...arguments);
-    this.fetchUsers();
+    this.fetchTournaments();
   }
 
   @action
-  async fetchUsers() {
+  async fetchTournaments() {
     try {
-      const response = await fetch('/api/users.json'); // Simulating API call
+      const response = await fetch('/api/tournaments.json'); // Simulating API call
       if (!response.ok) {
         throw new Error('Network response was not ok');
       }
-      this.users = await response.json();
+      this.tournaments = await response.json();
     } catch (error) {
-      console.error('Failed to fetch users:', error);
+      console.error('Failed to fetch tournaments:', error);
     }
   }
 }

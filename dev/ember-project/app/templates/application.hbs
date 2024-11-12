@@ -13,30 +13,28 @@
     </div>
   </div>
   <div class="row">
-    <div class="container-fluid col middle">
-        <div class="button-container spacing">
-            <LinkTo @route="pong-game" class="nav-button">Game</LinkTo>
-            <LinkTo @route="chat" class="nav-button">Chat</LinkTo>
-            <LinkTo @route="tournament" class="nav-button">Create Tournament</LinkTo>
-        </div>
+    <div class="container-fluid col-3 middle">
+        <h2 class="name">Tournaments</h2>
+        <TournamentList/>
     </div>
     <div class="container-fluid col-6 middle">
 		{{outlet}}
     </div>
-    <div class="container-fluid col middle">
+    <div class="container-fluid col-3 middle">
       <NavigationBar />
       <UserList/>
     </div>
   </div>
   <div class="row">
-    <div class="container-fluid col footer">
-      <h2 class="name">Tournaments</h2>
-      <TournamentList/>
+    <div class="container-fluid col-3 footer">
+            <LinkTo @route="pong-game" class="nav-button">Game</LinkTo>
+            <LinkTo @route="chat" class="nav-button">Chat</LinkTo>
+            <LinkTo @route="tournament" class="nav-button">Create Tournament</LinkTo>
     </div>
     <div class="container-fluid col-6 footer">
       <Scoreboard />
     </div>
-    <div class="container-fluid col footer">
+    <div class="container-fluid col-3 footer">
 	  <DirectMessage/>
     </div>
   </div>    

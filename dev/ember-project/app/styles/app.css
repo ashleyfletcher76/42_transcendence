@@ -8,6 +8,11 @@ body {
   padding: 0; /* Remove default padding */
 }
 
+p {
+  padding: 0;
+  margin: 0;
+}
+
 h1 {
   text-align: center; /* Center the heading */
   color: #333; /* Dark gray color for the heading */
@@ -17,11 +22,23 @@ h1 {
 }
 
 h2 {
-  text-align: center; /* Center the heading */
+  text-align: left; /* Center the heading */
   color: #333; /* Dark gray color for the heading */
   font-size: 1.5rem; /* Increase font size */
   font-weight: bold; /* Make the font bold */
   font-family: Arial, sans-serif; /* Set a modern font family */
+  padding: 0;
+  margin: 0;
+}
+
+h3 {
+  text-align: left; /* Center the heading */
+  color: #333; /* Dark gray color for the heading */
+  font-size: 1rem; /* Increase font size */
+  font-weight: bold; /* Make the font bold */
+  font-family: Arial, sans-serif; /* Set a modern font family */
+  padding: 0;
+  margin: 0;
 }
 
 /* Label styling */
@@ -71,15 +88,19 @@ button:hover {
 /* Apply a light background color to each column */
 .container-fluid .col {
   background-color: #c7b6b6; /* Light gray color */
-  padding: 15px;
-  margin: 5px; /* Adds a small margin between columns */
-  border-radius: 5px; /* Optional: gives rounded corners */
+  border-radius: 10px; /* Optional: gives rounded corners */
+}
+
+
+/* Apply a light background color to each column */
+.container-fluid .col-3 {
+  background-color: #c7b6b6; /* Light gray color */
+  border-radius: 10px; /* Optional: gives rounded corners */
 }
 
 .container-fluid .col-6 {
   background-color: #c7b6b6; /* Light gray color */
-  margin: 5px; /* Adds a small margin between columns */
-  border-radius: 5px; /* Optional: gives rounded corners */
+  border-radius: 10px; /* Optional: gives rounded corners */
 }
 
 /* Make the Pong game container fill the available height */
@@ -218,6 +239,7 @@ button:hover {
   color: rgb(0 0 0); /* Darker text color on hover for contrast */
   transform: scale(1.05); /* Slightly enlarge the button on hover */
 }
+
 .scrollable-list {
   overflow-y: auto; /* Enable vertical scrollbar if content overflows */
   border-radius: 5px; /* Rounded corners */
@@ -236,13 +258,13 @@ button:hover {
   color: #fff23f; /* Gold color for points */
   text-align: right;
   display: inline-flex;
-  margin-left: 2rem;
+  margin: 0.5vw;
 }
 
 .user-card {
   display: flex;
   align-items: center; /* Centers image and text vertically */
-  padding: 15px;
+  padding: 5px;
   border: 1px solid #272525;
   border-radius: 8px;
   margin: 0.3vw;
@@ -251,6 +273,7 @@ button:hover {
   transition:
     background-color 0.3s,
     box-shadow 0.3s; /* Smooth transitions */
+
   text-align: left; /* Ensures text aligns properly */
 }
 
@@ -327,7 +350,7 @@ button:hover {
 }
 
 .cancel {
-  background-color: rgba(241, 36, 29, 0.938); /* Bright orange background */
+  background-color: rgb(241 36 29 / 93.8%); /* Bright orange background */
 }
 
 .start {
@@ -335,7 +358,7 @@ button:hover {
 }
 
 .cancel:hover {
-  background-color: rgba(255, 10, 2, 0.938); /* Bright orange background */
+  background-color: rgb(255 10 2 / 93.8%); /* Bright orange background */
 }
 
 .start:hover {
@@ -353,6 +376,7 @@ button:hover {
     font-size 0.3s ease,
     opacity 0.3s ease,
     transform 0.3s ease; /* Smooth transition */
+
   display: inline-flex; /* Inline button to shrink wrap around content */
   align-items: center; /* Vertically center the icon */
   justify-content: center; /* Horizontally center the icon */
@@ -383,4 +407,34 @@ button:hover {
   display: flex; /* Arrange the buttons horizontally */
   align-items: center; /* Vertically center the buttons */
   margin-right: auto; /* Push the actions (buttons) to the far right */
+}
+
+.left {
+  margin-right: 0;
+  margin-left: auto;
+}
+
+.tournament-button {
+  width: 3vw; /* Fixed width */
+  height: 2vw; /* Fixed height */
+  margin: 0.15vw;
+  background-color: #ff6347;
+  color: white;
+  border: none;
+  padding: 0; /* No additional padding */
+  font-size: 1em;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.join {
+  background-color: #51a32b;
+}
+.tournament-button:hover {
+  background-color: #e5533d; /* Darker shade on hover */
+}
+
+.join:hover {
+  background-color: #8cf01b; /* Darker shade on hover */
 }
