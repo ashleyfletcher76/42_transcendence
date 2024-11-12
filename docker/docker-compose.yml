@@ -178,7 +178,7 @@ services:
     networks:
       my_network:
     healthcheck:
-      test: [ "CMD-SHELL", "curl -k -f http://localhost:8002/pong/health/ || exit 1" ]
+      test: [ "CMD-SHELL", "curl -k -f http://localhost:8000/pong/health/ || exit 1" ]
       interval: 10s
       timeout: 5s
       retries: 5
