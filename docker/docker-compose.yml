@@ -3,7 +3,7 @@ version: '3.9'
 services:
   auth-db:
     container_name: auth-db
-    build: ./../backend/auth-service/postgres
+    build: ./../backend/user-management/auth-service/postgres
     environment:
       POSTGRES_USER: ${AUTH_SERVICE_USER}
       POSTGRES_PASSWORD: ${AUTH_SERVICE_PASSWORD}
@@ -23,7 +23,7 @@ services:
 
   user-db:
     container_name: user-db
-    build: ./../backend/user-service/postgres
+    build: ./../backend/user-management/user-service/postgres
     environment:
       POSTGRES_USER: ${USER_SERVICE_USER}
       POSTGRES_PASSWORD: ${USER_SERVICE_PASSWORD}
@@ -82,7 +82,7 @@ services:
       - "5435:5432"
 
   auth-service:
-    build: ./../backend/auth-service
+    build: ./../backend/user-management/auth-service
     container_name: auth-service
     environment:
       DJANGO_SECRET_KEY: ${DJANGO_SECRET_KEY}
@@ -108,7 +108,7 @@ services:
       - "8000:8000"
 
   user-service:
-    build: ./../backend/user-service
+    build: ./../backend/user-management/user-service
     container_name: user-service
     environment:
       DJANGO_SECRET_KEY: ${DJANGO_SECRET_KEY}
