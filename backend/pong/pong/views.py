@@ -35,14 +35,12 @@ def game_view(request):
 def game_state_view(request, room_name):
     try:
         game = GameState.objects.get(room_name=room_name)
-        print(f"Initial game paused state: {game.paused}")  # Debugging initial state
 
         if request.method == 'POST':
             paddle_direction = request.data.get('paddle_direction', {})
             is_paused = request.data.get('is_paused', None)
             side = request.data.get('side', None)
             
-            print(f"POST data received: {request.data}")  # Debug request data
             
             if is_paused is not None:
                 is_paused = bool(is_paused)
@@ -65,7 +63,7 @@ def game_state_view(request, room_name):
                         move_left_paddle(game, 1)
 
             game.save()
-            print(f"Final game paused state: {game.paused}")  # Debug final saved state
+            print(f"Final game paused state: {game.paused}")
 
             serializer = GameStateSerializer(game)
             return Response(serializer.data)
@@ -78,15 +76,12 @@ def game_state_view(request, room_name):
         return Response({'error': 'Game not found'}, status=status.HTTP_404_NOT_FOUND)
 
 def game_logic(game):
-    # Update ball position
     game.ball_x += game.ball_speed_x
     game.ball_y += game.ball_speed_y
 
-    # Ball collision with top or bottom
     if game.ball_y <= 0 or game.ball_y >= 1:
         game.ball_speed_y = -game.ball_speed_y
 
-    # Ball collision with left paddle
     if game.ball_x <= 0.02:
         if is_paddle_hit(game.left_paddle_y, game.ball_y):
             handle_paddle_hit(game, "left")
@@ -94,15 +89,13 @@ def game_logic(game):
             game.right_score += 1
             reset_ball(game)
 
-    # Ball collision with right paddle
     elif game.ball_x >= 0.98:
         if is_paddle_hit(game.right_paddle_y, game.ball_y):
             handle_paddle_hit(game, "right")
         else:
-            game.left_score += 1  # Player1 scores
+            game.left_score += 1
             reset_ball(game)
 
-    # Check for AI paddle movement if enabled
     if game.player2 == "AI":
         update_ai(game)
 
