@@ -1,15 +1,26 @@
 <div class="container-fluid row">
   {{!-- Profile picture column (1 part) --}}
-  <div class="col">
-    <img src="/images/default-profile.jpeg" alt="Profile Picture" class="profile-pic" />
-  </div>
-
+  <button type="button" class="btn-close" onclick={{this.onCloseClick}}></button>
+  <img src={{@user.selectedUser.profilePicture}} alt="Profile Picture" class="profile-pic" />
   {{!-- Profile details column (3 parts) --}}
-  <div class="col-9">
-    {{!-- First row of profile details --}}
+  <div class="col-10">
     <div class="profile-details">
-      <h2 class="name">Other User</h2>
-      <h2 class="points">1000🏆</h2>
+      <h2 class="name">{{@user.selectedUser.name}}</h2>
+      <div class="actions">
+      <button class="emoji-button" data-bs-toggle="tooltip" data-bs-placement="top" title="Add Friend">
+        ➕ 
+      </button>
+      <button class="emoji-button" data-bs-toggle="tooltip" data-bs-placement="top" title="Block User">
+        🚫
+      </button>
+      <button class="emoji-button" data-bs-toggle="tooltip" data-bs-placement="top" title="Live Chat">
+        💬
+      </button>
+      <button class="emoji-button" data-bs-toggle="tooltip" data-bs-placement="top" title="Play Game">
+        🎮
+      </button>
+      </div>
+      <h2 class="points">{{@user.selectedUser.points}} 🏆</h2>
     </div>
 
     {{!-- Second row of profile details --}}

@@ -1,3 +1,4 @@
+<h1 class="white">Tournaments<button class="tournament-button update" onclick={{this.onJoinClick}} type="button">↻</button></h1>
 <div class="scrollable-list middle-scroll">
     {{#each this.tournaments as |tournament|}}
         <Tournament @creator={{tournament.creator}} @current_players={{tournament.current_players}} @max_players={{tournament.max_players}}/>

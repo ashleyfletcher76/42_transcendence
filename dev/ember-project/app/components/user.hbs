@@ -2,7 +2,7 @@
   class="user-card {{if this.isActive 'active'}}"
   role="button"
   tabindex="0"
-  onclick={{this.selectUser}}
+  onclick={{this.select}}
   {{on "click" this.handleCardClick}}
 >
     <img src={{@profilePicture}} alt="Profile Picture" class="user-pic user" />
@@ -10,8 +10,8 @@
         <h2 class="name">{{@name}}</h2>
 
         <div class="actions">
-            <button class="chat-button" onclick={{this.onChatClick}} type="button" {{on "click" this.stopEventPropagation}}>💬</button>
-            <button class="chat-button" onclick={{this.onGameClick}} type="button" {{on "click" this.stopEventPropagation}}>🎮</button>
+            <button class="emoji-button" onclick={{this.onChatClick}} type="button" {{on "click" this.stopEventPropagation}}>💬</button>
+            <button class="emoji-button" onclick={{this.onGameClick}} type="button" {{on "click" this.stopEventPropagation}}>🎮</button>
         </div>
 
         <h2 class="points">{{@points}}🏆</h2>

@@ -9,12 +9,15 @@
      <ProfileOwn />
     </div>
     <div class="col header">
-        <ProfileOther />
+        {{#if this.selectedUser}}
+        <ProfileOther @user={{this}}/>
+      {{else}}
+        <h4>42 Pong</h4>
+      {{/if}}
     </div>
   </div>
   <div class="row">
     <div class="container-fluid col-3 middle">
-        <h2 class="name">Tournaments</h2>
         <TournamentList/>
     </div>
     <div class="container-fluid col-6 middle">
@@ -22,7 +25,7 @@
     </div>
     <div class="container-fluid col-3 middle">
       <NavigationBar />
-      <UserList/>
+      <UserList @selectUser={{this.selectUser}}/>
     </div>
   </div>
   <div class="row">

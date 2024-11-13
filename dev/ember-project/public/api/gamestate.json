@@ -1,8 +1,8 @@
 {
-	"ball_x": 20,
-	"ball_y": -100,
-	"left_paddle_y": 240,
-	"right_paddle_y": -240,
+	"ball_x": 0,
+	"ball_y": 0,
+	"left_paddle_y": 0,
+	"right_paddle_y": 0,
 	"left_score": 1,
 	"right_score": 2
   }
