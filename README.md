@@ -329,6 +329,14 @@ curl -X POST http://localhost:8000/auth/login/ \
      -d '{"username": "newuser", "password": "mypassword"}'
 ```
 
+Update User profile:
+```plaintext
+curl -X PUT http://localhost:8001/users/profile/ \
+     -H "Content-Type: application/json" \
+     -H "Authorization: Bearer <access_token>" \
+     -d '{"display_name": "New User", "bio": "This is my bio", "avatar": null}'
+```
+
 Logout user:
 ```plaintext
 curl -k -X POST http://localhost:8000/auth/logout/ \

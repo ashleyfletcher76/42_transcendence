@@ -4,13 +4,16 @@ from .models import GameState
 from .serializers import GameStateSerializer
 import random
 import math
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
 from django.db import connection
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 import json
 from rest_framework.decorators import api_view
 
+import logging
+
+logger = logging.getLogger(__name__)
 
 SCREEN_WIDTH = 800
 SCREEN_HEIGHT = 400
@@ -40,8 +43,8 @@ def game_state_view(request, room_name):
             paddle_direction = request.data.get('paddle_direction', {})
             is_paused = request.data.get('is_paused', None)
             side = request.data.get('side', None)
-            
-            
+
+
             if is_paused is not None:
                 is_paused = bool(is_paused)
                 print(f"Toggling pause: {is_paused}")
@@ -169,7 +172,23 @@ def search_room(request):
             return JsonResponse({'room_name': waiting_room.room_name}, status=200)
         else:
             return JsonResponse({'room_name': None}, status=404)
-    
+
     except Exception as e:
         return JsonResponse({'error': str(e)}, status=500)
 
+
+health_check_logged = False
+
+def health_check(request):
+    global health_check_logged
+    try:
+        connection.ensure_connection()
+    except Exception as e:
+        # Log only on failure
+        logger.error(f"Health check failed: {e}")
+        return JsonResponse({"status": "error", "message": str(e)}, status=500)
+
+    if not health_check_logged:
+        health_check_logged = True
+        logger.info("Health check passed: Service is up and running.")
+    return HttpResponse("ok", content_type="text/plain", status=200)

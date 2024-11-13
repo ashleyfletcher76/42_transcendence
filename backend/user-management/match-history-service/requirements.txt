@@ -1,0 +1,9 @@
+psycopg2-binary==2.9.6
+djangorestframework==3.14.0
+django-filter==23.2
+djangorestframework-simplejwt==5.2.2
+celery==5.3.4
+redis==5.0.10
+django-rest-framework-datatables==0.7.0
+django-cors-headers==4.0.0
+django-admin-tools==0.9.1
