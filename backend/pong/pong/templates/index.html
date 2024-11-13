@@ -170,28 +170,6 @@
 			}, 100);
 		}
 
-		async function sendPauseState(isPaused) {
-			try {
-				const response = await fetch(`/pong/game_state/${roomName}/`, {
-					method: 'POST',
-					headers: { 'Content-Type': 'application/json' },
-					body: JSON.stringify({
-						room_name: roomName,
-						paddle_direction: paddleDirection,
-						is_paused: isPaused,
-						side: side
-					})
-				});
-
-				if (!response.ok) {
-					const errorText = await response.text();
-					console.error('Error sending pause state:', errorText);
-				}
-			} catch (error) {
-				console.error('Error sending pause state:', error);
-			}
-		}
-
 		async function fetchGameState(isPaused) {
 			try {
 				const response = await fetch(`/pong/game_state/${roomName}/`, {
@@ -245,7 +223,7 @@
 				paddleDirection.down = true;
 			}
 			else if (event.key === "p" || event.key === "P") {
-				sendPauseState(true);
+				fetchGameState(true);
 			}
 		});
 

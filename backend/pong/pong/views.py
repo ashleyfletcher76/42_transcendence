@@ -35,34 +35,42 @@ def game_view(request):
 def game_state_view(request, room_name):
     try:
         game = GameState.objects.get(room_name=room_name)
+        print(f"Initial game paused state: {game.paused}")  # Debugging initial state
 
-        if request.method == 'GET':
-            serializer = GameStateSerializer(game)
-            return Response(serializer.data)
-
-        elif request.method == 'POST':
+        if request.method == 'POST':
             paddle_direction = request.data.get('paddle_direction', {})
             is_paused = request.data.get('is_paused', None)
             side = request.data.get('side', None)
-            print(" pause button is pressed : ",  is_paused)
-            print(" game status : ", not game.paused)
-            if is_paused:
-                game.paused = not game.paused
-            if game.paused:
+            
+            print(f"POST data received: {request.data}")  # Debug request data
+            
+            if is_paused is not None:
+                is_paused = bool(is_paused)
+                print(f"Toggling pause: {is_paused}")
+                if is_paused:
+                    game.paused = not game.paused
+                    print(f"Updated game paused state: {game.paused}")
+
+            if not game.paused:
                 game_logic(game)
-                if side == 0:
-                    if (paddle_direction['up'] == True):
+                if side is not None and side == 0:
+                    if paddle_direction.get('up', False):
                         move_right_paddle(game, -1)
-                    if (paddle_direction['down'] == True):
+                    if paddle_direction.get('down', False):
                         move_right_paddle(game, 1)
-                elif side == 1:
-                    if (paddle_direction['up'] == True):
+                elif side is not None and side == 1:
+                    if paddle_direction.get('up', False):
                         move_left_paddle(game, -1)
-                    if (paddle_direction['down'] == True):
+                    if paddle_direction.get('down', False):
                         move_left_paddle(game, 1)
 
             game.save()
+            print(f"Final game paused state: {game.paused}")  # Debug final saved state
 
+            serializer = GameStateSerializer(game)
+            return Response(serializer.data)
+
+        elif request.method == 'GET':
             serializer = GameStateSerializer(game)
             return Response(serializer.data)
 
@@ -70,66 +78,59 @@ def game_state_view(request, room_name):
         return Response({'error': 'Game not found'}, status=status.HTTP_404_NOT_FOUND)
 
 def game_logic(game):
+    # Update ball position
     game.ball_x += game.ball_speed_x
     game.ball_y += game.ball_speed_y
-    
+
+    # Ball collision with top or bottom
     if game.ball_y <= 0 or game.ball_y >= 1:
         game.ball_speed_y = -game.ball_speed_y
 
-    if game.ball_x <= 0.08:
+    # Ball collision with left paddle
+    if game.ball_x <= 0.02:
         if is_paddle_hit(game.left_paddle_y, game.ball_y):
             handle_paddle_hit(game, "left")
+        else:
+            game.right_score += 1
+            reset_ball(game)
 
-    if game.ball_x >= 0.92:
-        if game.player2 == 'AI':  # AI control
-            update_ai(game)
-        elif is_paddle_hit(game.right_paddle_y, game.ball_y):
+    # Ball collision with right paddle
+    elif game.ball_x >= 0.98:
+        if is_paddle_hit(game.right_paddle_y, game.ball_y):
             handle_paddle_hit(game, "right")
+        else:
+            game.left_score += 1  # Player1 scores
+            reset_ball(game)
 
-    if game.ball_x <= 0:
-        game.right_score += 1  # Player2 (right) scores
-        reset_ball(game)
-    elif game.ball_x >= 1:
-        game.left_score += 1  # Player1 (left) scores
-        reset_ball(game)
-    print(game.player2)
+    # Check for AI paddle movement if enabled
     if game.player2 == "AI":
         update_ai(game)
 
-def is_paddle_hit(paddle_y, ball_y):
-    return paddle_y - 0.5 * PADDLE_HEIGHT / SCREEN_HEIGHT <= ball_y <= paddle_y + 0.5 * PADDLE_HEIGHT / SCREEN_HEIGHT
+def update_ai(game):
+    if game.ball_y < game.right_paddle_y:
+        move_right_paddle(game, -1)
+    elif game.ball_y > game.right_paddle_y:
+        move_right_paddle(game, 1)
 
-def handle_paddle_hit(game_state, paddle_side):
-    paddle_y = game_state.left_paddle_y if paddle_side == "left" else game_state.right_paddle_y
-    hit_position = (paddle_y * SCREEN_HEIGHT) - (game_state.ball_position_y * SCREEN_HEIGHT)
-    angle_factor = hit_position / (PADDLE_HEIGHT / 2)
-    angle = angle_factor * (math.pi / 3)
-    game_state.ball_speed_x = -game_state.ball_speed_x
-    game_state.ball_speed_y = math.sin(angle) * 0.005
-    game_state.ball_speed_x *= 1.1
-    game_state.ball_speed_y *= 1.1
+def move_right_paddle(game, direction):
+    game.right_paddle_y += direction * 0.01
+    game.right_paddle_y = max(0.05, min(0.95, game.right_paddle_y))
 
-def reset_ball(game_state):
-    game_state.ball_position_x = 0.5
-    game_state.ball_position_y = 0.5
-    game_state.ball_speed_x = random.choice([0.005, -0.005])
-    game_state.ball_speed_y = random.choice([0.005, -0.005])
+def move_left_paddle(game, direction):
+    game.left_paddle_y += direction * 0.01
+    game.left_paddle_y = max(0.05, min(0.95, game.left_paddle_y))
 
-def update_ai(game_state):
-    if game_state.ball_position_y < game_state.right_paddle_y:
-        move_right_paddle(game_state, -1)
-    elif game_state.ball_position_y > game_state.right_paddle_y:
-        move_right_paddle(game_state, 1)
+def handle_paddle_hit(game, side):
+    game.ball_speed_x = -game.ball_speed_x
 
-def move_right_paddle(game_state, direction):
-    game_state.right_paddle_y += direction * 0.01
-    game_state.right_paddle_y = max(0.05, min(0.95, game_state.right_paddle_y))
+def reset_ball(game):
+    game.ball_x, game.ball_y = 0.5, 0.5
+    game.ball_speed_x *= -1
 
-def move_left_paddle(game_state, direction):
-    game_state.left_paddle_y += direction * 0.01
-    game_state.left_paddle_y = max(0.05, min(0.95, game_state.right_paddle_y))
-
-
+def is_paddle_hit(paddle_y, ball_y, paddle_height=0.2):
+    paddle_top = paddle_y - paddle_height / 2
+    paddle_bottom = paddle_y + paddle_height / 2
+    return paddle_top <= ball_y <= paddle_bottom
 
 @api_view(['POST'])
 def create_room(request):
