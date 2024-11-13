@@ -3,7 +3,7 @@ from rest_framework import status, generics
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from .serializer import UserSerializer, UserProfileSerializer
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
 from django.db import connection
 from django.contrib.auth import authenticate, get_user_model
 from django.views import View
@@ -59,13 +59,18 @@ class UserProfileView(generics.RetrieveUpdateAPIView):
     def get_object(self):
         return self.request.user.profile
 
+health_check_logged = False
 
 def health_check(request):
+    global health_check_logged
     try:
         connection.ensure_connection()
     except Exception as e:
-        # log error only when fails
+        # Log only on failure
         logger.error(f"Health check failed: {e}")
         return JsonResponse({"status": "error", "message": str(e)}, status=500)
 
-    return JsonResponse({"status": "ok"}, status=200)
+    if not health_check_logged:
+        health_check_logged = True
+        logger.info("Health check passed: Service is up and running.")
+    return HttpResponse("ok", content_type="text/plain", status=200)

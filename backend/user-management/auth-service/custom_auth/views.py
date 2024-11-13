@@ -5,9 +5,12 @@ from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework.permissions import IsAuthenticated
 from rest_framework_simplejwt.exceptions import InvalidToken, TokenError
 from rest_framework.views import APIView
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
 from django.db import connection
 import requests
+import logging
+
+logger = logging.getLogger(__name__)
 
 class ValidateTokenView(APIView):
     authentication_classes = []
@@ -88,10 +91,18 @@ class LogoutView(APIView):
         except Exception as e:
             return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
+health_check_logged = False
+
 def health_check(request):
+    global health_check_logged
     try:
         connection.ensure_connection()
     except Exception as e:
+        # Log only on failure
+        logger.error(f"Health check failed: {e}")
         return JsonResponse({"status": "error", "message": str(e)}, status=500)
 
-    return JsonResponse({"status": "ok"}, status=200)
+    if not health_check_logged:
+        health_check_logged = True
+        logger.info("Health check passed: Service is up and running.")
+    return HttpResponse("ok", content_type="text/plain", status=200)

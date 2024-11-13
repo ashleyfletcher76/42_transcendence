@@ -5,8 +5,11 @@ from .models import GameState
 from .serializers import GameStateSerializer
 import random
 import math
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
 from django.db import connection
+import logging
+
+logger = logging.getLogger(__name__)
 
 SCREEN_WIDTH = 800
 SCREEN_HEIGHT = 400
@@ -29,7 +32,7 @@ class GameStateView(APIView):
         # Bounce off the top and bottom
         if game_state.ball_y <= 0 or game_state.ball_y >= 1:
             game_state.ball_speed_y = -game_state.ball_speed_y
-            
+
         if game_state.ball_x <= 0.08:  # Left paddle
             if game_state.left_paddle_y - 0.5 * PADDLE_HEIGHT / SCREEN_HEIGHT <= game_state.ball_y <= game_state.left_paddle_y + 0.5 * PADDLE_HEIGHT / SCREEN_HEIGHT:
                 self.handle_paddle_hit(game_state, "left")
@@ -108,13 +111,18 @@ class GameStateView(APIView):
 
 
 
-
-
+health_check_logged = False
 
 def health_check(request):
+    global health_check_logged
     try:
         connection.ensure_connection()
     except Exception as e:
+        # Log only on failure
+        logger.error(f"Health check failed: {e}")
         return JsonResponse({"status": "error", "message": str(e)}, status=500)
 
-    return JsonResponse({"status": "ok"}, status=200)
+    if not health_check_logged:
+        health_check_logged = True
+        logger.info("Health check passed: Service is up and running.")
+    return HttpResponse("ok", content_type="text/plain", status=200)
