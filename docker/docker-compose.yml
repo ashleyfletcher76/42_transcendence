@@ -163,8 +163,6 @@ services:
   pong-game:
     build: ./../backend/pong
     container_name: pong
-    volumes:
-        - ./../backend/pong:/app
     environment:
       DJANGO_SECRET_KEY: ${DJANGO_SECRET_KEY}
       DJANGO_DEBUG: ${DJANGO_DEBUG}
