@@ -114,7 +114,7 @@
 		let player2 = 'AI';
 		let player2_is_ai = false;
 		let paddleDirection = { up: false, down: false }; // Direction for left paddle
-		let isPaused = false;
+		let side = 0;
 
 		// Function to create a new game room
 		function createRoom() {
@@ -127,6 +127,7 @@
 				.then(data => {
 					if (data.room_name) {
 						roomName = data.room_name
+						side = 1;
 						document.getElementById('game-status').innerText = `Room ${data.room_name} is ready!`;
 						startGameLoop();  // Start the game loop
 					} else {
@@ -146,6 +147,7 @@
 				.then(data => {
 					if (data.room_name) {
 						roomName = data.room_name
+						side = 0;
 						document.getElementById('game-status').innerText = `Joined room ${data.room_name}!`;
 						startGameLoop();
 					} else {
@@ -164,7 +166,7 @@
 
 		function startGameLoop() {
 			setInterval(() => {
-				fetchGameState();
+				fetchGameState(false);
 			}, 100);
 		}
 
@@ -176,7 +178,8 @@
 					body: JSON.stringify({
 						room_name: roomName,
 						paddle_direction: paddleDirection,
-						is_paused: isPaused
+						is_paused: isPaused,
+						side: side
 					})
 				});
 
@@ -189,14 +192,16 @@
 			}
 		}
 
-		async function fetchGameState() {
+		async function fetchGameState(isPaused) {
 			try {
 				const response = await fetch(`/pong/game_state/${roomName}/`, {
 					method: 'POST',
 					headers: { 'Content-Type': 'application/json' },
 					body: JSON.stringify({
 						room_name: roomName,
-						paddle_direction: paddleDirection // Send the paddle movement data
+						paddle_direction: paddleDirection,
+						is_paused: isPaused,
+						side: side
 					})
 				});
 
@@ -240,8 +245,7 @@
 				paddleDirection.down = true;
 			}
 			else if (event.key === "p" || event.key === "P") {
-				isPaused = !isPaused;
-				sendPauseState(isPaused);
+				sendPauseState(true);
 			}
 		});
 
