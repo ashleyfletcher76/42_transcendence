@@ -4,19 +4,19 @@
 <div id="ember-bootstrap-wormhole"></div>
 
 <div class="container-fluid">
-  <div class="row">
+  <div class="container-fluid row">
     <div class="col header">
      <ProfileOwn />
     </div>
     <div class="col header">
-        {{#if this.selectedUser}}
+      {{#if this.selectedUser}}
         <ProfileOther @user={{this}}/>
       {{else}}
-        <h4>42 Pong</h4>
+        <TitleAnimation />
       {{/if}}
     </div>
   </div>
-  <div class="row">
+  <div class="container-fluid row">
     <div class="container-fluid col-3 middle">
         <TournamentList/>
     </div>
@@ -28,7 +28,7 @@
       <UserList @selectUser={{this.selectUser}}/>
     </div>
   </div>
-  <div class="row">
+  <div class="container-fluid row">
     <div class="container-fluid col-3 footer">
             <LinkTo @route="pong-game" class="nav-button">Game</LinkTo>
             <LinkTo @route="chat" class="nav-button">Chat</LinkTo>

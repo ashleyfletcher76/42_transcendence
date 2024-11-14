@@ -10,6 +10,6 @@ export default class PaddleComponent extends Component {
 
   get paddleStyle() {
     // You can adjust the translateY based on your logic
-    return htmlSafe(`transform: translateY(${this.args.position}px);`); // Pass position from args
+    return htmlSafe(`transform: translateY(${this.args.position}vw);`); // Pass position from args
   }
 }

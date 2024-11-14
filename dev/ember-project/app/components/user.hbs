@@ -7,13 +7,7 @@
 >
     <img src={{@profilePicture}} alt="Profile Picture" class="user-pic user" />
     <div class="profile-details">
-        <h2 class="name">{{@name}}</h2>
-
-        <div class="actions">
-            <button class="emoji-button" onclick={{this.onChatClick}} type="button" {{on "click" this.stopEventPropagation}}>💬</button>
-            <button class="emoji-button" onclick={{this.onGameClick}} type="button" {{on "click" this.stopEventPropagation}}>🎮</button>
-        </div>
-
+        <h2>{{@name}}</h2>
         <h2 class="points">{{@points}}🏆</h2>
     </div>
 </div>

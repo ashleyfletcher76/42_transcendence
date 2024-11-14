@@ -102,10 +102,10 @@ export default class PongGameController extends Controller {
 
   updateGameState(data) {
     // Assuming the response structure matches what you provided
-    this.ballPositionX = data.ball_x;
-    this.ballPositionY = data.ball_y;
-    this.leftPaddlePosition = data.left_paddle_y;
-    this.rightPaddlePosition = data.right_paddle_y;
+    this.ballPositionX = data.ball_x * (25 - visualViewport.height/visualViewport.width);
+    this.ballPositionY = data.ball_y * 24;
+    this.leftPaddlePosition = data.left_paddle_y * 10;
+    this.rightPaddlePosition = data.right_paddle_y * 10;
     this.leftScore = data.left_score;
     this.rightScore = data.right_score;
   }

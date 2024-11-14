@@ -1,19 +1,30 @@
-<div class="container-fluid row">
+<div class="container-fluid row border">
   {{!-- Profile picture column (1 part) --}}
-  <div class="col-3">
-    <h2 class="name">Next Match</h2>
-    <User />
-    <User />
+  <div class="col-5">
+    <User @name="Dummy" @points="100" @profilePicture=""/>
   </div>
 
   {{!-- Profile details column (3 parts) --}}
-  <div class="col-5">
+  <div class="col-2">
     <h4>3:1</h4>
   </div>
 
-  <div class="col-3">
-   <h2 class="name">Tournament Rank</h2>
-    <User />
-    <User />
+  <div class="col-5"> 
+    <User @name="Dummy" @points="100" @profilePicture="" />
+  </div>
+</div>
+<div class="container-fluid row border">
+  {{!-- Profile picture column (1 part) --}}
+  <div class="col-5">
+    <User @name="Dummy" @points="100" @profilePicture=""/>
+  </div>
+
+  {{!-- Profile details column (3 parts) --}}
+  <div class="col-2">
+    <h1 class="white center">Next Match</h1>
+  </div>
+
+  <div class="col-5">
+    <User @name="Dummy" @points="100" @profilePicture="" />
   </div>
 </div>

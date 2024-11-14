@@ -3,7 +3,7 @@
 /* Overall body styling */
 body {
   font-family: Arial, sans-serif; /* Set a sans-serif font for the body */
-  background-color: #2b2727; /* Light gray background color */
+  background-color: #423838; /* Light gray background color */
   margin: 0; /* Remove default margins */
   padding: 0; /* Remove default padding */
 }
@@ -45,7 +45,7 @@ h3 {
 h4 {
   text-align: center; /* Center the heading */
   color: #fff; /* Dark gray color for the heading */
-  font-size: 6rem; /* Increase font size */
+  font-size: 5rem; /* Increase font size */
   font-weight: bold; /* Make the font bold */
   font-family: Arial, sans-serif; /* Set a modern font family */
   align-items: center;
@@ -101,31 +101,33 @@ input[type="password"] {
   margin-top: 15px; /* Margin at the top */
 }
 
-/* Apply a light background color to each column */
-.container-fluid .col {
-  background-color: #c7b6b6; /* Light gray color */
-  border-radius: 10px; /* Optional: gives rounded corners */
+.row{
+  align-items: center;
+  margin: 0;
+  padding: 0;
 }
 
+.border{
+  border-radius: 10px; /* Optional: gives rounded corners */
+  border: 2px solid #272525;
+  margin-bottom: 1rem;
+  margin-top: 1rem;
+}
 
 /* Apply a light background color to each column */
 .container-fluid .col-3 {
- 
   border-radius: 10px; /* Optional: gives rounded corners */
-}
-
-.container-fluid .col-6 {
-
-  border-radius: 10px; /* Optional: gives rounded corners */
-  padding: 5px;
 }
 
 /* Make the Pong game container fill the available height */
 .pong-game {
   position: relative;
+  padding: 0;
+  margin: 0;
   border: 2px solid white;
   background-color: #000;
   height: 50vh; /* Makes it half the viewport height */
+  width: 50vw;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -140,17 +142,17 @@ input[type="password"] {
 }
 
 .paddle-left {
-  left: 23vw; /* Positions the left paddle at 2% of the viewport width */
+  left: 1vw; /* Positions the left paddle at 2% of the viewport width */
 }
 
 .paddle-right {
-  right: 23vw; /* Positions the right paddle at 2% of the viewport width */
+  right: 1vw; /* Positions the right paddle at 2% of the viewport width */
 }
 
 /* Style the ball */
 .ball {
-  width: 1.5vw; /* 2% of the viewport width */
-  height: 1.5vw; /* Makes the ball a circle by setting equal width and height */
+  width: 1vw; /* 2% of the viewport width */
+  height: 1vw; /* Makes the ball a circle by setting equal width and height */
   background-color: white;
   border-radius: 50%;
   position: absolute;
@@ -158,19 +160,17 @@ input[type="password"] {
 }
 
 .header {
-  position: relative;
-  background-color: #333;
   height: 15vh; /* Makes it half the viewport height */
   display: flex;
   align-items: center;
-  margin: 0.5vw;
+  justify-content: center;
 }
 
 .footer {
   display: flex;
   flex-direction: column;
   background-color: #333;
-  height: 30vh;
+  height: 32vh;
 }
 
 .middle {
@@ -178,6 +178,16 @@ input[type="password"] {
   flex-direction: column;
   background-color: #333;
   height: 50vh;
+  margin: 0;
+  padding: 0;
+  align-items: center;
+}
+
+.fill {
+  display: flex;
+  padding: 0.5rem;
+  background-color: #c9b9b9;
+  border-radius: 1rem;
 }
 
 .middle-scroll {
@@ -203,7 +213,7 @@ input[type="password"] {
 
 .overlay-content {
   background: white;
-  padding: 2rem;
+  padding: 1rem;
   border-radius: 8px;
   max-width: 400px;
   width: 90%; /* Makes it responsive on smaller screens */
@@ -220,6 +230,12 @@ input[type="password"] {
   width: 100%;
 }
 
+.name{
+    font-size: 2.2rem; /* Increase font size */
+    font-weight: bolder; /* Make the font bold */
+    font-family: "Times New Roman", serif; /* Set a modern font family */
+    margin-right: 2rem;
+  }
 .profile-pic {
   width: 12vh; /* Width of the profile picture */
   height: 12vh; /* Height of the profile picture */
@@ -299,7 +315,7 @@ input[type="password"] {
   width: 5vh; /* Width of the profile picture */
   height: 5vh; /* Height of the profile picture */
   border-radius: 50%; /* Makes the image round */
- 
+
   margin: 5px;
   margin-right: 10px;
 }
@@ -467,6 +483,34 @@ input[type="password"] {
   background-color: #8cf01b; /* Darker shade on hover */
 }
 
-.center{
+.center {
   text-align: center;
+}
+
+.no-center {
+  align-items: normal;
+}
+
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+.waviy {
+  position: relative;
+}
+
+.waviy span {
+  display: inline-block;
+  font-size: 60px;
+  color: #fff;
+  text-transform: uppercase;
+  animation: flip 2s;
+  animation-delay: calc(.2s * var(--i))
+}
+@keyframes flip {
+  0%,30% {
+    transform: rotateY(360deg) 
+  }
 }
