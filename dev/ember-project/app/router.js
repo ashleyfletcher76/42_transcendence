@@ -11,4 +11,5 @@ Router.map(function () {
   this.route('pong-game');
   this.route('chat');
   this.route('tournament');
+  this.route('choose-game');
 });

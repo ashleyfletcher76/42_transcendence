@@ -1,0 +1,21 @@
+<div class="pong-game">
+  {{#if this.loading}}
+    <h1 class="white">Waiting for Player ...</h1>
+  {{else}}
+  <div class="flex-col">
+    <div class="waviy">
+      <span style="--i:1">4</span>
+      <span style="--i:2">2</span>
+      <span style="--i:3">_</span>
+      <span style="--i:4">PO</span>
+      <span style="--i:5">NG</span>
+    </div>
+
+    <div class="game-buttons">
+      <button type="button" {{on "click" (fn this.chooseGame "ai")}}>Single Player</button>
+      <button type="button" {{on "click" (fn this.chooseGame "local")}}>Local Multiplayer</button>
+      <button type="button" {{on "click" (fn this.chooseGame "remote")}}>Remote Multiplayer</button>
+    </div>
+  </div>
+  {{/if}}
+</div>

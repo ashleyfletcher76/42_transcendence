@@ -1,0 +1,9 @@
+<div class="pong-game">
+  {{#if this.winner}}
+    <h1 class="white">Winner: {{this.winner}}</h1>
+  {{else}}
+    <Paddle @position={{this.leftPaddlePosition}} @side="paddle-left" />
+    <Ball @positionX={{this.ballPositionX}} @positionY={{this.ballPositionY}} />
+    <Paddle @position={{this.rightPaddlePosition}} @side="paddle-right" />
+  {{/if}}
+</div>

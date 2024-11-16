@@ -26,7 +26,7 @@ export default class LoginController extends Controller {
         this.username,
         this.password,
       );
-      this.router.transitionTo('pong-game'); // Redirect here after successful authentication
+      this.router.transitionTo('choose-game'); // Redirect here after successful authentication
     } catch (error) {
       this.error = error;
     }
@@ -35,7 +35,7 @@ export default class LoginController extends Controller {
   @action
   async register() {
     try {
-      const response = await fetch('/api1/users/register/', {
+      const response = await fetch('/register/users/register/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

@@ -10,5 +10,17 @@
         "creator": "Jane",
         "max_players": "10",
         "current_players": "6"
+    },
+    {
+        "id": 2,
+        "creator": "Jane",
+        "max_players": "10",
+        "current_players": "6"
+    },
+    {
+        "id": 2,
+        "creator": "Jane",
+        "max_players": "10",
+        "current_players": "6"
     }
 ]

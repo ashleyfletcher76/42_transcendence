@@ -1,5 +1,3 @@
-/* styles.css */
-
 /* Overall body styling */
 body {
   font-family: Arial, sans-serif; /* Set a sans-serif font for the body */
@@ -19,6 +17,7 @@ h1 {
   font-size: 2rem; /* Increase font size */
   font-weight: bold; /* Make the font bold */
   font-family: Arial, sans-serif; /* Set a modern font family */
+  padding: 0.2rem;
 }
 
 h2 {
@@ -52,11 +51,7 @@ h4 {
 }
 
 .white {
-  text-align: left;
   color: #fff;
-  align-items: center;
-  padding: 0.5rem;
-  margin-top: 0.5rem;
 }
 
 /* Label styling */
@@ -101,13 +96,13 @@ input[type="password"] {
   margin-top: 15px; /* Margin at the top */
 }
 
-.row{
+.row {
   align-items: center;
   margin: 0;
   padding: 0;
 }
 
-.border{
+.border {
   border-radius: 10px; /* Optional: gives rounded corners */
   border: 2px solid #272525;
   margin-bottom: 1rem;
@@ -117,6 +112,8 @@ input[type="password"] {
 /* Apply a light background color to each column */
 .container-fluid .col-3 {
   border-radius: 10px; /* Optional: gives rounded corners */
+  margin: 0;
+  padding: 0;
 }
 
 /* Make the Pong game container fill the available height */
@@ -126,11 +123,22 @@ input[type="password"] {
   margin: 0;
   border: 2px solid white;
   background-color: #000;
-  height: 50vh; /* Makes it half the viewport height */
-  width: 50vw;
+  height: 100%; /* Makes it half the viewport height */
+  width: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.flex-col {
+  flex-direction: column;
+}
+
+.game-buttons {
+  display: flex;
+  flex-direction: column; /* Stack buttons vertically */
+  gap: 1rem; /* Add space between buttons */
+  margin: 3rem;
 }
 
 /* Style the paddles */
@@ -230,12 +238,13 @@ input[type="password"] {
   width: 100%;
 }
 
-.name{
-    font-size: 2.2rem; /* Increase font size */
-    font-weight: bolder; /* Make the font bold */
-    font-family: "Times New Roman", serif; /* Set a modern font family */
-    margin-right: 2rem;
-  }
+.name {
+  font-size: 2.2rem; /* Increase font size */
+  font-weight: bolder; /* Make the font bold */
+  font-family: "Times New Roman", serif; /* Set a modern font family */
+  margin-right: 2rem;
+}
+
 .profile-pic {
   width: 12vh; /* Width of the profile picture */
   height: 12vh; /* Height of the profile picture */
@@ -247,6 +256,9 @@ input[type="password"] {
 .navigation-bar {
   display: flex; /* Use flexbox for alignment */
   margin: 10px;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
 }
 
 .nav-button {
@@ -279,6 +291,7 @@ input[type="password"] {
   border-radius: 5px; /* Rounded corners */
   background-color: #706363; /* White background */
   padding: 10px; /* Padding for the list */
+  width: 95%;
 }
 
 .profile-details {
@@ -315,7 +328,6 @@ input[type="password"] {
   width: 5vh; /* Width of the profile picture */
   height: 5vh; /* Height of the profile picture */
   border-radius: 50%; /* Makes the image round */
-
   margin: 5px;
   margin-right: 10px;
 }
@@ -347,6 +359,7 @@ input[type="password"] {
 
 .logout-button:hover {
   background-color: #e5533d; /* Darker shade on hover */
+  transform: scale(1.05); /* Slightly enlarge the button on hover */
 }
 
 .register-button {
@@ -362,6 +375,7 @@ input[type="password"] {
 
 .orange-button:hover {
   background-color: darkorange; /* Darken the color on hover for effect */
+  transform: scale(1.05); /* Slightly enlarge the button on hover */
 }
 
 .user-count {
@@ -395,10 +409,12 @@ input[type="password"] {
 
 .cancel:hover {
   background-color: rgb(255 10 2 / 93.8%); /* Bright orange background */
+  transform: scale(1.05); /* Slightly enlarge the button on hover */
 }
 
 .start:hover {
   background-color: #1eca46; /* Bootstrap green color */
+  transform: scale(1.05); /* Slightly enlarge the button on hover */
 }
 
 .emoji-button {
@@ -451,17 +467,16 @@ input[type="password"] {
 }
 
 .tournament-button {
-  width: 3vw; /* Fixed width */
-  height: 2vw; /* Fixed height */
   margin: 0.15vw;
   background-color: #ff6347;
   color: white;
   border: none;
-  padding: 0; /* No additional padding */
-  font-size: 1em;
+  padding: 0.35rem;
+  font-size: 1rem;
   border-radius: 5px;
   cursor: pointer;
   transition: background-color 0.3s;
+  align-items: center;
 }
 
 .join {
@@ -469,18 +484,28 @@ input[type="password"] {
 }
 
 .update {
-  background-color: #b6f329;
+  background-color: #42c4c9;
   align-items: center;
-  margin: 5px;
-  margin-left: 8rem;
+  margin-left: 2rem;
+  padding-top: 0;
+  padding-bottom: 0;
+  transform: scale(2);
+  border-radius: 0.5rem;
 }
 
 .tournament-button:hover {
   background-color: #e5533d; /* Darker shade on hover */
+  transform: scale(1.05); /* Slightly enlarge the button on hover */
+}
+
+.update:hover {
+  background-color: #0ae6ee; /* Darker shade on hover */
+  transform: scale(2.05); /* Slightly enlarge the button on hover */
 }
 
 .join:hover {
   background-color: #8cf01b; /* Darker shade on hover */
+  transform: scale(1.05); /* Slightly enlarge the button on hover */
 }
 
 .center {
@@ -507,10 +532,12 @@ input[type="password"] {
   color: #fff;
   text-transform: uppercase;
   animation: flip 2s;
-  animation-delay: calc(.2s * var(--i))
+  animation-delay: calc(0.2s * var(--i));
 }
+
 @keyframes flip {
-  0%,30% {
-    transform: rotateY(360deg) 
+  0%,
+  30% {
+    transform: rotateY(360deg);
   }
 }

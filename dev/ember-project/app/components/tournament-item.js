@@ -1,7 +1,7 @@
 import Component from '@glimmer/component';
 import { action } from '@ember/object';
 
-export default class TournamentComponent extends Component {
+export default class TournamentItemComponent extends Component {
   @action
   onJoinClick() {
     console.log('Join clicked!');

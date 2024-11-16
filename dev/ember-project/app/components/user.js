@@ -31,16 +31,6 @@ export default class UserCardComponent extends Component {
   }
 
   @action
-  onChatClick() {
-    console.log('Chat clicked!');
-  }
-
-  @action
-  onGameClick() {
-    console.log('Game clicked!');
-  }
-
-  @action
   select() {
     console.log('User clicked!');
     // Call the parent action passed via @selectUser
