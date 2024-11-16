@@ -18,8 +18,13 @@ class UserRegisterView(APIView):
     permission_classes = [AllowAny]
 
     def post(self, request):
-        # log incoming request
         logger.info("Incoming registration data: %s", request.data)
+
+        # Check if user already exists
+        username = request.data.get("username")
+        if User.objects.filter(username=username).exists():
+            logger.error("Registration failed: Username already exists")
+            return Response({"error": "A user with that username already exists."}, status=status.HTTP_400_BAD_REQUEST)
 
         serializer = UserSerializer(data=request.data)
         if serializer.is_valid():
@@ -29,9 +34,9 @@ class UserRegisterView(APIView):
                 {"message": "User created successfully"}, status=status.HTTP_201_CREATED
             )
 
-        # log errors
         logger.error("Registration failed: %s", serializer.errors)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
 @api_view(['POST'])
 @permission_classes([AllowAny])
