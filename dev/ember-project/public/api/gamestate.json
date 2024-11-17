@@ -3,7 +3,7 @@
 	"ball_y": 0,
 	"left_paddle_y": -1,
 	"right_paddle_y": 1,
-	"left_score": 1,
-	"right_score": 2,
-	"winner": "Player1"
+	"left_score": 3,
+	"right_score": 1,
+	"winner": "Josh"
 }

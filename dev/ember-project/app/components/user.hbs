@@ -1,7 +1,11 @@
 <div class="user-card" role="button" onclick={{this.select}}>
     <img src={{@user.avatar}} alt="Profile Picture" class="user-pic user" />
     <div class="profile-details">
-        <h2>{{@user.nickname}}</h2>
-        <h2 class="points">{{@user.points}}🏆</h2>
+        {{#if this.isOnline}} 
+        <h2 class="info">{{@user.nickname}} 🟢</h2>
+        {{else}}
+        <h2 class="info">{{@user.nickname}} 🔴</h2>
+        {{/if}}
+        <h2 class="points info">{{@user.points}} 🏆</h2>        
     </div>
 </div>

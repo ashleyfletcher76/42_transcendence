@@ -6,6 +6,5 @@
     "games_total": "6",
     "wins": "5",
     "losses": "1",
-    "status": "online 🟢", 
-    "offline_example": "offline 🔴"
+    "status": "online"
 }

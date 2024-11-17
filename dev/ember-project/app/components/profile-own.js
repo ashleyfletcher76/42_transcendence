@@ -8,13 +8,12 @@ export default class NavigationComponent extends Component {
   @tracked ownUser = null; // Tracks user data for the template
 
   get isAuthenticated() {
-    if (this.session.isAuthenticated && !this.userData) {
+    if (this.session.isAuthenticated && !this.ownUser) {
       this.fetchUserData();
     }
     return this.session.isAuthenticated;
   }
 
-  @action
   async fetchUserData() {
     try {
       const response = await fetch('/api/profile.json', {
@@ -35,6 +34,11 @@ export default class NavigationComponent extends Component {
     } catch (error) {
       console.error('Error fetching user profile:', error);
     }
+  }
+
+  get isOnline() {
+    if (this.session.isAuthenticated && this.ownUser)
+      return this.ownUser.status === 'online';
   }
 
   @action

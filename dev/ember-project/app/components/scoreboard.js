@@ -19,5 +19,4 @@ export default class ScoreboardComponent extends Component {
   get player_2() {
     return this.gameData.player_2; // Access shared room data
   }
-
 }

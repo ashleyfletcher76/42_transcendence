@@ -56,7 +56,9 @@ export default class LoginController extends Controller {
         this.username,
         this.password,
       );
-      this.router.transitionTo('choose-game'); // Redirect here after successful authentication
+      this.router.transitionTo('choose-game', {
+        queryParams: { username: this.username } // Add the username as a query parameter
+      });
     } catch (error) {
       this.error = error.message || 'An error occurred during registration';
     }

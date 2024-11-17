@@ -1,7 +1,7 @@
-<div class="container-fluid row fill">
+<div class="container-fluid row fill p-2">
   {{!-- Profile picture column (1 part) --}}
   <div class="col center no-padding position-relative">
-    <button type="button" class="btn-close" onclick={{this.onCloseClick}}></button>
+    <button type="button" class="btn-close top-left" onclick={{this.onCloseClick}}></button>
     <img src={{@selectedUser.avatar}} alt="Profile Picture" class="profile-pic" />
   </div>
 
@@ -11,16 +11,16 @@
     <div class="profile-details">
         <h2 class="name">{{@selectedUser.nickname}}</h2>
         <div class="actions">
-      <button class="emoji-button" data-bs-toggle="tooltip" data-bs-placement="top" title="Live Chat" type="button">
+      <button class="emoji-button info" data-bs-toggle="tooltip" data-bs-placement="top" title="Live Chat" type="button">
         💬
       </button>
-      <button class="emoji-button" data-bs-toggle="tooltip" data-bs-placement="top" title="Play Game" type="button">
+      <button class="emoji-button info" data-bs-toggle="tooltip" data-bs-placement="top" title="Play Game" type="button">
         🎮
       </button>
-      <button class="emoji-button" data-bs-toggle="tooltip" data-bs-placement="top" title="Add Friend" type="button">
+      <button class="emoji-button info" data-bs-toggle="tooltip" data-bs-placement="top" title="Add Friend" type="button">
         ➕ 
       </button>
-      <button class="emoji-button" data-bs-toggle="tooltip" data-bs-placement="top" title="Block User" type="button">
+      <button class="emoji-button info" data-bs-toggle="tooltip" data-bs-placement="top" title="Block User" type="button">
         🚫
       </button>
       </div>
@@ -29,13 +29,17 @@
 
     {{!-- Second row of profile details --}}
     <div class="profile-details">
-      <h2 >Games: {{@selectedUser.games_total}}</h2>
-      <h2 >Wins: {{@selectedUser.wins}}</h2>
+      <h2 class="info">Games: {{@selectedUser.games_total}}</h2>
+      <h2 class="info">Wins: {{@selectedUser.wins}}</h2>
     </div>
 
     <div class="profile-details">
-      <h2 >{{@selectedUser.status}}</h2>
-      <h2 >Losses: {{@selectedUser.losses}}</h2>
+      {{#if this.isOnline}} 
+        <h2 class="info">🟢 online</h2>
+      {{else}}
+        <h2 class="info">🔴 offline</h2>
+      {{/if}}
+      <h2 class="info">Losses: {{@selectedUser.losses}}</h2>
     </div>
     
   </div>

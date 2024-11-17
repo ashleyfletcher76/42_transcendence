@@ -1,22 +1,22 @@
 <div class="container-fluid row border">
   {{!-- Profile picture column (1 part) --}}
   <div class="col-5">
-    <User @user={{this.player_1}} />
+    <User @user={{this.player_1}} @selectUser={{this.args.selectUser}}/>
   </div>
 
   {{!-- Profile details column (3 parts) --}}
   <div class="col-2">
-    <h4>3:1</h4>
+    <div class="waviy center"><span style="--i:1">3:1</span></div>
   </div>
 
   <div class="col-5">
-    <User @user={{this.player_2}} />
+    <User @user={{this.player_2}} @selectUser={{this.args.selectUser}}/>
   </div>
 </div>
 <div class="container-fluid row border">
   {{!-- Profile picture column (1 part) --}}
   <div class="col-5">
-    <User @user={{this.player_2}} />
+    <User @user={{this.player_2}} @selectUser={{this.args.selectUser}}/>
   </div>
 
   {{!-- Profile details column (3 parts) --}}
@@ -25,6 +25,6 @@
   </div>
 
   <div class="col-5">
-    <User @user={{this.player_2}} />
+    <User @user={{this.player_2}} @selectUser={{this.args.selectUser}}/>
   </div>
 </div>

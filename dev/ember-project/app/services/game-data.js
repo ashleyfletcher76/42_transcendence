@@ -48,4 +48,3 @@ export default class GameDataService extends Service {
     }
   }
 }
-

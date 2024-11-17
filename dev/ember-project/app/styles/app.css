@@ -1,9 +1,13 @@
 /* Overall body styling */
-body {
+.body {
   font-family: Arial, sans-serif; /* Set a sans-serif font for the body */
   background-color: #423838; /* Light gray background color */
   margin: 0; /* Remove default margins */
   padding: 0; /* Remove default padding */
+}
+
+.emoji {
+  font-family: "Segoe UI Emoji", "Apple Color Emoji", "Noto Color Emoji", "EmojiOne", sans-serif;
 }
 
 p {
@@ -20,7 +24,7 @@ h1 {
   padding: 0.2rem;
 }
 
-h2 {
+.info {
   text-align: left; /* Center the heading */
   color: #333; /* Dark gray color for the heading */
   font-size: 1.5rem; /* Increase font size */
@@ -30,7 +34,8 @@ h2 {
   margin: 0;
 }
 
-h3 {
+.tournament-info
+{
   text-align: left; /* Center the heading */
   color: #333; /* Dark gray color for the heading */
   font-size: 1rem; /* Increase font size */
@@ -96,13 +101,14 @@ input[type="password"] {
   margin-top: 15px; /* Margin at the top */
 }
 
-.row {
+.container-fluid .row {
   align-items: center;
+  justify-content: center;
   margin: 0;
   padding: 0;
 }
 
-.border {
+.container-fluid .row .border {
   border-radius: 10px; /* Optional: gives rounded corners */
   border: 2px solid #272525;
   margin-bottom: 1rem;
@@ -112,6 +118,11 @@ input[type="password"] {
 /* Apply a light background color to each column */
 .container-fluid .col-3 {
   border-radius: 10px; /* Optional: gives rounded corners */
+  margin: 0;
+  padding: 0;
+}
+
+.container-fluid .col-6 {
   margin: 0;
   padding: 0;
 }
@@ -260,7 +271,7 @@ input[type="password"] {
   position: relative;
 }
 
-.btn-close {
+.top-left {
   position: absolute; /* Allows positioning relative to the .col container */
   top: 0; /* Aligns to the top of the container */
   left: 0; /* Aligns to the right of the container */

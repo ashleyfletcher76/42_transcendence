@@ -1,9 +1,7 @@
 {{!-- app/templates/application.hbs --}}
 <main>
 
-<div id="ember-bootstrap-wormhole"></div>
-
-<div class="container-fluid">
+<div class="container-fluid body">
   <div class="container-fluid row">
     <div class="col header">
      <ProfileOwn />
@@ -35,7 +33,7 @@
             <LinkTo @route="tournament" class="nav-button">Create Tournament</LinkTo>
     </div>
     <div class="container-fluid col-6 footer">
-      <Scoreboard />
+      <Scoreboard @selectUser={{this.selectUser}}/>
     </div>
     <div class="container-fluid col-3 footer">
 	  <DirectMessage/>

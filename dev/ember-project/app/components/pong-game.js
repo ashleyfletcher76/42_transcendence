@@ -43,8 +43,8 @@ export default class PongGameComponent extends Component {
       });
 
       console.log('Request body sent to API:', requestBody);
-
-      const response = await fetch('/api/gamestate.json', {
+      console.log(roomData.room_name);
+      const response = await fetch(`/pong/game_state/${roomData.room_name}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
