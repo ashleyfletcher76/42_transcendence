@@ -1,27 +1,62 @@
-/* styles.css */
-
 /* Overall body styling */
-body {
+.body {
   font-family: Arial, sans-serif; /* Set a sans-serif font for the body */
-  background-color: #2b2727; /* Light gray background color */
+  background-color: #423838; /* Light gray background color */
   margin: 0; /* Remove default margins */
   padding: 0; /* Remove default padding */
+}
+
+.emoji {
+  font-family: "Segoe UI Emoji", "Apple Color Emoji", "Noto Color Emoji", "EmojiOne", sans-serif;
+}
+
+p {
+  padding: 0;
+  margin: 0;
 }
 
 h1 {
   text-align: center; /* Center the heading */
   color: #333; /* Dark gray color for the heading */
-  font-size: 5rem; /* Increase font size */
+  font-size: 2rem; /* Increase font size */
   font-weight: bold; /* Make the font bold */
   font-family: Arial, sans-serif; /* Set a modern font family */
+  padding: 0.2rem;
 }
 
-h2 {
-  text-align: center; /* Center the heading */
+.info {
+  text-align: left; /* Center the heading */
   color: #333; /* Dark gray color for the heading */
   font-size: 1.5rem; /* Increase font size */
   font-weight: bold; /* Make the font bold */
   font-family: Arial, sans-serif; /* Set a modern font family */
+  padding: 0;
+  margin: 0;
+}
+
+.tournament-info
+{
+  text-align: left; /* Center the heading */
+  color: #333; /* Dark gray color for the heading */
+  font-size: 1rem; /* Increase font size */
+  font-weight: bold; /* Make the font bold */
+  font-family: Arial, sans-serif; /* Set a modern font family */
+  padding: 0;
+  margin: 0;
+  align-items: center;
+}
+
+h4 {
+  text-align: center; /* Center the heading */
+  color: #fff; /* Dark gray color for the heading */
+  font-size: 5rem; /* Increase font size */
+  font-weight: bold; /* Make the font bold */
+  font-family: Arial, sans-serif; /* Set a modern font family */
+  align-items: center;
+}
+
+.white {
+  color: #fff;
 }
 
 /* Label styling */
@@ -44,8 +79,7 @@ input[type="password"] {
 }
 
 /* Button styling */
-button {
-  width: 100%; /* Full width */
+.login {
   padding: 10px; /* Padding inside button */
   background-color: #28a745; /* Bootstrap green color */
   border: none; /* No border */
@@ -56,8 +90,7 @@ button {
   transition: background-color 0.3s; /* Smooth background transition */
 }
 
-/* Button hover effect */
-button:hover {
+.login:hover {
   background-color: #218838; /* Darker green on hover */
 }
 
@@ -68,35 +101,55 @@ button:hover {
   margin-top: 15px; /* Margin at the top */
 }
 
+.container-fluid .row {
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+  padding: 0;
+}
+
+.container-fluid .row .border {
+  border-radius: 10px; /* Optional: gives rounded corners */
+  border: 2px solid #272525;
+  margin-bottom: 1rem;
+  margin-top: 1rem;
+}
+
 /* Apply a light background color to each column */
-.container-fluid .col {
-  background-color: #c7b6b6; /* Light gray color */
-  padding: 15px;
-  margin: 5px; /* Adds a small margin between columns */
-  border-radius: 5px; /* Optional: gives rounded corners */
+.container-fluid .col-3 {
+  border-radius: 10px; /* Optional: gives rounded corners */
+  margin: 0;
+  padding: 0;
 }
 
 .container-fluid .col-6 {
-  background-color: #c7b6b6; /* Light gray color */
-  margin: 5px; /* Adds a small margin between columns */
-  border-radius: 5px; /* Optional: gives rounded corners */
-}
-
-/* Make the Pong game container fill the available height */
-.container-fluid .col-6.pong-game {
-  background-color: #000; /* Set black background for pong-game */
-  border: 2px solid white; /* Optional: border for visibility */
+  margin: 0;
+  padding: 0;
 }
 
 /* Make the Pong game container fill the available height */
 .pong-game {
   position: relative;
+  padding: 0;
+  margin: 0;
   border: 2px solid white;
   background-color: #000;
-  height: 50vh; /* Makes it half the viewport height */
+  height: 100%; /* Makes it half the viewport height */
+  width: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.flex-col {
+  flex-direction: column;
+}
+
+.game-buttons {
+  display: flex;
+  flex-direction: column; /* Stack buttons vertically */
+  gap: 1rem; /* Add space between buttons */
+  margin: 3rem;
 }
 
 /* Style the paddles */
@@ -108,38 +161,60 @@ button:hover {
 }
 
 .paddle-left {
-  left: 23vw; /* Positions the left paddle at 2% of the viewport width */
+  left: 1vw; /* Positions the left paddle at 2% of the viewport width */
 }
 
 .paddle-right {
-  right: 23vw; /* Positions the right paddle at 2% of the viewport width */
+  right: 1vw; /* Positions the right paddle at 2% of the viewport width */
 }
 
 /* Style the ball */
 .ball {
-  width: 1.5vw; /* 2% of the viewport width */
-  height: 1.5vw; /* Makes the ball a circle by setting equal width and height */
+  width: 1vw; /* 2% of the viewport width */
+  height: 1vw; /* Makes the ball a circle by setting equal width and height */
   background-color: white;
   border-radius: 50%;
   position: absolute;
   transition: transform 50ms linear; /* Adjust as needed */
 }
 
-.profile-header {
-  position: relative;
-  background-color: #333;
+.header {
   height: 15vh; /* Makes it half the viewport height */
   display: flex;
   align-items: center;
+  justify-content: center;
 }
 
-.profile-footer {
-  position: relative;
-  background-color: #333;
-  height: 30vh; /* Makes it half the viewport height */
+.footer {
   display: flex;
+  flex-direction: column;
+  background-color: #333;
+  height: 32vh;
+}
+
+.middle {
+  display: flex;
+  flex-direction: column;
+  background-color: #333;
+  height: 50vh;
+  margin: 0;
+  padding: 0;
   align-items: center;
-  justify-content: center;
+}
+
+.fill {
+  display: flex;
+  padding: 0.5rem;
+  background-color: #c9b9b9;
+  border-radius: 1rem;
+}
+
+.middle-scroll {
+  height: 40vh;
+}
+
+.footer-scroll {
+  height: 25vh;
 }
 
 .overlay {
@@ -157,7 +232,7 @@ button:hover {
 
 .overlay-content {
   background: white;
-  padding: 2rem;
+  padding: 1rem;
   border-radius: 8px;
   max-width: 400px;
   width: 90%; /* Makes it responsive on smaller screens */
@@ -174,19 +249,42 @@ button:hover {
   width: 100%;
 }
 
+.name {
+  font-size: 2.2rem; /* Increase font size */
+  font-weight: bolder; /* Make the font bold */
+  font-family: "Times New Roman", serif; /* Set a modern font family */
+  margin-right: 2rem;
+}
+
 .profile-pic {
-  width: 12vh; /* Width of the profile picture */
-  height: 12vh; /* Height of the profile picture */
+  width: 11vh; /* Width of the profile picture */
+  height: 11vh; /* Height of the profile picture */
   border-radius: 50%; /* Makes the image round */
-  margin-right: 15px; /* Space between the image and text */
-  align-items: center;
+  padding: 0;
+}
+
+.no-padding {
+  padding: 0;
+}
+
+.position-relative {
+  position: relative;
+}
+
+.top-left {
+  position: absolute; /* Allows positioning relative to the .col container */
+  top: 0; /* Aligns to the top of the container */
+  left: 0; /* Aligns to the right of the container */
+  border: none;
+  cursor: pointer;
 }
 
 .navigation-bar {
   display: flex; /* Use flexbox for alignment */
-  justify-content: space-around; /* Distribute buttons evenly */
-  align-items: center; /* Center items vertically */
-  width: 100%; /* Full width */
+  margin: 10px;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
 }
 
 .nav-button {
@@ -196,14 +294,16 @@ button:hover {
   border-radius: 0.5vw; /* Rounded corners */
   margin: 0.5vw; /* Margin using viewport width */
   cursor: pointer; /* Pointer cursor on hover */
-  font-size: 1.8vw; /* Adjusted font size for better visibility */
-  padding: 5px; /* Padding for buttons to make them larger */
+  font-size: 1vw; /* Adjusted font size for better visibility */
+  padding: 5px;
+  padding-inline: 1.5rem; /* Padding for buttons to make them larger */
   transition:
     background-color 0.3s,
     color 0.3s,
     transform 0.2s; /* Smooth transition */
 
   box-shadow: 0 4px 8px rgb(0 0 0 / 20%); /* Subtle shadow for depth */
+  text-decoration: none;
 }
 
 .nav-button:hover {
@@ -213,34 +313,31 @@ button:hover {
 }
 
 .scrollable-list {
-  max-height: 38vh; /* Set a maximum height for the list */
   overflow-y: auto; /* Enable vertical scrollbar if content overflows */
   border-radius: 5px; /* Rounded corners */
   background-color: #706363; /* White background */
   padding: 10px; /* Padding for the list */
+  width: 95%;
 }
 
 .profile-details {
-  display: flex;
-  justify-content: space-between; /* Aligns name left and points right */
-  flex: 1; /* Allows it to fill remaining space */
-}
-
-.name {
-  font-size: 1.5rem;
-  color: #333;
+  display: flex; /* Flexbox container */
+  justify-content: space-between; /* Distribute space between left and right */
+  align-items: center; /* Vertically center the content */
 }
 
 .points {
   font-size: 1.5rem;
   color: #fff23f; /* Gold color for points */
   text-align: right;
+  display: inline-flex;
+  margin: 0.5vw;
 }
 
 .user-card {
   display: flex;
   align-items: center; /* Centers image and text vertically */
-  padding: 15px;
+  padding: 5px;
   border: 1px solid #272525;
   border-radius: 8px;
   margin: 0.3vw;
@@ -257,7 +354,8 @@ button:hover {
   width: 5vh; /* Width of the profile picture */
   height: 5vh; /* Height of the profile picture */
   border-radius: 50%; /* Makes the image round */
-  margin-right: 15px; /* Space between the image and text */
+  margin: 5px;
+  margin-right: 10px;
 }
 
 .user-card:hover {
@@ -265,10 +363,10 @@ button:hover {
   box-shadow: 0 4px 8px rgb(0 0 0 / 10%); /* Subtle shadow on hover */
 }
 
-.user-card:active {
-  background-color: #c08080; /* Darker gray on active state */
-  box-shadow: 0 2px 4px rgb(0 0 0 / 20%); /* Reduced shadow on active */
-  transform: scale(0.98); /* Slight "press" effect */
+.user-card.active {
+  /* Apply active styles when the card is directly clicked */
+  background-color: #e48585; /* Example active style */
+  transform: scale(0.98);
 }
 
 .logout-button {
@@ -287,6 +385,7 @@ button:hover {
 
 .logout-button:hover {
   background-color: #e5533d; /* Darker shade on hover */
+  transform: scale(1.05); /* Slightly enlarge the button on hover */
 }
 
 .register-button {
@@ -302,4 +401,169 @@ button:hover {
 
 .orange-button:hover {
   background-color: darkorange; /* Darken the color on hover for effect */
+  transform: scale(1.05); /* Slightly enlarge the button on hover */
+}
+
+.user-count {
+  color: #1b1a1a;
+  font-size: 2rem;
+  font-weight: bold;
+  margin: 1rem; /* Space between count and user list */
+  text-align: center; /* Center-aligns the count text */
+}
+
+.button-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Center-aligns buttons */
+  justify-content: center;
+  padding: 4rem;
+}
+
+.spacing {
+  gap: 1rem;
+  margin: 1rem;
+}
+
+.cancel {
+  background-color: rgb(241 36 29 / 93.8%); /* Bright orange background */
+}
+
+.start {
+  background-color: #28a745; /* Bootstrap green color */
+}
+
+.cancel:hover {
+  background-color: rgb(255 10 2 / 93.8%); /* Bright orange background */
+  transform: scale(1.05); /* Slightly enlarge the button on hover */
+}
+
+.start:hover {
+  background-color: #1eca46; /* Bootstrap green color */
+  transform: scale(1.05); /* Slightly enlarge the button on hover */
+}
+
+.emoji-button {
+  background: none; /* Ensure no background on hover */
+  border: none;
+  cursor: pointer;
+  padding: 0; /* No extra space around the icon */
+  margin-inline: 0.5rem; /* No margins to prevent unwanted spacing */
+  font-size: 2rem; /* Set the icon size */
+  transition:
+    font-size 0.3s ease,
+    opacity 0.3s ease,
+    transform 0.3s ease; /* Smooth transition */
+
+  display: inline-flex; /* Inline button to shrink wrap around content */
+  align-items: center; /* Vertically center the icon */
+  justify-content: center; /* Horizontally center the icon */
+}
+
+.emoji-button:focus {
+  outline: none; /* Remove default focus outline */
+}
+
+.emoji-button:hover {
+  opacity: 0.8; /* Slight fade effect */
+  transform: scale(1.5); /* Scale the icon on hover */
+  background: none; /* Ensure no background on hover */
+}
+
+.emoji-button:active {
+  transform: scale(1.2); /* Slight "press" effect */
+}
+
+.profile-details {
+  display: flex; /* Use Flexbox for positioning */
+  justify-content: space-between; /* Ensure space between the left and right sections */
+  align-items: center; /* Vertically center the content */
+  width: 100%; /* Make sure the container takes full width */
+}
+
+.actions {
+  display: flex; /* Arrange the buttons horizontally */
+  align-items: center; /* Vertically center the buttons */
+  margin-right: auto; /* Push the actions (buttons) to the far right */
+}
+
+.left {
+  margin-right: 0;
+  margin-left: auto;
+}
+
+.tournament-button {
+  margin: 0.15vw;
+  background-color: #ff6347;
+  color: white;
+  border: none;
+  padding: 0.35rem;
+  font-size: 1rem;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  align-items: center;
+}
+
+.join {
+  background-color: #51a32b;
+}
+
+.update {
+  background-color: #42c4c9;
+  align-items: center;
+  margin-left: 2rem;
+  padding-top: 0;
+  padding-bottom: 0;
+  transform: scale(2);
+  border-radius: 0.5rem;
+}
+
+.tournament-button:hover {
+  background-color: #e5533d; /* Darker shade on hover */
+  transform: scale(1.05); /* Slightly enlarge the button on hover */
+}
+
+.update:hover {
+  background-color: #0ae6ee; /* Darker shade on hover */
+  transform: scale(2.05); /* Slightly enlarge the button on hover */
+}
+
+.join:hover {
+  background-color: #8cf01b; /* Darker shade on hover */
+  transform: scale(1.05); /* Slightly enlarge the button on hover */
+}
+
+.center {
+  text-align: center;
+}
+
+.no-center {
+  align-items: normal;
+}
+
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+.waviy {
+  position: relative;
+}
+
+.waviy span {
+  display: inline-block;
+  font-size: 60px;
+  color: #fff;
+  text-transform: uppercase;
+  animation: flip 2s;
+  animation-delay: calc(0.2s * var(--i));
+}
+
+@keyframes flip {
+  0%,
+  30% {
+    transform: rotateY(360deg);
+  }
 }
