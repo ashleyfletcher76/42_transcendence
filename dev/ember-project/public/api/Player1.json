@@ -1,0 +1,11 @@
+{
+    "username": "Testuser",
+    "nickname": "Josh",
+    "avatar": "/images/profile.png",
+    "points": "100",
+    "games_total": "6",
+    "wins": "5",
+    "losses": "1",
+    "status": "online 🟢", 
+    "offline_example": "offline 🔴"
+}

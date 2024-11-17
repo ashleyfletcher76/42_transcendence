@@ -1,12 +1,16 @@
-<div class="container-fluid row fill no-center">
+<div class="container-fluid row fill">
   {{!-- Profile picture column (1 part) --}}
-  <button type="button" class="btn-close" onclick={{this.onCloseClick}}></button>
-  <img src={{@user.selectedUser.profilePicture}} alt="Profile Picture" class="profile-pic" />
+  <div class="col center no-padding position-relative">
+    <button type="button" class="btn-close" onclick={{this.onCloseClick}}></button>
+    <img src={{@selectedUser.avatar}} alt="Profile Picture" class="profile-pic" />
+  </div>
+
   {{!-- Profile details column (3 parts) --}}
   <div class="col-10">
+    {{!-- First row of profile details --}}
     <div class="profile-details">
-      <h2 class="name">{{@user.selectedUser.name}}</h2>
-      <div class="actions">
+        <h2 class="name">{{@selectedUser.nickname}}</h2>
+        <div class="actions">
       <button class="emoji-button" data-bs-toggle="tooltip" data-bs-placement="top" title="Live Chat" type="button">
         💬
       </button>
@@ -20,21 +24,19 @@
         🚫
       </button>
       </div>
-      <h2 class="points">{{@user.selectedUser.points}} 🏆</h2>
+      <h2 class="points">{{@selectedUser.points}}🏆</h2>
     </div>
 
     {{!-- Second row of profile details --}}
     <div class="profile-details">
-      <h2>Some</h2>
-      <h2>Other</h2>
-      <h2>Stuff</h2>
+      <h2 >Games: {{@selectedUser.games_total}}</h2>
+      <h2 >Wins: {{@selectedUser.wins}}</h2>
     </div>
 
     <div class="profile-details">
-      <h2>Some</h2>
-      <h2>Other</h2>
-      <h2>Stuff</h2>
+      <h2 >{{@selectedUser.status}}</h2>
+      <h2 >Losses: {{@selectedUser.losses}}</h2>
     </div>
-
+    
   </div>
 </div>

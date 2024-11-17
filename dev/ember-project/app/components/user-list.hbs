@@ -1,5 +1,5 @@
 <div class="scrollable-list middle-scroll">
     {{#each this.users as |user|}}
-        <User @user={{user}} @name={{user.name}} @points={{user.points}} @profilePicture={{user.profilePicture}} @selectUser={{this.args.selectUser}} />
+        <User @user={{user}} @selectUser={{this.args.selectUser}} />
     {{/each}}
 </div>

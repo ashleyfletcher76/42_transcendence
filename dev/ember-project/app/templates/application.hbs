@@ -10,7 +10,7 @@
     </div>
     <div class="col header">
       {{#if this.selectedUser}}
-        <ProfileOther @user={{this}}/>
+        <ProfileOther @selectedUser={{this.selectedUser}} @selectUser={{this.selectUser}}/>
       {{else}}
         <TitleAnimation />
       {{/if}}

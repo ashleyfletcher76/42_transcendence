@@ -1,7 +1,7 @@
 <div class="container-fluid row border">
   {{!-- Profile picture column (1 part) --}}
   <div class="col-5">
-    <User @name={{this.roomData.player_1}} @points="100" @profilePicture=""/>
+    <User @user={{this.player_1}} />
   </div>
 
   {{!-- Profile details column (3 parts) --}}
@@ -10,13 +10,13 @@
   </div>
 
   <div class="col-5">
-    <User @name={{this.roomData.player_2}} @points="100" @profilePicture="" />
+    <User @user={{this.player_2}} />
   </div>
 </div>
 <div class="container-fluid row border">
   {{!-- Profile picture column (1 part) --}}
   <div class="col-5">
-    <User @name="Dummy" @points="100" @profilePicture=""/>
+    <User @user={{this.player_2}} />
   </div>
 
   {{!-- Profile details column (3 parts) --}}
@@ -25,6 +25,6 @@
   </div>
 
   <div class="col-5">
-    <User @name="Dummy" @points="100" @profilePicture="" />
+    <User @user={{this.player_2}} />
   </div>
 </div>

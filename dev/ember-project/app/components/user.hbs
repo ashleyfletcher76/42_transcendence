@@ -1,13 +1,7 @@
-<div
-  class="user-card {{if this.isActive 'active'}}"
-  role="button"
-  tabindex="0"
-  onclick={{this.select}}
-  {{on "click" this.handleCardClick}}
->
-    <img src={{@profilePicture}} alt="Profile Picture" class="user-pic user" />
+<div class="user-card" role="button" onclick={{this.select}}>
+    <img src={{@user.avatar}} alt="Profile Picture" class="user-pic user" />
     <div class="profile-details">
-        <h2>{{@name}}</h2>
-        <h2 class="points">{{@points}}🏆</h2>
+        <h2>{{@user.nickname}}</h2>
+        <h2 class="points">{{@user.points}}🏆</h2>
     </div>
 </div>
