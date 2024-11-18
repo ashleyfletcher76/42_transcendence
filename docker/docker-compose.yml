@@ -80,6 +80,26 @@ services:
     restart: always
     ports:
       - "5435:5432"
+  
+  lobby-db:
+    container_name: lobby-db
+    build: ./../backend/lobby/postgres
+    environment:
+      POSTGRES_USER: ${LOBBY_SERVICE_USER}
+      POSTGRES_PASSWORD: ${LOBBY_SERVICE_PASSWORD}
+      POSTGRES_DB: ${LOBBY_SERVICE_DB}
+    volumes:
+      - lobby_data:/var/lib/postgresql/data
+    networks:
+      my_network:
+    healthcheck:
+      test: [ "CMD-SHELL", "[ -f /var/lib/postgresql/data/.db_ready ] || exit 1" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: always
+    ports:
+      - "5437:5432"
 
   auth-service:
     build: ./../backend/user-management/auth-service
@@ -162,6 +182,8 @@ services:
 
   pong-game:
     build: ./../backend/pong
+    volumes:
+      - ./../backend/pong:/app
     container_name: pong
     environment:
       DJANGO_SECRET_KEY: ${DJANGO_SECRET_KEY}
@@ -186,6 +208,35 @@ services:
     restart: always
     ports:
       - "8002:8000"
+  
+  lobby:
+    build: ./../backend/lobby
+    volumes:
+      - ./../backend/lobby:/app
+    container_name: lobby
+    environment:
+      DJANGO_SECRET_KEY: ${DJANGO_SECRET_KEY}
+      DJANGO_DEBUG: ${DJANGO_DEBUG}
+      LOBBY_SERVICE_DB: ${LOBBY_SERVICE_DB}
+      LOBBY_SERVICE_USER: ${LOBBY_SERVICE_USER}
+      LOBBY_SERVICE_PASSWORD: ${LOBBY_SERVICE_PASSWORD}
+      DJANGO_SUPERUSER_USERNAME: ${DJANGO_SUPERUSER_USERNAME}
+      DJANGO_SUPERUSER_EMAIL: ${DJANGO_SUPERUSER_EMAIL}
+      DJANGO_SUPERUSER_PASSWORD: ${DJANGO_SUPERUSER_PASSWORD}
+    working_dir: /app
+    networks:
+      my_network:
+    healthcheck:
+      test: [ "CMD-SHELL", "curl -k -f http://localhost:8000/lobby/health/ || exit 1" ]
+      interval: 100s
+      timeout: 5s
+      retries: 5
+    depends_on:
+      lobby-db:
+        condition: service_healthy
+    restart: always
+    ports:
+      - "8003:8000"
 
   redis:
     image: redis:alpine
@@ -219,6 +270,8 @@ services:
         condition: service_healthy
       pong-game:
         condition: service_healthy
+      lobby:
+        condition: service_healthy
     networks:
       my_network:
     ports:
@@ -236,4 +289,5 @@ volumes:
   db_data:
   chat_data:
   pong_data:
+  lobby_data:
   redis_data:

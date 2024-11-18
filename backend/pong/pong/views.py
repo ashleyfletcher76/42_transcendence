@@ -66,7 +66,6 @@ def game_state_view(request, room_name):
                         move_left_paddle(game, 1)
 
             game.save()
-            print(f"Final game paused state: {game.paused}")
 
             serializer = GameStateSerializer(game)
             return Response(serializer.data)
@@ -131,9 +130,16 @@ def is_paddle_hit(paddle_y, ball_y, paddle_height=0.2):
 @api_view(['POST'])
 def create_room(request):
     try:
+        # Log the received data for debugging
+        logging.info("Received request data: %s", request.body)
+        
         data = json.loads(request.body)
-        player2_is_ai = data.get("player2_is_ai", False)
+        player_1 = data.get("player_1", "default")
+        player_2 = data.get("player_2", "default")
+
         room_name = 'room-' + str(random.randint(1000, 9999))
+
+        # Create a new game state instance
         game_state = GameState.objects.create(
             room_name=room_name,
             ball_x=0.5,
@@ -144,27 +150,34 @@ def create_room(request):
             right_paddle_y=0.5,
             left_score=0,
             right_score=0,
-            player1="Player1",
-            player2="AI" if player2_is_ai else None,
+            player1=player_1,
+            player2=player_2,
             paused=True
         )
+
+        # Serialize the game state
         serializer = GameStateSerializer(game_state)
-        return Response({
+
+        response_data = {
             "message": "Room created successfully",
             "room_name": room_name,
             "game_state": serializer.data
-        }, status=status.HTTP_201_CREATED)
+        }
+
+        return JsonResponse(response_data, status=status.HTTP_201_CREATED, safe=False)
+
+
     except Exception as e:
-        return Response({
-            "error": str(e)
-        }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        logging.error("Error creating room: %s", str(e))
+        return JsonResponse({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
 
 
 # View for searching a room that is waiting for an opponent
 @api_view(['GET'])
 def search_room(request):
     try:
-        waiting_room = GameState.objects.filter(player2=None).first()
+        waiting_room = GameState.objects.filter(player2="remote").first()
 
         if waiting_room:
             waiting_room.player2 = "player_2"

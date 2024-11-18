@@ -2044,16 +2044,17 @@
         }
         const data = await response.json();
         if (data.room_name) {
-          this.loading = false;
-          this.gameData.setGameData(gameType, data);
-          this.router.transitionTo('pong-game', {
-            queryParams: {
-              gameType: gameType,
-              roomData: data // pass data as a query parameter
-            }
-          });
+			this.loading = false;
+			this.gameData.setGameData(gameType, data);
+			this.router.transitionTo('pong-game', {
+				queryParams: {
+					gameType: gameType,
+					roomData: data // pass data as a query parameter
+				}
+			});
         }
-      } catch (error) {
+		console.log(data);
+	} catch (error) {
         console.error('Error:', error);
       }
     }
