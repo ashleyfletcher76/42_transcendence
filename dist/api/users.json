@@ -1,56 +1,82 @@
 [
     {
-        "id": 1,
-        "name": "John",
-        "points": 150,
-        "profilePicture": "/images/default-profile.jpeg"
+        "username": "Testuser",
+        "nickname": "pLaYeR",
+        "avatar": "/images/profile.png",
+        "points": "100",
+        "games_total": "6",
+        "wins": "5",
+        "losses": "1",
+        "status": "online"
     },
     {
-        "id": 2,
-        "name": "Jane",
-        "points": 200,
-        "profilePicture": "/images/default-profile.jpeg"
+        "username": "Testuser",
+        "nickname": "Tom",
+        "avatar": "/images/profile.png",
+        "points": "123",
+        "games_total": "6",
+        "wins": "5",
+        "losses": "1",
+        "status": "online"
     },
     {
-        "id": 3,
-        "name": "Alice",
-        "points": 250,
-        "profilePicture": "/images/default-profile.jpeg"
+        "username": "Testuser",
+        "nickname": "Tim",
+        "avatar": "/images/profile.png",
+        "points": "200",
+        "games_total": "6",
+        "wins": "5",
+        "losses": "1",
+        "status": "offline"
     },
     {
-        "id": 4,
-        "name": "Bob_Brown",
-        "points": 100,
-        "profilePicture": "/images/default-profile.jpeg"
+        "username": "Testuser",
+        "nickname": "Bob",
+        "avatar": "/images/profile.png",
+        "points": "1560",
+        "games_total": "6",
+        "wins": "5",
+        "losses": "1",
+        "status": "online"
     },
     {
-        "id": 4,
-        "name": "Bob_Black",
-        "points": 1000,
-        "profilePicture": "/images/default-profile.jpeg"
+        "username": "Testuser",
+        "nickname": "John",
+        "avatar": "/images/profile.png",
+        "points": "100",
+        "games_total": "6",
+        "wins": "5",
+        "losses": "1",
+        "status": "offline"
     },
     {
-        "id": 4,
-        "name": "Bob_Red",
-        "points": 50,
-        "profilePicture": "/images/default-profile.jpeg"
+        "username": "Testuser",
+        "nickname": "Jana",
+        "avatar": "/images/profile.png",
+        "points": "100",
+        "games_total": "6",
+        "wins": "5",
+        "losses": "1",
+        "status": "online"
     },
     {
-        "id": 4,
-        "name": "Bob_Green",
-        "points": 150,
-        "profilePicture": "/images/default-profile.jpeg"
+        "username": "Testuser",
+        "nickname": "Dom",
+        "avatar": "/images/profile.png",
+        "points": "100",
+        "games_total": "6",
+        "wins": "5",
+        "losses": "1",
+        "status": "offline"
     },
     {
-        "id": 4,
-        "name": "Bob_Blue",
-        "points": 130,
-        "profilePicture": "/images/default-profile.jpeg"
-    },
-    {
-        "id": 4,
-        "name": "Bob_Grey",
-        "points": 121,
-        "profilePicture": "/images/default-profile.jpeg"
+        "username": "Testuser",
+        "nickname": "player123",
+        "avatar": "/images/profile.png",
+        "points": "100",
+        "games_total": "6",
+        "wins": "5",
+        "losses": "1",
+        "status": "online"
     }
 ]

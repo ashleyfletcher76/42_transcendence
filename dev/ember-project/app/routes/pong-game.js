@@ -9,12 +9,4 @@ export default class PongGameRoute extends Route {
       this.session.requireAuthentication(transition, 'login');
     }
   }
-  queryParams = {
-    gameType: { refreshModel: true },
-    data: { refreshModel: true },
-  };
-
-  model(params) {
-    return { gameType: params.gameType, data: params.data };
-  }
 }

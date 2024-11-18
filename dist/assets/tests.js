@@ -84,6 +84,47 @@ define("myapp/tests/integration/components/ball-test", ["qunit", "myapp/tests/he
     });
   });
 });
+define("myapp/tests/integration/components/direct-message-test", ["qunit", "myapp/tests/helpers", "@ember/test-helpers", "@ember/template-factory"], function (_qunit, _helpers, _testHelpers, _templateFactory) {
+  "use strict";
+
+  0; //eaimeta@70e063a35619d71f0,"qunit",0,"myapp/tests/helpers",0,"@ember/test-helpers",0,"@ember/template-factory"eaimeta@70e063a35619d71f
+  (0, _qunit.module)('Integration | Component | direct-message', function (hooks) {
+    (0, _helpers.setupRenderingTest)(hooks);
+    (0, _qunit.test)('it renders', async function (assert) {
+      // Set any properties with this.set('myProperty', 'value');
+      // Handle any actions with this.set('myAction', function(val) { ... });
+
+      await (0, _testHelpers.render)((0, _templateFactory.createTemplateFactory)(
+      /*
+        <DirectMessage />
+      */
+      {
+        "id": "3pH7VZ2k",
+        "block": "[[[8,[39,0],null,null,null]],[],false,[\"direct-message\"]]",
+        "moduleName": "/myapp/myapp/tests/integration/components/direct-message-test.js",
+        "isStrictMode": false
+      }));
+      assert.dom().hasText('');
+
+      // Template block usage:
+      await (0, _testHelpers.render)((0, _templateFactory.createTemplateFactory)(
+      /*
+        
+            <DirectMessage>
+              template block text
+            </DirectMessage>
+          
+      */
+      {
+        "id": "HwdhEKdf",
+        "block": "[[[1,\"\\n      \"],[8,[39,0],null,null,[[\"default\"],[[[[1,\"\\n        template block text\\n      \"]],[]]]]],[1,\"\\n    \"]],[],false,[\"direct-message\"]]",
+        "moduleName": "/myapp/myapp/tests/integration/components/direct-message-test.js",
+        "isStrictMode": false
+      }));
+      assert.dom().hasText('template block text');
+    });
+  });
+});
 define("myapp/tests/integration/components/login-overlay-test", ["qunit", "myapp/tests/helpers", "@ember/test-helpers", "@ember/template-factory"], function (_qunit, _helpers, _testHelpers, _templateFactory) {
   "use strict";
 
@@ -119,6 +160,47 @@ define("myapp/tests/integration/components/login-overlay-test", ["qunit", "myapp
         "id": "N2tp/RwR",
         "block": "[[[1,\"\\n      \"],[8,[39,0],null,null,[[\"default\"],[[[[1,\"\\n        template block text\\n      \"]],[]]]]],[1,\"\\n    \"]],[],false,[\"login-overlay\"]]",
         "moduleName": "/myapp/myapp/tests/integration/components/login-overlay-test.js",
+        "isStrictMode": false
+      }));
+      assert.dom().hasText('template block text');
+    });
+  });
+});
+define("myapp/tests/integration/components/modal-profile-test", ["qunit", "myapp/tests/helpers", "@ember/test-helpers", "@ember/template-factory"], function (_qunit, _helpers, _testHelpers, _templateFactory) {
+  "use strict";
+
+  0; //eaimeta@70e063a35619d71f0,"qunit",0,"myapp/tests/helpers",0,"@ember/test-helpers",0,"@ember/template-factory"eaimeta@70e063a35619d71f
+  (0, _qunit.module)('Integration | Component | modal-profile', function (hooks) {
+    (0, _helpers.setupRenderingTest)(hooks);
+    (0, _qunit.test)('it renders', async function (assert) {
+      // Set any properties with this.set('myProperty', 'value');
+      // Handle any actions with this.set('myAction', function(val) { ... });
+
+      await (0, _testHelpers.render)((0, _templateFactory.createTemplateFactory)(
+      /*
+        <ModalProfile />
+      */
+      {
+        "id": "0jG2RVyQ",
+        "block": "[[[8,[39,0],null,null,null]],[],false,[\"modal-profile\"]]",
+        "moduleName": "/myapp/myapp/tests/integration/components/modal-profile-test.js",
+        "isStrictMode": false
+      }));
+      assert.dom().hasText('');
+
+      // Template block usage:
+      await (0, _testHelpers.render)((0, _templateFactory.createTemplateFactory)(
+      /*
+        
+            <ModalProfile>
+              template block text
+            </ModalProfile>
+          
+      */
+      {
+        "id": "u6Kc4DMz",
+        "block": "[[[1,\"\\n      \"],[8,[39,0],null,null,[[\"default\"],[[[[1,\"\\n        template block text\\n      \"]],[]]]]],[1,\"\\n    \"]],[],false,[\"modal-profile\"]]",
+        "moduleName": "/myapp/myapp/tests/integration/components/modal-profile-test.js",
         "isStrictMode": false
       }));
       assert.dom().hasText('template block text');
@@ -248,6 +330,47 @@ define("myapp/tests/integration/components/paddle-test", ["qunit", "myapp/tests/
     });
   });
 });
+define("myapp/tests/integration/components/pong-game-test", ["qunit", "myapp/tests/helpers", "@ember/test-helpers", "@ember/template-factory"], function (_qunit, _helpers, _testHelpers, _templateFactory) {
+  "use strict";
+
+  0; //eaimeta@70e063a35619d71f0,"qunit",0,"myapp/tests/helpers",0,"@ember/test-helpers",0,"@ember/template-factory"eaimeta@70e063a35619d71f
+  (0, _qunit.module)('Integration | Component | pong-game', function (hooks) {
+    (0, _helpers.setupRenderingTest)(hooks);
+    (0, _qunit.test)('it renders', async function (assert) {
+      // Set any properties with this.set('myProperty', 'value');
+      // Handle any actions with this.set('myAction', function(val) { ... });
+
+      await (0, _testHelpers.render)((0, _templateFactory.createTemplateFactory)(
+      /*
+        <PongGame />
+      */
+      {
+        "id": "loEgmG+n",
+        "block": "[[[8,[39,0],null,null,null]],[],false,[\"pong-game\"]]",
+        "moduleName": "/myapp/myapp/tests/integration/components/pong-game-test.js",
+        "isStrictMode": false
+      }));
+      assert.dom().hasText('');
+
+      // Template block usage:
+      await (0, _testHelpers.render)((0, _templateFactory.createTemplateFactory)(
+      /*
+        
+            <PongGame>
+              template block text
+            </PongGame>
+          
+      */
+      {
+        "id": "dRjVm3Sn",
+        "block": "[[[1,\"\\n      \"],[8,[39,0],null,null,[[\"default\"],[[[[1,\"\\n        template block text\\n      \"]],[]]]]],[1,\"\\n    \"]],[],false,[\"pong-game\"]]",
+        "moduleName": "/myapp/myapp/tests/integration/components/pong-game-test.js",
+        "isStrictMode": false
+      }));
+      assert.dom().hasText('template block text');
+    });
+  });
+});
 define("myapp/tests/integration/components/profile-other-test", ["qunit", "myapp/tests/helpers", "@ember/test-helpers", "@ember/template-factory"], function (_qunit, _helpers, _testHelpers, _templateFactory) {
   "use strict";
 
@@ -371,6 +494,129 @@ define("myapp/tests/integration/components/scoreboard-test", ["qunit", "myapp/te
     });
   });
 });
+define("myapp/tests/integration/components/title-animation-test", ["qunit", "myapp/tests/helpers", "@ember/test-helpers", "@ember/template-factory"], function (_qunit, _helpers, _testHelpers, _templateFactory) {
+  "use strict";
+
+  0; //eaimeta@70e063a35619d71f0,"qunit",0,"myapp/tests/helpers",0,"@ember/test-helpers",0,"@ember/template-factory"eaimeta@70e063a35619d71f
+  (0, _qunit.module)('Integration | Component | title-animation', function (hooks) {
+    (0, _helpers.setupRenderingTest)(hooks);
+    (0, _qunit.test)('it renders', async function (assert) {
+      // Set any properties with this.set('myProperty', 'value');
+      // Handle any actions with this.set('myAction', function(val) { ... });
+
+      await (0, _testHelpers.render)((0, _templateFactory.createTemplateFactory)(
+      /*
+        <TitleAnimation />
+      */
+      {
+        "id": "U+E494i5",
+        "block": "[[[8,[39,0],null,null,null]],[],false,[\"title-animation\"]]",
+        "moduleName": "/myapp/myapp/tests/integration/components/title-animation-test.js",
+        "isStrictMode": false
+      }));
+      assert.dom().hasText('');
+
+      // Template block usage:
+      await (0, _testHelpers.render)((0, _templateFactory.createTemplateFactory)(
+      /*
+        
+            <TitleAnimation>
+              template block text
+            </TitleAnimation>
+          
+      */
+      {
+        "id": "3ABxg+Hf",
+        "block": "[[[1,\"\\n      \"],[8,[39,0],null,null,[[\"default\"],[[[[1,\"\\n        template block text\\n      \"]],[]]]]],[1,\"\\n    \"]],[],false,[\"title-animation\"]]",
+        "moduleName": "/myapp/myapp/tests/integration/components/title-animation-test.js",
+        "isStrictMode": false
+      }));
+      assert.dom().hasText('template block text');
+    });
+  });
+});
+define("myapp/tests/integration/components/tournament-list-test", ["qunit", "myapp/tests/helpers", "@ember/test-helpers", "@ember/template-factory"], function (_qunit, _helpers, _testHelpers, _templateFactory) {
+  "use strict";
+
+  0; //eaimeta@70e063a35619d71f0,"qunit",0,"myapp/tests/helpers",0,"@ember/test-helpers",0,"@ember/template-factory"eaimeta@70e063a35619d71f
+  (0, _qunit.module)('Integration | Component | tournament-list', function (hooks) {
+    (0, _helpers.setupRenderingTest)(hooks);
+    (0, _qunit.test)('it renders', async function (assert) {
+      // Set any properties with this.set('myProperty', 'value');
+      // Handle any actions with this.set('myAction', function(val) { ... });
+
+      await (0, _testHelpers.render)((0, _templateFactory.createTemplateFactory)(
+      /*
+        <TournamentList />
+      */
+      {
+        "id": "LTZSIIx3",
+        "block": "[[[8,[39,0],null,null,null]],[],false,[\"tournament-list\"]]",
+        "moduleName": "/myapp/myapp/tests/integration/components/tournament-list-test.js",
+        "isStrictMode": false
+      }));
+      assert.dom().hasText('');
+
+      // Template block usage:
+      await (0, _testHelpers.render)((0, _templateFactory.createTemplateFactory)(
+      /*
+        
+            <TournamentList>
+              template block text
+            </TournamentList>
+          
+      */
+      {
+        "id": "DfIaxG7W",
+        "block": "[[[1,\"\\n      \"],[8,[39,0],null,null,[[\"default\"],[[[[1,\"\\n        template block text\\n      \"]],[]]]]],[1,\"\\n    \"]],[],false,[\"tournament-list\"]]",
+        "moduleName": "/myapp/myapp/tests/integration/components/tournament-list-test.js",
+        "isStrictMode": false
+      }));
+      assert.dom().hasText('template block text');
+    });
+  });
+});
+define("myapp/tests/integration/components/tournament-test", ["qunit", "myapp/tests/helpers", "@ember/test-helpers", "@ember/template-factory"], function (_qunit, _helpers, _testHelpers, _templateFactory) {
+  "use strict";
+
+  0; //eaimeta@70e063a35619d71f0,"qunit",0,"myapp/tests/helpers",0,"@ember/test-helpers",0,"@ember/template-factory"eaimeta@70e063a35619d71f
+  (0, _qunit.module)('Integration | Component | tournament', function (hooks) {
+    (0, _helpers.setupRenderingTest)(hooks);
+    (0, _qunit.test)('it renders', async function (assert) {
+      // Set any properties with this.set('myProperty', 'value');
+      // Handle any actions with this.set('myAction', function(val) { ... });
+
+      await (0, _testHelpers.render)((0, _templateFactory.createTemplateFactory)(
+      /*
+        <Tournament />
+      */
+      {
+        "id": "VxjpdWCg",
+        "block": "[[[8,[39,0],null,null,null]],[],false,[\"tournament\"]]",
+        "moduleName": "/myapp/myapp/tests/integration/components/tournament-test.js",
+        "isStrictMode": false
+      }));
+      assert.dom().hasText('');
+
+      // Template block usage:
+      await (0, _testHelpers.render)((0, _templateFactory.createTemplateFactory)(
+      /*
+        
+            <Tournament>
+              template block text
+            </Tournament>
+          
+      */
+      {
+        "id": "7cJU3djr",
+        "block": "[[[1,\"\\n      \"],[8,[39,0],null,null,[[\"default\"],[[[[1,\"\\n        template block text\\n      \"]],[]]]]],[1,\"\\n    \"]],[],false,[\"tournament\"]]",
+        "moduleName": "/myapp/myapp/tests/integration/components/tournament-test.js",
+        "isStrictMode": false
+      }));
+      assert.dom().hasText('template block text');
+    });
+  });
+});
 define("myapp/tests/integration/components/user-list-test", ["qunit", "myapp/tests/helpers", "@ember/test-helpers", "@ember/template-factory"], function (_qunit, _helpers, _testHelpers, _templateFactory) {
   "use strict";
 
@@ -461,6 +707,30 @@ define("myapp/tests/test-helper", ["myapp/app", "myapp/config/environment", "qun
   (0, _qunitDom.setup)(QUnit.assert);
   (0, _emberQunit.start)();
 });
+define("myapp/tests/unit/routes/chat-test", ["qunit", "myapp/tests/helpers"], function (_qunit, _helpers) {
+  "use strict";
+
+  0; //eaimeta@70e063a35619d71f0,"qunit",0,"myapp/tests/helpers"eaimeta@70e063a35619d71f
+  (0, _qunit.module)('Unit | Route | chat', function (hooks) {
+    (0, _helpers.setupTest)(hooks);
+    (0, _qunit.test)('it exists', function (assert) {
+      let route = this.owner.lookup('route:chat');
+      assert.ok(route);
+    });
+  });
+});
+define("myapp/tests/unit/routes/choose-game-test", ["qunit", "myapp/tests/helpers"], function (_qunit, _helpers) {
+  "use strict";
+
+  0; //eaimeta@70e063a35619d71f0,"qunit",0,"myapp/tests/helpers"eaimeta@70e063a35619d71f
+  (0, _qunit.module)('Unit | Route | choose-game', function (hooks) {
+    (0, _helpers.setupTest)(hooks);
+    (0, _qunit.test)('it exists', function (assert) {
+      let route = this.owner.lookup('route:choose-game');
+      assert.ok(route);
+    });
+  });
+});
 define("myapp/tests/unit/routes/home-test", ["qunit", "ember-qunit"], function (_qunit, _emberQunit) {
   "use strict";
 
@@ -521,6 +791,18 @@ define("myapp/tests/unit/routes/protected-test", ["qunit", "myapp/tests/helpers"
     });
   });
 });
+define("myapp/tests/unit/routes/tournament-test", ["qunit", "myapp/tests/helpers"], function (_qunit, _helpers) {
+  "use strict";
+
+  0; //eaimeta@70e063a35619d71f0,"qunit",0,"myapp/tests/helpers"eaimeta@70e063a35619d71f
+  (0, _qunit.module)('Unit | Route | tournament', function (hooks) {
+    (0, _helpers.setupTest)(hooks);
+    (0, _qunit.test)('it exists', function (assert) {
+      let route = this.owner.lookup('route:tournament');
+      assert.ok(route);
+    });
+  });
+});
 define("myapp/tests/unit/routes/user-profile-test", ["qunit", "myapp/tests/helpers"], function (_qunit, _helpers) {
   "use strict";
 
@@ -543,6 +825,20 @@ define("myapp/tests/unit/services/auth-test", ["qunit", "myapp/tests/helpers"], 
     // TODO: Replace this with your real tests.
     (0, _qunit.test)('it exists', function (assert) {
       let service = this.owner.lookup('service:auth');
+      assert.ok(service);
+    });
+  });
+});
+define("myapp/tests/unit/services/game-data-test", ["qunit", "myapp/tests/helpers"], function (_qunit, _helpers) {
+  "use strict";
+
+  0; //eaimeta@70e063a35619d71f0,"qunit",0,"myapp/tests/helpers"eaimeta@70e063a35619d71f
+  (0, _qunit.module)('Unit | Service | game-data', function (hooks) {
+    (0, _helpers.setupTest)(hooks);
+
+    // TODO: Replace this with your real tests.
+    (0, _qunit.test)('it exists', function (assert) {
+      let service = this.owner.lookup('service:game-data');
       assert.ok(service);
     });
   });

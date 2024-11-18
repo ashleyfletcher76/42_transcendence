@@ -18,12 +18,13 @@ export default class ChooseGameController extends Controller {
 
   async createRoom(gameType) {
     try {
+      //const response = await fetch('/api/create-room.json', {
       const response = await fetch('/pong/pong/create-room', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          player_1: this.username, // Add player_1 with the user's value
-          player_2: gameType, // Set player_2 based on the selected game type
+          player: this.username, // Add player_1 with the user's value
+          gameType: gameType, // Set the selected game type
         }),
       });
 

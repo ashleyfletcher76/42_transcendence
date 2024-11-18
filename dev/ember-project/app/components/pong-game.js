@@ -1,5 +1,6 @@
 import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
+import { inject as service } from '@ember/service';
 
 export default class PongGameComponent extends Component {
   @tracked leftPaddlePosition = 0.5; // Normalize between 0 and 1
@@ -9,6 +10,7 @@ export default class PongGameComponent extends Component {
   @tracked leftScore = 0;
   @tracked rightScore = 0;
   @tracked winner;
+  @service gameData;
 
   // Track the state of key presses
   p1UpKeyPressed = false;
@@ -20,6 +22,10 @@ export default class PongGameComponent extends Component {
     super(...arguments);
     this.setupKeyListeners();
     this.startKeyPolling(); // Start polling when the controller is created
+  }
+
+  get roomData() {
+    return this.gameData.roomData; // Access shared room data
   }
 
   setupKeyListeners() {
@@ -40,11 +46,13 @@ export default class PongGameComponent extends Component {
       const requestBody = JSON.stringify({
         keypress_p1: keyPressP1,
         keypress_p2: keyPressP2,
+        room_name: this.roomData.room_name
       });
 
       console.log('Request body sent to API:', requestBody);
-      console.log(roomData.room_name);
-      const response = await fetch(`/pong/game_state/${roomData.room_name}`, {
+
+      //const response = await fetch(`/api/gamestate.json`, {
+      const response = await fetch(`/pong/pong/game_state/${this.roomData.room_name}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -137,6 +145,8 @@ export default class PongGameComponent extends Component {
     this.leftScore = data.left_score;
     this.rightScore = data.right_score;
     this.winner = data.winner;
+    if (this.winner)
+      this.willDestroy();
   }
 
   willDestroy() {
@@ -145,4 +155,5 @@ export default class PongGameComponent extends Component {
     window.removeEventListener('keyup', this.handleKeyUp.bind(this));
     clearInterval(this.pollingInterval);
   }
+
 }

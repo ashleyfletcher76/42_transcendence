@@ -9,4 +9,12 @@ export default class ChooseGameRoute extends Route {
       this.session.requireAuthentication(transition, 'login');
     }
   }
+
+  queryParams = {
+    username: { refreshModel: true }
+  };
+
+  model(params) {
+    return { username: params.username };
+  }
 }
