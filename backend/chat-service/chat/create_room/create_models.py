@@ -8,5 +8,11 @@ class ChatRoom(models.Model):
 	room_type = models.CharField(max_length=20, choices=[("game", "Game"), ("private", "Private")], default="private")
 	created_at = models.DateTimeField(auto_now_add=True)
 
+	def is_user_allowed(self, user):
+		"""Check if the user is allowed to join the room."""
+		if self.room_type == "game" or user == self.creator or self.invited_users.filter(id=user.id).exists():
+			return True
+		return False
+
 	def __str__(self):
 		return f"{self.name} ({self.room_type})"
