@@ -15,3 +15,6 @@ def health_check(request):
         return JsonResponse({"status": "error", "message": str(e)}, status=500)
 
     return JsonResponse({"status": "ok"}, status=200)
+
+def index(request):
+    return render(request, "lobby/index.html")
