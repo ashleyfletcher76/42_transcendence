@@ -149,7 +149,7 @@ services:
     networks:
       my_network:
     healthcheck:
-      test: [ "CMD-SHELL", "curl -k -f https://localhost:443/chat/health/ || exit 1" ]
+      test: [ "CMD-SHELL", "curl -k -f http://localhost:8000/chat/health/ || exit 1" ]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -158,7 +158,7 @@ services:
         condition: service_healthy
     restart: always
     ports:
-      - "10443:443"
+      - "8003:8000"
 
   pong-game:
     build: ./../backend/pong
@@ -198,14 +198,14 @@ services:
       - "6379:6379"
     restart: always
 
-  stunnel:
-    build: ./../backend/stunnel
-    container_name: stunnel
-    networks:
-      my_network:
-    ports:
-      - "6380:6380" # Redis TLS port
-    restart: always
+  # stunnel:
+  #   build: ./../backend/stunnel
+  #   container_name: stunnel
+  #   networks:
+  #     my_network:
+  #   ports:
+  #     - "6380:6380" # Redis TLS port
+  #   restart: always
 
   nginx:
     build: ./../frontend
@@ -217,8 +217,8 @@ services:
         condition: service_healthy
       chat-service:
         condition: service_healthy
-      pong-game:
-        condition: service_healthy
+      # pong-game:
+      #   condition: service_healthy
     networks:
       my_network:
     ports:

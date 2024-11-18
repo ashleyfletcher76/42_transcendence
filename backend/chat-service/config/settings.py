@@ -12,16 +12,16 @@ ALLOWED_HOSTS = ["*"]
 ASGI_APPLICATION = "config.asgi.application"
 
 # Set to True to ensure all connections are HTTPS
-SECURE_SSL_REDIRECT = True
+SECURE_SSL_REDIRECT = False
 
 # Prevent man in the middle attacks
-SECURE_HSTS_SECONDS = 31536000  # 1 year
-SECURE_HSTS_INCLUDE_SUBDOMAINS = True
-SECURE_HSTS_PRELOAD = True
+SECURE_HSTS_SECONDS = 0  # 1 year
+SECURE_HSTS_INCLUDE_SUBDOMAINS = False
+SECURE_HSTS_PRELOAD = False
 
 # Only allow cookies to be sent over HTTPS
-SESSION_COOKIE_SECURE = True
-CSRF_COOKIE_SECURE = True
+SESSION_COOKIE_SECURE = False
+CSRF_COOKIE_SECURE = False
 
 # Prevent the browser from guessing the content type
 SECURE_CONTENT_TYPE_NOSNIFF = True
