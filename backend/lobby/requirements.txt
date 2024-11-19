@@ -4,6 +4,7 @@ djangorestframework==3.15.2
 psycopg2-binary==2.9.10
 sqlparse==0.5.1
 uvicorn[standard]
+daphne[standard]
 channels
 channels_redis
 django-extensions==3.2.3
