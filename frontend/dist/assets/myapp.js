@@ -1252,6 +1252,9 @@
     get roomData() {
       return this.gameData.roomData; // Access shared room data
     }
+    get username() {
+      return this.gameData.username; // Access shared room data
+    }
     setupKeyListeners() {
       window.addEventListener('keydown', this.handleKeyDown.bind(this));
       window.addEventListener('keyup', this.handleKeyUp.bind(this));
@@ -1270,7 +1273,8 @@
         const requestBody = JSON.stringify({
           keypress_p1: keyPressP1,
           keypress_p2: keyPressP2,
-          room_name: this.roomData.room_name
+          room_name: this.roomData.room_name,
+          user: this.username
         });
         console.log('Request body sent to API:', requestBody);
 
@@ -2057,17 +2061,16 @@
         }
         const data = await response.json();
         if (data.room_name) {
-			this.loading = false;
-			this.gameData.setGameData(gameType, data);
-			this.router.transitionTo('pong-game', {
-				queryParams: {
-					gameType: gameType,
-					roomData: data // pass data as a query parameter
-				}
-			});
+          this.loading = false;
+          this.gameData.setGameData(gameType, data, this.username);
+          this.router.transitionTo('pong-game', {
+            queryParams: {
+              gameType: gameType,
+              roomData: data // pass data as a query parameter
+            }
+          });
         }
-		console.log(data);
-	} catch (error) {
+      } catch (error) {
         console.error('Error:', error);
       }
     }
@@ -3083,7 +3086,7 @@
     value: true
   });
   _exports.default = void 0;
-  var _class, _descriptor, _descriptor2, _descriptor3, _descriptor4;
+  var _class, _descriptor, _descriptor2, _descriptor3, _descriptor4, _descriptor5;
   0; //eaimeta@70e063a35619d71f0,"@ember/service",0,"@glimmer/tracking"eaimeta@70e063a35619d71f
   function _initializerDefineProperty(e, i, r, l) { r && Object.defineProperty(e, i, { enumerable: r.enumerable, configurable: r.configurable, writable: r.writable, value: r.initializer ? r.initializer.call(l) : void 0 }); }
   function _defineProperty(e, r, t) { return (r = _toPropertyKey(r)) in e ? Object.defineProperty(e, r, { value: t, enumerable: !0, configurable: !0, writable: !0 }) : e[r] = t, e; }
@@ -3098,10 +3101,12 @@
       _initializerDefineProperty(this, "roomData", _descriptor2, this);
       _initializerDefineProperty(this, "player_1", _descriptor3, this);
       _initializerDefineProperty(this, "player_2", _descriptor4, this);
+      _initializerDefineProperty(this, "username", _descriptor5, this);
     }
-    async setGameData(gameType, roomData) {
+    async setGameData(gameType, roomData, username) {
       this.gameType = gameType;
       this.roomData = roomData;
+      this.username = username;
 
       // Fetch user data for player_1 and player_2 asynchronously
       this.player_1 = await this.fetchUserData(roomData.player_1);
@@ -3157,6 +3162,13 @@
       return null;
     }
   }), _descriptor4 = _applyDecoratedDescriptor(_class.prototype, "player_2", [_tracking.tracked], {
+    configurable: true,
+    enumerable: true,
+    writable: true,
+    initializer: function () {
+      return null;
+    }
+  }), _descriptor5 = _applyDecoratedDescriptor(_class.prototype, "username", [_tracking.tracked], {
     configurable: true,
     enumerable: true,
     writable: true,
