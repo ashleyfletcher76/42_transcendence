@@ -1192,15 +1192,15 @@
   _exports.default = PaddleComponent;
   (0, _component.setComponentTemplate)(__COLOCATED_TEMPLATE__, PaddleComponent);
 });
-;define("myapp/components/pong-game", ["exports", "@ember/component", "@glimmer/component", "@glimmer/tracking", "@ember/template-factory"], function (_exports, _component, _component2, _tracking, _templateFactory) {
+;define("myapp/components/pong-game", ["exports", "@ember/component", "@glimmer/component", "@glimmer/tracking", "@ember/service", "@ember/template-factory"], function (_exports, _component, _component2, _tracking, _service, _templateFactory) {
   "use strict";
 
   Object.defineProperty(_exports, "__esModule", {
     value: true
   });
   _exports.default = void 0;
-  var _class, _descriptor, _descriptor2, _descriptor3, _descriptor4, _descriptor5, _descriptor6, _descriptor7;
-  0; //eaimeta@70e063a35619d71f0,"@glimmer/component",0,"@glimmer/tracking",0,"@ember/template-factory",0,"@ember/component"eaimeta@70e063a35619d71f
+  var _class, _descriptor, _descriptor2, _descriptor3, _descriptor4, _descriptor5, _descriptor6, _descriptor7, _descriptor8;
+  0; //eaimeta@70e063a35619d71f0,"@glimmer/component",0,"@glimmer/tracking",0,"@ember/service",0,"@ember/template-factory",0,"@ember/component"eaimeta@70e063a35619d71f
   function _initializerDefineProperty(e, i, r, l) { r && Object.defineProperty(e, i, { enumerable: r.enumerable, configurable: r.configurable, writable: r.writable, value: r.initializer ? r.initializer.call(l) : void 0 }); }
   function _defineProperty(e, r, t) { return (r = _toPropertyKey(r)) in e ? Object.defineProperty(e, r, { value: t, enumerable: !0, configurable: !0, writable: !0 }) : e[r] = t, e; }
   function _toPropertyKey(t) { var i = _toPrimitive(t, "string"); return "symbol" == typeof i ? i : i + ""; }
@@ -1240,6 +1240,7 @@
       _initializerDefineProperty(this, "leftScore", _descriptor5, this);
       _initializerDefineProperty(this, "rightScore", _descriptor6, this);
       _initializerDefineProperty(this, "winner", _descriptor7, this);
+      _initializerDefineProperty(this, "gameData", _descriptor8, this);
       // Track the state of key presses
       _defineProperty(this, "p1UpKeyPressed", false);
       _defineProperty(this, "p1DownKeyPressed", false);
@@ -1247,6 +1248,9 @@
       _defineProperty(this, "p2DownKeyPressed", false);
       this.setupKeyListeners();
       this.startKeyPolling(); // Start polling when the controller is created
+    }
+    get roomData() {
+      return this.gameData.roomData; // Access shared room data
     }
     setupKeyListeners() {
       window.addEventListener('keydown', this.handleKeyDown.bind(this));
@@ -1265,11 +1269,13 @@
       try {
         const requestBody = JSON.stringify({
           keypress_p1: keyPressP1,
-          keypress_p2: keyPressP2
+          keypress_p2: keyPressP2,
+          room_name: this.roomData.room_name
         });
         console.log('Request body sent to API:', requestBody);
-        console.log(roomData.room_name);
-        const response = await fetch(`/pong/game_state/${roomData.room_name}`, {
+
+        //const response = await fetch(`/api/gamestate.json`, {
+        const response = await fetch(`/pong/pong/game_state/${this.roomData.room_name}`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
@@ -1355,6 +1361,7 @@
       this.leftScore = data.left_score;
       this.rightScore = data.right_score;
       this.winner = data.winner;
+      if (this.winner) this.willDestroy();
     }
     willDestroy() {
       super.willDestroy();
@@ -1405,6 +1412,11 @@
       return 0;
     }
   }), _descriptor7 = _applyDecoratedDescriptor(_class.prototype, "winner", [_tracking.tracked], {
+    configurable: true,
+    enumerable: true,
+    writable: true,
+    initializer: null
+  }), _descriptor8 = _applyDecoratedDescriptor(_class.prototype, "gameData", [_service.inject], {
     configurable: true,
     enumerable: true,
     writable: true,
@@ -2028,15 +2040,16 @@
     }
     async createRoom(gameType) {
       try {
+        //const response = await fetch('/api/create-room.json', {
         const response = await fetch('/pong/pong/create-room', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
           },
           body: JSON.stringify({
-            player_1: this.username,
+            player: this.username,
             // Add player_1 with the user's value
-            player_2: gameType // Set player_2 based on the selected game type
+            gameType: gameType // Set the selected game type
           })
         });
         if (!response.ok) {
@@ -2108,7 +2121,11 @@
       event.preventDefault();
       try {
         await this.session.authenticate('authenticator:token', this.username, this.password);
-        this.router.transitionTo('choose-game'); // Redirect here after successful authentication
+        this.router.transitionTo('choose-game', {
+          queryParams: {
+            username: this.username
+          } // Add the username as a query parameter
+        });
       } catch (error) {
         this.error = error;
       }
@@ -2870,11 +2887,21 @@
     constructor(...args) {
       super(...args);
       _initializerDefineProperty(this, "session", _descriptor, this);
+      _defineProperty(this, "queryParams", {
+        username: {
+          refreshModel: true
+        }
+      });
     }
     async beforeModel(transition) {
       if (!this.session.isAuthenticated) {
         this.session.requireAuthentication(transition, 'login');
       }
+    }
+    model(params) {
+      return {
+        username: params.username
+      };
     }
   }, _descriptor = _applyDecoratedDescriptor(_class.prototype, "session", [_service.inject], {
     configurable: true,
@@ -2964,25 +2991,11 @@
     constructor(...args) {
       super(...args);
       _initializerDefineProperty(this, "session", _descriptor, this);
-      _defineProperty(this, "queryParams", {
-        gameType: {
-          refreshModel: true
-        },
-        data: {
-          refreshModel: true
-        }
-      });
     }
     async beforeModel(transition) {
       if (!this.session.isAuthenticated) {
         this.session.requireAuthentication(transition, 'login');
       }
-    }
-    model(params) {
-      return {
-        gameType: params.gameType,
-        data: params.data
-      };
     }
   }, _descriptor = _applyDecoratedDescriptor(_class.prototype, "session", [_service.inject], {
     configurable: true,
@@ -3323,7 +3336,7 @@
       </div>
   
       <div class="game-buttons">
-        <button type="button" {{on "click" (fn this.chooseGame "ai")}}>Single Player</button>
+        <button type="button" {{on "click" (fn this.chooseGame "computer")}}>Single Player</button>
         <button type="button" {{on "click" (fn this.chooseGame "local")}}>Local Multiplayer</button>
         <button type="button" {{on "click" (fn this.chooseGame "remote")}}>Remote Multiplayer</button>
       </div>
@@ -3333,8 +3346,8 @@
   
   */
   {
-    "id": "uD4UeQWl",
-    "block": "[[[10,0],[14,0,\"pong-game\"],[12],[1,\"\\n\"],[41,[30,0,[\"loading\"]],[[[1,\"    \"],[10,\"h1\"],[14,0,\"white\"],[12],[1,\"Waiting for Player ...\"],[13],[1,\"\\n\"]],[]],[[[1,\"  \"],[10,0],[14,0,\"flex-col\"],[12],[1,\"\\n    \"],[10,0],[14,0,\"waviy\"],[12],[1,\"\\n      \"],[10,1],[14,5,\"--i:1\"],[12],[1,\"4\"],[13],[1,\"\\n      \"],[10,1],[14,5,\"--i:2\"],[12],[1,\"2\"],[13],[1,\"\\n      \"],[10,1],[14,5,\"--i:3\"],[12],[1,\"_\"],[13],[1,\"\\n      \"],[10,1],[14,5,\"--i:4\"],[12],[1,\"PO\"],[13],[1,\"\\n      \"],[10,1],[14,5,\"--i:5\"],[12],[1,\"NG\"],[13],[1,\"\\n    \"],[13],[1,\"\\n\\n    \"],[10,0],[14,0,\"game-buttons\"],[12],[1,\"\\n      \"],[11,\"button\"],[24,4,\"button\"],[4,[38,5],[\"click\",[28,[37,6],[[30,0,[\"chooseGame\"]],\"ai\"],null]],null],[12],[1,\"Single Player\"],[13],[1,\"\\n      \"],[11,\"button\"],[24,4,\"button\"],[4,[38,5],[\"click\",[28,[37,6],[[30,0,[\"chooseGame\"]],\"local\"],null]],null],[12],[1,\"Local Multiplayer\"],[13],[1,\"\\n      \"],[11,\"button\"],[24,4,\"button\"],[4,[38,5],[\"click\",[28,[37,6],[[30,0,[\"chooseGame\"]],\"remote\"],null]],null],[12],[1,\"Remote Multiplayer\"],[13],[1,\"\\n    \"],[13],[1,\"\\n  \"],[13],[1,\"\\n\"]],[]]],[13],[1,\"\\n\"]],[],false,[\"div\",\"if\",\"h1\",\"span\",\"button\",\"on\",\"fn\"]]",
+    "id": "2loT3ZYy",
+    "block": "[[[10,0],[14,0,\"pong-game\"],[12],[1,\"\\n\"],[41,[30,0,[\"loading\"]],[[[1,\"    \"],[10,\"h1\"],[14,0,\"white\"],[12],[1,\"Waiting for Player ...\"],[13],[1,\"\\n\"]],[]],[[[1,\"  \"],[10,0],[14,0,\"flex-col\"],[12],[1,\"\\n    \"],[10,0],[14,0,\"waviy\"],[12],[1,\"\\n      \"],[10,1],[14,5,\"--i:1\"],[12],[1,\"4\"],[13],[1,\"\\n      \"],[10,1],[14,5,\"--i:2\"],[12],[1,\"2\"],[13],[1,\"\\n      \"],[10,1],[14,5,\"--i:3\"],[12],[1,\"_\"],[13],[1,\"\\n      \"],[10,1],[14,5,\"--i:4\"],[12],[1,\"PO\"],[13],[1,\"\\n      \"],[10,1],[14,5,\"--i:5\"],[12],[1,\"NG\"],[13],[1,\"\\n    \"],[13],[1,\"\\n\\n    \"],[10,0],[14,0,\"game-buttons\"],[12],[1,\"\\n      \"],[11,\"button\"],[24,4,\"button\"],[4,[38,5],[\"click\",[28,[37,6],[[30,0,[\"chooseGame\"]],\"computer\"],null]],null],[12],[1,\"Single Player\"],[13],[1,\"\\n      \"],[11,\"button\"],[24,4,\"button\"],[4,[38,5],[\"click\",[28,[37,6],[[30,0,[\"chooseGame\"]],\"local\"],null]],null],[12],[1,\"Local Multiplayer\"],[13],[1,\"\\n      \"],[11,\"button\"],[24,4,\"button\"],[4,[38,5],[\"click\",[28,[37,6],[[30,0,[\"chooseGame\"]],\"remote\"],null]],null],[12],[1,\"Remote Multiplayer\"],[13],[1,\"\\n    \"],[13],[1,\"\\n  \"],[13],[1,\"\\n\"]],[]]],[13],[1,\"\\n\"]],[],false,[\"div\",\"if\",\"h1\",\"span\",\"button\",\"on\",\"fn\"]]",
     "moduleName": "myapp/templates/choose-game.hbs",
     "isStrictMode": false
   });
@@ -3404,11 +3417,11 @@
   0; //eaimeta@70e063a35619d71f0,"@ember/template-factory"eaimeta@70e063a35619d71f
   var _default = _exports.default = (0, _templateFactory.createTemplateFactory)(
   /*
-    <PongGame />
+    <PongGame @gameType={{this.model.gameType}} @roomData={{this.model.roomData}} />
   */
   {
-    "id": "rI24dgfT",
-    "block": "[[[8,[39,0],null,null,null]],[],false,[\"pong-game\"]]",
+    "id": "Zi00vfEc",
+    "block": "[[[8,[39,0],null,[[\"@gameType\",\"@roomData\"],[[30,0,[\"model\",\"gameType\"]],[30,0,[\"model\",\"roomData\"]]]],null]],[],false,[\"pong-game\"]]",
     "moduleName": "myapp/templates/pong-game.hbs",
     "isStrictMode": false
   });
