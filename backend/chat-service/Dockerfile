@@ -7,6 +7,7 @@ RUN apt-get update && apt-get install -y libpq-dev gcc openssl curl iputils-ping
 # set environment variables
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
+ENV DJANGO_SETTINGS_MODULE=config.settings
 
 # set the working directory
 WORKDIR /app

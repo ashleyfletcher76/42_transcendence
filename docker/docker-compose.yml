@@ -137,6 +137,7 @@ services:
     build: ./../backend/chat-service
     container_name: chat-service
     environment:
+      DJANGO_SETTINGS_MODULE: config.settings
       DJANGO_SECRET_KEY: ${DJANGO_SECRET_KEY}
       DJANGO_DEBUG: ${DJANGO_DEBUG}
       CHAT_SERVICE_DB: ${CHAT_SERVICE_DB}
@@ -192,6 +193,11 @@ services:
     container_name: redis
     networks:
       my_network:
+    healthcheck:
+      test: [ "CMD", "redis-cli", "ping" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
     volumes:
       - redis_data:/data
     ports:
