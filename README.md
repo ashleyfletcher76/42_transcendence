@@ -357,6 +357,18 @@ curl -X POST http://localhost:8000/auth/token/refresh/ \
      -d '{"refresh": "<refresh_token>"}'
 ```
 
+Create room:
+```bash
+curl -X POST http://localhost:8003/chat/create-room/ \
+     -H "Content-Type: application/json" \
+     -H "Authorization: Bearer your_access_token" \
+     -d '{
+           "name": "test_room",
+           "type": "private",
+           "invited_users": []
+         }'
+```
+
 ## Authors
 
 - **Ashley Fletcher** - *Developer* - [GitHub Profile](https://github.com/ashleyfletcher76)
