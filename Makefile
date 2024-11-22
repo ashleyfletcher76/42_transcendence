@@ -53,7 +53,7 @@ rebuild-%:
 
 # create a Django superuser
 superuser:
-	$(DOCKER_COMPOSE) exec backend python manage.py createsuperuser
+	$(DOCKER_COMPOSE) exec chat-service python manage.py createsuperuser
 
 # make migration
 makemigrate-%:

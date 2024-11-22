@@ -22,15 +22,16 @@ class ChatConsumer(AsyncWebsocketConsumer):
 		# authenticate user
 		token = self.get_jwt_from_headers(self.scope["headers"])
 		if not token:
-			await self.close(code=4001)
+			await self.close(code=4001, reason="Invalid JWT token or user not authenticated.")
 			return
 
 		try:
 			user_payload = validate_jwt(token)
+			self.user_id = user_payload["user_id"]
 			self.username = user_payload["username"]
 		except Exception as e:
 			print(f"JWT validation failed: {e}")
-			await self.close(code=4001)
+			await self.close(code=4001, reason="Invalid JWT token or user not authenticated.")
 			return
 
 		self.room_name = self.scope["url_route"]["kwargs"]["room_name"]
@@ -91,7 +92,9 @@ class ChatConsumer(AsyncWebsocketConsumer):
 			)
 		else:
 			# inform sender user is not online
-			await self.send(text_data=json.dumps({"error":f"User {target_username} is not online."}))
+			await self.send(
+				text_data=json.dumps({"error":f"User {target_username} is not online."})
+				)
 
 	async def handle_group_message(self, group_name, message):
 		if not group_name:

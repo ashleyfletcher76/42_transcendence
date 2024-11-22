@@ -26,13 +26,17 @@ class ValidateTokenView(APIView):
 				verification_url = f"http://user-service:8000/users/exists/{user_id}/"
 				response = requests.get(verification_url)
 				if response.status_code == 200:
+					print("Success here")
 					return Response({"detail": "Token is valid", "user_id": user_id}, status=status.HTTP_200_OK)
 				else:
+					print("Else suer not found here")
 					return Response({"error": "User not found"}, status=status.HTTP_404_NOT_FOUND)
 
 			except (InvalidToken, TokenError) as e:
+				print("inside except here")
 				return Response({"detail": "Invalid or expired token"}, status=status.HTTP_401_UNAUTHORIZED)
 
+		print("before auth header malformed")
 		return Response({"detail": "Authorization header missing or malformed"}, status=status.HTTP_400_BAD_REQUEST)
 
 class ValidateUserView(APIView):

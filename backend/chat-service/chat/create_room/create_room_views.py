@@ -17,16 +17,18 @@ class CreateRoomView(APIView):
 			response = requests.post(validation_url, headers={"Authorization": auth_header})
 			response.raise_for_status()
 		except requests.RequestException as e:
+			print("Before error auth service connection")
 			return Response({"error": f"Auth-service connection failed: {str(e)}"}, status=status.HTTP_503_SERVICE_UNAVAILABLE)
 
 		# extract user_id and fetch username from user-service
 		user_id = response.json().get("user_id")
 		print("Extracted user_id:", user_id)
-		user_service_url = f"http://user-service:8001/users/get-username/{user_id}/"
+		user_service_url = f"http://user-service:8000/users/get-single-username/{user_id}/"
 		try:
-			user_response = requests.get(user_service_url)
+			user_response = requests.get(user_service_url, headers={"Authorization": auth_header})
 			user_response.raise_for_status()
 		except requests.RequestException as e:
+			print("inside the execept for CreateRoomView")
 			return Response({"error": f"User-service connection failed: {str(e)}"}, status=status.HTTP_503_SERVICE_UNAVAILABLE)
 
 		user_info = user_response.json()
@@ -44,16 +46,18 @@ class CreateRoomView(APIView):
 			return Response({"error": "Room name already exists."}, status=status.HTTP_409_CONFLICT)
 
 		# save creator_id and username in the database
-		room = ChatRoom.objects.create(name=room_name, creator_id=user_id, creator_username=username, room_type=room_type)
+		room = ChatRoom.objects.create(
+			name=room_name, creator_id=user_id, creator_username=username, room_type=room_type
+			)
 
 		# validate invited users
 		valid_invited_users = []
 		for invited_id in invited_ids:
-			invited_user_url = f"http://user-service:8001/users/get-username/{invited_id}/"
+			invited_user_url = f"http://user-service:8000/users/get-usernames/"
 			try:
-				invited_response = requests.get(invited_user_url)
+				invited_response = requests.get(invited_user_url, headers={"Authorization": auth_header}, params={"user_ids": invited_ids})
 				invited_response.raise_for_status()
-				valid_invited_users.append(invited_id)
+				valid_invited_users = invited_response.json().get("users", [])
 			except requests.RequestException as e:
 				return Response(
 					{"error": f"Failed to validate invited user {invited_id}: {str(e)}"},
