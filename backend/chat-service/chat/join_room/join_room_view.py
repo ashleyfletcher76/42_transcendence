@@ -22,6 +22,11 @@ class JoinRoomView(APIView):
 		# if not room.is_user_allowed(request.user):
 		# 	return Response({"error": "You are not allowed to join this room."}, status=403)
 
+		if request.user.id not in room.invited_users:
+			return Response({"error": "You are not allowed to join this room"}, status=403)
+
+		# add used 
+
 		return Response({
 			"id": room.id,
 			"name": room.name,
