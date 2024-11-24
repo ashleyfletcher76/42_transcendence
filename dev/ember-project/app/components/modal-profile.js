@@ -9,7 +9,7 @@ export default class ModalProfileComponent extends Component {
 
   @action
   openModal() {
-    console.log("openModal0");
+    console.log('openModal0');
     this.isModalOpen = true;
     this.newNickname = this.args.user.nickname;
     console.log(this.isModalOpen);
@@ -58,7 +58,7 @@ export default class ModalProfileComponent extends Component {
       }
 
       const data = await response.json();
-  
+
       if (data.nickname) {
         this.args.updateParent();
       }

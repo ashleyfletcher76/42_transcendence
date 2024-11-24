@@ -1,0 +1,7 @@
+{{#if (eq @message.type "tournament")}}
+  <div class="message-item message-tournament">[{{@message.from}}] {{@message.content}}</div>
+{{else if (eq @message.type "whisper")}}
+  <div class="message-item message-whisper">[{{@message.from}}] {{@message.content}}</div>
+{{else}}
+  <div class="message-item message-default">[{{@message.from}}] {{@message.content}}</div>
+{{/if}}

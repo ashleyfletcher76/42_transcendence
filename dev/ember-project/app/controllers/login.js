@@ -27,7 +27,7 @@ export default class LoginController extends Controller {
         this.password,
       );
       this.router.transitionTo('choose-game', {
-        queryParams: { username: this.username } // Add the username as a query parameter
+        queryParams: { username: this.username }, // Add the username as a query parameter
       });
     } catch (error) {
       this.error = error;
@@ -59,7 +59,7 @@ export default class LoginController extends Controller {
         this.password,
       );
       this.router.transitionTo('choose-game', {
-        queryParams: { username: this.username } // Add the username as a query parameter
+        queryParams: { username: this.username }, // Add the username as a query parameter
       });
     } catch (error) {
       this.error = error.message || 'An error occurred during registration';

@@ -6,10 +6,12 @@ export default class GameDataService extends Service {
   @tracked roomData = null;
   @tracked player_1 = null;
   @tracked player_2 = null;
+  @tracked username = null;
 
-  async setGameData(gameType, roomData) {
+  async setGameData(gameType, roomData, username) {
     this.gameType = gameType;
     this.roomData = roomData;
+    this.username = username;
 
     // Fetch user data for player_1 and player_2 asynchronously
     this.player_1 = await this.fetchUserData(roomData.player_1);

@@ -36,7 +36,7 @@ export default class ChooseGameController extends Controller {
 
       if (data.room_name) {
         this.loading = false;
-        this.gameData.setGameData(gameType, data);
+        this.gameData.setGameData(gameType, data, this.username);
 
         this.router.transitionTo('pong-game', {
           queryParams: {
@@ -49,5 +49,4 @@ export default class ChooseGameController extends Controller {
       console.error('Error:', error);
     }
   }
-
 }

@@ -1,0 +1,34 @@
+<div class="btn-group mt-2" role="group" aria-label="Basic checkbox toggle button group">
+  <input type="checkbox" class="btn-check" id="btncheck1" autocomplete="off" checked={{this.showGeneral}} {{on "change" (fn this.toggleCheckbox "all")}}>
+  <label class="btn btn-outline-secondary btn-sm" for="btncheck1">General</label>
+
+  <input type="checkbox" class="btn-check" id="btncheck2" autocomplete="off" checked={{this.showWhisper}} {{on "change" (fn this.toggleCheckbox "whisper")}}>
+  <label class="btn btn-outline-secondary btn-sm" for="btncheck2">Whisper</label>
+
+  <input type="checkbox" class="btn-check" id="btncheck3" autocomplete="off" checked={{this.showTournament}} {{on "change" (fn this.toggleCheckbox "tournament")}}>
+  <label class="btn btn-outline-secondary btn-sm" for="btncheck3">Tournament</label>
+</div>
+
+<div class="scrollable-list middle-scroll chat" >
+  {{#each this.filteredMessages as |message|}}
+    {{this.scrollToBottom}}
+    <Message @message={{message}}/>
+  {{/each}}
+</div>
+
+<!-- Corrected template -->
+<div class="input-group">
+  <input
+    type="text"
+    class="form-control"
+    placeholder="Put your message here"
+    aria-label="Recipient's username"
+    aria-describedby="basic-addon2"
+    value={{@this.messageInput}}
+    {{on "input" this.updateInputValue}}
+    {{on "keydown" this.handleKeyDown}}
+  >
+  <div class="input-group-append">
+    <button class="btn btn-outline-secondary" type="button" {{on "click" this.sendMessage}}>Send</button>
+  </div>
+</div>

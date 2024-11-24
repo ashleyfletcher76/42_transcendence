@@ -13,7 +13,7 @@
           <h2 class="name">{{this.ownUser.nickname}}</h2>
           <ModalProfile @user={{this.ownUser}} @updateParent={{this.fetchUserData}}/>
         {{else}}
-          <p>Loading user...</p> <!-- Or another fallback message -->
+          <p>Loading user...</p> {{!-- Or another fallback message --}}
         {{/if}}
         <button class="logout-button" type="button" {{on "click" this.logout}}>Logout</button>
       {{/if}}

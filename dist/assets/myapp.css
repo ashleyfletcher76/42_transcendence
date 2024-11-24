@@ -7,7 +7,8 @@
 }
 
 .emoji {
-  font-family: "Segoe UI Emoji", "Apple Color Emoji", "Noto Color Emoji", "EmojiOne", sans-serif;
+  font-family: "Segoe UI Emoji", "Apple Color Emoji", "Noto Color Emoji",
+    EmojiOne, sans-serif;
 }
 
 p {
@@ -34,8 +35,7 @@ h1 {
   margin: 0;
 }
 
-.tournament-info
-{
+.tournament-info {
   text-align: left; /* Center the heading */
   color: #333; /* Dark gray color for the heading */
   font-size: 1rem; /* Increase font size */
@@ -64,18 +64,6 @@ label {
   display: block; /* Block-level for full width */
   margin-bottom: 5px; /* Space between label and input */
   color: #302e2e; /* Light gray color for labels */
-}
-
-/* Input field styling */
-input[type="text"],
-input[type="password"] {
-  width: 100%; /* Full width */
-  padding: 10px; /* Padding inside input */
-  margin-bottom: 20px; /* Space below input */
-  border: 1px solid #ddd; /* Light gray border */
-  border-radius: 4px; /* Slightly rounded corners */
-  box-sizing: border-box; /* Include padding and border in total width/height */
-  font-size: 16px; /* Font size for input */
 }
 
 /* Button styling */
@@ -315,9 +303,14 @@ input[type="password"] {
 .scrollable-list {
   overflow-y: auto; /* Enable vertical scrollbar if content overflows */
   border-radius: 5px; /* Rounded corners */
-  background-color: #706363; /* White background */
+  background-color: #706363;
   padding: 10px; /* Padding for the list */
   width: 95%;
+}
+
+.chat {
+  width: 100%;
+  background-color: #000;
 }
 
 .profile-details {
@@ -566,4 +559,30 @@ input[type="password"] {
   30% {
     transform: rotateY(360deg);
   }
+}
+
+.message-item {
+  padding: 0;
+  margin: 0;
+  background-color: none;
+  border-radius: 5px;
+  box-shadow: 0 1px 3px rgb(0 0 0 / 10%);
+  word-wrap: break-word;
+  font-weight: bold;
+}
+
+.message-tournament {
+  color: rgb(30, 218, 55); /* Tournament messages in blue */
+}
+
+.message-whisper {
+  color: rgb(255, 49, 255); /* Whisper messages in green */
+}
+
+.message-default {
+  color: rgb(255, 255, 255); /* Default messages in black */
+}
+
+.custom-bg-black {
+  background-color: black;
 }

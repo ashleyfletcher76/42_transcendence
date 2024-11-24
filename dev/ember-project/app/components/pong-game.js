@@ -28,6 +28,10 @@ export default class PongGameComponent extends Component {
     return this.gameData.roomData; // Access shared room data
   }
 
+  get username() {
+    return this.gameData.username; // Access shared room data
+  }
+
   setupKeyListeners() {
     window.addEventListener('keydown', this.handleKeyDown.bind(this));
     window.addEventListener('keyup', this.handleKeyUp.bind(this));
@@ -46,19 +50,23 @@ export default class PongGameComponent extends Component {
       const requestBody = JSON.stringify({
         keypress_p1: keyPressP1,
         keypress_p2: keyPressP2,
-        room_name: this.roomData.room_name
+        room_name: this.roomData.room_name,
+        user: this.username,
       });
 
       console.log('Request body sent to API:', requestBody);
 
       //const response = await fetch(`/api/gamestate.json`, {
-      const response = await fetch(`/pong/pong/game_state/${this.roomData.room_name}`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
+      const response = await fetch(
+        `/pong/pong/game_state/${this.roomData.room_name}`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: requestBody,
         },
-        body: requestBody,
-      });
+      );
 
       if (!response.ok) {
         throw new Error('Network response was not ok');
@@ -145,8 +153,7 @@ export default class PongGameComponent extends Component {
     this.leftScore = data.left_score;
     this.rightScore = data.right_score;
     this.winner = data.winner;
-    if (this.winner)
-      this.willDestroy();
+    if (this.winner) this.willDestroy();
   }
 
   willDestroy() {
@@ -155,5 +162,4 @@ export default class PongGameComponent extends Component {
     window.removeEventListener('keyup', this.handleKeyUp.bind(this));
     clearInterval(this.pollingInterval);
   }
-
 }

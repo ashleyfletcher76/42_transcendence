@@ -7,7 +7,7 @@ module.exports = function (environment) {
     rootURL: '/',
     locationType: 'history',
     EmberBootstrap: {
-      insertEmberWormholeElementToDom: false
+      insertEmberWormholeElementToDom: false,
     },
     EmberENV: {
       EXTEND_PROTOTYPES: false,

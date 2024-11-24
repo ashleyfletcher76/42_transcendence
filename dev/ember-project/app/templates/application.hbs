@@ -1,6 +1,6 @@
 {{!-- app/templates/application.hbs --}}
 <main>
-
+{{this.isAuthenticated}}
 <div class="container-fluid body">
   <div class="container-fluid row">
     <div class="col header">
@@ -18,7 +18,7 @@
     <div class="container-fluid col-3 middle">
         <TournamentList />
     </div>
-    <div class="container-fluid col-6 middle">
+    <div class="container-fluid col-6 middle custom-bg-black">
 		{{outlet}}
     </div>
     <div class="container-fluid col-3 middle">
@@ -29,14 +29,13 @@
   <div class="container-fluid row">
     <div class="container-fluid col-3 footer">
             <LinkTo @route="choose-game" class="nav-button">Game</LinkTo>
-            <LinkTo @route="chat" class="nav-button">Chat</LinkTo>
+            <LinkTo @route="chat" @query={{hash username=this.ownUser.nickname}} class="nav-button">Chat</LinkTo>
             <LinkTo @route="tournament" class="nav-button">Create Tournament</LinkTo>
     </div>
     <div class="container-fluid col-6 footer">
       <Scoreboard @selectUser={{this.selectUser}}/>
     </div>
     <div class="container-fluid col-3 footer">
-	  <DirectMessage/>
     </div>
   </div>    
 </div>

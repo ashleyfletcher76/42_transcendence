@@ -1,6 +1,9 @@
 <div class="pong-game">
   {{#if this.loading}}
-    <h1 class="white">Waiting for Player ...</h1>
+    <h2 class="white p-3">Waiting for Player</h2>
+    <div class="spinner-border text-light" role="status">
+      <span class="visually-hidden"></span>
+    </div>
   {{else}}
   <div class="flex-col">
     <div class="waviy">

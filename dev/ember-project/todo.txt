@@ -1,0 +1,1 @@
+alerts bootstrap for invitation link in chat

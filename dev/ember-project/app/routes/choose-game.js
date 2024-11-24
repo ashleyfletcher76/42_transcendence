@@ -11,7 +11,7 @@ export default class ChooseGameRoute extends Route {
   }
 
   queryParams = {
-    username: { refreshModel: true }
+    username: { refreshModel: true },
   };
 
   model(params) {
