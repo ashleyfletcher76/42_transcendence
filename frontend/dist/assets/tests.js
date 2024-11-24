@@ -84,6 +84,47 @@ define("myapp/tests/integration/components/ball-test", ["qunit", "myapp/tests/he
     });
   });
 });
+define("myapp/tests/integration/components/chat-test", ["qunit", "myapp/tests/helpers", "@ember/test-helpers", "@ember/template-factory"], function (_qunit, _helpers, _testHelpers, _templateFactory) {
+  "use strict";
+
+  0; //eaimeta@70e063a35619d71f0,"qunit",0,"myapp/tests/helpers",0,"@ember/test-helpers",0,"@ember/template-factory"eaimeta@70e063a35619d71f
+  (0, _qunit.module)('Integration | Component | chat', function (hooks) {
+    (0, _helpers.setupRenderingTest)(hooks);
+    (0, _qunit.test)('it renders', async function (assert) {
+      // Set any properties with this.set('myProperty', 'value');
+      // Handle any actions with this.set('myAction', function(val) { ... });
+
+      await (0, _testHelpers.render)((0, _templateFactory.createTemplateFactory)(
+      /*
+        <Chat />
+      */
+      {
+        "id": "oIlyLVgb",
+        "block": "[[[8,[39,0],null,null,null]],[],false,[\"chat\"]]",
+        "moduleName": "/myapp/myapp/tests/integration/components/chat-test.js",
+        "isStrictMode": false
+      }));
+      assert.dom().hasText('');
+
+      // Template block usage:
+      await (0, _testHelpers.render)((0, _templateFactory.createTemplateFactory)(
+      /*
+        
+            <Chat>
+              template block text
+            </Chat>
+          
+      */
+      {
+        "id": "P1USgWxA",
+        "block": "[[[1,\"\\n      \"],[8,[39,0],null,null,[[\"default\"],[[[[1,\"\\n        template block text\\n      \"]],[]]]]],[1,\"\\n    \"]],[],false,[\"chat\"]]",
+        "moduleName": "/myapp/myapp/tests/integration/components/chat-test.js",
+        "isStrictMode": false
+      }));
+      assert.dom().hasText('template block text');
+    });
+  });
+});
 define("myapp/tests/integration/components/direct-message-test", ["qunit", "myapp/tests/helpers", "@ember/test-helpers", "@ember/template-factory"], function (_qunit, _helpers, _testHelpers, _templateFactory) {
   "use strict";
 
@@ -160,6 +201,47 @@ define("myapp/tests/integration/components/login-overlay-test", ["qunit", "myapp
         "id": "N2tp/RwR",
         "block": "[[[1,\"\\n      \"],[8,[39,0],null,null,[[\"default\"],[[[[1,\"\\n        template block text\\n      \"]],[]]]]],[1,\"\\n    \"]],[],false,[\"login-overlay\"]]",
         "moduleName": "/myapp/myapp/tests/integration/components/login-overlay-test.js",
+        "isStrictMode": false
+      }));
+      assert.dom().hasText('template block text');
+    });
+  });
+});
+define("myapp/tests/integration/components/message-test", ["qunit", "myapp/tests/helpers", "@ember/test-helpers", "@ember/template-factory"], function (_qunit, _helpers, _testHelpers, _templateFactory) {
+  "use strict";
+
+  0; //eaimeta@70e063a35619d71f0,"qunit",0,"myapp/tests/helpers",0,"@ember/test-helpers",0,"@ember/template-factory"eaimeta@70e063a35619d71f
+  (0, _qunit.module)('Integration | Component | message', function (hooks) {
+    (0, _helpers.setupRenderingTest)(hooks);
+    (0, _qunit.test)('it renders', async function (assert) {
+      // Set any properties with this.set('myProperty', 'value');
+      // Handle any actions with this.set('myAction', function(val) { ... });
+
+      await (0, _testHelpers.render)((0, _templateFactory.createTemplateFactory)(
+      /*
+        <Message />
+      */
+      {
+        "id": "LF1Fszl7",
+        "block": "[[[8,[39,0],null,null,null]],[],false,[\"message\"]]",
+        "moduleName": "/myapp/myapp/tests/integration/components/message-test.js",
+        "isStrictMode": false
+      }));
+      assert.dom().hasText('');
+
+      // Template block usage:
+      await (0, _testHelpers.render)((0, _templateFactory.createTemplateFactory)(
+      /*
+        
+            <Message>
+              template block text
+            </Message>
+          
+      */
+      {
+        "id": "t0Vz7GrW",
+        "block": "[[[1,\"\\n      \"],[8,[39,0],null,null,[[\"default\"],[[[[1,\"\\n        template block text\\n      \"]],[]]]]],[1,\"\\n    \"]],[],false,[\"message\"]]",
+        "moduleName": "/myapp/myapp/tests/integration/components/message-test.js",
         "isStrictMode": false
       }));
       assert.dom().hasText('template block text');
