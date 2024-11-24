@@ -1,33 +1,42 @@
 from django.db import models
+from django.contrib.auth import get_user_model
+
+User = get_user_model()
 
 class ChatRoom(models.Model):
 	ROOM_TYPE_CHOICES = [
-		("game", "Game"),
+		("group", "Group"),
 		("private", "Private"),
-		("global_lobby", "Global Lobby"),
+		("lobby", "Lobby"),
 	]
 
 	name = models.CharField(max_length=255, unique=True)
-	creator_id = models.IntegerField()
-	creator_username = models.CharField(max_length=255)
-	invited_users = models.JSONField(default=list, blank=True)
-	room_type = models.CharField(max_length=20, choices=ROOM_TYPE_CHOICES, default="private")
+	room_type = models.CharField(max_length=20, choices=ROOM_TYPE_CHOICES, default="group")
+	created_by = models.ForeignKey(User, on_delete=models.CASCADE, related_name="created_rooms")
 	created_at = models.DateTimeField(auto_now_add=True)
 
-	def is_user_allowed(self, user_id):
-		"""
-		Check if the user is allowed to join the room:
-		- Global Lobby: Open to everyone.
-		- Private: Only creator and invited users.
-		- Game: Open to everyone (could include game-specific logic in the future).
-		"""
-		if self.room_type == "global_lobby":
-			return True
-		return user_id == self.creator_id or user_id in self.invited_users
+	def __str__(self):
+		return f"{self.name} ({self.room_type})"
 
-	def get_all_usernames(self):
-		"""Return a list of all usernames in the room (creator + invited users)."""
-		return [self.creator_username] + [user["username"] for user in self.invited_users]
+	def is_user_allowed(self, user):
+		"""Check if a user is allowed in the room."""
+		if self.room_type == "lobby":
+			return True  # Lobby is open to all users
+		return RoomMembership.objects.filter(user=user, room=self).exists()
+
+class RoomMembership(models.Model):
+	ROLE_CHOICES = [
+		("admin", "Admin"),
+		("member", "Member"),
+	]
+
+	user_id = models.IntegerField()
+	room = models.ForeignKey(ChatRoom, on_delete=models.CASCADE, related_name="memberships")
+	role = models.CharField(max_length=10, choices=ROLE_CHOICES, default="member")
+	joined_at = models.DateTimeField(auto_now_add=True)
+
+	class Meta:
+		unique_together = ("user_id", "room")
 
 	def __str__(self):
-		return f"{self.name} ({self.get_room_type_display()})"
+		return f"{self.user_id} in {self.room.name} as {self.role}"

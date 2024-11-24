@@ -11,6 +11,9 @@ DEBUG = os.environ.get("DJANGO_DEBUG") == "True"
 ALLOWED_HOSTS = ["*"]
 ASGI_APPLICATION = "config.asgi.application"
 
+# Print SECRET_KEY for debugging purposes
+print(f"SECRET_KEY in chat-service: {SECRET_KEY}")
+
 # Set to True to ensure all connections are HTTPS
 SECURE_SSL_REDIRECT = False
 
@@ -44,6 +47,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    "chat.middleware.DebugTokenMiddleware",  # Added middleware for debugging token
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
@@ -51,8 +55,6 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
-
-	# "chat.middleware.HealthCheckLoggingMiddleware",
 ]
 
 ROOT_URLCONF = "config.urls"
@@ -94,9 +96,7 @@ DATABASES = {
         "PASSWORD": os.environ.get("CHAT_SERVICE_PASSWORD"),
         "HOST": "chat-db",
         "PORT": "5432",
-        "OPTIONS": {
-            # "sslmode": "require",  # we use this to enforce ssl on the database also
-        },
+        "OPTIONS": {},
     }
 }
 
@@ -109,25 +109,19 @@ if "test" in sys.argv:
         "PASSWORD": os.environ.get("CHAT_SERVICE_PASSWORD"),
         "HOST": "chat-db",
         "PORT": "5432",
-        "OPTIONS": {
-            # "sslmode": "require",  # we use this to enforce ssl on the database also
-        },
+        "OPTIONS": {},
     }
 
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": [
-        "rest_framework_simplejwt.authentication.JWTAuthentication",
+        "chat.auth.DebugJWTAuthentication",
     ],
-        'DEFAULT_PERMISSION_CLASSES': (
-        'rest_framework.permissions.IsAuthenticated',
-    ),
+    "DEFAULT_PERMISSION_CLASSES": [
+        "rest_framework.permissions.IsAuthenticated",
+    ],
 }
 
-
-
 # Password validation
-# https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
-
 AUTH_PASSWORD_VALIDATORS = [
     {
         "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
@@ -143,51 +137,33 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-# LOGGING = {
-#     'version': 1,
-#     'disable_existing_loggers': False,
-#     'handlers': {
-#         'console': {
-#             'class': 'logging.StreamHandler',
-#         },
-#     },
-#     'root': {
-#         'handlers': ['console'],
-#         'level': 'INFO',
-#     },
-#     'loggers': {
-#         'django': {
-#             'handlers': ['console'],
-#             'level': 'INFO',
-#             'propagate': True,
-#         },
-#         'users': {
-#             'handlers': ['console'],
-#             'level': 'INFO',
-#             'propagate': True,
-#         },
-#     },
-# }
-
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "handlers": {
+        "console": {
+            "class": "logging.StreamHandler",
+        },
+    },
+    "loggers": {
+        "django": {
+            "handlers": ["console"],
+            "level": "DEBUG",
+        },
+        "chat.auth": {  # Logger for the DebugJWTAuthentication class
+            "handlers": ["console"],
+            "level": "DEBUG",
+        },
+    },
+}
 
 # Internationalization
-# https://docs.djangoproject.com/en/5.1/topics/i18n/
-
 LANGUAGE_CODE = "en-us"
-
 TIME_ZONE = "UTC"
-
 USE_I18N = True
-
 USE_TZ = True
 
-
 # Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/5.1/howto/static-files/
-
 STATIC_URL = "static/"
-
-# Default primary key field type
-# https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"

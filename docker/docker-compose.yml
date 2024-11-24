@@ -1,4 +1,4 @@
-version: '3.9'
+# version: '3.9'
 
 services:
   auth-db:
@@ -237,7 +237,7 @@ services:
         condition: service_healthy
     restart: always
     ports:
-      - "8003:8000"
+      - "8004:8000"
 
   redis:
     image: redis:alpine
@@ -276,8 +276,8 @@ services:
         condition: service_healthy
       pong-game:
         condition: service_healthy
-      lobby:
-        condition: service_healthy
+      # lobby:
+      #   condition: service_healthy
     networks:
       my_network:
     ports:

@@ -23,7 +23,7 @@ def get_usernames(request):
 	try:
 		user_ids = request.GET.getlist("user_ids")
 		user_ids = [int(uid) for uid in user_ids]
-		users = User.objects.filter(id_in=user_ids).values("id", "username")
+		users = User.objects.filter(id__in=user_ids).values("id", "username")
 		return JsonResponse({"users": list(users)})
 	except ValueError:
 		return JsonResponse({"error": "Invalid user ID's"}, status=400)
