@@ -21,13 +21,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-6+l61&!syw0@8c2$b$%%^s$1w3xr&830=^h75ihtj=2msha0tc"
+SECRET_KEY = "django-insecure-6btvk)iynnls5dn(b&w6wb@7epz9pms-##=ahsbewtxw8t+#t9"
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ["*"]
-APPEND_SLASH = False
 
 
 # Application definition
@@ -39,9 +38,8 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    "corsheaders",
-    "rest_framework",
-    "pong"
+    "lobby",
+    "daphne",
 ]
 
 MIDDLEWARE = [
@@ -52,33 +50,38 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
-
-	"pong.middleware.HealthCheckLoggingMiddleware",
 ]
-
-CORS_ALLOW_ALL_ORIGINS = True
 
 ROOT_URLCONF = "config.urls"
 
 TEMPLATES = [
     {
-        'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [
-            os.path.join(BASE_DIR, 'game/templates'),  # Add your app's templates directory
-        ],
-        'APP_DIRS': True,
-        'OPTIONS': {
-            'context_processors': [
-                'django.template.context_processors.debug',
-                'django.template.context_processors.request',
-                'django.contrib.auth.context_processors.auth',
-                'django.contrib.messages.context_processors.messages',
+        "BACKEND": "django.template.backends.django.DjangoTemplates",
+        "DIRS": [],
+        "APP_DIRS": True,
+        "OPTIONS": {
+            "context_processors": [
+                "django.template.context_processors.debug",
+                "django.template.context_processors.request",
+                "django.contrib.auth.context_processors.auth",
+                "django.contrib.messages.context_processors.messages",
             ],
         },
     },
 ]
 
-WSGI_APPLICATION = "config.wsgi.application"
+#WSGI_APPLICATION = "config.wsgi.application"
+ASGI_APPLICATION = "config.asgi.application"
+
+# Channel layer settings for websockets
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels_redis.core.RedisChannelLayer",
+        "CONFIG": {
+            "hosts": [os.environ.get("REDIS_URL", "redis://localhost:8003")],
+        },
+    },
+}
 
 
 # Database
@@ -87,18 +90,16 @@ WSGI_APPLICATION = "config.wsgi.application"
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
-        "NAME": os.environ.get("PONG_SERVICE_DB"),
-        "USER": os.environ.get("PONG_SERVICE_USER"),
-        "PASSWORD": os.environ.get("PONG_SERVICE_PASSWORD"),
-        "HOST": "pong-db",
+        "NAME": os.environ.get("LOBBY_SERVICE_DB"),
+        "USER": os.environ.get("LOBBY_SERVICE_USER"),
+        "PASSWORD": os.environ.get("LOBBY_SERVICE_PASSWORD"),
+        "HOST": "lobby-db",
         "PORT": "5432",
         "OPTIONS": {
             "sslmode": "require",  # we use this to enforce ssl on the database also
         },
     }
 }
-
-
 
 
 # Password validation
@@ -118,32 +119,6 @@ AUTH_PASSWORD_VALIDATORS = [
         "NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",
     },
 ]
-
-LOGGING = {
-    'version': 1,
-    'disable_existing_loggers': False,
-    'handlers': {
-        'console': {
-            'class': 'logging.StreamHandler',
-        },
-    },
-    'root': {
-        'handlers': ['console'],
-        'level': 'INFO',
-    },
-    'loggers': {
-        'django': {
-            'handlers': ['console'],
-            'level': 'INFO',
-            'propagate': True,
-        },
-        'users': {
-            'handlers': ['console'],
-            'level': 'INFO',
-            'propagate': True,
-        },
-    },
-}
 
 
 # Internationalization

@@ -40,33 +40,33 @@ def game_state_view(request, room_name):
         game = GameState.objects.get(room_name=room_name)
 
         if request.method == 'POST':
-            paddle_direction = request.data.get('paddle_direction', {})
-            is_paused = request.data.get('is_paused', None)
-            side = request.data.get('side', None)
+            
+            if game.player2 == "remote":
+                game.save()
+                serializer = GameStateSerializer(game)
+                return Response(serializer.data)
 
+            player = request.data.get("player", {})
+            keypress_p1 = request.data.get('keypress_p1', {})
+            keypress_p2 = request.data.get('keypress_p2', {})
 
-            if is_paused is not None:
-                is_paused = bool(is_paused)
-                print(f"Toggling pause: {is_paused}")
-                if is_paused:
-                    game.paused = not game.paused
-                    print(f"Updated game paused state: {game.paused}")
-
-            if not game.paused:
+            if game.paused == False:
                 game_logic(game)
-                if side is not None and side == 0:
-                    if paddle_direction.get('up', False):
+                if keypress_p1 == 'up':
+                    move_left_paddle(game, -1)
+                if keypress_p1 == 'down':
+                    move_left_paddle(game, 1)
+                if keypress_p1 == 'up' and player == game.player2:
+                    move_right_paddle(game, -1)
+                if keypress_p1 == 'down' and player == game.player2:
+                    move_right_paddle(game, 1)
+                if game.player2 == "local":
+                    if keypress_p2 == 'up':
                         move_right_paddle(game, -1)
-                    if paddle_direction.get('down', False):
+                    if keypress_p2 == 'down':
                         move_right_paddle(game, 1)
-                elif side is not None and side == 1:
-                    if paddle_direction.get('up', False):
-                        move_left_paddle(game, -1)
-                    if paddle_direction.get('down', False):
-                        move_left_paddle(game, 1)
 
             game.save()
-            print(f"Final game paused state: {game.paused}")
 
             serializer = GameStateSerializer(game)
             return Response(serializer.data)
@@ -82,17 +82,17 @@ def game_logic(game):
     game.ball_x += game.ball_speed_x
     game.ball_y += game.ball_speed_y
 
-    if game.ball_y <= 0 or game.ball_y >= 1:
+    if game.ball_y <= -1 or game.ball_y >= 1:
         game.ball_speed_y = -game.ball_speed_y
 
-    if game.ball_x <= 0.02:
+    if game.ball_x <= -1:
         if is_paddle_hit(game.left_paddle_y, game.ball_y):
             handle_paddle_hit(game, "left")
         else:
             game.right_score += 1
             reset_ball(game)
 
-    elif game.ball_x >= 0.98:
+    elif game.ball_x >= 1:
         if is_paddle_hit(game.right_paddle_y, game.ball_y):
             handle_paddle_hit(game, "right")
         else:
@@ -110,17 +110,17 @@ def update_ai(game):
 
 def move_right_paddle(game, direction):
     game.right_paddle_y += direction * 0.01
-    game.right_paddle_y = max(0.05, min(0.95, game.right_paddle_y))
+    game.right_paddle_y = max(-1, min(1, game.right_paddle_y))
 
 def move_left_paddle(game, direction):
     game.left_paddle_y += direction * 0.01
-    game.left_paddle_y = max(0.05, min(0.95, game.left_paddle_y))
+    game.left_paddle_y = max(-1, min(1, game.left_paddle_y))
 
 def handle_paddle_hit(game, side):
     game.ball_speed_x = -game.ball_speed_x
 
 def reset_ball(game):
-    game.ball_x, game.ball_y = 0.5, 0.5
+    game.ball_x, game.ball_y = 0, 0
     game.ball_speed_x *= -1
 
 def is_paddle_hit(paddle_y, ball_y, paddle_height=0.2):
@@ -128,53 +128,81 @@ def is_paddle_hit(paddle_y, ball_y, paddle_height=0.2):
     paddle_bottom = paddle_y + paddle_height / 2
     return paddle_top <= ball_y <= paddle_bottom
 
+
+
+from django.http import JsonResponse
+from rest_framework.decorators import api_view
+from rest_framework import status
+import random
+import logging
+import json
+
 @api_view(['POST'])
 def create_room(request):
     try:
+        # Log the received data for debugging
+        logging.info("Received request data: %s", request.body)
+        
         data = json.loads(request.body)
-        player2_is_ai = data.get("player2_is_ai", False)
+        player_1 = data.get("player", "default")
+        game_type = data.get("gameType", "default")
+
+        # Check if a waiting room exists for remote mode
+        if game_type == "remote":
+            waiting_room = GameState.objects.filter(player2="remote").first()
+            if waiting_room:
+                waiting_room.player2 = player_1
+                waiting_room.paused = False
+                waiting_room.save()
+
+                return JsonResponse({
+                    "message": "Joined an existing room",
+                    "room_name": waiting_room.room_name,
+                    "game_state": GameStateSerializer(waiting_room).data
+                }, status=status.HTTP_200_OK)
+
         room_name = 'room-' + str(random.randint(1000, 9999))
+
+        if game_type == "computer":
+            player_2 = "AI"
+        elif game_type == "local":
+            player_2 = "local"
+        elif game_type == "remote":
+            player_2 = "remote"
+
+        # Create a new game state instance
         game_state = GameState.objects.create(
             room_name=room_name,
-            ball_x=0.5,
-            ball_y=0.5,
+            ball_x=0,
+            ball_y=0,
             ball_speed_x=random.choice([0.005, -0.005]),
             ball_speed_y=random.choice([0.005, -0.005]),
-            left_paddle_y=0.5,
-            right_paddle_y=0.5,
+            left_paddle_y=0,
+            right_paddle_y=0,
             left_score=0,
             right_score=0,
-            player1="Player1",
-            player2="AI" if player2_is_ai else None,
-            paused=True
+            player1=player_1,
+            player2=player_2,
+            paused=True if player_2 == "remote" else False
         )
+
+        # Serialize the game state
         serializer = GameStateSerializer(game_state)
-        return Response({
+
+        response_data = {
             "message": "Room created successfully",
             "room_name": room_name,
-            "game_state": serializer.data
-        }, status=status.HTTP_201_CREATED)
-    except Exception as e:
-        return Response({
-            "error": str(e)
-        }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            "game_state": serializer.data,
+            "player1": serializer.data["player1"],
+            "player2": serializer.data["player2"],
+        }
 
-
-# View for searching a room that is waiting for an opponent
-@api_view(['GET'])
-def search_room(request):
-    try:
-        waiting_room = GameState.objects.filter(player2=None).first()
-
-        if waiting_room:
-            waiting_room.player2 = "player_2"
-            waiting_room.save()
-            return JsonResponse({'room_name': waiting_room.room_name}, status=200)
-        else:
-            return JsonResponse({'room_name': None}, status=404)
+        return JsonResponse(response_data, status=status.HTTP_201_CREATED)
 
     except Exception as e:
-        return JsonResponse({'error': str(e)}, status=500)
+        logging.error("Error handling room: %s", str(e))
+        return JsonResponse({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
 
 
 health_check_logged = False
