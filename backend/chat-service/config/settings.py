@@ -11,9 +11,6 @@ DEBUG = os.environ.get("DJANGO_DEBUG") == "True"
 ALLOWED_HOSTS = ["*"]
 ASGI_APPLICATION = "config.asgi.application"
 
-# Print SECRET_KEY for debugging purposes
-print(f"SECRET_KEY in chat-service: {SECRET_KEY}")
-
 # Set to True to ensure all connections are HTTPS
 SECURE_SSL_REDIRECT = False
 
@@ -47,7 +44,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
-    "chat.middleware.DebugTokenMiddleware",  # Added middleware for debugging token
+    # "chat.middleware.DebugTokenMiddleware",  # Added middleware for debugging token
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
@@ -113,9 +110,9 @@ if "test" in sys.argv:
     }
 
 REST_FRAMEWORK = {
-    "DEFAULT_AUTHENTICATION_CLASSES": [
-        "chat.auth.DebugJWTAuthentication",
-    ],
+    "DEFAULT_AUTHENTICATION_CLASSES": (
+        "chat.auth.CustomJWTAuthentication",
+    ),
     "DEFAULT_PERMISSION_CLASSES": [
         "rest_framework.permissions.IsAuthenticated",
     ],
@@ -137,25 +134,25 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-LOGGING = {
-    "version": 1,
-    "disable_existing_loggers": False,
-    "handlers": {
-        "console": {
-            "class": "logging.StreamHandler",
-        },
-    },
-    "loggers": {
-        "django": {
-            "handlers": ["console"],
-            "level": "DEBUG",
-        },
-        "chat.auth": {  # Logger for the DebugJWTAuthentication class
-            "handlers": ["console"],
-            "level": "DEBUG",
-        },
-    },
-}
+# LOGGING = {
+#     "version": 1,
+#     "disable_existing_loggers": False,
+#     "handlers": {
+#         "console": {
+#             "class": "logging.StreamHandler",
+#         },
+#     },
+#     "loggers": {
+#         "django": {
+#             "handlers": ["console"],
+#             "level": "DEBUG",
+#         },
+#         "chat.auth": {  # Logger for the DebugJWTAuthentication class
+#             "handlers": ["console"],
+#             "level": "DEBUG",
+#         },
+#     },
+# }
 
 # Internationalization
 LANGUAGE_CODE = "en-us"

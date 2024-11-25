@@ -2,7 +2,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework import status
 from rest_framework_simplejwt.authentication import JWTAuthentication
-from rest_framework_simplejwt.exceptions import InvalidToken, TokenError
+from rest_framework_simplejwt.exceptions import InvalidToken, TokenError, AuthenticationFailed
 import requests
 
 class ValidateTokenView(APIView):
@@ -63,3 +63,30 @@ class ValidateUserView(APIView):
 				{"error": f"Failed to connect to user-service: {str(e)}"},
 				status=status.HTTP_503_SERVICE_UNAVAILABLE,
 			)
+
+class GetUserFromTokenView(APIView):
+	def post(self, request):
+		token = request.data.get("token")
+		if not token:
+			return Response({"error": "Token is required"}, status=status.HTTP_400_BAD_REQUEST)
+
+		try:
+			jwt_auth = JWTAuthentication()
+			validated_token = jwt_auth.get_validated_token(token)
+			user_id = validated_token.get("user_id")
+			print(f"Token id: {user_id}")
+			if not user_id:
+				raise AuthenticationFailed("Token does contain user_id")
+
+			# query from user-service the username
+			response = requests.get(
+				f"http://user-service:8000/users/get-single-username/{user_id}/",
+				headers={"Authorization": f"Bearer {token}"}
+			)
+			if response.status_code == 200:
+				user_data = response.json()
+				return Response(user_data, status=status.HTTP_200_OK)
+			else:
+				return Response({"error": "User not found"}, status=status.HTTP_404_NOT_FOUND)
+		except Exception as e:
+			return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)

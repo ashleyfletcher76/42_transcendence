@@ -12,7 +12,8 @@ class ChatRoom(models.Model):
 
 	name = models.CharField(max_length=255, unique=True)
 	room_type = models.CharField(max_length=20, choices=ROOM_TYPE_CHOICES, default="group")
-	created_by = models.ForeignKey(User, on_delete=models.CASCADE, related_name="created_rooms")
+	created_by_user_id = models.IntegerField()
+	created_by_username = models.CharField(max_length=255)
 	created_at = models.DateTimeField(auto_now_add=True)
 
 	def __str__(self):

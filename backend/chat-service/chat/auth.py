@@ -1,24 +1,54 @@
+import requests
 from rest_framework_simplejwt.authentication import JWTAuthentication
-import logging
+from rest_framework.exceptions import AuthenticationFailed
+from django.contrib.auth.models import AnonymousUser
 
-logger = logging.getLogger(__name__)
+class ProxyUser():
+	def __init__(self, user_id, username):
+		self.id = user_id
+		self.username = username
 
-class DebugJWTAuthentication(JWTAuthentication):
-    def authenticate(self, request):
-        header = self.get_header(request)
-        if header is None:
-            logger.debug("No Authorization header provided")
-        else:
-            logger.debug(f"Authorization header: {header}")
+	@property
+	def is_authenticated(self):
+		return True
 
-        raw_token = self.get_raw_token(header)
-        if raw_token is None:
-            logger.debug("No token found in the Authorization header")
-        else:
-            logger.debug(f"Token extracted: {raw_token}")
+class CustomJWTAuthentication(JWTAuthentication):
+	def authenticate(self, request):
+		print("CustomJWTAuthentication triggered")
+		header = self.get_header(request)
+		if header is None:
+			print("No Authorization header found")
+			return None
 
-        validated_token = self.get_validated_token(raw_token)
-        user = self.get_user(validated_token)
+		raw_token = self.get_raw_token(header)
+		if raw_token is None:
+			print("No token found in header")
+			return None
 
-        logger.debug(f"Authenticated user: {user}")
-        return user, validated_token
+		print("JWT Authentication initiated")
+		# validate the token and get user details
+		user_data = self.get_user_from_auth_service(raw_token)
+		user = ProxyUser(user_id=user_data["user_id"], username=user_data["username"])
+		print(f"Authenticated user: {user.username} (ID: {user.id})")
+		return user, raw_token
+
+	def get_user_from_auth_service(self, token):
+		## remove from production
+		print(f"Token type: {type(token)}, Token value: {token}")
+
+		if isinstance(token, bytes):
+			token = token.decode("utf-8")
+
+		try:
+			response = requests.post(
+				f"http://auth-service:8000/auth/get-user-token/",
+				json={"token": token}
+			)
+			print(f"Auth-service response status: {response.status_code}")
+			print(f"Auth-service response body: {response.json()}")
+			if response.status_code == 200:
+				return response.json()
+			else:
+				raise AuthenticationFailed("User authentication failed")
+		except requests.RequestException as e:
+			raise AuthenticationFailed(f"Auth-service unreachable: {str(e)}")
