@@ -26,9 +26,18 @@
         <button type="submit">Join or Create Tournament</button>
     </form>
 
+    <button id="getPlayersBtn">Get Player List</button>
+
     <h2>Messages</h2>
     <div id="messages" style="border: 1px solid #ccc; padding: 10px; height: 200px; overflow-y: auto;">
         <!-- Messages will appear here -->
+    </div>
+
+    <h2>Player List</h2>
+    <div id="playerList" style="border: 1px solid #ccc; padding: 10px; display: none;">
+        <ul id="players">
+            <!-- Player list will be displayed here -->
+        </ul>
     </div>
 
     <script>
@@ -82,6 +91,9 @@
                 const data = JSON.parse(event.data);
                 if (data.error) {
                     appendMessage('Error: ' + data.error);
+                } else if (data.players) {
+                    // Show player list if available
+                    showPlayerList(data.players);
                 } else {
                     appendMessage('Message: ' + data.message);
                 }
@@ -96,6 +108,20 @@
             };
         };
 
+        // Fetch player list when button is clicked
+        document.getElementById('getPlayersBtn').onclick = function () {
+            const tournamentName = document.getElementById('tournamentName').value;
+            if (tournamentName && socket) {
+                const data = {
+                    action: 'player_list',
+                    tournament_name: tournamentName
+                };
+                socket.send(JSON.stringify(data));
+            } else {
+                appendMessage('Please join or create a tournament first.');
+            }
+        };
+
         // Utility function to append messages
         function appendMessage(message) {
             const messagesDiv = document.getElementById('messages');
@@ -105,6 +131,23 @@
 
             // Scroll to the bottom
             messagesDiv.scrollTop = messagesDiv.scrollHeight;
+        }
+
+        // Function to display the player list
+        function showPlayerList(players) {
+            const playerListDiv = document.getElementById('playerList');
+            const playersUl = document.getElementById('players');
+
+            // Clear previous player list
+            playersUl.innerHTML = '';
+
+            players.forEach(player => {
+                const li = document.createElement('li');
+                li.textContent = `${player.username} ${player.admin ? '(Admin)' : ''}`;
+                playersUl.appendChild(li);
+            });
+
+            playerListDiv.style.display = 'block';
         }
     </script>
 </body>
