@@ -59,6 +59,9 @@ superuser:
 makemigrate-%:
 	$(DOCKER_COMPOSE) exec $* python manage.py makemigrations
 
+term-%:
+	$(DOCKER_COMPOSE) exec $* zsh
+
 # apply migration
 migrate-%:
 	$(DOCKER_COMPOSE) exec $* python manage.py migrate

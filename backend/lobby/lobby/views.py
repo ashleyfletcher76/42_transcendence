@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.db import connection
 from django.http import JsonResponse
+from .models import Tournament
 import logging
 
 logger = logging.getLogger(__name__)
@@ -18,3 +19,12 @@ def health_check(request):
 
 def index(request):
     return render(request, "lobby/index.html")
+
+def listLobby(request):
+    if request.method == 'GET':
+        tournaments = Tournament.objects.values('name', 'num_players')
+        tournaments_list = list(tournaments)
+        
+        return JsonResponse({'tournaments': tournaments_list}, safe=False)
+    else:
+        return JsonResponse({'error': 'Method not allowed'}, status=405)

@@ -8,6 +8,7 @@ RUN apt-get update && apt-get install -y \
 # Set environment variables
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
+ENV DJANGO_SETTINGS_MODULE=config.settings
 
 # Set working directory
 WORKDIR /app
@@ -22,5 +23,4 @@ COPY . /app/
 # Expose port
 EXPOSE 8000
 
-CMD ["uvicorn", "config.asgi:application", "--host", "0.0.0.0", "--port", "8000"]
-
+CMD ["uvicorn", "config.asgi:application", "--host", "0.0.0.0", "--port", "8000", "--reload"]

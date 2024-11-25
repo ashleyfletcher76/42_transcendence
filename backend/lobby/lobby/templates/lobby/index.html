@@ -1,27 +1,111 @@
-<!-- chat/templates/chat/index.html -->
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <meta charset="utf-8"/>
-    <title>Chat Rooms</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tournament WebSocket Test</title>
 </head>
 <body>
-    What chat room would you like to enter?<br>
-    <input id="room-name-input" type="text" size="100"><br>
-    <input id="room-name-submit" type="button" value="Enter">
+    <h1>Tournament WebSocket Test</h1>
+    
+    <!-- Display list of tournaments -->
+    <h2>Available Tournaments</h2>
+    <div id="tournamentList" style="border: 1px solid #ccc; padding: 10px;">
+        <!-- List of tournaments will appear here -->
+    </div>
+
+    <br>
+
+    <form id="tournamentForm">
+        <label for="tournamentName">Tournament Name:</label>
+        <input type="text" id="tournamentName" name="tournamentName" required>
+        <br><br>
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username" required>
+        <br><br>
+        <button type="submit">Join or Create Tournament</button>
+    </form>
+
+    <h2>Messages</h2>
+    <div id="messages" style="border: 1px solid #ccc; padding: 10px; height: 200px; overflow-y: auto;">
+        <!-- Messages will appear here -->
+    </div>
 
     <script>
-        document.querySelector('#room-name-input').focus();
-        document.querySelector('#room-name-input').onkeyup = function(e) {
-            if (e.key === 'Enter') {  // enter, return
-                document.querySelector('#room-name-submit').click();
-            }
+        // Function to fetch tournaments and display them
+        function fetchTournaments() {
+            fetch('https://localhost/lobby/list/')
+                .then(response => response.json())
+                .then(data => {
+                    const tournamentList = document.getElementById('tournamentList');
+                    tournamentList.innerHTML = '';  // Clear previous list
+
+                    // Loop through tournaments and add to the list
+                    data.tournaments.forEach(tournament => {
+                        const tournamentDiv = document.createElement('div');
+                        tournamentDiv.textContent = `Name: ${tournament.name} | Players: ${tournament.num_players}`;
+                        tournamentList.appendChild(tournamentDiv);
+                    });
+                })
+                .catch(error => {
+                    console.error('Error fetching tournaments:', error);
+                });
+        }
+
+        // Call function to fetch tournaments when the page loads
+        window.onload = fetchTournaments;
+
+        // WebSocket event handlers
+        let socket;
+        const form = document.getElementById('tournamentForm');
+        form.onsubmit = function (e) {
+            e.preventDefault();
+            const tournamentName = document.getElementById('tournamentName').value;
+            const username = document.getElementById('username').value;
+
+            // WebSocket connection
+            const wsUrl = `ws://localhost:8003/ws/tournament/${tournamentName}/`;
+            socket = new WebSocket(wsUrl);
+
+            socket.onopen = function () {
+                appendMessage('WebSocket connection established.');
+                // Send data to WebSocket server
+                const data = {
+                    action: 'create_or_join',
+                    tournament_name: tournamentName,
+                    username: username
+                };
+                socket.send(JSON.stringify(data));
+            };
+
+            socket.onmessage = function (event) {
+                const data = JSON.parse(event.data);
+                if (data.error) {
+                    appendMessage('Error: ' + data.error);
+                } else {
+                    appendMessage('Message: ' + data.message);
+                }
+            };
+
+            socket.onclose = function () {
+                appendMessage('WebSocket connection closed.');
+            };
+
+            socket.onerror = function (error) {
+                appendMessage('WebSocket error: ' + error);
+            };
         };
 
-        document.querySelector('#room-name-submit').onclick = function(e) {
-            var roomName = document.querySelector('#room-name-input').value;
-            window.location.pathname = '/chat/' + roomName + '/';
-        };
+        // Utility function to append messages
+        function appendMessage(message) {
+            const messagesDiv = document.getElementById('messages');
+            const messageElement = document.createElement('div');
+            messageElement.textContent = message;
+            messagesDiv.appendChild(messageElement);
+
+            // Scroll to the bottom
+            messagesDiv.scrollTop = messagesDiv.scrollHeight;
+        }
     </script>
 </body>
 </html>

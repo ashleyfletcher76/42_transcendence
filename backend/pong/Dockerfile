@@ -19,7 +19,6 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Copy the rest of the application code
 COPY . /app/
 
-RUN chsh -s /bin/zsh
 
 # Expose port
 EXPOSE 8000

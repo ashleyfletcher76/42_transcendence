@@ -27,6 +27,7 @@ SECRET_KEY = "django-insecure-6btvk)iynnls5dn(b&w6wb@7epz9pms-##=ahsbewtxw8t+#t9
 DEBUG = True
 
 ALLOWED_HOSTS = ["*"]
+APPEND_SLASH = False
 
 
 # Application definition
@@ -39,7 +40,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "lobby",
-    "daphne",
+    "channels"
 ]
 
 MIDDLEWARE = [
@@ -78,7 +79,7 @@ CHANNEL_LAYERS = {
     "default": {
         "BACKEND": "channels_redis.core.RedisChannelLayer",
         "CONFIG": {
-            "hosts": [os.environ.get("REDIS_URL", "redis://localhost:8003")],
+            "hosts": [os.environ.get("REDIS_URL", "redis://localhost:6379")],
         },
     },
 }
@@ -96,7 +97,7 @@ DATABASES = {
         "HOST": "lobby-db",
         "PORT": "5432",
         "OPTIONS": {
-            "sslmode": "require",  # we use this to enforce ssl on the database also
+
         },
     }
 }
