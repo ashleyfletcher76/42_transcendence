@@ -29,12 +29,12 @@ class CustomJWTAuthentication(JWTAuthentication):
 		# validate the token and get user details
 		user_data = self.get_user_from_auth_service(raw_token)
 		user = ProxyUser(user_id=user_data["user_id"], username=user_data["username"])
-		print(f"Authenticated user: {user.username} (ID: {user.id})")
+		# print(f"Authenticated user: {user.username} (ID: {user.id})")
 		return user, raw_token
 
 	def get_user_from_auth_service(self, token):
 		## remove from production
-		print(f"Token type: {type(token)}, Token value: {token}")
+		# print(f"Token type: {type(token)}, Token value: {token}")
 
 		if isinstance(token, bytes):
 			token = token.decode("utf-8")
@@ -44,8 +44,8 @@ class CustomJWTAuthentication(JWTAuthentication):
 				f"http://auth-service:8000/auth/get-user-token/",
 				json={"token": token}
 			)
-			print(f"Auth-service response status: {response.status_code}")
-			print(f"Auth-service response body: {response.json()}")
+			# print(f"Auth-service response status: {response.status_code}")
+			# print(f"Auth-service response body: {response.json()}")
 			if response.status_code == 200:
 				return response.json()
 			else:

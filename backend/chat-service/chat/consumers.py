@@ -85,7 +85,32 @@ class ChatConsumer(AsyncWebsocketConsumer):
 			room_data = response.json()
 			await self.send(text_data=json.dumps({"type": "create_room_success", **room_data}))
 		except requests.exceptions.RequestException as e:
-			await self.send(text_data=json.dumps({"type": "create_room_error", "error": str(e)}))
+			if e.response and e.response.status_code == 400:
+				# extract error response
+				error_data = e.response.json()
+				if error_data.get("error") == "Room name already exists":
+					await self.send(
+					text_data=json.dumps(
+						{
+							"type": "create_room_already_exists",
+							"room_id": error_data.get("room_id"),
+							"name": error_data.get("name"),
+							"room_type": error_data.get("room_type"),
+						}
+					)
+				)
+				else:
+					await self.send(
+						text_data=json.dumps(
+							{"type": "create_room_error", "error": error_data.get("error", str(e))}
+						)
+					)
+			else:
+				await self.send(
+					text_data=json.dumps(
+						{"type": "create_room_error", "error": str(e)}
+					)
+				)
 
 	async def get_user_from_auth_service(self, token):
 		"""Fetch user data from the auth-service using the token."""

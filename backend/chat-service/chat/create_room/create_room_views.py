@@ -23,7 +23,17 @@ class CreateRoomView(APIView):
 			return Response({"error": "Room name is required"}, status=400)
 
 		if ChatRoom.objects.filter(name=name).exists():
-			return Response({"error": "Room name already exists"}, status=400)
+			existing_room = ChatRoom.objects.get(name=name)
+			print("Trying to add name exists")
+			return Response(
+				{
+					"error": "Room name already exists",
+					"room_id": existing_room.id,
+					"name": existing_room.name,
+					"room_type": existing_room.room_type,
+				},
+				status=400
+			)
 
 		# create the chat room
 		room = ChatRoom.objects.create(
