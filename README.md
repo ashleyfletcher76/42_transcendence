@@ -102,29 +102,27 @@ We may implement these **optional modules** based on project scope, time, and us
 
 Each service (auth, user, chat, pong) has its own dedicated PostgreSQL database container. Ensure the .env file contains separate database credentials for each service as shown below:
 ```plaintext
-DJANGO_SECRET_KEY=mysecret
-
 # Database configurations
 AUTH_SERVICE_DB=myauthdb
 AUTH_SERVICE_USER=myauthuser
 AUTH_SERVICE_PASSWORD=myauthpassword
-AUTH_DB_PORT=5432
 
 USER_SERVICE_DB=myuserdb
 USER_SERVICE_USER=myuser
 USER_SERVICE_PASSWORD=mypassword
-USER_DB_PORT=5433
 
 
 CHAT_SERVICE_DB=mychatdb
 CHAT_SERVICE_USER=mychatuser
 CHAT_SERVICE_PASSWORD=mychatpassword
-CHAT_DB_PORT=5434
 
 PONG_SERVICE_DB=mypongdb
 PONG_SERVICE_USER=myponguser
 PONG_SERVICE_PASSWORD=mypongpassword
-PONG_DB_PORT=5435
+
+LOBBY_SERVICE_DB=mylobbydb
+LOBBY_SERVICE_USER=mylobbyuser
+LOBBY_SERVICE_PASSWORD=mylobbypassword
 
 # Django superuser
 DJANGO_SUPERUSER_USERNAME=admin
@@ -132,6 +130,7 @@ DJANGO_SUPERUSER_EMAIL=admin@example.com
 DJANGO_SUPERUSER_PASSWORD=hello
 
 DJANGO_DEBUG=True
+DJANGO_SECRET_KEY=mysecret
 ```
 
 **Note**: All services use HTTPS for secure communication. If using self-signed certificates, use `-k` in `curl` commands or `--no-check` in `wscat` to bypass certificate verification.
