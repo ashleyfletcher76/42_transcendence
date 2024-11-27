@@ -1,154 +1,214 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tournament WebSocket Test</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Tournament WebSocket Test</title>
 </head>
+
 <body>
-    <h1>Tournament WebSocket Test</h1>
-    
-    <!-- Display list of tournaments -->
-    <h2>Available Tournaments</h2>
-    <div id="tournamentList" style="border: 1px solid #ccc; padding: 10px;">
-        <!-- List of tournaments will appear here -->
-    </div>
+	<h1>Tournament WebSocket Test</h1>
 
-    <br>
+	<!-- Display list of tournaments -->
+	<h2>Available Tournaments</h2>
+	<div id="tournamentList" style="border: 1px solid #ccc; padding: 10px;">
+		<!-- List of tournaments will appear here -->
+	</div>
 
-    <form id="tournamentForm">
-        <label for="tournamentName">Tournament Name:</label>
-        <input type="text" id="tournamentName" name="tournamentName" required>
-        <br><br>
-        <label for="username">Username:</label>
-        <input type="text" id="username" name="username" required>
-        <br><br>
-        <button type="submit">Join or Create Tournament</button>
-    </form>
+	<br>
 
-    <button id="getPlayersBtn">Get Player List</button>
+	<form id="tournamentForm">
+		<label for="tournamentName">Tournament Name:</label>
+		<input type="text" id="tournamentName" name="tournamentName" required>
+		<br><br>
+		<label for="username">Username:</label>
+		<input type="text" id="username" name="username" required>
+		<br><br>
+		<button type="submit">Join or Create Tournament</button>
+	</form>
 
-    <h2>Messages</h2>
-    <div id="messages" style="border: 1px solid #ccc; padding: 10px; height: 200px; overflow-y: auto;">
-        <!-- Messages will appear here -->
-    </div>
+	<button id="getPlayersBtn">Get Player List</button>
 
-    <h2>Player List</h2>
-    <div id="playerList" style="border: 1px solid #ccc; padding: 10px; display: none;">
-        <ul id="players">
-            <!-- Player list will be displayed here -->
-        </ul>
-    </div>
+	<button id="startMatchmakingBtn">start matchmaking</button>
 
-    <script>
-        // Function to fetch tournaments and display them
-        function fetchTournaments() {
-            fetch('https://localhost/lobby/list/')
-                .then(response => response.json())
-                .then(data => {
-                    const tournamentList = document.getElementById('tournamentList');
-                    tournamentList.innerHTML = '';  // Clear previous list
+	<h2>Messages</h2>
+	<div id="messages" style="border: 1px solid #ccc; padding: 10px; height: 200px; overflow-y: auto;">
+		<!-- Messages will appear here -->
+	</div>
 
-                    // Loop through tournaments and add to the list
-                    data.tournaments.forEach(tournament => {
-                        const tournamentDiv = document.createElement('div');
-                        tournamentDiv.textContent = `Name: ${tournament.name} | Players: ${tournament.num_players}`;
-                        tournamentList.appendChild(tournamentDiv);
-                    });
-                })
-                .catch(error => {
-                    console.error('Error fetching tournaments:', error);
-                });
-        }
+	<h2>Player List</h2>
+	<div id="playerList" style="border: 1px solid #ccc; padding: 10px; display: none;">
+		<ul id="players">
+			<!-- Player list will be displayed here -->
+		</ul>
+	</div>
 
-        // Call function to fetch tournaments when the page loads
-        window.onload = fetchTournaments;
+	<h2>Matchmaking</h2>
+	<div id="matchmaking" style="border: 1px solid #ccc; padding: 10px; display: none;">
+		<ul id="matchPairs">
+			<!-- Matchmaking pairs will be displayed here -->
+		</ul>
+	</div>
 
-        // WebSocket event handlers
-        let socket;
-        const form = document.getElementById('tournamentForm');
-        form.onsubmit = function (e) {
-            e.preventDefault();
-            const tournamentName = document.getElementById('tournamentName').value;
-            const username = document.getElementById('username').value;
 
-            // WebSocket connection
-            const wsUrl = `ws://localhost:8003/ws/tournament/${tournamentName}/`;
-            socket = new WebSocket(wsUrl);
+	<script>
+		// Function to fetch tournaments and display them
+		function fetchTournaments() {
+			fetch('https://localhost/lobby/list/')
+				.then(response => response.json())
+				.then(data => {
+					const tournamentList = document.getElementById('tournamentList');
+					tournamentList.innerHTML = '';  // Clear previous list
 
-            socket.onopen = function () {
-                appendMessage('WebSocket connection established.');
-                // Send data to WebSocket server
-                const data = {
-                    action: 'create_or_join',
-                    tournament_name: tournamentName,
-                    username: username
-                };
-                socket.send(JSON.stringify(data));
-            };
+					// Loop through tournaments and add to the list
+					data.tournaments.forEach(tournament => {
+						const tournamentDiv = document.createElement('div');
+						tournamentDiv.textContent = `Name: ${tournament.name} | Players: ${tournament.num_players}`;
+						tournamentList.appendChild(tournamentDiv);
+					});
+				})
+				.catch(error => {
+					console.error('Error fetching tournaments:', error);
+				});
+		}
+		let username;
+		let tournamentName;
+		// Call function to fetch tournaments when the page loads
+		window.onload = fetchTournaments;
 
-            socket.onmessage = function (event) {
-                const data = JSON.parse(event.data);
-                if (data.error) {
-                    appendMessage('Error: ' + data.error);
-                } else if (data.players) {
-                    // Show player list if available
-                    showPlayerList(data.players);
-                } else {
-                    appendMessage('Message: ' + data.message);
-                }
-            };
+		// WebSocket event handlers
+		let socket;
+		const form = document.getElementById('tournamentForm');
+		form.onsubmit = function (e) {
+			e.preventDefault();
+			tournamentName = document.getElementById('tournamentName').value;
+			username = document.getElementById('username').value;
 
-            socket.onclose = function () {
-                appendMessage('WebSocket connection closed.');
-            };
+			// WebSocket connection
+			const wsUrl = `ws://localhost:8003/ws/tournament/${tournamentName}/`;
+			socket = new WebSocket(wsUrl);
 
-            socket.onerror = function (error) {
-                appendMessage('WebSocket error: ' + error);
-            };
-        };
+			socket.onopen = function () {
+				appendMessage('WebSocket connection established.');
+				// Send data to WebSocket server
+				const data = {
+					action: 'create_or_join',
+					tournament_name: tournamentName,
+					username: username
+				};
+				socket.send(JSON.stringify(data));
+			};
 
-        // Fetch player list when button is clicked
-        document.getElementById('getPlayersBtn').onclick = function () {
-            const tournamentName = document.getElementById('tournamentName').value;
-            if (tournamentName && socket) {
-                const data = {
-                    action: 'player_list',
-                    tournament_name: tournamentName
-                };
-                socket.send(JSON.stringify(data));
-            } else {
-                appendMessage('Please join or create a tournament first.');
-            }
-        };
+			socket.onmessage = function (event) {
+				const data = JSON.parse(event.data);
+				if (data.error) {
+					appendMessage('Error: ' + data.error);
+				} else if (data.players) {
+					// Show player list if available
+					showPlayerList(data.players);
+				} else {
+					appendMessage('Message: ' + data.message);
+				}
+			};
 
-        // Utility function to append messages
-        function appendMessage(message) {
-            const messagesDiv = document.getElementById('messages');
-            const messageElement = document.createElement('div');
-            messageElement.textContent = message;
-            messagesDiv.appendChild(messageElement);
+			socket.onclose = function () {
+				appendMessage('WebSocket connection closed.');
+			};
 
-            // Scroll to the bottom
-            messagesDiv.scrollTop = messagesDiv.scrollHeight;
-        }
+			socket.onerror = function (error) {
+				appendMessage('WebSocket error: ' + error);
+			};
+		};
 
-        // Function to display the player list
-        function showPlayerList(players) {
-            const playerListDiv = document.getElementById('playerList');
-            const playersUl = document.getElementById('players');
+		// Fetch player list when button is clicked
+		document.getElementById('getPlayersBtn').onclick = function () {
+			if (tournamentName && socket) {
+				const data = {
+					action: 'player_list',
+					tournament_name: tournamentName
+				};
+				socket.send(JSON.stringify(data));
+			} else {
+				appendMessage('Please join or create a tournament first.');
+			}
+		};
 
-            // Clear previous player list
-            playersUl.innerHTML = '';
+		document.getElementById('startMatchmakingBtn').onclick = function () {
+			if (tournamentName && socket) {
+				socket.send(JSON.stringify({
+					action: 'start_tournament',
+					tournament_name: tournamentName,
+					username : username,
+				}));
+			} else {
+				appendMessage('Please join or create a tournament first.');
+			}
+		};
 
-            players.forEach(player => {
-                const li = document.createElement('li');
-                li.textContent = `${player.username} ${player.admin ? '(Admin)' : ''}`;
-                playersUl.appendChild(li);
-            });
+		// Utility function to append messages
+		function appendMessage(message) {
+			const messagesDiv = document.getElementById('messages');
+			const messageElement = document.createElement('div');
+			messageElement.textContent = message;
+			messagesDiv.appendChild(messageElement);
 
-            playerListDiv.style.display = 'block';
-        }
-    </script>
+			// Scroll to the bottom
+			messagesDiv.scrollTop = messagesDiv.scrollHeight;
+		}
+
+		// Function to display the player list
+		function showPlayerList(players) {
+			const playerListDiv = document.getElementById('playerList');
+			const playersUl = document.getElementById('players');
+
+			// Clear previous player list
+			playersUl.innerHTML = '';
+
+			players.forEach(player => {
+				const li = document.createElement('li');
+				li.textContent = `${player.username} ${player.admin ? '(Admin)' : ''}`;
+				playersUl.appendChild(li);
+			});
+
+			playerListDiv.style.display = 'block';
+		}
+
+		function showMatchmaking(matchmaking) {
+			const playerListDiv = document.getElementById('playerList');
+			const playersUl = document.getElementById('players');
+
+			// Clear previous player list
+			playersUl.innerHTML = '';
+
+			players.forEach(player => {
+				const li = document.createElement('li');
+				li.textContent = `${player.username} ${player.admin ? '(Admin)' : ''}`;
+				playersUl.appendChild(li);
+			});
+
+			playerListDiv.style.display = 'block';
+		}
+
+		function showMatchmaking(matches) {
+			const matchmakingDiv = document.getElementById('matchmaking');
+			const matchPairsUl = document.getElementById('matchPairs');
+			matchPairsUl.innerHTML = '';
+
+			matches.forEach(match => {
+				const li = document.createElement('li');
+				if (match.player2) {
+					li.textContent = `${match.player1} vs ${match.player2}`;
+				} else {
+					li.textContent = `${match.player1} has a bye`;
+				}
+				matchPairsUl.appendChild(li);
+			});
+
+			matchmakingDiv.style.display = 'block';
+		}
+
+	</script>
 </body>
+
 </html>

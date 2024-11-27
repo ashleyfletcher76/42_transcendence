@@ -7,6 +7,7 @@ import json
 from .models import Tournament, Player
 from django.contrib.auth.models import User
 from asgiref.sync import sync_to_async
+import random
 
 class TournamentConsumer(AsyncWebsocketConsumer):
 
@@ -32,14 +33,14 @@ class TournamentConsumer(AsyncWebsocketConsumer):
         tournament_name = data.get("tournament_name")
         username = data.get("username")
 
-        if not tournament_name or not username:
-            await self.notify_user("username", "Tournament or player not found!")
+        #if not tournament_name or not username:
+        #    await self.notify_user("username", "Tournament or player not found!")
         if action == "create_or_join":
             self.scope["username"] = username
             response = await self.handle_create_or_join(tournament_name, username)
             await self.send(json.dumps(response))
-        elif action == "test":
-            print(self.scope["username"])
+        elif action == "start_tournament":
+            response = await self.start_tournament(username)
             await self.send(json.dumps(response))
         elif action == "player_list":
             response = await self.get_player_list()
@@ -47,6 +48,60 @@ class TournamentConsumer(AsyncWebsocketConsumer):
         else:
             await self.send(json.dumps({"error": "Invalid action."}))
 
+
+    @sync_to_async
+    def start_tournament(self, username):
+        try:
+            tournament = Tournament.objects.get(name=self.tournament_name)
+            players = list(tournament.players.all())
+            admin = Player.objects.get(user__username=username)
+            if not admin.admin:
+                return {"error": "You are not the admin of this lobby!"}
+            random.shuffle(players)
+            numPlayers = tournament.num_players
+            print(len(players))
+            print(numPlayers)
+            matches = []
+            for i in range(0, len(players), 2):
+                if i + 1 < numPlayers:
+                    matches.append({
+                        "player1": {"username": players[i].user.username, "score": players[i].score},
+                        "player2": {"username": players[i + 1].user.username, "score": players[i + 1].score},
+                    })
+                else:
+                    matches.append({
+                    "player1": {"username": players[i].user.username, "score": players[i].score},
+                    "player2": None,
+                })
+
+            for match in matches:
+                player1, player2 = match
+                if player2:
+                    self.notify_match(player1, player2)
+                    self.notify_match(player2, player1)
+                else:
+                    self.notify_bye(player1)
+            return {"message": "Tournament matchmaking started.", "matches": matches}
+        except Tournament.DoesNotExist:
+            return {"error": "Matchkaing Error!"}
+
+    @sync_to_async
+    def notify_match(self, player1, player2):
+        if player1.user.username in self.active_connections:
+            connection = self.active_connections[player1.user.username]
+            connection.send(json.dumps({
+                "type": "match",
+                "opponent": player2.user.username,
+            }))
+
+    @sync_to_async
+    def notify_bye(self, player):
+        if player.user.username in self.active_connections:
+            connection = self.active_connections[player.user.username]
+            connection.send(json.dumps({
+                "type": "bye",
+                "message" : "You have a bye this Round. Please wait for the next round."
+            }))
 
     @sync_to_async
     def notify_user(self, username, message):
