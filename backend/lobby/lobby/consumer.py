@@ -73,9 +73,10 @@ class TournamentConsumer(AsyncWebsocketConsumer):
                     "player1": {"username": players[i].user.username, "score": players[i].score},
                     "player2": None,
                 })
-
+            print(matches)
             for match in matches:
-                player1, player2 = match
+                player1 = match["player1"]["username"]
+                player2 = match["player2"]["username"] if match["player2"] else None
                 if player2:
                     self.notify_match(player1, player2)
                     self.notify_match(player2, player1)
@@ -83,21 +84,20 @@ class TournamentConsumer(AsyncWebsocketConsumer):
                     self.notify_bye(player1)
             return {"message": "Tournament matchmaking started.", "matches": matches}
         except Tournament.DoesNotExist:
+            print("matchmaking error!")
             return {"error": "Matchkaing Error!"}
 
-    @sync_to_async
     def notify_match(self, player1, player2):
-        if player1.user.username in self.active_connections:
-            connection = self.active_connections[player1.user.username]
+        if player1 in self.active_connections:
+            connection = self.active_connections[player1]
             connection.send(json.dumps({
                 "type": "match",
-                "opponent": player2.user.username,
+                "opponent": player2,
             }))
 
-    @sync_to_async
     def notify_bye(self, player):
-        if player.user.username in self.active_connections:
-            connection = self.active_connections[player.user.username]
+        if player in self.active_connections:
+            connection = self.active_connections[player]
             connection.send(json.dumps({
                 "type": "bye",
                 "message" : "You have a bye this Round. Please wait for the next round."
