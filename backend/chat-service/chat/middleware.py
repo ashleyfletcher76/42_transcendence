@@ -1,21 +1,10 @@
-import logging
+# class DebugTokenMiddleware:
+#     def __init__(self, get_response):
+#         self.get_response = get_response
 
-class HealthCheckLoggingMiddleware:
-	def __init__(self, get_response):
-		self.get_response = get_response
+#     def __call__(self, request):
+#         auth_header = request.headers.get("Authorization", "")
+#         print(f"Authorization Header: {auth_header}")
+#         response = self.get_response(request)
+#         return response
 
-	def __call__(self, request):
-		if request.path == "/chat/health/":
-			logging.getLogger("django.server").setLevel(logging.WARNING)
-		else:
-			logging.getLogger("django.server").setLevel(logging.INFO)
-
-		response = self.get_response(request)
-		return response
-
-# middleware.py
-import logging
-
-class HealthCheckFilter(logging.Filter):
-	def filter(self, record):
-		return "/chat/health/" not in record.getMessage()

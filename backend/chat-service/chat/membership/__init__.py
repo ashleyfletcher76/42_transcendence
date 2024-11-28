@@ -1,0 +1,1 @@
+from chat.membership.room_membership_view import RoomMembershipView

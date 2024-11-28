@@ -1,4 +1,4 @@
-version: '3.9'
+# version: '3.9'
 
 services:
   auth-db:
@@ -80,7 +80,7 @@ services:
     restart: always
     ports:
       - "5435:5432"
-  
+
   lobby-db:
     container_name: lobby-db
     build: ./../backend/lobby/postgres
@@ -157,6 +157,7 @@ services:
     build: ./../backend/chat-service
     container_name: chat-service
     environment:
+      DJANGO_SETTINGS_MODULE: config.settings
       DJANGO_SECRET_KEY: ${DJANGO_SECRET_KEY}
       DJANGO_DEBUG: ${DJANGO_DEBUG}
       CHAT_SERVICE_DB: ${CHAT_SERVICE_DB}
@@ -169,7 +170,7 @@ services:
     networks:
       my_network:
     healthcheck:
-      test: [ "CMD-SHELL", "curl -k -f https://localhost:443/chat/health/ || exit 1" ]
+      test: [ "CMD-SHELL", "curl -k -f http://localhost:8000/chat/health/ || exit 1" ]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -178,7 +179,7 @@ services:
         condition: service_healthy
     restart: always
     ports:
-      - "10443:443"
+      - "8003:8000"
 
   pong-game:
     build: ./../backend/pong
@@ -208,7 +209,7 @@ services:
     restart: always
     ports:
       - "8002:8000"
-  
+
   lobby:
     build: ./../backend/lobby
     volumes:
@@ -237,27 +238,32 @@ services:
         condition: service_healthy
     restart: always
     ports:
-      - "8003:8000"
+      - "8004:8000"
 
   redis:
     image: redis:alpine
     container_name: redis
     networks:
       my_network:
+    healthcheck:
+      test: [ "CMD", "redis-cli", "ping" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
     volumes:
       - redis_data:/data
     ports:
       - "6379:6379"
     restart: always
 
-  stunnel:
-    build: ./../backend/stunnel
-    container_name: stunnel
-    networks:
-      my_network:
-    ports:
-      - "6380:6380" # Redis TLS port
-    restart: always
+  # stunnel:
+  #   build: ./../backend/stunnel
+  #   container_name: stunnel
+  #   networks:
+  #     my_network:
+  #   ports:
+  #     - "6380:6380" # Redis TLS port
+  #   restart: always
 
   nginx:
     build: ./../frontend
