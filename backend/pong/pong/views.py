@@ -145,6 +145,7 @@ def create_room(request):
         
         data = json.loads(request.body)
         player_1 = data.get("player", "default")
+        p2 = data.get("player_2", "default")
         game_type = data.get("gameType", "default")
 
         # Check if a waiting room exists for remote mode
@@ -169,6 +170,8 @@ def create_room(request):
             player_2 = "local"
         elif game_type == "remote":
             player_2 = "remote"
+        elif game_type == "tournament":
+            player_2 = p2
 
         # Create a new game state instance
         game_state = GameState.objects.create(
@@ -183,7 +186,7 @@ def create_room(request):
             right_score=0,
             player1=player_1,
             player2=player_2,
-            paused=True if player_2 == "remote" else False
+            paused=True if player_2 == "remote" or "tournament" else False
         )
 
         # Serialize the game state

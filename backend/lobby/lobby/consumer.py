@@ -8,10 +8,12 @@ from .models import Tournament, Player
 from django.contrib.auth.models import User
 from asgiref.sync import sync_to_async
 import random
+import requests
 
 class TournamentConsumer(AsyncWebsocketConsumer):
 
     active_connections = {}
+    game_service_url = "http://localhost:8002/pong"
 
     async def connect(self):
         self.tournament_name = self.scope["url_route"]["kwargs"]["room_name"]
@@ -78,8 +80,9 @@ class TournamentConsumer(AsyncWebsocketConsumer):
                 player1 = match["player1"]["username"]
                 player2 = match["player2"]["username"] if match["player2"] else None
                 if player2:
-                    self.notify_match(player1, player2)
-                    self.notify_match(player2, player1)
+                    room_data = self.create_game_room(player1, player2)
+                    self.notify_match(player1, player2, room_data)
+                    self.notify_match(player2, player1, room_data)
                 else:
                     self.notify_bye(player1)
             return {"message": "Tournament matchmaking started.", "matches": matches}
@@ -87,12 +90,13 @@ class TournamentConsumer(AsyncWebsocketConsumer):
             print("matchmaking error!")
             return {"error": "Matchkaing Error!"}
 
-    def notify_match(self, player1, player2):
+    def notify_match(self, player1, player2, room_data):
         if player1 in self.active_connections:
             connection = self.active_connections[player1]
             connection.send(json.dumps({
                 "type": "match",
                 "opponent": player2,
+                room_data : room_data
             }))
 
     def notify_bye(self, player):
@@ -102,6 +106,28 @@ class TournamentConsumer(AsyncWebsocketConsumer):
                 "type": "bye",
                 "message" : "You have a bye this Round. Please wait for the next round."
             }))
+
+    def create_game_room(self, player1, player2):
+        url = "http://pong-game:8000/pong/pong/create-room"
+        payload = {
+            "gameType": "tournament",
+            "player": player1,
+            "player_2" : player2,
+        }
+        try:
+            response = requests.post(url, json=payload)
+            if response.status_code == 201:
+                room_data = response.json()
+                print(f"Game room created: {room_data}")
+                return room_data
+            else:
+                print(f"Failed to create room: {response.json()}")
+                return {"error": "Failed to create room"}
+        except requests.exceptions.RequestException as e:
+            print(f"Failed to create room: {e}")
+            return {"error": "Service unavailable"}
+
+
 
     @sync_to_async
     def notify_user(self, username, message):

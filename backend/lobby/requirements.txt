@@ -10,3 +10,4 @@ channels_redis
 django-extensions==3.2.3
 Werkzeug==2.3.7
 pyOpenSSL==23.2.0
+requests
