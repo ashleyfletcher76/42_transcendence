@@ -198,7 +198,7 @@ label {
 }
 
 .middle-scroll {
-  height: 40vh;
+  height: 80%;
 }
 
 .footer-scroll {
@@ -310,8 +310,20 @@ label {
 
 .chat {
   width: 100%;
-  background-color: #000;
+  height: 100%;
+  background-color: #00000000;
 }
+
+.chat-container {
+  padding: 0.5rem;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  background-color: #1f1d1d;
+  border-radius: 10px;
+}
+
 
 .profile-details {
   display: flex; /* Flexbox container */
@@ -490,9 +502,9 @@ label {
   background-color: #ff6347;
   color: white;
   border: none;
-  padding: 0.35rem;
-  font-size: 1rem;
-  border-radius: 5px;
+  padding: 0.3rem;
+  font-size: 0.8rem;
+  border-radius: 3px;
   cursor: pointer;
   transition: background-color 0.3s;
   align-items: center;
@@ -509,7 +521,7 @@ label {
   padding-top: 0;
   padding-bottom: 0;
   transform: scale(2);
-  border-radius: 0.5rem;
+  border-radius: 0.3rem;
 }
 
 .tournament-button:hover {
@@ -572,15 +584,19 @@ label {
 }
 
 .message-tournament {
-  color: rgb(30, 218, 55); /* Tournament messages in blue */
+  color: rgb(30 218 55);
 }
 
 .message-whisper {
-  color: rgb(255, 49, 255); /* Whisper messages in green */
+  color: rgb(255 49 255);
+}
+
+.message-system {
+  color: rgb(130 140 55);
 }
 
 .message-default {
-  color: rgb(255, 255, 255); /* Default messages in black */
+  color: rgb(255 255 255);
 }
 
 .custom-bg-black {

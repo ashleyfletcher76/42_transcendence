@@ -981,15 +981,15 @@
   });
   0; //eaimeta@70e063a35619d71f0,"ember-bootstrap/components/bs-tooltip/element"eaimeta@70e063a35619d71f
 });
-;define("myapp/components/chat", ["exports", "@ember/component", "@glimmer/component", "@ember/object", "@glimmer/tracking", "@ember/template-factory"], function (_exports, _component, _component2, _object, _tracking, _templateFactory) {
+;define("myapp/components/chat", ["exports", "@ember/component", "@glimmer/component", "@ember/object", "@glimmer/tracking", "@ember/service", "@ember/template-factory"], function (_exports, _component, _component2, _object, _tracking, _service, _templateFactory) {
   "use strict";
 
   Object.defineProperty(_exports, "__esModule", {
     value: true
   });
   _exports.default = void 0;
-  var _class, _descriptor, _descriptor2, _descriptor3;
-  0; //eaimeta@70e063a35619d71f0,"@glimmer/component",0,"@ember/object",0,"@glimmer/tracking",0,"@ember/template-factory",0,"@ember/component"eaimeta@70e063a35619d71f
+  var _class, _descriptor, _descriptor2, _descriptor3, _descriptor4, _descriptor5;
+  0; //eaimeta@70e063a35619d71f0,"@glimmer/component",0,"@ember/object",0,"@glimmer/tracking",0,"@ember/service",0,"@ember/template-factory",0,"@ember/component"eaimeta@70e063a35619d71f
   function _initializerDefineProperty(e, i, r, l) { r && Object.defineProperty(e, i, { enumerable: r.enumerable, configurable: r.configurable, writable: r.writable, value: r.initializer ? r.initializer.call(l) : void 0 }); }
   function _defineProperty(e, r, t) { return (r = _toPropertyKey(r)) in e ? Object.defineProperty(e, r, { value: t, enumerable: !0, configurable: !0, writable: !0 }) : e[r] = t, e; }
   function _toPropertyKey(t) { var i = _toPrimitive(t, "string"); return "symbol" == typeof i ? i : i + ""; }
@@ -998,7 +998,8 @@
   function _initializerWarningHelper(r, e) { throw Error("Decorating class property failed. Please ensure that transform-class-properties is enabled and runs after the decorators transform."); }
   const __COLOCATED_TEMPLATE__ = (0, _templateFactory.createTemplateFactory)(
   /*
-    <div class="btn-group mt-2" role="group" aria-label="Basic checkbox toggle button group">
+    <div class="container-row chat-container">
+  <div class="btn-group" role="group" aria-label="Basic checkbox toggle button group">
     <input type="checkbox" class="btn-check" id="btncheck1" autocomplete="off" checked={{this.showGeneral}} {{on "change" (fn this.toggleCheckbox "all")}}>
     <label class="btn btn-outline-secondary btn-sm" for="btncheck1">General</label>
   
@@ -1007,36 +1008,41 @@
   
     <input type="checkbox" class="btn-check" id="btncheck3" autocomplete="off" checked={{this.showTournament}} {{on "change" (fn this.toggleCheckbox "tournament")}}>
     <label class="btn btn-outline-secondary btn-sm" for="btncheck3">Tournament</label>
+  
+    <input type="checkbox" class="btn-check" id="btncheck4" autocomplete="off" checked={{this.showSystem}} {{on "change" (fn this.toggleCheckbox "system")}}>
+    <label class="btn btn-outline-secondary btn-sm" for="btncheck4">System</label>
   </div>
   
-  <div class="scrollable-list middle-scroll chat" >
+  <div class="scrollable-list chat" >
     {{#each this.filteredMessages as |message|}}
       {{this.scrollToBottom}}
-      <Message @message={{message}}/>
+      <Message @message={{message}} @ownNickname={{this.chat.user.profile.nickname}}/>
     {{/each}}
   </div>
   
-  <!-- Corrected template -->
+  {{!-- Corrected template --}}
   <div class="input-group">
     <input
       type="text"
       class="form-control"
       placeholder="Put your message here"
+      style="color: {{this.chat.inputColor}};"
       aria-label="Recipient's username"
       aria-describedby="basic-addon2"
-      value={{@this.messageInput}}
+      value={{this.chat.messageInput}}
       {{on "input" this.updateInputValue}}
       {{on "keydown" this.handleKeyDown}}
+      {{did-insert this.setInputRef}}
     >
     <div class="input-group-append">
       <button class="btn btn-outline-secondary" type="button" {{on "click" this.sendMessage}}>Send</button>
     </div>
   </div>
-  
+  </div>
   */
   {
-    "id": "DDwm97GC",
-    "block": "[[[10,0],[14,0,\"btn-group mt-2\"],[14,\"role\",\"group\"],[14,\"aria-label\",\"Basic checkbox toggle button group\"],[12],[1,\"\\n  \"],[11,\"input\"],[24,0,\"btn-check\"],[24,1,\"btncheck1\"],[24,\"autocomplete\",\"off\"],[16,\"checked\",[30,0,[\"showGeneral\"]]],[24,4,\"checkbox\"],[4,[38,2],[\"change\",[28,[37,3],[[30,0,[\"toggleCheckbox\"]],\"all\"],null]],null],[12],[13],[1,\"\\n  \"],[10,\"label\"],[14,0,\"btn btn-outline-secondary btn-sm\"],[14,\"for\",\"btncheck1\"],[12],[1,\"General\"],[13],[1,\"\\n\\n  \"],[11,\"input\"],[24,0,\"btn-check\"],[24,1,\"btncheck2\"],[24,\"autocomplete\",\"off\"],[16,\"checked\",[30,0,[\"showWhisper\"]]],[24,4,\"checkbox\"],[4,[38,2],[\"change\",[28,[37,3],[[30,0,[\"toggleCheckbox\"]],\"whisper\"],null]],null],[12],[13],[1,\"\\n  \"],[10,\"label\"],[14,0,\"btn btn-outline-secondary btn-sm\"],[14,\"for\",\"btncheck2\"],[12],[1,\"Whisper\"],[13],[1,\"\\n\\n  \"],[11,\"input\"],[24,0,\"btn-check\"],[24,1,\"btncheck3\"],[24,\"autocomplete\",\"off\"],[16,\"checked\",[30,0,[\"showTournament\"]]],[24,4,\"checkbox\"],[4,[38,2],[\"change\",[28,[37,3],[[30,0,[\"toggleCheckbox\"]],\"tournament\"],null]],null],[12],[13],[1,\"\\n  \"],[10,\"label\"],[14,0,\"btn btn-outline-secondary btn-sm\"],[14,\"for\",\"btncheck3\"],[12],[1,\"Tournament\"],[13],[1,\"\\n\"],[13],[1,\"\\n\\n\"],[10,0],[14,0,\"scrollable-list middle-scroll chat\"],[12],[1,\"\\n\"],[42,[28,[37,6],[[28,[37,6],[[30,0,[\"filteredMessages\"]]],null]],null],null,[[[1,\"    \"],[1,[30,0,[\"scrollToBottom\"]]],[1,\"\\n    \"],[8,[39,7],null,[[\"@message\"],[[30,1]]],null],[1,\"\\n\"]],[1]],null],[13],[1,\"\\n\\n\"],[3,\" Corrected template \"],[1,\"\\n\"],[10,0],[14,0,\"input-group\"],[12],[1,\"\\n  \"],[11,\"input\"],[24,0,\"form-control\"],[24,\"placeholder\",\"Put your message here\"],[24,\"aria-label\",\"Recipient's username\"],[24,\"aria-describedby\",\"basic-addon2\"],[16,2,[30,2]],[24,4,\"text\"],[4,[38,2],[\"input\",[30,0,[\"updateInputValue\"]]],null],[4,[38,2],[\"keydown\",[30,0,[\"handleKeyDown\"]]],null],[12],[13],[1,\"\\n  \"],[10,0],[14,0,\"input-group-append\"],[12],[1,\"\\n    \"],[11,\"button\"],[24,0,\"btn btn-outline-secondary\"],[24,4,\"button\"],[4,[38,2],[\"click\",[30,0,[\"sendMessage\"]]],null],[12],[1,\"Send\"],[13],[1,\"\\n  \"],[13],[1,\"\\n\"],[13],[1,\"\\n\"]],[\"message\",\"@messageInput\"],false,[\"div\",\"input\",\"on\",\"fn\",\"label\",\"each\",\"-track-array\",\"message\",\"button\"]]",
+    "id": "gUdsd81G",
+    "block": "[[[10,0],[14,0,\"container-row chat-container\"],[12],[1,\"\\n\"],[10,0],[14,0,\"btn-group\"],[14,\"role\",\"group\"],[14,\"aria-label\",\"Basic checkbox toggle button group\"],[12],[1,\"\\n  \"],[11,\"input\"],[24,0,\"btn-check\"],[24,1,\"btncheck1\"],[24,\"autocomplete\",\"off\"],[16,\"checked\",[30,0,[\"showGeneral\"]]],[24,4,\"checkbox\"],[4,[38,2],[\"change\",[28,[37,3],[[30,0,[\"toggleCheckbox\"]],\"all\"],null]],null],[12],[13],[1,\"\\n  \"],[10,\"label\"],[14,0,\"btn btn-outline-secondary btn-sm\"],[14,\"for\",\"btncheck1\"],[12],[1,\"General\"],[13],[1,\"\\n\\n  \"],[11,\"input\"],[24,0,\"btn-check\"],[24,1,\"btncheck2\"],[24,\"autocomplete\",\"off\"],[16,\"checked\",[30,0,[\"showWhisper\"]]],[24,4,\"checkbox\"],[4,[38,2],[\"change\",[28,[37,3],[[30,0,[\"toggleCheckbox\"]],\"whisper\"],null]],null],[12],[13],[1,\"\\n  \"],[10,\"label\"],[14,0,\"btn btn-outline-secondary btn-sm\"],[14,\"for\",\"btncheck2\"],[12],[1,\"Whisper\"],[13],[1,\"\\n\\n  \"],[11,\"input\"],[24,0,\"btn-check\"],[24,1,\"btncheck3\"],[24,\"autocomplete\",\"off\"],[16,\"checked\",[30,0,[\"showTournament\"]]],[24,4,\"checkbox\"],[4,[38,2],[\"change\",[28,[37,3],[[30,0,[\"toggleCheckbox\"]],\"tournament\"],null]],null],[12],[13],[1,\"\\n  \"],[10,\"label\"],[14,0,\"btn btn-outline-secondary btn-sm\"],[14,\"for\",\"btncheck3\"],[12],[1,\"Tournament\"],[13],[1,\"\\n\\n  \"],[11,\"input\"],[24,0,\"btn-check\"],[24,1,\"btncheck4\"],[24,\"autocomplete\",\"off\"],[16,\"checked\",[30,0,[\"showSystem\"]]],[24,4,\"checkbox\"],[4,[38,2],[\"change\",[28,[37,3],[[30,0,[\"toggleCheckbox\"]],\"system\"],null]],null],[12],[13],[1,\"\\n  \"],[10,\"label\"],[14,0,\"btn btn-outline-secondary btn-sm\"],[14,\"for\",\"btncheck4\"],[12],[1,\"System\"],[13],[1,\"\\n\"],[13],[1,\"\\n\\n\"],[10,0],[14,0,\"scrollable-list chat\"],[12],[1,\"\\n\"],[42,[28,[37,6],[[28,[37,6],[[30,0,[\"filteredMessages\"]]],null]],null],null,[[[1,\"    \"],[1,[30,0,[\"scrollToBottom\"]]],[1,\"\\n    \"],[8,[39,7],null,[[\"@message\",\"@ownNickname\"],[[30,1],[30,0,[\"chat\",\"user\",\"profile\",\"nickname\"]]]],null],[1,\"\\n\"]],[1]],null],[13],[1,\"\\n\\n\"],[10,0],[14,0,\"input-group\"],[12],[1,\"\\n  \"],[11,\"input\"],[24,0,\"form-control\"],[24,\"placeholder\",\"Put your message here\"],[16,5,[29,[\"color: \",[30,0,[\"chat\",\"inputColor\"]],\";\"]]],[24,\"aria-label\",\"Recipient's username\"],[24,\"aria-describedby\",\"basic-addon2\"],[16,2,[30,0,[\"chat\",\"messageInput\"]]],[24,4,\"text\"],[4,[38,2],[\"input\",[30,0,[\"updateInputValue\"]]],null],[4,[38,2],[\"keydown\",[30,0,[\"handleKeyDown\"]]],null],[4,[38,8],[[30,0,[\"setInputRef\"]]],null],[12],[13],[1,\"\\n  \"],[10,0],[14,0,\"input-group-append\"],[12],[1,\"\\n    \"],[11,\"button\"],[24,0,\"btn btn-outline-secondary\"],[24,4,\"button\"],[4,[38,2],[\"click\",[30,0,[\"sendMessage\"]]],null],[12],[1,\"Send\"],[13],[1,\"\\n  \"],[13],[1,\"\\n\"],[13],[1,\"\\n\"],[13]],[\"message\"],false,[\"div\",\"input\",\"on\",\"fn\",\"label\",\"each\",\"-track-array\",\"message\",\"did-insert\",\"button\"]]",
     "moduleName": "myapp/components/chat.hbs",
     "isStrictMode": false
   });
@@ -1046,6 +1052,8 @@
       _initializerDefineProperty(this, "showGeneral", _descriptor, this);
       _initializerDefineProperty(this, "showWhisper", _descriptor2, this);
       _initializerDefineProperty(this, "showTournament", _descriptor3, this);
+      _initializerDefineProperty(this, "showSystem", _descriptor4, this);
+      _initializerDefineProperty(this, "chat", _descriptor5, this);
       _defineProperty(this, "toggleCheckbox", type => {
         if (type === 'all') {
           this.showGeneral = !this.showGeneral;
@@ -1053,12 +1061,14 @@
           this.showWhisper = !this.showWhisper;
         } else if (type === 'tournament') {
           this.showTournament = !this.showTournament;
+        } else if (type === 'system') {
+          this.showSystem = !this.showSystem;
         }
       });
     }
     // Computed property to filter messages
     get filteredMessages() {
-      return this.args.messages.filter(message => {
+      return this.chat.messages.filter(message => {
         if (this.showGeneral && message.type === 'all') {
           return true;
         }
@@ -1068,23 +1078,29 @@
         if (this.showTournament && message.type === 'tournament') {
           return true;
         }
+        if (this.showSystem && (message.type === 'add' || message.type === 'invite')) {
+          return true;
+        }
         return false;
       });
     }
     // This action is passed from the parent to update the message input value
     updateInputValue(event) {
-      this.args.updateInputValue(event); // Call the parent action to update `messageInput`
+      this.chat.updateInputValue(event.target.value);
     }
 
     // This action is triggered when the Send button is clicked
     sendMessage() {
-      this.args.sendMessage(); // Call the parent action to send the message
+      this.chat.sendMessage(); // Call the parent action to send the message
     }
     handleKeyDown(event) {
       if (event.key === 'Enter') {
         // If the Enter key was pressed, trigger the sendMessage function
         this.sendMessage();
       }
+    }
+    setInputRef(element) {
+      this.chat.setInputElement(element); // Pass the input element reference to the service
     }
   }, _descriptor = _applyDecoratedDescriptor(_class.prototype, "showGeneral", [_tracking.tracked], {
     configurable: true,
@@ -1107,37 +1123,22 @@
     initializer: function () {
       return true;
     }
-  }), _applyDecoratedDescriptor(_class.prototype, "updateInputValue", [_object.action], Object.getOwnPropertyDescriptor(_class.prototype, "updateInputValue"), _class.prototype), _applyDecoratedDescriptor(_class.prototype, "sendMessage", [_object.action], Object.getOwnPropertyDescriptor(_class.prototype, "sendMessage"), _class.prototype), _applyDecoratedDescriptor(_class.prototype, "handleKeyDown", [_object.action], Object.getOwnPropertyDescriptor(_class.prototype, "handleKeyDown"), _class.prototype), _class);
+  }), _descriptor4 = _applyDecoratedDescriptor(_class.prototype, "showSystem", [_tracking.tracked], {
+    configurable: true,
+    enumerable: true,
+    writable: true,
+    initializer: function () {
+      return true;
+    }
+  }), _descriptor5 = _applyDecoratedDescriptor(_class.prototype, "chat", [_service.inject], {
+    configurable: true,
+    enumerable: true,
+    writable: true,
+    initializer: null
+  }), _applyDecoratedDescriptor(_class.prototype, "updateInputValue", [_object.action], Object.getOwnPropertyDescriptor(_class.prototype, "updateInputValue"), _class.prototype), _applyDecoratedDescriptor(_class.prototype, "sendMessage", [_object.action], Object.getOwnPropertyDescriptor(_class.prototype, "sendMessage"), _class.prototype), _applyDecoratedDescriptor(_class.prototype, "handleKeyDown", [_object.action], Object.getOwnPropertyDescriptor(_class.prototype, "handleKeyDown"), _class.prototype), _applyDecoratedDescriptor(_class.prototype, "setInputRef", [_object.action], Object.getOwnPropertyDescriptor(_class.prototype, "setInputRef"), _class.prototype), _class);
   (0, _component.setComponentTemplate)(__COLOCATED_TEMPLATE__, ChatComponent);
 });
-;define("myapp/components/message", ["exports", "@ember/component", "@ember/component/template-only", "@ember/template-factory"], function (_exports, _component, _templateOnly, _templateFactory) {
-  "use strict";
-
-  Object.defineProperty(_exports, "__esModule", {
-    value: true
-  });
-  _exports.default = void 0;
-  0; //eaimeta@70e063a35619d71f0,"@ember/component/template-only",0,"@ember/template-factory",0,"@ember/component"eaimeta@70e063a35619d71f
-  const __COLOCATED_TEMPLATE__ = (0, _templateFactory.createTemplateFactory)(
-  /*
-    {{#if (eq @message.type "tournament")}}
-    <div class="message-item message-tournament">[{{@message.from}}] {{@message.content}}</div>
-  {{else if (eq @message.type "whisper")}}
-    <div class="message-item message-whisper">[{{@message.from}}] {{@message.content}}</div>
-  {{else}}
-    <div class="message-item message-default">[{{@message.from}}] {{@message.content}}</div>
-  {{/if}}
-  
-  */
-  {
-    "id": "5h3v6AXC",
-    "block": "[[[41,[28,[37,1],[[30,1,[\"type\"]],\"tournament\"],null],[[[1,\"  \"],[10,0],[14,0,\"message-item message-tournament\"],[12],[1,\"[\"],[1,[30,1,[\"from\"]]],[1,\"] \"],[1,[30,1,[\"content\"]]],[13],[1,\"\\n\"]],[]],[[[41,[28,[37,1],[[30,1,[\"type\"]],\"whisper\"],null],[[[1,\"  \"],[10,0],[14,0,\"message-item message-whisper\"],[12],[1,\"[\"],[1,[30,1,[\"from\"]]],[1,\"] \"],[1,[30,1,[\"content\"]]],[13],[1,\"\\n\"]],[]],[[[1,\"  \"],[10,0],[14,0,\"message-item message-default\"],[12],[1,\"[\"],[1,[30,1,[\"from\"]]],[1,\"] \"],[1,[30,1,[\"content\"]]],[13],[1,\"\\n\"]],[]]]],[]]]],[\"@message\"],false,[\"if\",\"eq\",\"div\"]]",
-    "moduleName": "myapp/components/message.hbs",
-    "isStrictMode": false
-  });
-  var _default = _exports.default = (0, _component.setComponentTemplate)(__COLOCATED_TEMPLATE__, (0, _templateOnly.default)());
-});
-;define("myapp/components/modal-profile", ["exports", "@ember/component", "@glimmer/component", "@ember/object", "@glimmer/tracking", "@ember/template-factory"], function (_exports, _component, _component2, _object, _tracking, _templateFactory) {
+;define("myapp/components/message", ["exports", "@ember/component", "@glimmer/component", "@ember/object", "@ember/service", "@ember/template-factory"], function (_exports, _component, _component2, _object, _service, _templateFactory) {
   "use strict";
 
   Object.defineProperty(_exports, "__esModule", {
@@ -1145,7 +1146,140 @@
   });
   _exports.default = void 0;
   var _class, _descriptor, _descriptor2;
-  0; //eaimeta@70e063a35619d71f0,"@glimmer/component",0,"@ember/object",0,"@glimmer/tracking",0,"@ember/template-factory",0,"@ember/component"eaimeta@70e063a35619d71f
+  0; //eaimeta@70e063a35619d71f0,"@glimmer/component",0,"@ember/object",0,"@ember/service",0,"@ember/template-factory",0,"@ember/component"eaimeta@70e063a35619d71f
+  function _initializerDefineProperty(e, i, r, l) { r && Object.defineProperty(e, i, { enumerable: r.enumerable, configurable: r.configurable, writable: r.writable, value: r.initializer ? r.initializer.call(l) : void 0 }); }
+  function _defineProperty(e, r, t) { return (r = _toPropertyKey(r)) in e ? Object.defineProperty(e, r, { value: t, enumerable: !0, configurable: !0, writable: !0 }) : e[r] = t, e; }
+  function _toPropertyKey(t) { var i = _toPrimitive(t, "string"); return "symbol" == typeof i ? i : i + ""; }
+  function _toPrimitive(t, r) { if ("object" != typeof t || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != typeof i) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
+  function _applyDecoratedDescriptor(i, e, r, n, l) { var a = {}; return Object.keys(n).forEach(function (i) { a[i] = n[i]; }), a.enumerable = !!a.enumerable, a.configurable = !!a.configurable, ("value" in a || a.initializer) && (a.writable = !0), a = r.slice().reverse().reduce(function (r, n) { return n(i, e, r) || r; }, a), l && void 0 !== a.initializer && (a.value = a.initializer ? a.initializer.call(l) : void 0, a.initializer = void 0), void 0 === a.initializer ? (Object.defineProperty(i, e, a), null) : a; }
+  function _initializerWarningHelper(r, e) { throw Error("Decorating class property failed. Please ensure that transform-class-properties is enabled and runs after the decorators transform."); }
+  const __COLOCATED_TEMPLATE__ = (0, _templateFactory.createTemplateFactory)(
+  /*
+    {{#if (eq @message.type "tournament")}}
+    <div class="message-item message-tournament">[{{@message.from}}] {{@message.content}}</div>
+  {{else if (eq @message.type "whisper")}}
+    <div class="message-item message-whisper">[{{@message.from}}] {{@message.content}}</div>
+  {{else if (eq @message.type "add")}}
+    {{#if (eq @message.from @ownNickname)}}
+      <div class="alert alert-success p-2 mt-1 mb-1" role="alert">
+        You sent a friend request to {{@message.to}}.
+      </div>
+    {{else}}
+      <div class="alert alert-success p-2 mt-1 mb-1" role="alert">
+        {{@message.from}} wants to add you as a friend 
+        <a href="#" class="alert-link" {{on "click" this.acceptFriend}}>ACCEPT</a>
+      </div>
+    {{/if}}
+  {{else if (eq @message.type "invite")}}
+    {{#if (eq @message.from @ownNickname)}}
+      <div class="alert alert-danger p-2 mt-1 mb-1" role="alert">
+        You invited {{@message.to}} to a game.
+      </div>
+    {{else}}
+      <div class="alert alert-danger p-2 mt-1 mb-1" role="alert">
+        {{@message.from}} invited you to a game
+        <a href="#" class="alert-link" {{on "click" (fn this.joinGame @message.from)}}>PLAY</a>
+      </div>
+    {{/if}}
+  {{else}}
+    <div class="message-item message-default">[{{@message.from}}] {{@message.content}}</div>
+  {{/if}}
+  
+  */
+  {
+    "id": "KCLSmEve",
+    "block": "[[[41,[28,[37,1],[[30,1,[\"type\"]],\"tournament\"],null],[[[1,\"  \"],[10,0],[14,0,\"message-item message-tournament\"],[12],[1,\"[\"],[1,[30,1,[\"from\"]]],[1,\"] \"],[1,[30,1,[\"content\"]]],[13],[1,\"\\n\"]],[]],[[[41,[28,[37,1],[[30,1,[\"type\"]],\"whisper\"],null],[[[1,\"  \"],[10,0],[14,0,\"message-item message-whisper\"],[12],[1,\"[\"],[1,[30,1,[\"from\"]]],[1,\"] \"],[1,[30,1,[\"content\"]]],[13],[1,\"\\n\"]],[]],[[[41,[28,[37,1],[[30,1,[\"type\"]],\"add\"],null],[[[41,[28,[37,1],[[30,1,[\"from\"]],[30,2]],null],[[[1,\"    \"],[10,0],[14,0,\"alert alert-success p-2 mt-1 mb-1\"],[14,\"role\",\"alert\"],[12],[1,\"\\n      You sent a friend request to \"],[1,[30,1,[\"to\"]]],[1,\".\\n    \"],[13],[1,\"\\n\"]],[]],[[[1,\"    \"],[10,0],[14,0,\"alert alert-success p-2 mt-1 mb-1\"],[14,\"role\",\"alert\"],[12],[1,\"\\n      \"],[1,[30,1,[\"from\"]]],[1,\" wants to add you as a friend \\n      \"],[11,3],[24,6,\"#\"],[24,0,\"alert-link\"],[4,[38,4],[\"click\",[30,0,[\"acceptFriend\"]]],null],[12],[1,\"ACCEPT\"],[13],[1,\"\\n    \"],[13],[1,\"\\n\"]],[]]]],[]],[[[41,[28,[37,1],[[30,1,[\"type\"]],\"invite\"],null],[[[41,[28,[37,1],[[30,1,[\"from\"]],[30,2]],null],[[[1,\"    \"],[10,0],[14,0,\"alert alert-danger p-2 mt-1 mb-1\"],[14,\"role\",\"alert\"],[12],[1,\"\\n      You invited \"],[1,[30,1,[\"to\"]]],[1,\" to a game.\\n    \"],[13],[1,\"\\n\"]],[]],[[[1,\"    \"],[10,0],[14,0,\"alert alert-danger p-2 mt-1 mb-1\"],[14,\"role\",\"alert\"],[12],[1,\"\\n      \"],[1,[30,1,[\"from\"]]],[1,\" invited you to a game\\n      \"],[11,3],[24,6,\"#\"],[24,0,\"alert-link\"],[4,[38,4],[\"click\",[28,[37,5],[[30,0,[\"joinGame\"]],[30,1,[\"from\"]]],null]],null],[12],[1,\"PLAY\"],[13],[1,\"\\n    \"],[13],[1,\"\\n\"]],[]]]],[]],[[[1,\"  \"],[10,0],[14,0,\"message-item message-default\"],[12],[1,\"[\"],[1,[30,1,[\"from\"]]],[1,\"] \"],[1,[30,1,[\"content\"]]],[13],[1,\"\\n\"]],[]]]],[]]]],[]]]],[]]]],[\"@message\",\"@ownNickname\"],false,[\"if\",\"eq\",\"div\",\"a\",\"on\",\"fn\"]]",
+    "moduleName": "myapp/components/message.hbs",
+    "isStrictMode": false
+  });
+  let MessageComponent = _exports.default = (_class = class MessageComponent extends _component2.default {
+    constructor(...args) {
+      super(...args);
+      _initializerDefineProperty(this, "session", _descriptor, this);
+      _initializerDefineProperty(this, "gameData", _descriptor2, this);
+    }
+    acceptFriend(event) {
+      event.preventDefault();
+      console.log(`${this.args.message.from} accepted as a friend!`);
+      makeFriends();
+    }
+    joinGame(event) {
+      event.preventDefault();
+      console.log(`${this.args.message.from} accepted game`);
+      this.joinRoom(this.args.message.from);
+    }
+    async makeFriends() {
+      const apiEndpoint = "http://localhost:8001/users/friends/";
+      try {
+        const response = await fetch(apiEndpoint, {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${this.session.data.authenticated.token}`
+          },
+          body: JSON.stringify({
+            user1: this.args.ownNickname,
+            user2: this.args.message.from
+          })
+        });
+        if (!response.ok) {
+          const errorData = await response.json();
+          throw new Error(errorData.message || "Failed to add friend");
+        }
+        const result = await response.json();
+        console.log(result.message);
+      } catch (error) {
+        console.error("Error adding friend:", error.message);
+        throw error;
+      }
+    }
+    async joinRoom(name) {
+      try {
+        const response = await fetch('/pong/pong/join-room', {
+          method: 'POST',
+          headers: {
+            Authorization: `Bearer ${this.session.data.authenticated.token}`,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            player: this.args.ownNickname,
+            name: name // Set the selected game type
+          })
+        });
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        const data = await response.json();
+        if (data.room_name) {
+          this.gameData.setGameData("private", data);
+          this.router.transitionTo('pong-game');
+        } else console.log("Invitation not valid");
+      } catch (error) {
+        console.error('Error:', error);
+      }
+    }
+  }, _descriptor = _applyDecoratedDescriptor(_class.prototype, "session", [_service.inject], {
+    configurable: true,
+    enumerable: true,
+    writable: true,
+    initializer: null
+  }), _descriptor2 = _applyDecoratedDescriptor(_class.prototype, "gameData", [_service.inject], {
+    configurable: true,
+    enumerable: true,
+    writable: true,
+    initializer: null
+  }), _applyDecoratedDescriptor(_class.prototype, "acceptFriend", [_object.action], Object.getOwnPropertyDescriptor(_class.prototype, "acceptFriend"), _class.prototype), _applyDecoratedDescriptor(_class.prototype, "joinGame", [_object.action], Object.getOwnPropertyDescriptor(_class.prototype, "joinGame"), _class.prototype), _class);
+  (0, _component.setComponentTemplate)(__COLOCATED_TEMPLATE__, MessageComponent);
+});
+;define("myapp/components/modal-profile", ["exports", "@ember/component", "@glimmer/component", "@ember/object", "@glimmer/tracking", "@ember/service", "@ember/template-factory"], function (_exports, _component, _component2, _object, _tracking, _service, _templateFactory) {
+  "use strict";
+
+  Object.defineProperty(_exports, "__esModule", {
+    value: true
+  });
+  _exports.default = void 0;
+  var _class, _descriptor, _descriptor2, _descriptor3, _descriptor4;
+  0; //eaimeta@70e063a35619d71f0,"@glimmer/component",0,"@ember/object",0,"@glimmer/tracking",0,"@ember/service",0,"@ember/template-factory",0,"@ember/component"eaimeta@70e063a35619d71f
   function _initializerDefineProperty(e, i, r, l) { r && Object.defineProperty(e, i, { enumerable: r.enumerable, configurable: r.configurable, writable: r.writable, value: r.initializer ? r.initializer.call(l) : void 0 }); }
   function _defineProperty(e, r, t) { return (r = _toPropertyKey(r)) in e ? Object.defineProperty(e, r, { value: t, enumerable: !0, configurable: !0, writable: !0 }) : e[r] = t, e; }
   function _toPropertyKey(t) { var i = _toPrimitive(t, "string"); return "symbol" == typeof i ? i : i + ""; }
@@ -1206,11 +1340,13 @@
       // Property to manage modal visibility
       _initializerDefineProperty(this, "isModalOpen", _descriptor, this);
       _initializerDefineProperty(this, "newNickname", _descriptor2, this);
+      _initializerDefineProperty(this, "user", _descriptor3, this);
+      _initializerDefineProperty(this, "session", _descriptor4, this);
     }
     openModal() {
       console.log('openModal0');
       this.isModalOpen = true;
-      this.newNickname = this.args.user.nickname;
+      this.newNickname = this.user.profile.nickname;
       console.log(this.isModalOpen);
     }
     closeModal() {
@@ -1234,9 +1370,8 @@
         const response = await fetch('/api/user/nickname', {
           method: 'PUT',
           headers: {
-            'Content-Type': 'application/json'
-            // Add Auth
-            // 'Authorization': `Bearer ${userToken}`
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${this.session.data.authenticated.token}`
           },
           body: JSON.stringify({
             nickname: newNickname
@@ -1247,7 +1382,7 @@
         }
         const data = await response.json();
         if (data.nickname) {
-          this.args.updateParent();
+          this.user.profile.nickname = nickname;
         }
       } catch (error) {
         console.error('Error changing nickname:', error);
@@ -1261,6 +1396,16 @@
       return false;
     }
   }), _descriptor2 = _applyDecoratedDescriptor(_class.prototype, "newNickname", [_tracking.tracked], {
+    configurable: true,
+    enumerable: true,
+    writable: true,
+    initializer: null
+  }), _descriptor3 = _applyDecoratedDescriptor(_class.prototype, "user", [_service.inject], {
+    configurable: true,
+    enumerable: true,
+    writable: true,
+    initializer: null
+  }), _descriptor4 = _applyDecoratedDescriptor(_class.prototype, "session", [_service.inject], {
     configurable: true,
     enumerable: true,
     writable: true,
@@ -1333,7 +1478,7 @@
     value: true
   });
   _exports.default = void 0;
-  var _class, _descriptor, _descriptor2, _descriptor3, _descriptor4, _descriptor5, _descriptor6, _descriptor7, _descriptor8;
+  var _class, _descriptor, _descriptor2, _descriptor3, _descriptor4, _descriptor5, _descriptor6, _descriptor7, _descriptor8, _descriptor9;
   0; //eaimeta@70e063a35619d71f0,"@glimmer/component",0,"@glimmer/tracking",0,"@ember/service",0,"@ember/template-factory",0,"@ember/component"eaimeta@70e063a35619d71f
   function _initializerDefineProperty(e, i, r, l) { r && Object.defineProperty(e, i, { enumerable: r.enumerable, configurable: r.configurable, writable: r.writable, value: r.initializer ? r.initializer.call(l) : void 0 }); }
   function _defineProperty(e, r, t) { return (r = _toPropertyKey(r)) in e ? Object.defineProperty(e, r, { value: t, enumerable: !0, configurable: !0, writable: !0 }) : e[r] = t, e; }
@@ -1375,6 +1520,7 @@
       _initializerDefineProperty(this, "rightScore", _descriptor6, this);
       _initializerDefineProperty(this, "winner", _descriptor7, this);
       _initializerDefineProperty(this, "gameData", _descriptor8, this);
+      _initializerDefineProperty(this, "session", _descriptor9, this);
       // Track the state of key presses
       _defineProperty(this, "p1UpKeyPressed", false);
       _defineProperty(this, "p1DownKeyPressed", false);
@@ -1416,6 +1562,7 @@
         const response = await fetch(`/pong/pong/game_state/${this.roomData.room_name}`, {
           method: 'POST',
           headers: {
+            Authorization: `Bearer ${this.session.data.authenticated.token}`,
             'Content-Type': 'application/json'
           },
           body: requestBody
@@ -1559,19 +1706,29 @@
     enumerable: true,
     writable: true,
     initializer: null
+  }), _descriptor9 = _applyDecoratedDescriptor(_class.prototype, "session", [_service.inject], {
+    configurable: true,
+    enumerable: true,
+    writable: true,
+    initializer: null
   }), _class);
   (0, _component.setComponentTemplate)(__COLOCATED_TEMPLATE__, PongGameComponent);
 });
-;define("myapp/components/profile-other", ["exports", "@ember/component", "@glimmer/component", "@ember/object", "@ember/template-factory"], function (_exports, _component, _component2, _object, _templateFactory) {
+;define("myapp/components/profile-other", ["exports", "@ember/component", "@glimmer/component", "@ember/object", "@ember/service", "@ember/template-factory"], function (_exports, _component, _component2, _object, _service, _templateFactory) {
   "use strict";
 
   Object.defineProperty(_exports, "__esModule", {
     value: true
   });
   _exports.default = void 0;
-  var _class;
-  0; //eaimeta@70e063a35619d71f0,"@glimmer/component",0,"@ember/object",0,"@ember/template-factory",0,"@ember/component"eaimeta@70e063a35619d71f
+  var _class, _descriptor, _descriptor2;
+  0; //eaimeta@70e063a35619d71f0,"@glimmer/component",0,"@ember/object",0,"@ember/service",0,"@ember/template-factory",0,"@ember/component"eaimeta@70e063a35619d71f
+  function _initializerDefineProperty(e, i, r, l) { r && Object.defineProperty(e, i, { enumerable: r.enumerable, configurable: r.configurable, writable: r.writable, value: r.initializer ? r.initializer.call(l) : void 0 }); }
+  function _defineProperty(e, r, t) { return (r = _toPropertyKey(r)) in e ? Object.defineProperty(e, r, { value: t, enumerable: !0, configurable: !0, writable: !0 }) : e[r] = t, e; }
+  function _toPropertyKey(t) { var i = _toPrimitive(t, "string"); return "symbol" == typeof i ? i : i + ""; }
+  function _toPrimitive(t, r) { if ("object" != typeof t || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != typeof i) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
   function _applyDecoratedDescriptor(i, e, r, n, l) { var a = {}; return Object.keys(n).forEach(function (i) { a[i] = n[i]; }), a.enumerable = !!a.enumerable, a.configurable = !!a.configurable, ("value" in a || a.initializer) && (a.writable = !0), a = r.slice().reverse().reduce(function (r, n) { return n(i, e, r) || r; }, a), l && void 0 !== a.initializer && (a.value = a.initializer ? a.initializer.call(l) : void 0, a.initializer = void 0), void 0 === a.initializer ? (Object.defineProperty(i, e, a), null) : a; }
+  function _initializerWarningHelper(r, e) { throw Error("Decorating class property failed. Please ensure that transform-class-properties is enabled and runs after the decorators transform."); }
   const __COLOCATED_TEMPLATE__ = (0, _templateFactory.createTemplateFactory)(
   /*
     <div class="container-fluid row fill p-2">
@@ -1585,20 +1742,24 @@
     <div class="col-10">
       {{!-- First row of profile details --}}
       <div class="profile-details">
-          <h2 class="name">{{@selectedUser.nickname}}</h2>
-          <div class="actions">
-        <button class="emoji-button info" data-bs-toggle="tooltip" data-bs-placement="top" title="Live Chat" type="button">
-          💬
-        </button>
-        <button class="emoji-button info" data-bs-toggle="tooltip" data-bs-placement="top" title="Play Game" type="button">
-          🎮
-        </button>
-        <button class="emoji-button info" data-bs-toggle="tooltip" data-bs-placement="top" title="Add Friend" type="button">
-          ➕ 
-        </button>
-        <button class="emoji-button info" data-bs-toggle="tooltip" data-bs-placement="top" title="Block User" type="button">
-          🚫
-        </button>
+        <h2 class="name">{{@selectedUser.nickname}}</h2>
+        <div class="actions">
+          <button class="emoji-button info" data-bs-toggle="tooltip" data-bs-placement="top" title="Live Chat"
+            type="button" {{on "click" this.startLiveChat}}>
+            💬
+          </button>
+          <button class="emoji-button info" data-bs-toggle="tooltip" data-bs-placement="top" title="Play Game"
+            type="button" {{on "click" this.playGame}}>
+            🎮
+          </button>
+          <button class="emoji-button info" data-bs-toggle="tooltip" data-bs-placement="top" title="Add Friend"
+            type="button" {{on "click" this.addFriend}}>
+            ➕
+          </button>
+          <button class="emoji-button info" data-bs-toggle="tooltip" data-bs-placement="top" title="Block User"
+            type="button" {{on "click" (fn this.blockUser "block")}}>
+            🚫
+          </button>
         </div>
         <h2 class="points">{{@selectedUser.points}}🏆</h2>
       </div>
@@ -1610,33 +1771,86 @@
       </div>
   
       <div class="profile-details">
-        {{#if this.isOnline}} 
-          <h2 class="info">🟢 online</h2>
+        {{#if this.isOnline}}
+        <h2 class="info">🟢 online</h2>
         {{else}}
-          <h2 class="info">🔴 offline</h2>
+        <h2 class="info">🔴 offline</h2>
         {{/if}}
         <h2 class="info">Losses: {{@selectedUser.losses}}</h2>
       </div>
-      
+  
     </div>
   </div>
-  
   */
   {
-    "id": "X2/eQbRo",
-    "block": "[[[10,0],[14,0,\"container-fluid row fill p-2\"],[12],[1,\"\\n\"],[1,\"  \"],[10,0],[14,0,\"col center no-padding position-relative\"],[12],[1,\"\\n    \"],[10,\"button\"],[14,0,\"btn-close top-left\"],[15,\"onclick\",[30,0,[\"onCloseClick\"]]],[14,4,\"button\"],[12],[13],[1,\"\\n    \"],[10,\"img\"],[15,\"src\",[30,1,[\"avatar\"]]],[14,\"alt\",\"Profile Picture\"],[14,0,\"profile-pic\"],[12],[13],[1,\"\\n  \"],[13],[1,\"\\n\\n\"],[1,\"  \"],[10,0],[14,0,\"col-10\"],[12],[1,\"\\n\"],[1,\"    \"],[10,0],[14,0,\"profile-details\"],[12],[1,\"\\n        \"],[10,\"h2\"],[14,0,\"name\"],[12],[1,[30,1,[\"nickname\"]]],[13],[1,\"\\n        \"],[10,0],[14,0,\"actions\"],[12],[1,\"\\n      \"],[10,\"button\"],[14,0,\"emoji-button info\"],[14,\"data-bs-toggle\",\"tooltip\"],[14,\"data-bs-placement\",\"top\"],[14,\"title\",\"Live Chat\"],[14,4,\"button\"],[12],[1,\"\\n        💬\\n      \"],[13],[1,\"\\n      \"],[10,\"button\"],[14,0,\"emoji-button info\"],[14,\"data-bs-toggle\",\"tooltip\"],[14,\"data-bs-placement\",\"top\"],[14,\"title\",\"Play Game\"],[14,4,\"button\"],[12],[1,\"\\n        🎮\\n      \"],[13],[1,\"\\n      \"],[10,\"button\"],[14,0,\"emoji-button info\"],[14,\"data-bs-toggle\",\"tooltip\"],[14,\"data-bs-placement\",\"top\"],[14,\"title\",\"Add Friend\"],[14,4,\"button\"],[12],[1,\"\\n        ➕ \\n      \"],[13],[1,\"\\n      \"],[10,\"button\"],[14,0,\"emoji-button info\"],[14,\"data-bs-toggle\",\"tooltip\"],[14,\"data-bs-placement\",\"top\"],[14,\"title\",\"Block User\"],[14,4,\"button\"],[12],[1,\"\\n        🚫\\n      \"],[13],[1,\"\\n      \"],[13],[1,\"\\n      \"],[10,\"h2\"],[14,0,\"points\"],[12],[1,[30,1,[\"points\"]]],[1,\"🏆\"],[13],[1,\"\\n    \"],[13],[1,\"\\n\\n\"],[1,\"    \"],[10,0],[14,0,\"profile-details\"],[12],[1,\"\\n      \"],[10,\"h2\"],[14,0,\"info\"],[12],[1,\"Games: \"],[1,[30,1,[\"games_total\"]]],[13],[1,\"\\n      \"],[10,\"h2\"],[14,0,\"info\"],[12],[1,\"Wins: \"],[1,[30,1,[\"wins\"]]],[13],[1,\"\\n    \"],[13],[1,\"\\n\\n    \"],[10,0],[14,0,\"profile-details\"],[12],[1,\"\\n\"],[41,[30,0,[\"isOnline\"]],[[[1,\"        \"],[10,\"h2\"],[14,0,\"info\"],[12],[1,\"🟢 online\"],[13],[1,\"\\n\"]],[]],[[[1,\"        \"],[10,\"h2\"],[14,0,\"info\"],[12],[1,\"🔴 offline\"],[13],[1,\"\\n\"]],[]]],[1,\"      \"],[10,\"h2\"],[14,0,\"info\"],[12],[1,\"Losses: \"],[1,[30,1,[\"losses\"]]],[13],[1,\"\\n    \"],[13],[1,\"\\n    \\n  \"],[13],[1,\"\\n\"],[13],[1,\"\\n\"]],[\"@selectedUser\"],false,[\"div\",\"button\",\"img\",\"h2\",\"if\"]]",
+    "id": "wwC6PAvY",
+    "block": "[[[10,0],[14,0,\"container-fluid row fill p-2\"],[12],[1,\"\\n\"],[1,\"  \"],[10,0],[14,0,\"col center no-padding position-relative\"],[12],[1,\"\\n    \"],[10,\"button\"],[14,0,\"btn-close top-left\"],[15,\"onclick\",[30,0,[\"onCloseClick\"]]],[14,4,\"button\"],[12],[13],[1,\"\\n    \"],[10,\"img\"],[15,\"src\",[30,1,[\"avatar\"]]],[14,\"alt\",\"Profile Picture\"],[14,0,\"profile-pic\"],[12],[13],[1,\"\\n  \"],[13],[1,\"\\n\\n\"],[1,\"  \"],[10,0],[14,0,\"col-10\"],[12],[1,\"\\n\"],[1,\"    \"],[10,0],[14,0,\"profile-details\"],[12],[1,\"\\n      \"],[10,\"h2\"],[14,0,\"name\"],[12],[1,[30,1,[\"nickname\"]]],[13],[1,\"\\n      \"],[10,0],[14,0,\"actions\"],[12],[1,\"\\n        \"],[11,\"button\"],[24,0,\"emoji-button info\"],[24,\"data-bs-toggle\",\"tooltip\"],[24,\"data-bs-placement\",\"top\"],[24,\"title\",\"Live Chat\"],[24,4,\"button\"],[4,[38,4],[\"click\",[30,0,[\"startLiveChat\"]]],null],[12],[1,\"\\n          💬\\n        \"],[13],[1,\"\\n        \"],[11,\"button\"],[24,0,\"emoji-button info\"],[24,\"data-bs-toggle\",\"tooltip\"],[24,\"data-bs-placement\",\"top\"],[24,\"title\",\"Play Game\"],[24,4,\"button\"],[4,[38,4],[\"click\",[30,0,[\"playGame\"]]],null],[12],[1,\"\\n          🎮\\n        \"],[13],[1,\"\\n        \"],[11,\"button\"],[24,0,\"emoji-button info\"],[24,\"data-bs-toggle\",\"tooltip\"],[24,\"data-bs-placement\",\"top\"],[24,\"title\",\"Add Friend\"],[24,4,\"button\"],[4,[38,4],[\"click\",[30,0,[\"addFriend\"]]],null],[12],[1,\"\\n          ➕\\n        \"],[13],[1,\"\\n        \"],[11,\"button\"],[24,0,\"emoji-button info\"],[24,\"data-bs-toggle\",\"tooltip\"],[24,\"data-bs-placement\",\"top\"],[24,\"title\",\"Block User\"],[24,4,\"button\"],[4,[38,4],[\"click\",[28,[37,5],[[30,0,[\"blockUser\"]],\"block\"],null]],null],[12],[1,\"\\n          🚫\\n        \"],[13],[1,\"\\n      \"],[13],[1,\"\\n      \"],[10,\"h2\"],[14,0,\"points\"],[12],[1,[30,1,[\"points\"]]],[1,\"🏆\"],[13],[1,\"\\n    \"],[13],[1,\"\\n\\n\"],[1,\"    \"],[10,0],[14,0,\"profile-details\"],[12],[1,\"\\n      \"],[10,\"h2\"],[14,0,\"info\"],[12],[1,\"Games: \"],[1,[30,1,[\"games_total\"]]],[13],[1,\"\\n      \"],[10,\"h2\"],[14,0,\"info\"],[12],[1,\"Wins: \"],[1,[30,1,[\"wins\"]]],[13],[1,\"\\n    \"],[13],[1,\"\\n\\n    \"],[10,0],[14,0,\"profile-details\"],[12],[1,\"\\n\"],[41,[30,0,[\"isOnline\"]],[[[1,\"      \"],[10,\"h2\"],[14,0,\"info\"],[12],[1,\"🟢 online\"],[13],[1,\"\\n\"]],[]],[[[1,\"      \"],[10,\"h2\"],[14,0,\"info\"],[12],[1,\"🔴 offline\"],[13],[1,\"\\n\"]],[]]],[1,\"      \"],[10,\"h2\"],[14,0,\"info\"],[12],[1,\"Losses: \"],[1,[30,1,[\"losses\"]]],[13],[1,\"\\n    \"],[13],[1,\"\\n\\n  \"],[13],[1,\"\\n\"],[13]],[\"@selectedUser\"],false,[\"div\",\"button\",\"img\",\"h2\",\"on\",\"fn\",\"if\"]]",
     "moduleName": "myapp/components/profile-other.hbs",
     "isStrictMode": false
   });
   let ProfileOtherComponent = _exports.default = (_class = class ProfileOtherComponent extends _component2.default {
+    constructor(...args) {
+      super(...args);
+      _initializerDefineProperty(this, "chat", _descriptor, this);
+      _initializerDefineProperty(this, "session", _descriptor2, this);
+    }
+    startLiveChat() {
+      console.log('Live chat started');
+      this.chat.updateInputValue("/" + this.args.selectedUser.nickname + " ");
+      this.chat.focusInput();
+    }
+    playGame() {
+      console.log('Game initiated');
+      this.chat.updateInputValue("/*invite " + this.args.selectedUser.nickname);
+      this.chat.sendMessage();
+    }
+    addFriend() {
+      this.chat.updateInputValue("/*add " + this.args.selectedUser.nickname);
+      this.chat.sendMessage();
+    }
+    async blockUser(type) {
+      const apiEndpoint = "http://localhost:8001/users/block/";
+      try {
+        const response = await fetch(apiEndpoint, {
+          method: "PUT",
+          headers: {
+            Authorization: `Bearer ${this.session.data.authenticated.token}`,
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            nickname: this.args.selectedUser.nickname,
+            type: type
+          })
+        });
+        if (!response.ok) {
+          const errorData = await response.json();
+          throw new Error(errorData.message || "Failed to block user");
+        }
+        const result = await response.json();
+        console.log(result.message);
+      } catch (error) {
+        console.error("Error blocking user:", error.message);
+        throw error;
+      }
+    }
     onCloseClick() {
       console.log('Close clicked!');
       this.args.selectUser(null);
     }
-  }, _applyDecoratedDescriptor(_class.prototype, "onCloseClick", [_object.action], Object.getOwnPropertyDescriptor(_class.prototype, "onCloseClick"), _class.prototype), _class);
+  }, _descriptor = _applyDecoratedDescriptor(_class.prototype, "chat", [_service.inject], {
+    configurable: true,
+    enumerable: true,
+    writable: true,
+    initializer: null
+  }), _descriptor2 = _applyDecoratedDescriptor(_class.prototype, "session", [_service.inject], {
+    configurable: true,
+    enumerable: true,
+    writable: true,
+    initializer: null
+  }), _applyDecoratedDescriptor(_class.prototype, "startLiveChat", [_object.action], Object.getOwnPropertyDescriptor(_class.prototype, "startLiveChat"), _class.prototype), _applyDecoratedDescriptor(_class.prototype, "playGame", [_object.action], Object.getOwnPropertyDescriptor(_class.prototype, "playGame"), _class.prototype), _applyDecoratedDescriptor(_class.prototype, "addFriend", [_object.action], Object.getOwnPropertyDescriptor(_class.prototype, "addFriend"), _class.prototype), _applyDecoratedDescriptor(_class.prototype, "blockUser", [_object.action], Object.getOwnPropertyDescriptor(_class.prototype, "blockUser"), _class.prototype), _applyDecoratedDescriptor(_class.prototype, "onCloseClick", [_object.action], Object.getOwnPropertyDescriptor(_class.prototype, "onCloseClick"), _class.prototype), _class);
   (0, _component.setComponentTemplate)(__COLOCATED_TEMPLATE__, ProfileOtherComponent);
 });
-;define("myapp/components/profile-own", ["exports", "@ember/component", "@glimmer/component", "@ember/object", "@ember/service", "@glimmer/tracking", "@ember/template-factory"], function (_exports, _component, _component2, _object, _service, _tracking, _templateFactory) {
+;define("myapp/components/profile-own", ["exports", "@ember/component", "@glimmer/component", "@ember/object", "@ember/service", "@ember/template-factory"], function (_exports, _component, _component2, _object, _service, _templateFactory) {
   "use strict";
 
   Object.defineProperty(_exports, "__esModule", {
@@ -1644,7 +1858,7 @@
   });
   _exports.default = void 0;
   var _class, _descriptor, _descriptor2;
-  0; //eaimeta@70e063a35619d71f0,"@glimmer/component",0,"@ember/object",0,"@ember/service",0,"@glimmer/tracking",0,"@ember/template-factory",0,"@ember/component"eaimeta@70e063a35619d71f
+  0; //eaimeta@70e063a35619d71f0,"@glimmer/component",0,"@ember/object",0,"@ember/service",0,"@ember/template-factory",0,"@ember/component"eaimeta@70e063a35619d71f
   function _initializerDefineProperty(e, i, r, l) { r && Object.defineProperty(e, i, { enumerable: r.enumerable, configurable: r.configurable, writable: r.writable, value: r.initializer ? r.initializer.call(l) : void 0 }); }
   function _defineProperty(e, r, t) { return (r = _toPropertyKey(r)) in e ? Object.defineProperty(e, r, { value: t, enumerable: !0, configurable: !0, writable: !0 }) : e[r] = t, e; }
   function _toPropertyKey(t) { var i = _toPrimitive(t, "string"); return "symbol" == typeof i ? i : i + ""; }
@@ -1654,31 +1868,31 @@
   const __COLOCATED_TEMPLATE__ = (0, _templateFactory.createTemplateFactory)(
   /*
     <div class="container-fluid row fill p-2">
-    {{!-- Profile picture column (1 part) --}}
+    <!-- Profile picture column (1 part) -->
     <div class="col center">
-      <img src={{this.ownUser.avatar}} alt="Profile Picture" class="profile-pic" />
+      <img src={{this.user.profile.avatar}} alt="Profile Picture" class="profile-pic" />
     </div>
   
-    {{!-- Profile details column (3 parts) --}}
+    <!-- Profile details column (3 parts) -->
     <div class="col-10">
-      {{!-- First row of profile details --}}
+      <!-- First row of profile details -->
       <div class="profile-details">
         {{#if this.isAuthenticated}}
-          {{#if this.ownUser}}
-            <h2 class="name">{{this.ownUser.nickname}}</h2>
-            <ModalProfile @user={{this.ownUser}} @updateParent={{this.fetchUserData}}/>
+          {{#if this.user.profile}} <!-- Access the user directly from the service -->
+            <h2 class="name">{{this.user.profile.nickname}}</h2>
+            <ModalProfile/>
           {{else}}
-            <p>Loading user...</p> {{!-- Or another fallback message --}}
+            <p>Loading user...</p> <!-- Or another fallback message -->
           {{/if}}
           <button class="logout-button" type="button" {{on "click" this.logout}}>Logout</button>
         {{/if}}
-        <h2 class="points info">{{this.ownUser.points}} 🏆</h2>
+        <h2 class="points info">{{this.user.profile.points}} 🏆</h2>
       </div>
   
-      {{!-- Second row of profile details --}}
+      <!-- Second row of profile details -->
       <div class="profile-details">
-        <h2 class="info">Games: {{this.ownUser.games_total}}</h2>
-        <h2 class="info">Wins: {{this.ownUser.wins}}</h2>
+        <h2 class="info">Games: {{this.user.profile.games_total}}</h2>
+        <h2 class="info">Wins: {{this.user.profile.wins}}</h2>
       </div>
   
       <div class="profile-details">
@@ -1687,16 +1901,16 @@
         {{else}}
           <h2 class="info">🔴 offline</h2>
         {{/if}}
-        <h2 class="info">Losses: {{this.ownUser.losses}}</h2>
+        <h2 class="info">Losses: {{this.user.profile.losses}}</h2>
       </div>
-      
     </div>
   </div>
   
+  
   */
   {
-    "id": "BmotdeEM",
-    "block": "[[[10,0],[14,0,\"container-fluid row fill p-2\"],[12],[1,\"\\n\"],[1,\"  \"],[10,0],[14,0,\"col center\"],[12],[1,\"\\n    \"],[10,\"img\"],[15,\"src\",[30,0,[\"ownUser\",\"avatar\"]]],[14,\"alt\",\"Profile Picture\"],[14,0,\"profile-pic\"],[12],[13],[1,\"\\n  \"],[13],[1,\"\\n\\n\"],[1,\"  \"],[10,0],[14,0,\"col-10\"],[12],[1,\"\\n\"],[1,\"    \"],[10,0],[14,0,\"profile-details\"],[12],[1,\"\\n\"],[41,[30,0,[\"isAuthenticated\"]],[[[41,[30,0,[\"ownUser\"]],[[[1,\"          \"],[10,\"h2\"],[14,0,\"name\"],[12],[1,[30,0,[\"ownUser\",\"nickname\"]]],[13],[1,\"\\n          \"],[8,[39,4],null,[[\"@user\",\"@updateParent\"],[[30,0,[\"ownUser\"]],[30,0,[\"fetchUserData\"]]]],null],[1,\"\\n\"]],[]],[[[1,\"          \"],[10,2],[12],[1,\"Loading user...\"],[13],[1,\" \"],[1,\"\\n\"]],[]]],[1,\"        \"],[11,\"button\"],[24,0,\"logout-button\"],[24,4,\"button\"],[4,[38,7],[\"click\",[30,0,[\"logout\"]]],null],[12],[1,\"Logout\"],[13],[1,\"\\n\"]],[]],null],[1,\"      \"],[10,\"h2\"],[14,0,\"points info\"],[12],[1,[30,0,[\"ownUser\",\"points\"]]],[1,\" 🏆\"],[13],[1,\"\\n    \"],[13],[1,\"\\n\\n\"],[1,\"    \"],[10,0],[14,0,\"profile-details\"],[12],[1,\"\\n      \"],[10,\"h2\"],[14,0,\"info\"],[12],[1,\"Games: \"],[1,[30,0,[\"ownUser\",\"games_total\"]]],[13],[1,\"\\n      \"],[10,\"h2\"],[14,0,\"info\"],[12],[1,\"Wins: \"],[1,[30,0,[\"ownUser\",\"wins\"]]],[13],[1,\"\\n    \"],[13],[1,\"\\n\\n    \"],[10,0],[14,0,\"profile-details\"],[12],[1,\"\\n\"],[41,[30,0,[\"isOnline\"]],[[[1,\"        \"],[10,\"h2\"],[14,0,\"info\"],[12],[1,\"🟢 online\"],[13],[1,\"\\n\"]],[]],[[[1,\"        \"],[10,\"h2\"],[14,0,\"info\"],[12],[1,\"🔴 offline\"],[13],[1,\"\\n\"]],[]]],[1,\"      \"],[10,\"h2\"],[14,0,\"info\"],[12],[1,\"Losses: \"],[1,[30,0,[\"ownUser\",\"losses\"]]],[13],[1,\"\\n    \"],[13],[1,\"\\n    \\n  \"],[13],[1,\"\\n\"],[13],[1,\"\\n\"]],[],false,[\"div\",\"img\",\"if\",\"h2\",\"modal-profile\",\"p\",\"button\",\"on\"]]",
+    "id": "FP3Czx9h",
+    "block": "[[[10,0],[14,0,\"container-fluid row fill p-2\"],[12],[1,\"\\n  \"],[3,\" Profile picture column (1 part) \"],[1,\"\\n  \"],[10,0],[14,0,\"col center\"],[12],[1,\"\\n    \"],[10,\"img\"],[15,\"src\",[30,0,[\"user\",\"profile\",\"avatar\"]]],[14,\"alt\",\"Profile Picture\"],[14,0,\"profile-pic\"],[12],[13],[1,\"\\n  \"],[13],[1,\"\\n\\n  \"],[3,\" Profile details column (3 parts) \"],[1,\"\\n  \"],[10,0],[14,0,\"col-10\"],[12],[1,\"\\n    \"],[3,\" First row of profile details \"],[1,\"\\n    \"],[10,0],[14,0,\"profile-details\"],[12],[1,\"\\n\"],[41,[30,0,[\"isAuthenticated\"]],[[[1,\"        \"],[41,[30,0,[\"user\",\"profile\"]],[[[1,\" \"],[3,\" Access the user directly from the service \"],[1,\"\\n          \"],[10,\"h2\"],[14,0,\"name\"],[12],[1,[30,0,[\"user\",\"profile\",\"nickname\"]]],[13],[1,\"\\n          \"],[8,[39,4],null,null,null],[1,\"\\n\"]],[]],[[[1,\"          \"],[10,2],[12],[1,\"Loading user...\"],[13],[1,\" \"],[3,\" Or another fallback message \"],[1,\"\\n\"]],[]]],[1,\"        \"],[11,\"button\"],[24,0,\"logout-button\"],[24,4,\"button\"],[4,[38,7],[\"click\",[30,0,[\"logout\"]]],null],[12],[1,\"Logout\"],[13],[1,\"\\n\"]],[]],null],[1,\"      \"],[10,\"h2\"],[14,0,\"points info\"],[12],[1,[30,0,[\"user\",\"profile\",\"points\"]]],[1,\" 🏆\"],[13],[1,\"\\n    \"],[13],[1,\"\\n\\n    \"],[3,\" Second row of profile details \"],[1,\"\\n    \"],[10,0],[14,0,\"profile-details\"],[12],[1,\"\\n      \"],[10,\"h2\"],[14,0,\"info\"],[12],[1,\"Games: \"],[1,[30,0,[\"user\",\"profile\",\"games_total\"]]],[13],[1,\"\\n      \"],[10,\"h2\"],[14,0,\"info\"],[12],[1,\"Wins: \"],[1,[30,0,[\"user\",\"profile\",\"wins\"]]],[13],[1,\"\\n    \"],[13],[1,\"\\n\\n    \"],[10,0],[14,0,\"profile-details\"],[12],[1,\"\\n\"],[41,[30,0,[\"isOnline\"]],[[[1,\"        \"],[10,\"h2\"],[14,0,\"info\"],[12],[1,\"🟢 online\"],[13],[1,\"\\n\"]],[]],[[[1,\"        \"],[10,\"h2\"],[14,0,\"info\"],[12],[1,\"🔴 offline\"],[13],[1,\"\\n\"]],[]]],[1,\"      \"],[10,\"h2\"],[14,0,\"info\"],[12],[1,\"Losses: \"],[1,[30,0,[\"user\",\"profile\",\"losses\"]]],[13],[1,\"\\n    \"],[13],[1,\"\\n  \"],[13],[1,\"\\n\"],[13],[1,\"\\n\\n\"]],[],false,[\"div\",\"img\",\"if\",\"h2\",\"modal-profile\",\"p\",\"button\",\"on\"]]",
     "moduleName": "myapp/components/profile-own.hbs",
     "isStrictMode": false
   });
@@ -1704,53 +1918,33 @@
     constructor(...args) {
       super(...args);
       _initializerDefineProperty(this, "session", _descriptor, this);
-      _initializerDefineProperty(this, "ownUser", _descriptor2, this);
+      _initializerDefineProperty(this, "user", _descriptor2, this);
     }
-    // Tracks user data for the template
+    // Inject the UserService to access user data
 
     get isAuthenticated() {
-      if (this.session.isAuthenticated && !this.ownUser) {
-        this.fetchUserData();
-      }
       return this.session.isAuthenticated;
     }
-    async fetchUserData() {
-      try {
-        const response = await fetch('/api/profile.json', {
-          method: 'GET',
-          headers: {
-            //Authorization: `Bearer ${this.session.data.authenticated.token}`, // Use token from session
-            'Content-Type': 'application/json'
-          }
-        });
-        if (!response.ok) {
-          throw new Error('Failed to fetch user profile');
-        }
-        const data = await response.json();
-        console.log(data);
-        this.ownUser = data; // Store user data for use in the template
-      } catch (error) {
-        console.error('Error fetching user profile:', error);
-      }
-    }
     get isOnline() {
-      if (this.session.isAuthenticated && this.ownUser) return this.ownUser.status === 'online';
+      if (this.session.isAuthenticated && this.user.profile) {
+        return this.user.profile.status === 'online'; // Access `user` directly from the service
+      }
+      return false;
     }
     logout() {
       this.session.invalidate();
+      this.user.clearProfile(); // Clear user data from the service on logout
     }
   }, _descriptor = _applyDecoratedDescriptor(_class.prototype, "session", [_service.inject], {
     configurable: true,
     enumerable: true,
     writable: true,
     initializer: null
-  }), _descriptor2 = _applyDecoratedDescriptor(_class.prototype, "ownUser", [_tracking.tracked], {
+  }), _descriptor2 = _applyDecoratedDescriptor(_class.prototype, "user", [_service.inject], {
     configurable: true,
     enumerable: true,
     writable: true,
-    initializer: function () {
-      return null;
-    }
+    initializer: null
   }), _applyDecoratedDescriptor(_class.prototype, "logout", [_object.action], Object.getOwnPropertyDescriptor(_class.prototype, "logout"), _class.prototype), _class);
   (0, _component.setComponentTemplate)(__COLOCATED_TEMPLATE__, NavigationComponent);
 });
@@ -1869,43 +2063,65 @@
   });
   var _default = _exports.default = (0, _component.setComponentTemplate)(__COLOCATED_TEMPLATE__, (0, _templateOnly.default)());
 });
-;define("myapp/components/tournament-item", ["exports", "@ember/component", "@glimmer/component", "@ember/object", "@ember/template-factory"], function (_exports, _component, _component2, _object, _templateFactory) {
+;define("myapp/components/tournament-item", ["exports", "@ember/component", "@glimmer/component", "@ember/object", "@ember/service", "@ember/template-factory"], function (_exports, _component, _component2, _object, _service, _templateFactory) {
   "use strict";
 
   Object.defineProperty(_exports, "__esModule", {
     value: true
   });
   _exports.default = void 0;
-  var _class;
-  0; //eaimeta@70e063a35619d71f0,"@glimmer/component",0,"@ember/object",0,"@ember/template-factory",0,"@ember/component"eaimeta@70e063a35619d71f
+  var _class, _descriptor, _descriptor2;
+  0; //eaimeta@70e063a35619d71f0,"@glimmer/component",0,"@ember/object",0,"@ember/service",0,"@ember/template-factory",0,"@ember/component"eaimeta@70e063a35619d71f
+  function _initializerDefineProperty(e, i, r, l) { r && Object.defineProperty(e, i, { enumerable: r.enumerable, configurable: r.configurable, writable: r.writable, value: r.initializer ? r.initializer.call(l) : void 0 }); }
+  function _defineProperty(e, r, t) { return (r = _toPropertyKey(r)) in e ? Object.defineProperty(e, r, { value: t, enumerable: !0, configurable: !0, writable: !0 }) : e[r] = t, e; }
+  function _toPropertyKey(t) { var i = _toPrimitive(t, "string"); return "symbol" == typeof i ? i : i + ""; }
+  function _toPrimitive(t, r) { if ("object" != typeof t || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != typeof i) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
   function _applyDecoratedDescriptor(i, e, r, n, l) { var a = {}; return Object.keys(n).forEach(function (i) { a[i] = n[i]; }), a.enumerable = !!a.enumerable, a.configurable = !!a.configurable, ("value" in a || a.initializer) && (a.writable = !0), a = r.slice().reverse().reduce(function (r, n) { return n(i, e, r) || r; }, a), l && void 0 !== a.initializer && (a.value = a.initializer ? a.initializer.call(l) : void 0, a.initializer = void 0), void 0 === a.initializer ? (Object.defineProperty(i, e, a), null) : a; }
+  function _initializerWarningHelper(r, e) { throw Error("Decorating class property failed. Please ensure that transform-class-properties is enabled and runs after the decorators transform."); }
   const __COLOCATED_TEMPLATE__ = (0, _templateFactory.createTemplateFactory)(
   /*
     <div class="user-card">
           <p class="mb-0"><h2 class="info">{{@creator}}'s</h2>
           <h3 class="tournament-info">Tournament</h3></p>
           <div class="actions left">
-              <button class="tournament-button join" onclick={{this.onJoinClick}} type="button">Join</button>
-              <button class="tournament-button" onclick={{this.onLeaveClick}} type="button">Leave</button>
+              <button class="tournament-button join" {{on "click" (fn this.onJoinClick @creator)}} type="button">Join</button>
+              <button class="tournament-button" {{on "click" (fn this.onLeaveClick @creator)}} type="button">Leave</button>
           </div>
           <h2 class="points info">👥 {{@current_players}}/{{@max_players}}</h2>
   </div>
   
   */
   {
-    "id": "IOZy9rWw",
-    "block": "[[[10,0],[14,0,\"user-card\"],[12],[1,\"\\n        \"],[10,2],[14,0,\"mb-0\"],[12],[10,\"h2\"],[14,0,\"info\"],[12],[1,[30,1]],[1,\"'s\"],[13],[1,\"\\n        \"],[10,\"h3\"],[14,0,\"tournament-info\"],[12],[1,\"Tournament\"],[13],[13],[1,\"\\n        \"],[10,0],[14,0,\"actions left\"],[12],[1,\"\\n            \"],[10,\"button\"],[14,0,\"tournament-button join\"],[15,\"onclick\",[30,0,[\"onJoinClick\"]]],[14,4,\"button\"],[12],[1,\"Join\"],[13],[1,\"\\n            \"],[10,\"button\"],[14,0,\"tournament-button\"],[15,\"onclick\",[30,0,[\"onLeaveClick\"]]],[14,4,\"button\"],[12],[1,\"Leave\"],[13],[1,\"\\n        \"],[13],[1,\"\\n        \"],[10,\"h2\"],[14,0,\"points info\"],[12],[1,\"👥 \"],[1,[30,2]],[1,\"/\"],[1,[30,3]],[13],[1,\"\\n\"],[13],[1,\"\\n\"]],[\"@creator\",\"@current_players\",\"@max_players\"],false,[\"div\",\"p\",\"h2\",\"h3\",\"button\"]]",
+    "id": "l+X2ycFG",
+    "block": "[[[10,0],[14,0,\"user-card\"],[12],[1,\"\\n        \"],[10,2],[14,0,\"mb-0\"],[12],[10,\"h2\"],[14,0,\"info\"],[12],[1,[30,1]],[1,\"'s\"],[13],[1,\"\\n        \"],[10,\"h3\"],[14,0,\"tournament-info\"],[12],[1,\"Tournament\"],[13],[13],[1,\"\\n        \"],[10,0],[14,0,\"actions left\"],[12],[1,\"\\n            \"],[11,\"button\"],[24,0,\"tournament-button join\"],[24,4,\"button\"],[4,[38,5],[\"click\",[28,[37,6],[[30,0,[\"onJoinClick\"]],[30,1]],null]],null],[12],[1,\"Join\"],[13],[1,\"\\n            \"],[11,\"button\"],[24,0,\"tournament-button\"],[24,4,\"button\"],[4,[38,5],[\"click\",[28,[37,6],[[30,0,[\"onLeaveClick\"]],[30,1]],null]],null],[12],[1,\"Leave\"],[13],[1,\"\\n        \"],[13],[1,\"\\n        \"],[10,\"h2\"],[14,0,\"points info\"],[12],[1,\"👥 \"],[1,[30,2]],[1,\"/\"],[1,[30,3]],[13],[1,\"\\n\"],[13],[1,\"\\n\"]],[\"@creator\",\"@current_players\",\"@max_players\"],false,[\"div\",\"p\",\"h2\",\"h3\",\"button\",\"on\",\"fn\"]]",
     "moduleName": "myapp/components/tournament-item.hbs",
     "isStrictMode": false
   });
   let TournamentItemComponent = _exports.default = (_class = class TournamentItemComponent extends _component2.default {
-    onJoinClick() {
+    constructor(...args) {
+      super(...args);
+      _initializerDefineProperty(this, "tournament", _descriptor, this);
+      _initializerDefineProperty(this, "user", _descriptor2, this);
+    }
+    onJoinClick(creator) {
       console.log('Join clicked!');
+      this.tournament.connectToLobby(creator, this.user.profile.nickname);
     }
     onLeaveClick() {
       console.log('Leave clicked!');
+      this.tournament.disconnectFromLobby();
     }
-  }, _applyDecoratedDescriptor(_class.prototype, "onJoinClick", [_object.action], Object.getOwnPropertyDescriptor(_class.prototype, "onJoinClick"), _class.prototype), _applyDecoratedDescriptor(_class.prototype, "onLeaveClick", [_object.action], Object.getOwnPropertyDescriptor(_class.prototype, "onLeaveClick"), _class.prototype), _class);
+  }, _descriptor = _applyDecoratedDescriptor(_class.prototype, "tournament", [_service.inject], {
+    configurable: true,
+    enumerable: true,
+    writable: true,
+    initializer: null
+  }), _descriptor2 = _applyDecoratedDescriptor(_class.prototype, "user", [_service.inject], {
+    configurable: true,
+    enumerable: true,
+    writable: true,
+    initializer: null
+  }), _applyDecoratedDescriptor(_class.prototype, "onJoinClick", [_object.action], Object.getOwnPropertyDescriptor(_class.prototype, "onJoinClick"), _class.prototype), _applyDecoratedDescriptor(_class.prototype, "onLeaveClick", [_object.action], Object.getOwnPropertyDescriptor(_class.prototype, "onLeaveClick"), _class.prototype), _class);
   (0, _component.setComponentTemplate)(__COLOCATED_TEMPLATE__, TournamentItemComponent);
 });
 ;define("myapp/components/tournament-list", ["exports", "@ember/component", "@glimmer/component", "@glimmer/tracking", "@ember/object", "@ember/template-factory"], function (_exports, _component, _component2, _tracking, _object, _templateFactory) {
@@ -1927,35 +2143,63 @@
   /*
     <nav class="navigation-bar">
       <h1 class="white">Tournaments</h1>
-      <button class="tournament-button update" onclick={{this.onJoinClick}} type="button">↻</button>
+      <button class="tournament-button update" onclick={{this.fetchTournaments}} type="button">↻</button>
   </nav>
   <div class="scrollable-list middle-scroll">
       {{#each this.tournaments as |tournament|}}
           <TournamentItem @creator={{tournament.creator}} @current_players={{tournament.current_players}} @max_players={{tournament.max_players}}/>
       {{/each}}
   </div>
+  
   */
   {
-    "id": "0KuRtTy2",
-    "block": "[[[10,\"nav\"],[14,0,\"navigation-bar\"],[12],[1,\"\\n    \"],[10,\"h1\"],[14,0,\"white\"],[12],[1,\"Tournaments\"],[13],[1,\"\\n    \"],[10,\"button\"],[14,0,\"tournament-button update\"],[15,\"onclick\",[30,0,[\"onJoinClick\"]]],[14,4,\"button\"],[12],[1,\"↻\"],[13],[1,\"\\n\"],[13],[1,\"\\n\"],[10,0],[14,0,\"scrollable-list middle-scroll\"],[12],[1,\"\\n\"],[42,[28,[37,5],[[28,[37,5],[[30,0,[\"tournaments\"]]],null]],null],null,[[[1,\"        \"],[8,[39,6],null,[[\"@creator\",\"@current_players\",\"@max_players\"],[[30,1,[\"creator\"]],[30,1,[\"current_players\"]],[30,1,[\"max_players\"]]]],null],[1,\"\\n\"]],[1]],null],[13]],[\"tournament\"],false,[\"nav\",\"h1\",\"button\",\"div\",\"each\",\"-track-array\",\"tournament-item\"]]",
+    "id": "euUZ+33l",
+    "block": "[[[10,\"nav\"],[14,0,\"navigation-bar\"],[12],[1,\"\\n    \"],[10,\"h1\"],[14,0,\"white\"],[12],[1,\"Tournaments\"],[13],[1,\"\\n    \"],[10,\"button\"],[14,0,\"tournament-button update\"],[15,\"onclick\",[30,0,[\"fetchTournaments\"]]],[14,4,\"button\"],[12],[1,\"↻\"],[13],[1,\"\\n\"],[13],[1,\"\\n\"],[10,0],[14,0,\"scrollable-list middle-scroll\"],[12],[1,\"\\n\"],[42,[28,[37,5],[[28,[37,5],[[30,0,[\"tournaments\"]]],null]],null],null,[[[1,\"        \"],[8,[39,6],null,[[\"@creator\",\"@current_players\",\"@max_players\"],[[30,1,[\"creator\"]],[30,1,[\"current_players\"]],[30,1,[\"max_players\"]]]],null],[1,\"\\n\"]],[1]],null],[13],[1,\"\\n\"]],[\"tournament\"],false,[\"nav\",\"h1\",\"button\",\"div\",\"each\",\"-track-array\",\"tournament-item\"]]",
     "moduleName": "myapp/components/tournament-list.hbs",
     "isStrictMode": false
   });
   let TournamentListComponent = _exports.default = (_class = class TournamentListComponent extends _component2.default {
+    // To store the interval ID for cleanup
+
     constructor() {
       super(...arguments);
       _initializerDefineProperty(this, "tournaments", _descriptor, this);
-      this.fetchTournaments();
+      _defineProperty(this, "intervalId", null);
+      this.startFetchingTournaments();
     }
+
+    /**
+     * Start fetching tournaments every 10 seconds
+     */
+    startFetchingTournaments() {
+      this.fetchTournaments(); // Fetch immediately on load
+      this.intervalId = setInterval(() => {
+        this.fetchTournaments();
+      }, 10000); // 10 seconds
+    }
+
+    /**
+     * Fetch tournaments from the API
+     */
     async fetchTournaments() {
       try {
-        const response = await fetch('/api/tournaments.json'); // Simulating API call
+        const response = await fetch('https://localhost/lobby/list/');
         if (!response.ok) {
-          throw new Error('Network response was not ok');
+          throw new Error('Failed to fetch lobby list');
         }
         this.tournaments = await response.json();
       } catch (error) {
-        console.error('Failed to fetch tournaments:', error);
+        console.error('Error fetching tournaments:', error);
+      }
+    }
+
+    /**
+     * Cleanup the interval when the component is destroyed
+     */
+    willDestroy() {
+      super.willDestroy(...arguments);
+      if (this.intervalId) {
+        clearInterval(this.intervalId); // Clear the interval
       }
     }
   }, _descriptor = _applyDecoratedDescriptor(_class.prototype, "tournaments", [_tracking.tracked], {
@@ -2118,7 +2362,7 @@
     value: true
   });
   _exports.default = void 0;
-  var _class, _descriptor, _descriptor2, _descriptor3;
+  var _class, _descriptor, _descriptor2, _descriptor3, _descriptor4, _descriptor5, _descriptor6;
   0; //eaimeta@70e063a35619d71f0,"@ember/controller",0,"@glimmer/tracking",0,"@ember/object",0,"@ember/service"eaimeta@70e063a35619d71f
   function _initializerDefineProperty(e, i, r, l) { r && Object.defineProperty(e, i, { enumerable: r.enumerable, configurable: r.configurable, writable: r.writable, value: r.initializer ? r.initializer.call(l) : void 0 }); }
   function _defineProperty(e, r, t) { return (r = _toPropertyKey(r)) in e ? Object.defineProperty(e, r, { value: t, enumerable: !0, configurable: !0, writable: !0 }) : e[r] = t, e; }
@@ -2134,35 +2378,18 @@
       _initializerDefineProperty(this, "ownUser", _descriptor2, this);
       // Tracks user data for the template
       _initializerDefineProperty(this, "session", _descriptor3, this);
+      _initializerDefineProperty(this, "router", _descriptor4, this);
+      _initializerDefineProperty(this, "user", _descriptor5, this);
+      _initializerDefineProperty(this, "tournament", _descriptor6, this);
     }
+    get activeRoute() {
+      return this.router.currentRouteName;
+    }
+
     // Action to handle the user selection
     selectUser(user) {
       console.log('Selected User:', user);
       this.selectedUser = user; // Update the selected user
-    }
-    get isAuthenticated() {
-      if (this.session.isAuthenticated && !this.ownUser) {
-        this.fetchUserData();
-      }
-    }
-    async fetchUserData() {
-      try {
-        const response = await fetch('/api/profile.json', {
-          method: 'GET',
-          headers: {
-            //Authorization: `Bearer ${this.session.data.authenticated.token}`, // Use token from session
-            'Content-Type': 'application/json'
-          }
-        });
-        if (!response.ok) {
-          throw new Error('Failed to fetch user profile');
-        }
-        const data = await response.json();
-        console.log(data);
-        this.ownUser = data; // Store user data for use in the template
-      } catch (error) {
-        console.error('Error fetching user profile:', error);
-      }
     }
   }, _descriptor = _applyDecoratedDescriptor(_class.prototype, "selectedUser", [_tracking.tracked], {
     configurable: true,
@@ -2183,120 +2410,22 @@
     enumerable: true,
     writable: true,
     initializer: null
-  }), _applyDecoratedDescriptor(_class.prototype, "selectUser", [_object.action], Object.getOwnPropertyDescriptor(_class.prototype, "selectUser"), _class.prototype), _class);
-});
-;define("myapp/controllers/chat", ["exports", "@ember/controller", "@ember/service", "@ember/object", "@glimmer/tracking"], function (_exports, _controller, _service, _object, _tracking) {
-  "use strict";
-
-  Object.defineProperty(_exports, "__esModule", {
-    value: true
-  });
-  _exports.default = void 0;
-  var _class, _descriptor, _descriptor2, _descriptor3;
-  0; //eaimeta@70e063a35619d71f0,"@ember/controller",0,"@ember/service",0,"@ember/object",0,"@glimmer/tracking"eaimeta@70e063a35619d71f
-  function _initializerDefineProperty(e, i, r, l) { r && Object.defineProperty(e, i, { enumerable: r.enumerable, configurable: r.configurable, writable: r.writable, value: r.initializer ? r.initializer.call(l) : void 0 }); }
-  function _defineProperty(e, r, t) { return (r = _toPropertyKey(r)) in e ? Object.defineProperty(e, r, { value: t, enumerable: !0, configurable: !0, writable: !0 }) : e[r] = t, e; }
-  function _toPropertyKey(t) { var i = _toPrimitive(t, "string"); return "symbol" == typeof i ? i : i + ""; }
-  function _toPrimitive(t, r) { if ("object" != typeof t || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != typeof i) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
-  function _applyDecoratedDescriptor(i, e, r, n, l) { var a = {}; return Object.keys(n).forEach(function (i) { a[i] = n[i]; }), a.enumerable = !!a.enumerable, a.configurable = !!a.configurable, ("value" in a || a.initializer) && (a.writable = !0), a = r.slice().reverse().reduce(function (r, n) { return n(i, e, r) || r; }, a), l && void 0 !== a.initializer && (a.value = a.initializer ? a.initializer.call(l) : void 0, a.initializer = void 0), void 0 === a.initializer ? (Object.defineProperty(i, e, a), null) : a; }
-  function _initializerWarningHelper(r, e) { throw Error("Decorating class property failed. Please ensure that transform-class-properties is enabled and runs after the decorators transform."); }
-  let Chat = _exports.default = (_class = class Chat extends _controller.default {
-    // The query param will be injected here
-
-    get username() {
-      return this.username; // This is the query param username
-    }
-    constructor() {
-      super(...arguments);
-
-      /*
-        2. The next step you need to do is to create your actual websocket. Calling socketFor
-        will retrieve a cached websocket if one exists or in this case it
-        will create a new one for us.
-      */
-      _initializerDefineProperty(this, "messages", _descriptor, this);
-      // Track incoming messages
-      _initializerDefineProperty(this, "messageInput", _descriptor2, this);
-      /*
-       * 1. Inject the websockets service
-       */
-      _initializerDefineProperty(this, "websockets", _descriptor3, this);
-      _defineProperty(this, "socketRef", null);
-      _defineProperty(this, "queryParams", ['username']);
-      _defineProperty(this, "username", null);
-      const socket = this.websockets.socketFor('ws://localhost:8888/');
-
-      /*
-        3. The next step is to define your event handlers. All event handlers
-        are added via the `on` method and take 3 arguments: event name, callback
-        function, and the context in which to invoke the callback. All 3 arguments
-        are required.
-      */
-      socket.on('open', this.myOpenHandler, this);
-      socket.on('message', this.myMessageHandler, this);
-      this.set('socketRef', socket);
-    }
-    myOpenHandler(event) {
-      console.log(`On open event has been called: ${event}`);
-    }
-    myMessageHandler(event) {
-      console.log(`Message: ${event.data}`);
-      this.message = JSON.parse(event.data);
-      this.messages = [...this.messages, this.message]; // Update the tracked array
-      console.log(this.message.content);
-    }
-    myCloseHandler(event) {
-      console.log(`On close event has been called: ${event}`);
-    }
-    sendMessage() {
-      console.log(this.messageInput);
-      let words = this.messageInput.trim().split(' ');
-      let type = 'all';
-      let user = 'all';
-      let messageContent = this.messageInput;
-      if (words[0].startsWith('/tournament')) {
-        type = 'tournament';
-        user = 'tournament';
-        messageContent = words.slice(1).join(' ');
-      } else if (words[0].startsWith('/')) {
-        type = 'whisper';
-        user = words[0].substring(1);
-        messageContent = words.slice(1).join(' ');
-      }
-      if (this.messageInput.trim()) {
-        this.socketRef.send(JSON.stringify({
-          type: type,
-          from: this.username,
-          to: user,
-          content: messageContent,
-          timestamp: new Date().toISOString()
-        }));
-        this.messageInput = ''; // Clear input after sending
-      }
-    }
-    updateInputValue(event) {
-      this.messageInput = event.target.value; // Update the input value in the parent
-    }
-  }, _descriptor = _applyDecoratedDescriptor(_class.prototype, "messages", [_tracking.tracked], {
-    configurable: true,
-    enumerable: true,
-    writable: true,
-    initializer: function () {
-      return [];
-    }
-  }), _descriptor2 = _applyDecoratedDescriptor(_class.prototype, "messageInput", [_tracking.tracked], {
-    configurable: true,
-    enumerable: true,
-    writable: true,
-    initializer: function () {
-      return '';
-    }
-  }), _descriptor3 = _applyDecoratedDescriptor(_class.prototype, "websockets", [_service.inject], {
+  }), _descriptor4 = _applyDecoratedDescriptor(_class.prototype, "router", [_service.inject], {
     configurable: true,
     enumerable: true,
     writable: true,
     initializer: null
-  }), _applyDecoratedDescriptor(_class.prototype, "sendMessage", [_object.action], Object.getOwnPropertyDescriptor(_class.prototype, "sendMessage"), _class.prototype), _applyDecoratedDescriptor(_class.prototype, "updateInputValue", [_object.action], Object.getOwnPropertyDescriptor(_class.prototype, "updateInputValue"), _class.prototype), _class);
+  }), _descriptor5 = _applyDecoratedDescriptor(_class.prototype, "user", [_service.inject], {
+    configurable: true,
+    enumerable: true,
+    writable: true,
+    initializer: null
+  }), _descriptor6 = _applyDecoratedDescriptor(_class.prototype, "tournament", [_service.inject], {
+    configurable: true,
+    enumerable: true,
+    writable: true,
+    initializer: null
+  }), _applyDecoratedDescriptor(_class.prototype, "selectUser", [_object.action], Object.getOwnPropertyDescriptor(_class.prototype, "selectUser"), _class.prototype), _class);
 });
 ;define("myapp/controllers/choose-game", ["exports", "@ember/controller", "@ember/object", "@ember/service", "@glimmer/tracking"], function (_exports, _controller, _object, _service, _tracking) {
   "use strict";
@@ -2305,7 +2434,7 @@
     value: true
   });
   _exports.default = void 0;
-  var _class, _descriptor, _descriptor2, _descriptor3;
+  var _class, _descriptor, _descriptor2, _descriptor3, _descriptor4, _descriptor5;
   0; //eaimeta@70e063a35619d71f0,"@ember/controller",0,"@ember/object",0,"@ember/service",0,"@glimmer/tracking"eaimeta@70e063a35619d71f
   function _initializerDefineProperty(e, i, r, l) { r && Object.defineProperty(e, i, { enumerable: r.enumerable, configurable: r.configurable, writable: r.writable, value: r.initializer ? r.initializer.call(l) : void 0 }); }
   function _defineProperty(e, r, t) { return (r = _toPropertyKey(r)) in e ? Object.defineProperty(e, r, { value: t, enumerable: !0, configurable: !0, writable: !0 }) : e[r] = t, e; }
@@ -2321,7 +2450,8 @@
       // Tracks the loading state
       _initializerDefineProperty(this, "gameData", _descriptor3, this);
       // Inject the game-data service
-      _defineProperty(this, "queryParams", ['username']);
+      _initializerDefineProperty(this, "user", _descriptor4, this);
+      _initializerDefineProperty(this, "session", _descriptor5, this);
     }
     chooseGame(gameType) {
       this.loading = true;
@@ -2333,10 +2463,11 @@
         const response = await fetch('/pong/pong/create-room', {
           method: 'POST',
           headers: {
+            Authorization: `Bearer ${this.session.data.authenticated.token}`,
             'Content-Type': 'application/json'
           },
           body: JSON.stringify({
-            player: this.username,
+            player: this.user.nickname,
             // Add player_1 with the user's value
             gameType: gameType // Set the selected game type
           })
@@ -2347,13 +2478,8 @@
         const data = await response.json();
         if (data.room_name) {
           this.loading = false;
-          this.gameData.setGameData(gameType, data, this.username);
-          this.router.transitionTo('pong-game', {
-            queryParams: {
-              gameType: gameType,
-              roomData: data // pass data as a query parameter
-            }
-          });
+          this.gameData.setGameData(gameType, data);
+          this.router.transitionTo('pong-game');
         }
       } catch (error) {
         console.error('Error:', error);
@@ -2376,6 +2502,16 @@
     enumerable: true,
     writable: true,
     initializer: null
+  }), _descriptor4 = _applyDecoratedDescriptor(_class.prototype, "user", [_service.inject], {
+    configurable: true,
+    enumerable: true,
+    writable: true,
+    initializer: null
+  }), _descriptor5 = _applyDecoratedDescriptor(_class.prototype, "session", [_service.inject], {
+    configurable: true,
+    enumerable: true,
+    writable: true,
+    initializer: null
   }), _applyDecoratedDescriptor(_class.prototype, "chooseGame", [_object.action], Object.getOwnPropertyDescriptor(_class.prototype, "chooseGame"), _class.prototype), _class);
 });
 ;define("myapp/controllers/login", ["exports", "@ember/controller", "@glimmer/tracking", "@ember/service", "@ember/object"], function (_exports, _controller, _tracking, _service, _object) {
@@ -2385,7 +2521,7 @@
     value: true
   });
   _exports.default = void 0;
-  var _class, _descriptor, _descriptor2, _descriptor3, _descriptor4, _descriptor5;
+  var _class, _descriptor, _descriptor2, _descriptor3, _descriptor4, _descriptor5, _descriptor6;
   0; //eaimeta@70e063a35619d71f0,"@ember/controller",0,"@glimmer/tracking",0,"@ember/service",0,"@ember/object"eaimeta@70e063a35619d71f
   function _initializerDefineProperty(e, i, r, l) { r && Object.defineProperty(e, i, { enumerable: r.enumerable, configurable: r.configurable, writable: r.writable, value: r.initializer ? r.initializer.call(l) : void 0 }); }
   function _defineProperty(e, r, t) { return (r = _toPropertyKey(r)) in e ? Object.defineProperty(e, r, { value: t, enumerable: !0, configurable: !0, writable: !0 }) : e[r] = t, e; }
@@ -2398,9 +2534,10 @@
       super(...args);
       _initializerDefineProperty(this, "session", _descriptor, this);
       _initializerDefineProperty(this, "router", _descriptor2, this);
-      _initializerDefineProperty(this, "username", _descriptor3, this);
-      _initializerDefineProperty(this, "password", _descriptor4, this);
-      _initializerDefineProperty(this, "error", _descriptor5, this);
+      _initializerDefineProperty(this, "user", _descriptor3, this);
+      _initializerDefineProperty(this, "username", _descriptor4, this);
+      _initializerDefineProperty(this, "password", _descriptor5, this);
+      _initializerDefineProperty(this, "error", _descriptor6, this);
     }
     update(attr, event) {
       this[attr] = event.target.value;
@@ -2409,11 +2546,9 @@
       event.preventDefault();
       try {
         await this.session.authenticate('authenticator:token', this.username, this.password);
-        this.router.transitionTo('choose-game', {
-          queryParams: {
-            username: this.username
-          } // Add the username as a query parameter
-        });
+        this.fetchUserData(this.username);
+        console.log(this.session.data.authenticated.token);
+        this.router.transitionTo('choose-game');
       } catch (error) {
         this.error = error;
       }
@@ -2436,13 +2571,31 @@
 
         // Optionally, log in the user directly after registration
         await this.session.authenticate('authenticator:token', this.username, this.password);
-        this.router.transitionTo('choose-game', {
-          queryParams: {
-            username: this.username
-          } // Add the username as a query parameter
-        });
+        this.fetchUserData(this.username);
+        this.router.transitionTo('choose-game');
       } catch (error) {
         this.error = error.message || 'An error occurred during registration';
+      }
+    }
+    async fetchUserData(username) {
+      try {
+        const response = await fetch('/api/profile.json', {
+          method: 'GET',
+          headers: {
+            Authorization: `Bearer ${this.session.data.authenticated.token}`,
+            // Use token from session
+            'Content-Type': 'application/json'
+          }
+        });
+        if (!response.ok) {
+          throw new Error('Failed to fetch user profile');
+        }
+        const data = await response.json();
+        console.log(data);
+        this.user.setProfile(data); // Store user data for use in the template
+        console.log(this.user.profile);
+      } catch (error) {
+        console.error('Error fetching user profile:', error);
       }
     }
   }, _descriptor = _applyDecoratedDescriptor(_class.prototype, "session", [_service.inject], {
@@ -2455,17 +2608,22 @@
     enumerable: true,
     writable: true,
     initializer: null
-  }), _descriptor3 = _applyDecoratedDescriptor(_class.prototype, "username", [_tracking.tracked], {
+  }), _descriptor3 = _applyDecoratedDescriptor(_class.prototype, "user", [_service.inject], {
     configurable: true,
     enumerable: true,
     writable: true,
     initializer: null
-  }), _descriptor4 = _applyDecoratedDescriptor(_class.prototype, "password", [_tracking.tracked], {
+  }), _descriptor4 = _applyDecoratedDescriptor(_class.prototype, "username", [_tracking.tracked], {
     configurable: true,
     enumerable: true,
     writable: true,
     initializer: null
-  }), _descriptor5 = _applyDecoratedDescriptor(_class.prototype, "error", [_tracking.tracked], {
+  }), _descriptor5 = _applyDecoratedDescriptor(_class.prototype, "password", [_tracking.tracked], {
+    configurable: true,
+    enumerable: true,
+    writable: true,
+    initializer: null
+  }), _descriptor6 = _applyDecoratedDescriptor(_class.prototype, "error", [_tracking.tracked], {
     configurable: true,
     enumerable: true,
     writable: true,
@@ -3357,21 +3515,11 @@
     constructor(...args) {
       super(...args);
       _initializerDefineProperty(this, "session", _descriptor, this);
-      _defineProperty(this, "queryParams", {
-        username: {
-          refreshModel: true
-        }
-      });
     }
     async beforeModel(transition) {
       if (!this.session.isAuthenticated) {
         this.session.requireAuthentication(transition, 'login');
       }
-    }
-    model(params) {
-      return {
-        username: params.username
-      };
     }
   }, _descriptor = _applyDecoratedDescriptor(_class.prototype, "session", [_service.inject], {
     configurable: true,
@@ -3499,18 +3647,6 @@
         this.session.requireAuthentication(transition, 'login');
       }
     }
-    async model() {
-      try {
-        const response = await fetch('/api/tournaments.json'); // Replace with your actual API endpoint
-        if (!response.ok) {
-          throw new Error('Failed to fetch tournament data');
-        }
-        return await response.json(); // Return the data as the model for this route
-      } catch (error) {
-        console.error('Error fetching tournament data:', error);
-        return null; // Return null or an empty object if there's an error
-      }
-    }
   }, _descriptor = _applyDecoratedDescriptor(_class.prototype, "session", [_service.inject], {
     configurable: true,
     enumerable: true,
@@ -3531,6 +3667,181 @@
     }
   });
   0; //eaimeta@70e063a35619d71f0,"@embroider/util/services/ensure-registered"eaimeta@70e063a35619d71f
+});
+;define("myapp/services/chat", ["exports", "@ember/service", "@glimmer/tracking"], function (_exports, _service, _tracking) {
+  "use strict";
+
+  Object.defineProperty(_exports, "__esModule", {
+    value: true
+  });
+  _exports.default = void 0;
+  var _class, _descriptor, _descriptor2, _descriptor3, _descriptor4, _descriptor5, _descriptor6;
+  0; //eaimeta@70e063a35619d71f0,"@ember/service",0,"@ember/service",0,"@glimmer/tracking"eaimeta@70e063a35619d71f
+  function _initializerDefineProperty(e, i, r, l) { r && Object.defineProperty(e, i, { enumerable: r.enumerable, configurable: r.configurable, writable: r.writable, value: r.initializer ? r.initializer.call(l) : void 0 }); }
+  function _defineProperty(e, r, t) { return (r = _toPropertyKey(r)) in e ? Object.defineProperty(e, r, { value: t, enumerable: !0, configurable: !0, writable: !0 }) : e[r] = t, e; }
+  function _toPropertyKey(t) { var i = _toPrimitive(t, "string"); return "symbol" == typeof i ? i : i + ""; }
+  function _toPrimitive(t, r) { if ("object" != typeof t || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != typeof i) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
+  function _applyDecoratedDescriptor(i, e, r, n, l) { var a = {}; return Object.keys(n).forEach(function (i) { a[i] = n[i]; }), a.enumerable = !!a.enumerable, a.configurable = !!a.configurable, ("value" in a || a.initializer) && (a.writable = !0), a = r.slice().reverse().reduce(function (r, n) { return n(i, e, r) || r; }, a), l && void 0 !== a.initializer && (a.value = a.initializer ? a.initializer.call(l) : void 0, a.initializer = void 0), void 0 === a.initializer ? (Object.defineProperty(i, e, a), null) : a; }
+  function _initializerWarningHelper(r, e) { throw Error("Decorating class property failed. Please ensure that transform-class-properties is enabled and runs after the decorators transform."); }
+  let ChatService = _exports.default = (_class = class ChatService extends _service.default {
+    setInputElement(element) {
+      this.inputElement = element;
+    }
+    focusInput() {
+      if (this.inputElement) {
+        this.inputElement.focus();
+      }
+    }
+    constructor() {
+      super(...arguments);
+
+      // Initialize the WebSocket connection
+      _initializerDefineProperty(this, "messages", _descriptor, this);
+      // Track incoming messages
+      _initializerDefineProperty(this, "messageInput", _descriptor2, this);
+      // Input field value
+      _initializerDefineProperty(this, "inputColor", _descriptor3, this);
+      _initializerDefineProperty(this, "user", _descriptor4, this);
+      _initializerDefineProperty(this, "websockets", _descriptor5, this);
+      _initializerDefineProperty(this, "session", _descriptor6, this);
+      _defineProperty(this, "socketRef", null);
+      _defineProperty(this, "inputElement", null);
+      // Reference to the input element
+      _defineProperty(this, "type", "all");
+      _defineProperty(this, "to_user", "");
+      _defineProperty(this, "words", null);
+      _defineProperty(this, "predefinedColors", {
+        all: 'rgb(0 0 0)',
+        tournament: 'rgb(30 218 55)',
+        whisper: 'rgb(255 49 255)',
+        system: 'rgb(130 140 55)'
+      });
+      const socket = this.websockets.socketFor('ws://localhost:8888/');
+      socket.on('open', this.myOpenHandler, this);
+      socket.on('message', this.myMessageHandler, this);
+      socket.on('close', this.myCloseHandler, this);
+      this.socketRef = socket;
+    }
+    myOpenHandler(event) {
+      console.log(`On open event has been called: ${event}`);
+    }
+    myMessageHandler(event) {
+      console.log(`Message: ${event.data}`);
+      const newMessage = JSON.parse(event.data);
+      this.messages = [...this.messages, newMessage]; // Add the new message to the tracked array
+      console.log(newMessage.content);
+    }
+    myCloseHandler(event) {
+      console.log(`On close event has been called: ${event}`);
+    }
+    updateInputValue(input) {
+      this.messageInput = input; // Update the tracked input value
+      this.words = this.messageInput.trim().split(' ');
+      if (this.words[0] === '/*tournament') {
+        this.type = 'tournament';
+        this.to_user = 'tournament';
+        this.inputColor = this.predefinedColors.tournament;
+      } else if (this.words[0] === '/*add') {
+        this.type = 'add';
+        this.to_user = this.words[1];
+        this.inputColor = this.predefinedColors.system;
+      } else if (this.words[0] === '/*invite') {
+        this.type = 'invite';
+        this.to_user = this.words[1];
+        this.inputColor = this.predefinedColors.system;
+      } else if (this.words[0].startsWith('/') && this.words[0].length > 1 && this.words[0][1] !== '*') {
+        this.type = 'whisper';
+        this.to_user = this.words[0].substring(1);
+        this.inputColor = this.predefinedColors.whisper;
+      } else {
+        this.type = 'all';
+        this.inputColor = this.predefinedColors.all;
+      }
+    }
+    sendMessage() {
+      let messageContent = this.messageInput.trim();
+      if (this.type !== "all") {
+        messageContent = this.words.slice(1).join(' ');
+        console.log(messageContent);
+      }
+      if (this.type === "invite") this.privateRoom(this.user.profile.nickname, "create");
+      if (messageContent) {
+        this.socketRef.send(JSON.stringify({
+          type: this.type,
+          from: this.user.profile.nickname,
+          to: this.to_user,
+          content: messageContent,
+          timestamp: new Date().toISOString()
+        }));
+        if (this.type === "all") this.messageInput = '';else this.messageInput = this.words[0] + " ";
+      }
+    }
+    async privateRoom(name, type) {
+      try {
+        //const response = await fetch('/api/create-room.json', {
+        const response = await fetch('/pong/pong/private-room', {
+          method: 'POST',
+          headers: {
+            Authorization: `Bearer ${this.session.data.authenticated.token}`,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            player: this.user.profile.nickname,
+            // Add player_1 with the user's value
+            room_name: name,
+            // Set the selected game type
+            type: type
+          })
+        });
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        const data = await response.json();
+        if (data.room_name) {
+          this.gameData.setGameData("private", data);
+          this.router.transitionTo('pong-game');
+        }
+      } catch (error) {
+        console.error('Error:', error);
+      }
+    }
+  }, _descriptor = _applyDecoratedDescriptor(_class.prototype, "messages", [_tracking.tracked], {
+    configurable: true,
+    enumerable: true,
+    writable: true,
+    initializer: function () {
+      return [];
+    }
+  }), _descriptor2 = _applyDecoratedDescriptor(_class.prototype, "messageInput", [_tracking.tracked], {
+    configurable: true,
+    enumerable: true,
+    writable: true,
+    initializer: function () {
+      return '';
+    }
+  }), _descriptor3 = _applyDecoratedDescriptor(_class.prototype, "inputColor", [_tracking.tracked], {
+    configurable: true,
+    enumerable: true,
+    writable: true,
+    initializer: function () {
+      return this.predefinedColors.all;
+    }
+  }), _descriptor4 = _applyDecoratedDescriptor(_class.prototype, "user", [_service.inject], {
+    configurable: true,
+    enumerable: true,
+    writable: true,
+    initializer: null
+  }), _descriptor5 = _applyDecoratedDescriptor(_class.prototype, "websockets", [_service.inject], {
+    configurable: true,
+    enumerable: true,
+    writable: true,
+    initializer: null
+  }), _descriptor6 = _applyDecoratedDescriptor(_class.prototype, "session", [_service.inject], {
+    configurable: true,
+    enumerable: true,
+    writable: true,
+    initializer: null
+  }), _class);
 });
 ;define("myapp/services/cookies", ["exports", "ember-cookies/services/cookies"], function (_exports, _cookies) {
   "use strict";
@@ -3554,7 +3865,7 @@
   });
   _exports.default = void 0;
   var _class, _descriptor, _descriptor2, _descriptor3, _descriptor4, _descriptor5;
-  0; //eaimeta@70e063a35619d71f0,"@ember/service",0,"@glimmer/tracking"eaimeta@70e063a35619d71f
+  0; //eaimeta@70e063a35619d71f0,"@ember/service",0,"@glimmer/tracking",0,"@ember/service"eaimeta@70e063a35619d71f
   function _initializerDefineProperty(e, i, r, l) { r && Object.defineProperty(e, i, { enumerable: r.enumerable, configurable: r.configurable, writable: r.writable, value: r.initializer ? r.initializer.call(l) : void 0 }); }
   function _defineProperty(e, r, t) { return (r = _toPropertyKey(r)) in e ? Object.defineProperty(e, r, { value: t, enumerable: !0, configurable: !0, writable: !0 }) : e[r] = t, e; }
   function _toPropertyKey(t) { var i = _toPrimitive(t, "string"); return "symbol" == typeof i ? i : i + ""; }
@@ -3568,12 +3879,11 @@
       _initializerDefineProperty(this, "roomData", _descriptor2, this);
       _initializerDefineProperty(this, "player_1", _descriptor3, this);
       _initializerDefineProperty(this, "player_2", _descriptor4, this);
-      _initializerDefineProperty(this, "username", _descriptor5, this);
+      _initializerDefineProperty(this, "session", _descriptor5, this);
     }
-    async setGameData(gameType, roomData, username) {
+    async setGameData(gameType, roomData) {
       this.gameType = gameType;
       this.roomData = roomData;
-      this.username = username;
 
       // Fetch user data for player_1 and player_2 asynchronously
       this.player_1 = await this.fetchUserData(roomData.player_1);
@@ -3591,8 +3901,7 @@
         const response = await fetch(`/api/${username}.json`, {
           method: 'GET',
           headers: {
-            // Uncomment and customize if authentication is required
-            // Authorization: `Bearer ${this.session.data.authenticated.token}`,
+            Authorization: `Bearer ${this.session.data.authenticated.token}`,
             'Content-Type': 'application/json'
           }
         });
@@ -3635,13 +3944,11 @@
     initializer: function () {
       return null;
     }
-  }), _descriptor5 = _applyDecoratedDescriptor(_class.prototype, "username", [_tracking.tracked], {
+  }), _descriptor5 = _applyDecoratedDescriptor(_class.prototype, "session", [_service.inject], {
     configurable: true,
     enumerable: true,
     writable: true,
-    initializer: function () {
-      return null;
-    }
+    initializer: null
   }), _class);
 });
 ;define("myapp/services/page-title", ["exports", "ember-page-title/services/page-title"], function (_exports, _pageTitle) {
@@ -3708,6 +4015,157 @@
       available: '5.2'
     }
   }));
+});
+;define("myapp/services/tournament", ["exports", "@ember/service", "@glimmer/tracking", "@ember/object"], function (_exports, _service, _tracking, _object) {
+  "use strict";
+
+  Object.defineProperty(_exports, "__esModule", {
+    value: true
+  });
+  _exports.default = void 0;
+  var _class, _descriptor, _descriptor2, _descriptor3;
+  0; //eaimeta@70e063a35619d71f0,"@ember/service",0,"@glimmer/tracking",0,"@ember/object",0,"@ember/service"eaimeta@70e063a35619d71f
+  function _initializerDefineProperty(e, i, r, l) { r && Object.defineProperty(e, i, { enumerable: r.enumerable, configurable: r.configurable, writable: r.writable, value: r.initializer ? r.initializer.call(l) : void 0 }); }
+  function _defineProperty(e, r, t) { return (r = _toPropertyKey(r)) in e ? Object.defineProperty(e, r, { value: t, enumerable: !0, configurable: !0, writable: !0 }) : e[r] = t, e; }
+  function _toPropertyKey(t) { var i = _toPrimitive(t, "string"); return "symbol" == typeof i ? i : i + ""; }
+  function _toPrimitive(t, r) { if ("object" != typeof t || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != typeof i) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
+  function _applyDecoratedDescriptor(i, e, r, n, l) { var a = {}; return Object.keys(n).forEach(function (i) { a[i] = n[i]; }), a.enumerable = !!a.enumerable, a.configurable = !!a.configurable, ("value" in a || a.initializer) && (a.writable = !0), a = r.slice().reverse().reduce(function (r, n) { return n(i, e, r) || r; }, a), l && void 0 !== a.initializer && (a.value = a.initializer ? a.initializer.call(l) : void 0, a.initializer = void 0), void 0 === a.initializer ? (Object.defineProperty(i, e, a), null) : a; }
+  function _initializerWarningHelper(r, e) { throw Error("Decorating class property failed. Please ensure that transform-class-properties is enabled and runs after the decorators transform."); }
+  let TournamentService = _exports.default = (_class = class TournamentService extends _service.default {
+    constructor(...args) {
+      super(...args);
+      _initializerDefineProperty(this, "websockets", _descriptor, this);
+      _initializerDefineProperty(this, "user", _descriptor2, this);
+      _initializerDefineProperty(this, "currentLobby", _descriptor3, this);
+      // Current lobby details
+      _defineProperty(this, "socketRef", null);
+    }
+    async connectToLobby(tournamentName) {
+      const wsUrl = `ws://localhost:8003/ws/tournament/${tournamentName}/`;
+      this.disconnectFromLobby(); // Disconnect from any existing lobby first
+      this.socketRef = this.websockets.socketFor(wsUrl);
+
+      // Register WebSocket event handlers
+      this.socketRef.on('open', this.onOpen, this);
+      this.socketRef.on('message', this.onMessage, this);
+      this.socketRef.on('close', this.onClose, this);
+      const data = {
+        action: 'create_or_join',
+        tournament_name: tournamentName,
+        username: this.user.profile.nickname
+      };
+
+      // Wait for the WebSocket to open before sending the data
+      await this.waitForWebSocketOpen();
+      this.sendMessage(data); // Send the join/create request
+      this.currentLobby = tournamentName; // Track current lobby
+    }
+    async waitForWebSocketOpen() {
+      return new Promise((resolve, reject) => {
+        if (this.socketRef.readyState === WebSocket.OPEN) {
+          // If already open, resolve immediately
+          resolve();
+        } else {
+          // Otherwise, wait for the 'open' event
+          const onOpen = () => {
+            this.socketRef.off('open', onOpen); // Clean up the event listener
+            resolve();
+          };
+          const onError = error => {
+            this.socketRef.off('error', onError); // Clean up the error listener
+            reject(new Error(`WebSocket failed to connect: ${error.message}`));
+          };
+          this.socketRef.on('open', onOpen);
+          this.socketRef.on('error', onError);
+        }
+      });
+    }
+    disconnectFromLobby() {
+      if (this.socketRef) {
+        this.socketRef.off('open', this.onOpen, this);
+        this.socketRef.off('message', this.onMessage, this);
+        this.socketRef.off('close', this.onClose, this);
+        this.socketRef.close();
+        this.socketRef = null;
+      }
+      this.currentLobby = null;
+    }
+    sendMessage(data) {
+      console.log("send tournament create");
+      if (this.socketRef) {
+        this.socketRef.send(JSON.stringify(data));
+        console.log(data);
+      } else {
+        console.error('WebSocket is not connected.');
+      }
+    }
+    onOpen(event) {
+      console.log('WebSocket connection opened:', event);
+    }
+    onMessage(event) {
+      console.log('WebSocket message received:', event.data);
+      const parsedMessage = JSON.parse(event.data);
+      this.messages = [...this.messages, parsedMessage];
+    }
+    onClose(event) {
+      console.log('WebSocket connection closed:', event);
+      this.currentLobby = null;
+    }
+  }, _descriptor = _applyDecoratedDescriptor(_class.prototype, "websockets", [_service.inject], {
+    configurable: true,
+    enumerable: true,
+    writable: true,
+    initializer: null
+  }), _descriptor2 = _applyDecoratedDescriptor(_class.prototype, "user", [_service.inject], {
+    configurable: true,
+    enumerable: true,
+    writable: true,
+    initializer: null
+  }), _descriptor3 = _applyDecoratedDescriptor(_class.prototype, "currentLobby", [_tracking.tracked], {
+    configurable: true,
+    enumerable: true,
+    writable: true,
+    initializer: function () {
+      return null;
+    }
+  }), _applyDecoratedDescriptor(_class.prototype, "connectToLobby", [_object.action], Object.getOwnPropertyDescriptor(_class.prototype, "connectToLobby"), _class.prototype), _applyDecoratedDescriptor(_class.prototype, "disconnectFromLobby", [_object.action], Object.getOwnPropertyDescriptor(_class.prototype, "disconnectFromLobby"), _class.prototype), _class);
+});
+;define("myapp/services/user", ["exports", "@ember/service", "@glimmer/tracking"], function (_exports, _service, _tracking) {
+  "use strict";
+
+  Object.defineProperty(_exports, "__esModule", {
+    value: true
+  });
+  _exports.default = void 0;
+  var _class, _descriptor;
+  0; //eaimeta@70e063a35619d71f0,"@ember/service",0,"@glimmer/tracking"eaimeta@70e063a35619d71f
+  function _initializerDefineProperty(e, i, r, l) { r && Object.defineProperty(e, i, { enumerable: r.enumerable, configurable: r.configurable, writable: r.writable, value: r.initializer ? r.initializer.call(l) : void 0 }); }
+  function _defineProperty(e, r, t) { return (r = _toPropertyKey(r)) in e ? Object.defineProperty(e, r, { value: t, enumerable: !0, configurable: !0, writable: !0 }) : e[r] = t, e; }
+  function _toPropertyKey(t) { var i = _toPrimitive(t, "string"); return "symbol" == typeof i ? i : i + ""; }
+  function _toPrimitive(t, r) { if ("object" != typeof t || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != typeof i) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
+  function _applyDecoratedDescriptor(i, e, r, n, l) { var a = {}; return Object.keys(n).forEach(function (i) { a[i] = n[i]; }), a.enumerable = !!a.enumerable, a.configurable = !!a.configurable, ("value" in a || a.initializer) && (a.writable = !0), a = r.slice().reverse().reduce(function (r, n) { return n(i, e, r) || r; }, a), l && void 0 !== a.initializer && (a.value = a.initializer ? a.initializer.call(l) : void 0, a.initializer = void 0), void 0 === a.initializer ? (Object.defineProperty(i, e, a), null) : a; }
+  function _initializerWarningHelper(r, e) { throw Error("Decorating class property failed. Please ensure that transform-class-properties is enabled and runs after the decorators transform."); }
+  let UserService = _exports.default = (_class = class UserService extends _service.default {
+    constructor(...args) {
+      super(...args);
+      _initializerDefineProperty(this, "profile", _descriptor, this);
+    }
+    // Track the current user profile
+
+    setProfile(userData) {
+      this.profile = userData; // Set user data in the service
+    }
+    clearProfile() {
+      this.profile = null; // Clear the user data (on logout)
+    }
+  }, _descriptor = _applyDecoratedDescriptor(_class.prototype, "profile", [_tracking.tracked], {
+    configurable: true,
+    enumerable: true,
+    writable: true,
+    initializer: function () {
+      return null;
+    }
+  }), _class);
 });
 ;define("myapp/services/websockets", ["exports", "ember-websockets/services/websockets"], function (_exports, _websockets) {
   "use strict";
@@ -3778,13 +4236,16 @@
     <div class="container-fluid row">
       <div class="container-fluid col-3 footer">
               <LinkTo @route="choose-game" class="nav-button">Game</LinkTo>
-              <LinkTo @route="chat" @query={{hash username=this.ownUser.nickname}} class="nav-button">Chat</LinkTo>
-              <LinkTo @route="tournament" class="nav-button">Create Tournament</LinkTo>
+              <LinkTo @route="chat" class="nav-button">Chat</LinkTo>            
+              <LinkTo @route="tournament" class="nav-button" {{on "click" (fn this.tournament.connectToLobby this.user.profile.nickname)}}>Create Tournament</LinkTo>
       </div>
       <div class="container-fluid col-6 footer">
         <Scoreboard @selectUser={{this.selectUser}}/>
       </div>
-      <div class="container-fluid col-3 footer">
+      <div class="container-fluid col-3 footer p-1">
+        {{#unless (eq this.activeRoute "chat")}}
+          <Chat />
+        {{/unless}}
       </div>
     </div>    
   </div>
@@ -3793,8 +4254,8 @@
   
   */
   {
-    "id": "C1ma4Kbl",
-    "block": "[[[10,\"main\"],[12],[1,\"\\n\"],[1,[30,0,[\"isAuthenticated\"]]],[1,\"\\n\"],[10,0],[14,0,\"container-fluid body\"],[12],[1,\"\\n  \"],[10,0],[14,0,\"container-fluid row\"],[12],[1,\"\\n    \"],[10,0],[14,0,\"col header\"],[12],[1,\"\\n     \"],[8,[39,2],null,null,null],[1,\"\\n    \"],[13],[1,\"\\n    \"],[10,0],[14,0,\"col header\"],[12],[1,\"\\n\"],[41,[30,0,[\"selectedUser\"]],[[[1,\"        \"],[8,[39,4],null,[[\"@selectedUser\",\"@selectUser\"],[[30,0,[\"selectedUser\"]],[30,0,[\"selectUser\"]]]],null],[1,\"\\n\"]],[]],[[[1,\"        \"],[8,[39,5],null,null,null],[1,\"\\n\"]],[]]],[1,\"    \"],[13],[1,\"\\n  \"],[13],[1,\"\\n  \"],[10,0],[14,0,\"container-fluid row\"],[12],[1,\"\\n    \"],[10,0],[14,0,\"container-fluid col-3 middle\"],[12],[1,\"\\n        \"],[8,[39,6],null,null,null],[1,\"\\n    \"],[13],[1,\"\\n    \"],[10,0],[14,0,\"container-fluid col-6 middle custom-bg-black\"],[12],[1,\"\\n\\t\\t\"],[46,[28,[37,8],null,null],null,null,null],[1,\"\\n    \"],[13],[1,\"\\n    \"],[10,0],[14,0,\"container-fluid col-3 middle\"],[12],[1,\"\\n      \"],[8,[39,9],null,null,null],[1,\"\\n      \"],[8,[39,10],null,[[\"@selectUser\"],[[30,0,[\"selectUser\"]]]],null],[1,\"\\n    \"],[13],[1,\"\\n  \"],[13],[1,\"\\n  \"],[10,0],[14,0,\"container-fluid row\"],[12],[1,\"\\n    \"],[10,0],[14,0,\"container-fluid col-3 footer\"],[12],[1,\"\\n            \"],[8,[39,11],[[24,0,\"nav-button\"]],[[\"@route\"],[\"choose-game\"]],[[\"default\"],[[[[1,\"Game\"]],[]]]]],[1,\"\\n            \"],[8,[39,11],[[24,0,\"nav-button\"]],[[\"@route\",\"@query\"],[\"chat\",[28,[37,12],null,[[\"username\"],[[30,0,[\"ownUser\",\"nickname\"]]]]]]],[[\"default\"],[[[[1,\"Chat\"]],[]]]]],[1,\"\\n            \"],[8,[39,11],[[24,0,\"nav-button\"]],[[\"@route\"],[\"tournament\"]],[[\"default\"],[[[[1,\"Create Tournament\"]],[]]]]],[1,\"\\n    \"],[13],[1,\"\\n    \"],[10,0],[14,0,\"container-fluid col-6 footer\"],[12],[1,\"\\n      \"],[8,[39,13],null,[[\"@selectUser\"],[[30,0,[\"selectUser\"]]]],null],[1,\"\\n    \"],[13],[1,\"\\n    \"],[10,0],[14,0,\"container-fluid col-3 footer\"],[12],[1,\"\\n    \"],[13],[1,\"\\n  \"],[13],[1,\"    \\n\"],[13],[1,\"\\n\\n\"],[13],[1,\"\\n\"]],[],false,[\"main\",\"div\",\"profile-own\",\"if\",\"profile-other\",\"title-animation\",\"tournament-list\",\"component\",\"-outlet\",\"navigation-bar\",\"user-list\",\"link-to\",\"hash\",\"scoreboard\"]]",
+    "id": "S4UpYiRl",
+    "block": "[[[10,\"main\"],[12],[1,\"\\n\"],[1,[30,0,[\"isAuthenticated\"]]],[1,\"\\n\"],[10,0],[14,0,\"container-fluid body\"],[12],[1,\"\\n  \"],[10,0],[14,0,\"container-fluid row\"],[12],[1,\"\\n    \"],[10,0],[14,0,\"col header\"],[12],[1,\"\\n     \"],[8,[39,2],null,null,null],[1,\"\\n    \"],[13],[1,\"\\n    \"],[10,0],[14,0,\"col header\"],[12],[1,\"\\n\"],[41,[30,0,[\"selectedUser\"]],[[[1,\"        \"],[8,[39,4],null,[[\"@selectedUser\",\"@selectUser\"],[[30,0,[\"selectedUser\"]],[30,0,[\"selectUser\"]]]],null],[1,\"\\n\"]],[]],[[[1,\"        \"],[8,[39,5],null,null,null],[1,\"\\n\"]],[]]],[1,\"    \"],[13],[1,\"\\n  \"],[13],[1,\"\\n  \"],[10,0],[14,0,\"container-fluid row\"],[12],[1,\"\\n    \"],[10,0],[14,0,\"container-fluid col-3 middle\"],[12],[1,\"\\n        \"],[8,[39,6],null,null,null],[1,\"\\n    \"],[13],[1,\"\\n    \"],[10,0],[14,0,\"container-fluid col-6 middle custom-bg-black\"],[12],[1,\"\\n\\t\\t\"],[46,[28,[37,8],null,null],null,null,null],[1,\"\\n    \"],[13],[1,\"\\n    \"],[10,0],[14,0,\"container-fluid col-3 middle\"],[12],[1,\"\\n      \"],[8,[39,9],null,null,null],[1,\"\\n      \"],[8,[39,10],null,[[\"@selectUser\"],[[30,0,[\"selectUser\"]]]],null],[1,\"\\n    \"],[13],[1,\"\\n  \"],[13],[1,\"\\n  \"],[10,0],[14,0,\"container-fluid row\"],[12],[1,\"\\n    \"],[10,0],[14,0,\"container-fluid col-3 footer\"],[12],[1,\"\\n            \"],[8,[39,11],[[24,0,\"nav-button\"]],[[\"@route\"],[\"choose-game\"]],[[\"default\"],[[[[1,\"Game\"]],[]]]]],[1,\"\\n            \"],[8,[39,11],[[24,0,\"nav-button\"]],[[\"@route\"],[\"chat\"]],[[\"default\"],[[[[1,\"Chat\"]],[]]]]],[1,\"            \\n            \"],[8,[39,11],[[24,0,\"nav-button\"],[4,[38,12],[\"click\",[28,[37,13],[[30,0,[\"tournament\",\"connectToLobby\"]],[30,0,[\"user\",\"profile\",\"nickname\"]]],null]],null]],[[\"@route\"],[\"tournament\"]],[[\"default\"],[[[[1,\"Create Tournament\"]],[]]]]],[1,\"\\n    \"],[13],[1,\"\\n    \"],[10,0],[14,0,\"container-fluid col-6 footer\"],[12],[1,\"\\n      \"],[8,[39,14],null,[[\"@selectUser\"],[[30,0,[\"selectUser\"]]]],null],[1,\"\\n    \"],[13],[1,\"\\n    \"],[10,0],[14,0,\"container-fluid col-3 footer p-1\"],[12],[1,\"\\n\"],[41,[51,[28,[37,16],[[30,0,[\"activeRoute\"]],\"chat\"],null]],[[[1,\"        \"],[8,[39,17],null,null,null],[1,\"\\n\"]],[]],null],[1,\"    \"],[13],[1,\"\\n  \"],[13],[1,\"    \\n\"],[13],[1,\"\\n\\n\"],[13],[1,\"\\n\"]],[],false,[\"main\",\"div\",\"profile-own\",\"if\",\"profile-other\",\"title-animation\",\"tournament-list\",\"component\",\"-outlet\",\"navigation-bar\",\"user-list\",\"link-to\",\"on\",\"fn\",\"scoreboard\",\"unless\",\"eq\",\"chat\"]]",
     "moduleName": "myapp/templates/application.hbs",
     "isStrictMode": false
   });
@@ -3809,15 +4270,12 @@
   0; //eaimeta@70e063a35619d71f0,"@ember/template-factory"eaimeta@70e063a35619d71f
   var _default = _exports.default = (0, _templateFactory.createTemplateFactory)(
   /*
-    <Chat   @messages={{this.messages}} 
-          @messageInput={{this.messageInput}}
-          @updateInputValue={{this.updateInputValue}}
-          @sendMessage={{this.sendMessage}} />
+    <Chat/>
   
   */
   {
-    "id": "aEXzziKo",
-    "block": "[[[8,[39,0],null,[[\"@messages\",\"@messageInput\",\"@updateInputValue\",\"@sendMessage\"],[[30,0,[\"messages\"]],[30,0,[\"messageInput\"]],[30,0,[\"updateInputValue\"]],[30,0,[\"sendMessage\"]]]],null],[1,\"\\n\"]],[],false,[\"chat\"]]",
+    "id": "X/fO1PyJ",
+    "block": "[[[8,[39,0],null,null,null],[1,\"\\n\"]],[],false,[\"chat\"]]",
     "moduleName": "myapp/templates/chat.hbs",
     "isStrictMode": false
   });
@@ -3951,18 +4409,18 @@
   /*
     <div class="container-fluid row">
   	<div class="col-7">
-  	  <h2 class="points center">👥 {{this.model.current_players}}/{{this.model.max_players}}</h2>
-     	  <UserList />  
+  	  <h2 class="points center">👥 1/10</h2>
+     	  
   	</div>
   	<div class="button-container col-5">
-  	  <button class="nav-button start" type="button">Start Tournament</button>
+  	  <button class="nav-button start" type="button" >Start Tournament</button>
         <button class="nav-button cancel" type="button">Cancel Tournament</button> 
   	</div>
   </div>
   */
   {
-    "id": "Z/M/h1At",
-    "block": "[[[10,0],[14,0,\"container-fluid row\"],[12],[1,\"\\n\\t\"],[10,0],[14,0,\"col-7\"],[12],[1,\"\\n\\t  \"],[10,\"h2\"],[14,0,\"points center\"],[12],[1,\"👥 \"],[1,[30,0,[\"model\",\"current_players\"]]],[1,\"/\"],[1,[30,0,[\"model\",\"max_players\"]]],[13],[1,\"\\n   \\t  \"],[8,[39,2],null,null,null],[1,\"  \\n\\t\"],[13],[1,\"\\n\\t\"],[10,0],[14,0,\"button-container col-5\"],[12],[1,\"\\n\\t  \"],[10,\"button\"],[14,0,\"nav-button start\"],[14,4,\"button\"],[12],[1,\"Start Tournament\"],[13],[1,\"\\n      \"],[10,\"button\"],[14,0,\"nav-button cancel\"],[14,4,\"button\"],[12],[1,\"Cancel Tournament\"],[13],[1,\" \\n\\t\"],[13],[1,\"\\n\"],[13]],[],false,[\"div\",\"h2\",\"user-list\",\"button\"]]",
+    "id": "fFPEY2B5",
+    "block": "[[[10,0],[14,0,\"container-fluid row\"],[12],[1,\"\\n\\t\"],[10,0],[14,0,\"col-7\"],[12],[1,\"\\n\\t  \"],[10,\"h2\"],[14,0,\"points center\"],[12],[1,\"👥 1/10\"],[13],[1,\"\\n   \\t  \\n\\t\"],[13],[1,\"\\n\\t\"],[10,0],[14,0,\"button-container col-5\"],[12],[1,\"\\n\\t  \"],[10,\"button\"],[14,0,\"nav-button start\"],[14,4,\"button\"],[12],[1,\"Start Tournament\"],[13],[1,\"\\n      \"],[10,\"button\"],[14,0,\"nav-button cancel\"],[14,4,\"button\"],[12],[1,\"Cancel Tournament\"],[13],[1,\" \\n\\t\"],[13],[1,\"\\n\"],[13]],[],false,[\"div\",\"h2\",\"button\"]]",
     "moduleName": "myapp/templates/tournament.hbs",
     "isStrictMode": false
   });
