@@ -11,6 +11,7 @@ export default class PongGameComponent extends Component {
   @tracked rightScore = 0;
   @tracked winner;
   @service gameData;
+  @service session;
 
   // Track the state of key presses
   p1UpKeyPressed = false;
@@ -62,6 +63,7 @@ export default class PongGameComponent extends Component {
         {
           method: 'POST',
           headers: {
+            Authorization: `Bearer ${this.session.data.authenticated.token}`,
             'Content-Type': 'application/json',
           },
           body: requestBody,

@@ -6,6 +6,7 @@ import { action } from '@ember/object';
 export default class LoginController extends Controller {
   @service session;
   @service router;
+  @service user;
 
   @tracked username;
   @tracked password;
@@ -26,9 +27,9 @@ export default class LoginController extends Controller {
         this.username,
         this.password,
       );
-      this.router.transitionTo('choose-game', {
-        queryParams: { username: this.username }, // Add the username as a query parameter
-      });
+      this.fetchUserData(this.username);
+      console.log(this.session.data.authenticated.token);
+      this.router.transitionTo('choose-game');
     } catch (error) {
       this.error = error;
     }
@@ -58,11 +59,32 @@ export default class LoginController extends Controller {
         this.username,
         this.password,
       );
-      this.router.transitionTo('choose-game', {
-        queryParams: { username: this.username }, // Add the username as a query parameter
-      });
+      this.fetchUserData(this.username);
+      this.router.transitionTo('choose-game');
     } catch (error) {
       this.error = error.message || 'An error occurred during registration';
+    }
+  }
+
+  async fetchUserData(username) {
+    try {
+      const response = await fetch('/api/profile.json', {
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${this.session.data.authenticated.token}`, // Use token from session
+          'Content-Type': 'application/json',
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to fetch user profile');
+      }
+      const data = await response.json();
+      console.log(data);
+      this.user.setProfile(data); // Store user data for use in the template
+      console.log(this.user.profile);
+    } catch (error) {
+      console.error('Error fetching user profile:', error);
     }
   }
 }

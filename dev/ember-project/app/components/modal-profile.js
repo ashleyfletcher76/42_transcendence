@@ -1,17 +1,20 @@
 import Component from '@glimmer/component';
 import { action } from '@ember/object';
 import { tracked } from '@glimmer/tracking';
+import { inject as service } from '@ember/service';
 
 export default class ModalProfileComponent extends Component {
   // Property to manage modal visibility
   @tracked isModalOpen = false;
   @tracked newNickname;
+  @service user;
+  @service session;
 
   @action
   openModal() {
     console.log('openModal0');
     this.isModalOpen = true;
-    this.newNickname = this.args.user.nickname;
+    this.newNickname = this.user.profile.nickname;
     console.log(this.isModalOpen);
   }
 
@@ -45,8 +48,7 @@ export default class ModalProfileComponent extends Component {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
-          // Add Auth
-          // 'Authorization': `Bearer ${userToken}`
+          Authorization: `Bearer ${this.session.data.authenticated.token}`,
         },
         body: JSON.stringify({
           nickname: newNickname,
@@ -60,7 +62,7 @@ export default class ModalProfileComponent extends Component {
       const data = await response.json();
 
       if (data.nickname) {
-        this.args.updateParent();
+        this.user.profile.nickname = nickname;
       }
     } catch (error) {
       console.error('Error changing nickname:', error);

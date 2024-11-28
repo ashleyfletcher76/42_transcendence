@@ -1,29 +1,29 @@
 <div class="container-fluid row fill p-2">
-  {{!-- Profile picture column (1 part) --}}
+  <!-- Profile picture column (1 part) -->
   <div class="col center">
-    <img src={{this.ownUser.avatar}} alt="Profile Picture" class="profile-pic" />
+    <img src={{this.user.profile.avatar}} alt="Profile Picture" class="profile-pic" />
   </div>
 
-  {{!-- Profile details column (3 parts) --}}
+  <!-- Profile details column (3 parts) -->
   <div class="col-10">
-    {{!-- First row of profile details --}}
+    <!-- First row of profile details -->
     <div class="profile-details">
       {{#if this.isAuthenticated}}
-        {{#if this.ownUser}}
-          <h2 class="name">{{this.ownUser.nickname}}</h2>
-          <ModalProfile @user={{this.ownUser}} @updateParent={{this.fetchUserData}}/>
+        {{#if this.user.profile}} <!-- Access the user directly from the service -->
+          <h2 class="name">{{this.user.profile.nickname}}</h2>
+          <ModalProfile/>
         {{else}}
-          <p>Loading user...</p> {{!-- Or another fallback message --}}
+          <p>Loading user...</p> <!-- Or another fallback message -->
         {{/if}}
         <button class="logout-button" type="button" {{on "click" this.logout}}>Logout</button>
       {{/if}}
-      <h2 class="points info">{{this.ownUser.points}} 🏆</h2>
+      <h2 class="points info">{{this.user.profile.points}} 🏆</h2>
     </div>
 
-    {{!-- Second row of profile details --}}
+    <!-- Second row of profile details -->
     <div class="profile-details">
-      <h2 class="info">Games: {{this.ownUser.games_total}}</h2>
-      <h2 class="info">Wins: {{this.ownUser.wins}}</h2>
+      <h2 class="info">Games: {{this.user.profile.games_total}}</h2>
+      <h2 class="info">Wins: {{this.user.profile.wins}}</h2>
     </div>
 
     <div class="profile-details">
@@ -32,8 +32,8 @@
       {{else}}
         <h2 class="info">🔴 offline</h2>
       {{/if}}
-      <h2 class="info">Losses: {{this.ownUser.losses}}</h2>
+      <h2 class="info">Losses: {{this.user.profile.losses}}</h2>
     </div>
-    
   </div>
 </div>
+

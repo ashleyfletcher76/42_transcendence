@@ -7,8 +7,8 @@ export default class ChooseGameController extends Controller {
   @service router;
   @tracked loading = false; // Tracks the loading state
   @service gameData; // Inject the game-data service
-
-  queryParams = ['username'];
+  @service user;
+  @service session;
 
   @action
   chooseGame(gameType) {
@@ -21,9 +21,12 @@ export default class ChooseGameController extends Controller {
       //const response = await fetch('/api/create-room.json', {
       const response = await fetch('/pong/pong/create-room', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 
+          Authorization: `Bearer ${this.session.data.authenticated.token}`,
+          'Content-Type': 'application/json' 
+        },
         body: JSON.stringify({
-          player: this.username, // Add player_1 with the user's value
+          player: this.user.nickname, // Add player_1 with the user's value
           gameType: gameType, // Set the selected game type
         }),
       });
@@ -36,14 +39,8 @@ export default class ChooseGameController extends Controller {
 
       if (data.room_name) {
         this.loading = false;
-        this.gameData.setGameData(gameType, data, this.username);
-
-        this.router.transitionTo('pong-game', {
-          queryParams: {
-            gameType: gameType,
-            roomData: data, // pass data as a query parameter
-          },
-        });
+        this.gameData.setGameData(gameType, data);
+        this.router.transitionTo('pong-game');
       }
     } catch (error) {
       console.error('Error:', error);

@@ -9,20 +9,24 @@
   <div class="col-10">
     {{!-- First row of profile details --}}
     <div class="profile-details">
-        <h2 class="name">{{@selectedUser.nickname}}</h2>
-        <div class="actions">
-      <button class="emoji-button info" data-bs-toggle="tooltip" data-bs-placement="top" title="Live Chat" type="button">
-        💬
-      </button>
-      <button class="emoji-button info" data-bs-toggle="tooltip" data-bs-placement="top" title="Play Game" type="button">
-        🎮
-      </button>
-      <button class="emoji-button info" data-bs-toggle="tooltip" data-bs-placement="top" title="Add Friend" type="button">
-        ➕ 
-      </button>
-      <button class="emoji-button info" data-bs-toggle="tooltip" data-bs-placement="top" title="Block User" type="button">
-        🚫
-      </button>
+      <h2 class="name">{{@selectedUser.nickname}}</h2>
+      <div class="actions">
+        <button class="emoji-button info" data-bs-toggle="tooltip" data-bs-placement="top" title="Live Chat"
+          type="button" {{on "click" this.startLiveChat}}>
+          💬
+        </button>
+        <button class="emoji-button info" data-bs-toggle="tooltip" data-bs-placement="top" title="Play Game"
+          type="button" {{on "click" this.playGame}}>
+          🎮
+        </button>
+        <button class="emoji-button info" data-bs-toggle="tooltip" data-bs-placement="top" title="Add Friend"
+          type="button" {{on "click" this.addFriend}}>
+          ➕
+        </button>
+        <button class="emoji-button info" data-bs-toggle="tooltip" data-bs-placement="top" title="Block User"
+          type="button" {{on "click" (fn this.blockUser "block")}}>
+          🚫
+        </button>
       </div>
       <h2 class="points">{{@selectedUser.points}}🏆</h2>
     </div>
@@ -34,13 +38,13 @@
     </div>
 
     <div class="profile-details">
-      {{#if this.isOnline}} 
-        <h2 class="info">🟢 online</h2>
+      {{#if this.isOnline}}
+      <h2 class="info">🟢 online</h2>
       {{else}}
-        <h2 class="info">🔴 offline</h2>
+      <h2 class="info">🔴 offline</h2>
       {{/if}}
       <h2 class="info">Losses: {{@selectedUser.losses}}</h2>
     </div>
-    
+
   </div>
 </div>

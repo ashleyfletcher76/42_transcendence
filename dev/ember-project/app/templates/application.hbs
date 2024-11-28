@@ -29,13 +29,16 @@
   <div class="container-fluid row">
     <div class="container-fluid col-3 footer">
             <LinkTo @route="choose-game" class="nav-button">Game</LinkTo>
-            <LinkTo @route="chat" @query={{hash username=this.ownUser.nickname}} class="nav-button">Chat</LinkTo>
-            <LinkTo @route="tournament" class="nav-button">Create Tournament</LinkTo>
+            <LinkTo @route="chat" class="nav-button">Chat</LinkTo>            
+            <LinkTo @route="tournament" class="nav-button" {{on "click" (fn this.tournament.connectToLobby this.user.profile.nickname)}}>Create Tournament</LinkTo>
     </div>
     <div class="container-fluid col-6 footer">
       <Scoreboard @selectUser={{this.selectUser}}/>
     </div>
-    <div class="container-fluid col-3 footer">
+    <div class="container-fluid col-3 footer p-1">
+      {{#unless (eq this.activeRoute "chat")}}
+        <Chat />
+      {{/unless}}
     </div>
   </div>    
 </div>

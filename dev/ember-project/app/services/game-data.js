@@ -1,17 +1,18 @@
 import Service from '@ember/service';
 import { tracked } from '@glimmer/tracking';
+import { inject as service } from '@ember/service';
 
 export default class GameDataService extends Service {
   @tracked gameType = null;
   @tracked roomData = null;
   @tracked player_1 = null;
   @tracked player_2 = null;
-  @tracked username = null;
 
-  async setGameData(gameType, roomData, username) {
+  @service session;
+  
+  async setGameData(gameType, roomData) {
     this.gameType = gameType;
     this.roomData = roomData;
-    this.username = username;
 
     // Fetch user data for player_1 and player_2 asynchronously
     this.player_1 = await this.fetchUserData(roomData.player_1);
@@ -31,8 +32,7 @@ export default class GameDataService extends Service {
       const response = await fetch(`/api/${username}.json`, {
         method: 'GET',
         headers: {
-          // Uncomment and customize if authentication is required
-          // Authorization: `Bearer ${this.session.data.authenticated.token}`,
+          Authorization: `Bearer ${this.session.data.authenticated.token}`,
           'Content-Type': 'application/json',
         },
       });

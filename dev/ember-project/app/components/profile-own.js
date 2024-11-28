@@ -1,48 +1,25 @@
 import Component from '@glimmer/component';
 import { action } from '@ember/object';
 import { inject as service } from '@ember/service';
-import { tracked } from '@glimmer/tracking';
 
 export default class NavigationComponent extends Component {
   @service session;
-  @tracked ownUser = null; // Tracks user data for the template
+  @service user; // Inject the UserService to access user data
 
   get isAuthenticated() {
-    if (this.session.isAuthenticated && !this.ownUser) {
-      this.fetchUserData();
-    }
     return this.session.isAuthenticated;
   }
 
-  async fetchUserData() {
-    try {
-      const response = await fetch('/api/profile.json', {
-        method: 'GET',
-        headers: {
-          //Authorization: `Bearer ${this.session.data.authenticated.token}`, // Use token from session
-          'Content-Type': 'application/json',
-        },
-      });
-
-      if (!response.ok) {
-        throw new Error('Failed to fetch user profile');
-      }
-
-      const data = await response.json();
-      console.log(data);
-      this.ownUser = data; // Store user data for use in the template
-    } catch (error) {
-      console.error('Error fetching user profile:', error);
-    }
-  }
-
   get isOnline() {
-    if (this.session.isAuthenticated && this.ownUser)
-      return this.ownUser.status === 'online';
+    if (this.session.isAuthenticated && this.user.profile) {
+      return this.user.profile.status === 'online'; // Access `user` directly from the service
+    }
+    return false;
   }
 
   @action
   logout() {
     this.session.invalidate();
+    this.user.clearProfile(); // Clear user data from the service on logout
   }
 }
