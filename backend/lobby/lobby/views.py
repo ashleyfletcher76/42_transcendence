@@ -22,9 +22,13 @@ def index(request):
 
 def listLobby(request):
     if request.method == 'GET':
-        tournaments = Tournament.objects.values('name', 'num_players')
-        tournaments_list = list(tournaments)
-        
-        return JsonResponse({'tournaments': tournaments_list}, safe=False)
+        if Tournament.objects.exists():
+            Tournament.objects.filter(active=False).delete()
+            tournaments = Tournament.objects.values('name', 'num_players')
+            tournaments_list = list(tournaments)
+            response = {"tournaments": tournaments_list}
+        else:
+            response = {"message": "No active tournaments found"}
+        return JsonResponse(response)
     else:
         return JsonResponse({'error': 'Method not allowed'}, status=405)
