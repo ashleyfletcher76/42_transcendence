@@ -48,6 +48,10 @@ class ChatConsumer(AsyncWebsocketConsumer):
 				await self.handle_group_message(data.get("group_name"), data.get("content"))
 			elif message_type == "lobby":
 				await self.handle_lobby_message(data.get("content"))
+			elif message_type == "add":
+				await self.handle_add_friend(data.get("target"))
+			elif message_type == "block":
+				await self.handle_block_user(data.get("target"))
 			else:
 				await self.send(text_data=json.dumps({"error": "Invalid message type."}))
 		except json.JSONDecodeError as e:
@@ -93,6 +97,45 @@ class ChatConsumer(AsyncWebsocketConsumer):
 				"message": f"(Lobby): {self.username}: {message}",
 			},
 		)
+
+	async def handle_add_friend(self, target_username):
+		if not target_username:
+			await self.send(text_data=json.dumps({"error": "Target username is required."}))
+			return
+
+		# check if user is online
+		target_channel = user_channels.get(target_username)
+		if target_channel:
+			# notify the user about request
+			for channel in target_channel:
+				await self.channel_layer.send(
+					channel,
+					{
+						"type": "chat_message",
+						"message": f"{self.username} has sent you a friend request", 
+					},
+				)
+		else:
+			# target is not online
+			await self.send(text_data=json.dumps({"error": f"User {target_username} is not online"}))
+
+	async def handle_block_user(self, target_username):
+		if not target_username:
+			await self.send(text_data=json.dumps({"error": "Target username is required."}))
+			return
+		
+		# notify the target user about being blocked
+		target_channel = user_channels.get(target_username)
+		if target_channel:
+			for channel in target_channel:
+				await self.channel_layer.send(
+					channel,
+					{
+						"type": "chat_message",
+						"message" : f"You have been blocked by {self.username}",
+					},
+				)
+
 
 	async def chat_message(self, event):
 		"""Handles incoming messages of type 'chat_message'."""
