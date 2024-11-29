@@ -2147,14 +2147,14 @@
   </nav>
   <div class="scrollable-list middle-scroll">
       {{#each this.tournaments as |tournament|}}
-          <TournamentItem @creator={{tournament.creator}} @current_players={{tournament.current_players}} @max_players={{tournament.max_players}}/>
+          <TournamentItem @creator={{tournament.name}} @current_players={{tournament.num_players}} @max_players="10"/>
       {{/each}}
   </div>
   
   */
   {
-    "id": "euUZ+33l",
-    "block": "[[[10,\"nav\"],[14,0,\"navigation-bar\"],[12],[1,\"\\n    \"],[10,\"h1\"],[14,0,\"white\"],[12],[1,\"Tournaments\"],[13],[1,\"\\n    \"],[10,\"button\"],[14,0,\"tournament-button update\"],[15,\"onclick\",[30,0,[\"fetchTournaments\"]]],[14,4,\"button\"],[12],[1,\"↻\"],[13],[1,\"\\n\"],[13],[1,\"\\n\"],[10,0],[14,0,\"scrollable-list middle-scroll\"],[12],[1,\"\\n\"],[42,[28,[37,5],[[28,[37,5],[[30,0,[\"tournaments\"]]],null]],null],null,[[[1,\"        \"],[8,[39,6],null,[[\"@creator\",\"@current_players\",\"@max_players\"],[[30,1,[\"creator\"]],[30,1,[\"current_players\"]],[30,1,[\"max_players\"]]]],null],[1,\"\\n\"]],[1]],null],[13],[1,\"\\n\"]],[\"tournament\"],false,[\"nav\",\"h1\",\"button\",\"div\",\"each\",\"-track-array\",\"tournament-item\"]]",
+    "id": "169tmhqw",
+    "block": "[[[10,\"nav\"],[14,0,\"navigation-bar\"],[12],[1,\"\\n    \"],[10,\"h1\"],[14,0,\"white\"],[12],[1,\"Tournaments\"],[13],[1,\"\\n    \"],[10,\"button\"],[14,0,\"tournament-button update\"],[15,\"onclick\",[30,0,[\"fetchTournaments\"]]],[14,4,\"button\"],[12],[1,\"↻\"],[13],[1,\"\\n\"],[13],[1,\"\\n\"],[10,0],[14,0,\"scrollable-list middle-scroll\"],[12],[1,\"\\n\"],[42,[28,[37,5],[[28,[37,5],[[30,0,[\"tournaments\"]]],null]],null],null,[[[1,\"        \"],[8,[39,6],null,[[\"@creator\",\"@current_players\",\"@max_players\"],[[30,1,[\"name\"]],[30,1,[\"num_players\"]],\"10\"]],null],[1,\"\\n\"]],[1]],null],[13],[1,\"\\n\"]],[\"tournament\"],false,[\"nav\",\"h1\",\"button\",\"div\",\"each\",\"-track-array\",\"tournament-item\"]]",
     "moduleName": "myapp/components/tournament-list.hbs",
     "isStrictMode": false
   });
@@ -2187,7 +2187,8 @@
         if (!response.ok) {
           throw new Error('Failed to fetch lobby list');
         }
-        this.tournaments = await response.json();
+        const data = await response.json();
+        this.tournaments = data.tournaments;
       } catch (error) {
         console.error('Error fetching tournaments:', error);
       }
@@ -3716,7 +3717,8 @@
         whisper: 'rgb(255 49 255)',
         system: 'rgb(130 140 55)'
       });
-      const socket = this.websockets.socketFor('ws://localhost:8888/');
+      console.log("connect ...");
+      const socket = this.websockets.socketFor('wss://localhost/ws/chat/lobby/');
       socket.on('open', this.myOpenHandler, this);
       socket.on('message', this.myMessageHandler, this);
       socket.on('close', this.myCloseHandler, this);
@@ -3724,6 +3726,10 @@
     }
     myOpenHandler(event) {
       console.log(`On open event has been called: ${event}`);
+      this.socket.send(JSON.stringify({
+        type: "authenticate",
+        token: `Bearer ${this.session.data.authenticated.token}`
+      }));
     }
     myMessageHandler(event) {
       console.log(`Message: ${event.data}`);
@@ -4041,7 +4047,7 @@
       _defineProperty(this, "socketRef", null);
     }
     async connectToLobby(tournamentName) {
-      const wsUrl = `ws://localhost:8003/ws/tournament/${tournamentName}/`;
+      const wsUrl = `wss://localhost/ws/tournament/${tournamentName}/`;
       this.disconnectFromLobby(); // Disconnect from any existing lobby first
       this.socketRef = this.websockets.socketFor(wsUrl);
 
@@ -4094,7 +4100,6 @@
       console.log("send tournament create");
       if (this.socketRef) {
         this.socketRef.send(JSON.stringify(data));
-        console.log(data);
       } else {
         console.error('WebSocket is not connected.');
       }
