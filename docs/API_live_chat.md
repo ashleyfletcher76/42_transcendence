@@ -1,141 +1,201 @@
-## API Documentation for Live Chat Service
+# Chat Service API Documentation
 
-## Summary
+## Overview
+The `chat-service` enables real-time messaging between users through WebSockets. It supports creating and joining chat rooms and facilitates seamless communication. The service is built using Django Channels, with Redis for real-time messaging and PostgreSQL for database management. This document outlines the current state of the service, available APIs, and frontend integration guidelines.
 
-he live chat service enables users to send real-time messages in specific chat rooms using WebSockets. This service manages WebSocket connections, broadcasts messages, and can retrieve chat history through HTTP endpoints. It is built with Django Channels and integrated with Redis for managing chat room states. Each service, including the live chat, is now backed by its own dedicated PostgreSQL database container, chat-db, allowing for data isolation, scalability, and improved security.
+---
 
-Note: All WebSocket and HTTP connections should use HTTPS for secure communication. In development, if using self-signed certificates, disable certificate verification when testing with wscat or similar tools.
+## Table of Contents
+- [WebSocket Endpoints](#websocket-endpoints)
+  - [Connect to a Chat Room](#connect-to-a-chat-room)
+  - [Send and Receive Messages](#send-and-receive-messages)
+- [HTTP Endpoints](#http-endpoints)
+  - [Create Room API](#create-room-api)
+  - [Join Room API](#join-room-api)
+- [Using wscat for Testing](#using-wscat-for-testing)
+- [Current State](#current-state)
+- [Next Steps](#next-steps)
+
+---
 
 ## WebSocket Endpoints
 
-1. Connect to a Chat Room
+### Connect to a Chat Room
+**WebSocket URL**: `wss://<your-domain>/ws/chat/{room_name}/`
 
-Description: Establishes a WebSocket connection for a user to a specified chat room.
+To connect to a chat room, establish a WebSocket connection to the above URL, replacing `{room_name}` with the name of the room.
 
+- **Example**:
 ```bash
-wscat -c wss://localhost:10443/ws/chat/room_name/ --no-check
+  wscat -c wss://localhost:10443/ws/chat/my_room/ --no-check
 ```
+* Behavior:
+- On a successful connection, users can send and receive messages in real time.
+- If the room does not exist or the user is unauthorized, the connection will fail.
 
-- Method: WebSocket
-- Path Parameter: room_name (the name of the chat room)
-- Response: Upon successful connection, the server will accept the WebSocket and allow for sending/receiving messages.
+### Send and Receive Messages
 
-2. Send a Message
+Once connected to a WebSocket room:
 
-Description: Send a message to a specific chat room. The message is broadcast to all users connected to the room.
-
-- Message Format(sent via WebSocket):
-
-```bash
+* To send a message:
+```json
 {
-	"message": "Your message here"
+  "message": "Your message here"
 }
 ```
 
-- WebSocket Path: Use the WebSocket connection established via /ws/chat/{room_name}/ endpoint.
-- Response: The server broadcasts the message to all participants in the room.
+* To receive messages:
 
-3. Receive Messages
-
-Description: Clients receive real-time messages sent by others in the chat room.
-
-- Response: Whenever a message is sent to the chat room, all connected users will receive:
-
-```bash
+- The server broadcasts messages sent by other users in the room:
+```json
 {
-	"message": "Message from another user"
+  "message": "Message from another user"
 }
 ```
 
-## HTTPS Endpoints
-1. Send Message via API
+## HTTP Endpoints
+### Create Room API
+Endpoint
 
-Description: Sends a message to the chat service via HTTPS. This API is primarily used for testing purposes or non-WebSocket-based interactions.
-
-```bash
-wscat -c wss://localhost:10443/ws/chat/room_name/ --no-check
-```
-
-- Request Payload:
-
-```bash
+POST /chat/create-room/
+Request Payload
+```json
 {
-	"message": "Your message here"
+  "name": "Room Name",              // Required: Name of the room
+  "type": "private",                // Optional: Room type ('private' or 'game'). Default is 'private'
+  "invited_users": [2, 3, 4]        // Optional: List of user IDs to invite
 }
 ```
 
-- Response:
+Response
 
-```plaintext
+Status Code: 201 Created
+```json
 {
-	"message": "Message sent!"
+  "id": 1,
+  "name": "Room Name",
+  "type": "private",
+  "creator": "creator_username",
+  "invited_users": ["user1", "user2"]
 }
 ```
 
-2. Retrieve Chat History
+Error Responses
 
-Description: Fetches the chat history for a specific chat room (currently returns an empty array as a placeholder).
-
-```plaintext
-GET https://localhost:10443/chat/history/               ?????Does it work
-```
-
-- Response:
-
-```plaintext
+1. Room Name Missing
+```json
 {
-	"chat_history": []
+  "error": "Room name is required"
 }
 ```
 
-## Database Integration
+2. Room Name Already Exists
+```json
+{
+  "error": "Room name already exists"
+}
+```
 
-The live chat service now uses a dedicated PostgreSQL database container, chat-db, to store chat messages and user interactions. This setup allows the live chat service to operate independently, securely managing its data without impacting other services.
+### Join Room API
+Endpoint
 
-* Database Details:
-- Database Name: Specified in CHAT_SERVICE_DB environment variable.
-- Username: Specified in CHAT_SERVICE_USER environment variable.
-- Password: Specified in CHAT_SERVICE_PASSWORD environment variable.
-- Connection: The chat service connects to the database at the hostname chat-db using the standard PostgreSQL port 5432.
+POST /chat/join-room/
+Request Payload
+```json
+{
+  "room_id": 1                      // Required: ID of the room to join
+}
+```
+Response
+Status Code: 200 OK
+```json
+{
+  "id": 1,
+  "name": "Room Name",
+  "type": "private",
+  "members": ["user1", "user2"]
+}
+```
 
-## Redis Integration for Secure Chat
-The live chat service utilizes Redis to maintain the state of active chat rooms, manage WebSocket channels, and ensure message synchronization across users. Here’s how Redis integrates with the live chat service:
+Error Responses
 
-1. Redis with Stunnel for Security: The live chat service uses Redis to manage real-time chat operations. To secure the connection between Django Channels and Redis, the Redis traffic is encrypted through Stunnel, which acts as a TLS proxy. Redis itself listens on a non-TLS port, while Stunnel handles the secure TLS layer.
+1. Room Not Found
+```json
+{
+  "error": "Room not found"
+}
+```
+2. Access Denied
+```json
+{
+  "error": "You are not authorized to join this room"
+}
+```
+## Using wscat for Testing
+Connecting to a Chat Room
 
-2. Redis Channel Layer: The Django Channels library uses Redis as a channel layer, which enables the service to broadcast messages across multiple instances of the application if needed. Stunnel encrypts this communication, securing data flow from Django Channels to Redis.
-
-3. How It Works:
-- Stunnel listens on port 6380, configured to accept secure connections and forward them to Redis on its standard port (6379).
-- When the chat service sends or receives messages, it connects to Redis via Stunnel using rediss://localhost:6380.
-- This configuration ensures that all Redis-related traffic is encrypted, protecting sensitive chat data in transit.
-
-4. Testing Secure Redis Connection: To confirm the Redis connection is secure, use redis-cli with TLS options:
-
+To connect to a chat room using wscat:
 ```bash
-redis-cli -h localhost -p 6380 --tls --cert /etc/stunnel/stunnel.crt --key /etc/stunnel/stunnel.key --cacert /etc/stunnel/stunnel.crt
+wscat -c wss://localhost:10443/ws/chat/{room_name}/ --no-check
 ```
 
-You should see a prompt localhost:6380> indicating a secure connection. Use PING to confirm connectivity:
+Replace {room_name} with the desired room name.
+Sending a Message
 
-```plaintext
-PING
+After establishing a WebSocket connection, send a message in JSON format:
+```json
+{
+  "message": "Hello, World!"
+}
 ```
+Receiving Messages
 
-* Expected Response:
+Messages sent by other users in the room will automatically be broadcast to all connected clients.
+## Current State
+Implemented Features
 
-```plaintext
-PONG
+1. Create Room:
+- Users can create rooms with a name and optionally invite other users.
+- The creator is automatically added to the room.
+
+2. Join Room:
+- Users can join a room they are invited to using the room ID.
+
+3. WebSocket Connection:
+- Users can connect to a room’s WebSocket channel to send and receive messages.
+
+4. Room Model:
+- Supports private and game room types.
+
+## Next Steps
+Backend
+
+1. Message Persistence:
+- Save messages sent in a room to the database.
+- Implement an API to fetch message history for a room.
+
+2. Room Listing:
+- Provide an API to list rooms a user has created or is invited to.
+
+3. Room Deletion:
+- Allow creators to delete rooms.
+
+4. User Invitations:
+- Implement an API to invite users to existing rooms.
+
+Frontend Integration
+
+1. Create Room:
+- Add a form to input the room name and select users to invite (optional).
+- Send a POST request to /chat/create-room/ with the required data.
+
+2. Join Room:
+- Display a list of available rooms and allow users to join by providing a room ID.
+- Send a POST request to /chat/join-room/.
+
+3. WebSocket Integration:
+- Open a WebSocket connection to a room after joining using the URL:
+```bash
+wss://<your-domain>/ws/chat/{room_name}/
 ```
-
-## Summary for Frontend:
-
-* WebSocket URL: Use wss://localhost:10443/ws/chat/{room_name}/ to securely connect to a chat room.
-* Message Sending: Send messages as JSON over the WebSocket connection. For message reception, listen for events on the WebSocket stream.
-* HTTP API: For fallback or testing, use the /chat/send/ endpoint to send messages via HTTPS.     ????? Check this
-
-- Security Note: Always use HTTPS and securely manage any sensitive data transmitted over WebSocket or HTTPS connections.
-
-Additional Notes:
-
-* Self-Signed Certificate: In development environments, if using self-signed certificates, include the --no-check flag with wscat or set NODE_TLS_REJECT_UNAUTHORIZED=0 in your environment to avoid SSL verification errors.
+- Implement message sending and listening for real-time updates.

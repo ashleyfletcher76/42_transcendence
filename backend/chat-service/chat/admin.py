@@ -1,3 +1,4 @@
 from django.contrib import admin
+from chat.create_room.create_models import ChatRoom
 
-# Register your models here.
+admin.site.register(ChatRoom)
