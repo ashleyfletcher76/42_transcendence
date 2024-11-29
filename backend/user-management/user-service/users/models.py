@@ -9,7 +9,7 @@ class UserProfile(models.Model):
 	bio = models.TextField(blank=True)
 
 	friends = models.ManyToManyField('self', symmetrical=True, blank=True, related_name='friend_profile')
-	blocked_users = models.ManyToManyField('self', symmetrical=True, blank=True, related_name='blocked_by')
+	blocked_users = models.ManyToManyField('self', symmetrical=False, blank=True, related_name='blocked_by')
 
 	def __str__(self):
 		return self.display_name or self.user.username

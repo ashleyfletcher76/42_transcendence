@@ -91,7 +91,7 @@ exec-%:
 
 # to run unit testing for all
 test:
-	$(DOCKER_COMPOSE) exec chat-service python manage.py test
+	$(DOCKER_COMPOSE) exec user-service python manage.py test
 
 # to run unit testing for specifc API
 test-%:

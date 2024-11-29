@@ -7,7 +7,6 @@ User = get_user_model()
 
 @receiver(post_save, sender=User)
 def create_user_profile(sender, instance, created, **kwargs):
-    if created:
-        default_display_name = instance.username[:15]  # Truncate to fit the database constraint
-        UserProfile.objects.create(user=instance, display_name=default_display_name)
-
+	if created:
+		default_display_name = instance.username[:15]
+		UserProfile.objects.create(user=instance, display_name=default_display_name)

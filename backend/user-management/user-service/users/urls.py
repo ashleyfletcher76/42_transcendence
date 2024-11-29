@@ -11,7 +11,7 @@ urlpatterns = [
 	path("profile/", UserProfileView.as_view(), name="user-profile"),
 	path("get-single-username/<int:user_id>/", get_single_username, name="get-single-username"),
 	path("get-usernames/", get_usernames, name="get-usernames"),
-    
+
 	path("add-friend/", views.AddFriendView.as_view(), name="add-friend"),
-    path("block-user/", views.BlockUserView.as_view(), name="block-user"),
+	path("block-user/", views.BlockUserView.as_view(), name="block-user"),
 ]
