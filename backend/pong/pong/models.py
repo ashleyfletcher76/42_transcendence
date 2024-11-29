@@ -16,6 +16,7 @@ class GameState(models.Model):
     left_score = models.IntegerField(default=0)  # Left player's score
     right_score = models.IntegerField(default=0)  # Right player's score
     paused = models.BooleanField(default=True)
+    game_type = models.CharField(max_length=255, default="None")
 
     def __str__(self):
         return f"Ball ({self.ball_x}, {self.ball_y}), Left Paddle {self.left_paddle_y}, Right Paddle {self.right_paddle_y}"

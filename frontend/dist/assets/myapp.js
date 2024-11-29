@@ -2461,6 +2461,7 @@
     async createRoom(gameType) {
       try {
         //const response = await fetch('/api/create-room.json', {
+		console.log(this.user.nickname)
         const response = await fetch('/pong/pong/create-room', {
           method: 'POST',
           headers: {

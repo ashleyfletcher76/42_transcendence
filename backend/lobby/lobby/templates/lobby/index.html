@@ -86,7 +86,7 @@
 			username = document.getElementById('username').value;
 
 			// WebSocket connection
-			const wsUrl = `ws://localhost:8003/ws/tournament/${tournamentName}/`;
+			const wsUrl = `wss://localhost/ws/tournament/${tournamentName}/`;
 			socket = new WebSocket(wsUrl);
 
 			socket.onopen = function () {

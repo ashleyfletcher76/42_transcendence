@@ -47,22 +47,28 @@ class TournamentConsumer(AsyncWebsocketConsumer):
         elif action == "player_list":
             response = await self.get_player_list()
             await self.send(json.dumps(response))
+        elif action == "result":
+            response = await self.game_result(data)
+            await self.send(json.dumps(response))
         else:
             await self.send(json.dumps({"error": "Invalid action."}))
 
+
+    @sync_to_async
+    def game_result(self, data):
+        username = self.scope["username"]
+        player = Player.objects.get(user__username=username)
 
     @sync_to_async
     def start_tournament(self, username):
         try:
             tournament = Tournament.objects.get(name=self.tournament_name)
             players = list(tournament.players.all())
-            admin = Player.objects.get(user__username=username)
-            if not admin.admin:
+            admin = Player.objects.get(user__username=username).admin
+            if not admin:
                 return {"error": "You are not the admin of this lobby!"}
             random.shuffle(players)
             numPlayers = tournament.num_players
-            print(len(players))
-            print(numPlayers)
             matches = []
             for i in range(0, len(players), 2):
                 if i + 1 < numPlayers:
@@ -75,7 +81,6 @@ class TournamentConsumer(AsyncWebsocketConsumer):
                     "player1": {"username": players[i].user.username, "score": players[i].score},
                     "player2": None,
                 })
-            print(matches)
             for match in matches:
                 player1 = match["player1"]["username"]
                 player2 = match["player2"]["username"] if match["player2"] else None
@@ -87,7 +92,6 @@ class TournamentConsumer(AsyncWebsocketConsumer):
                     self.notify_bye(player1)
             return {"message": "Tournament matchmaking started.", "matches": matches}
         except Tournament.DoesNotExist:
-            print("matchmaking error!")
             return {"error": "Matchkaing Error!"}
 
     def notify_match(self, player1, player2, room_data):
