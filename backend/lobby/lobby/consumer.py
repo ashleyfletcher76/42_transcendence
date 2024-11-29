@@ -13,7 +13,7 @@ import requests
 class TournamentConsumer(AsyncWebsocketConsumer):
 
     active_connections = {}
-    game_service_url = "http://localhost:8002/pong"
+    game_service_url = "http://pong-game:8000/pong"
 
     async def connect(self):
         self.tournament_name = self.scope["url_route"]["kwargs"]["room_name"]
@@ -108,7 +108,7 @@ class TournamentConsumer(AsyncWebsocketConsumer):
             }))
 
     def create_game_room(self, player1, player2):
-        url = "http://pong-game:8000/pong/pong/create-room"
+        url = f"{self.game_service_url}/pong/create-room"
         payload = {
             "gameType": "tournament",
             "player": player1,
