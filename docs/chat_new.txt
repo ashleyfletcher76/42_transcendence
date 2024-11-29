@@ -1,0 +1,63 @@
+Type: all (General Chat)
+    Input: Hello everyone!
+JSON:
+{
+  "type": "all",
+  "from": "JohnDoe",
+  "to": "",
+  "content": "Hello everyone!",
+  "timestamp": "2024-11-29T12:00:00.000Z"
+}
+
+Type: tournament
+    Input: /*tournament Join the tournament!
+JSON:
+{
+  "type": "tournament",
+  "from": "JohnDoe",
+  "to": "tournament",
+  "content": "Join the tournament!",
+  "timestamp": "2024-11-29T12:01:00.000Z"
+}
+
+Type: add
+    Input: /*add JaneDoe Join our team!
+JSON:
+{
+  "type": "add",
+  "from": "JohnDoe",
+  "to": "JaneDoe",
+  "content": "Join our team!",
+  "timestamp": "2024-11-29T12:02:00.000Z"
+}
+
+Type: invite
+    Input: /*invite JaneDoe You're invited to a private room!
+JSON:
+{
+  "type": "invite",
+  "from": "JohnDoe",
+  "to": "JaneDoe",
+  "content": "You're invited to a private room!",
+  "timestamp": "2024-11-29T12:03:00.000Z"
+}
+
+Type: whisper
+    Input: /JaneDoe Hey, how are you?
+JSON:
+{
+  "type": "whisper",
+  "from": "JohnDoe",
+  "to": "JaneDoe",
+  "content": "Hey, how are you?",
+  "timestamp": "2024-11-29T12:04:00.000Z"
+}
+
+This are the JSON format i send to the chat-backend-service. As a response i want the exact same format back with the exact same content, so you just route the message to the right user/users. 
+The interpretation of the message take plase in the frontend. 
+
+"Whisper", "add" and "invite" types get only send to the user defiened in the "to" section. Type "all" get send to all users. 
+Type "tournament" get send to all users in the Tournament (Please define a way to get the users from the tournament with @muhakose (i can provide the tournament name in the "to" section)).
+
+All Messages should additionally get send back to the sender. So for a whisper message it get send to the user in the "to" section and to the user in the "from" section etc...
+
