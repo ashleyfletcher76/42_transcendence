@@ -8,6 +8,9 @@ class UserProfile(models.Model):
 	avatar = models.ImageField(upload_to="avatars/", blank=True, null=True)
 	bio = models.TextField(blank=True)
 
+	friends = models.ManyToManyField('self', symmetrical=True, blank=True, related_name='friend_profile')
+	blocked_users = models.ManyToManyField('self', symmetrical=True, blank=True, related_name='blocked_by')
+
 	def __str__(self):
 		return self.display_name or self.user.username
 
