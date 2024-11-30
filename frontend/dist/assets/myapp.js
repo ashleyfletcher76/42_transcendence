@@ -1215,7 +1215,7 @@
           method: "PUT",
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${this.session.data.authenticated.token}`
+            Authorization: `Bearer ${this.session.data.authenticated.access}`
           },
           body: JSON.stringify({
             user1: this.args.ownNickname,
@@ -1238,7 +1238,7 @@
         const response = await fetch('/pong/pong/join-room', {
           method: 'POST',
           headers: {
-            Authorization: `Bearer ${this.session.data.authenticated.token}`,
+            Authorization: `Bearer ${this.session.data.authenticated.access}`,
             'Content-Type': 'application/json'
           },
           body: JSON.stringify({
@@ -1371,7 +1371,7 @@
           method: 'PUT',
           headers: {
             'Content-Type': 'application/json',
-            Authorization: `Bearer ${this.session.data.authenticated.token}`
+            Authorization: `Bearer ${this.session.data.authenticated.access}`
           },
           body: JSON.stringify({
             nickname: newNickname
@@ -1562,7 +1562,7 @@
         const response = await fetch(`/pong/pong/game_state/${this.roomData.room_name}`, {
           method: 'POST',
           headers: {
-            Authorization: `Bearer ${this.session.data.authenticated.token}`,
+            Authorization: `Bearer ${this.session.data.authenticated.access}`,
             'Content-Type': 'application/json'
           },
           body: requestBody
@@ -1814,7 +1814,7 @@
         const response = await fetch(apiEndpoint, {
           method: "PUT",
           headers: {
-            Authorization: `Bearer ${this.session.data.authenticated.token}`,
+            Authorization: `Bearer ${this.session.data.authenticated.access}`,
             "Content-Type": "application/json"
           },
           body: JSON.stringify({
@@ -2469,7 +2469,7 @@
             'Content-Type': 'application/json'
           },
           body: JSON.stringify({
-            player: this.user.nickname,
+            player: this.user.profile.nickname,
             // Add player_1 with the user's value
             gameType: gameType // Set the selected game type
           })
@@ -2549,7 +2549,8 @@
       try {
         await this.session.authenticate('authenticator:token', this.username, this.password);
         this.fetchUserData(this.username);
-        console.log(this.session.data.authenticated.token);
+        console.log(this.session.data);
+        console.log(this.session.data.authenticated.access);
         this.router.transitionTo('choose-game');
       } catch (error) {
         this.error = error;
@@ -2584,7 +2585,7 @@
         const response = await fetch('/api/profile.json', {
           method: 'GET',
           headers: {
-            Authorization: `Bearer ${this.session.data.authenticated.token}`,
+            Authorization: `Bearer ${this.session.data.authenticated.access}`,
             // Use token from session
             'Content-Type': 'application/json'
           }
@@ -3719,21 +3720,19 @@
         system: 'rgb(130 140 55)'
       });
       console.log("connect ...");
-      const socket = this.websockets.socketFor('wss://localhost/ws/chat/lobby/');
+      const token = this.session.data.authenticated.access;
+      const url = `wss://localhost/ws/chat/lobby/?token=${encodeURIComponent(token)}`;
+      const socket = this.websockets.socketFor(url);
       socket.on('open', this.myOpenHandler, this);
       socket.on('message', this.myMessageHandler, this);
       socket.on('close', this.myCloseHandler, this);
       this.socketRef = socket;
     }
     myOpenHandler(event) {
-      console.log(`On open event has been called: ${event}`);
-      this.socket.send(JSON.stringify({
-        type: "authenticate",
-        token: `Bearer ${this.session.data.authenticated.token}`
-      }));
+      console.log(`On open event has been called token: ${this.session.data.authenticated.access}`);
     }
     myMessageHandler(event) {
-      console.log(`Message: ${event.data}`);
+      console.log(`Message recieve: ${event.data}`);
       const newMessage = JSON.parse(event.data);
       this.messages = [...this.messages, newMessage]; // Add the new message to the tracked array
       console.log(newMessage.content);
@@ -3769,8 +3768,14 @@
       let messageContent = this.messageInput.trim();
       if (this.type !== "all") {
         messageContent = this.words.slice(1).join(' ');
-        console.log(messageContent);
       }
+      console.log(`Message send: ${JSON.stringify({
+        type: this.type,
+        from: this.user.profile.nickname,
+        to: this.to_user,
+        content: messageContent,
+        timestamp: new Date().toISOString()
+      })}`);
       if (this.type === "invite") this.privateRoom(this.user.profile.nickname, "create");
       if (messageContent) {
         this.socketRef.send(JSON.stringify({
@@ -3789,7 +3794,7 @@
         const response = await fetch('/pong/pong/private-room', {
           method: 'POST',
           headers: {
-            Authorization: `Bearer ${this.session.data.authenticated.token}`,
+            Authorization: `Bearer ${this.session.data.authenticated.access}`,
             'Content-Type': 'application/json'
           },
           body: JSON.stringify({
@@ -3908,7 +3913,7 @@
         const response = await fetch(`/api/${username}.json`, {
           method: 'GET',
           headers: {
-            Authorization: `Bearer ${this.session.data.authenticated.token}`,
+            Authorization: `Bearer ${this.session.data.authenticated.access}`,
             'Content-Type': 'application/json'
           }
         });
@@ -4030,7 +4035,7 @@
     value: true
   });
   _exports.default = void 0;
-  var _class, _descriptor, _descriptor2, _descriptor3;
+  var _class, _descriptor, _descriptor2, _descriptor3, _descriptor4;
   0; //eaimeta@70e063a35619d71f0,"@ember/service",0,"@glimmer/tracking",0,"@ember/object",0,"@ember/service"eaimeta@70e063a35619d71f
   function _initializerDefineProperty(e, i, r, l) { r && Object.defineProperty(e, i, { enumerable: r.enumerable, configurable: r.configurable, writable: r.writable, value: r.initializer ? r.initializer.call(l) : void 0 }); }
   function _defineProperty(e, r, t) { return (r = _toPropertyKey(r)) in e ? Object.defineProperty(e, r, { value: t, enumerable: !0, configurable: !0, writable: !0 }) : e[r] = t, e; }
@@ -4043,12 +4048,14 @@
       super(...args);
       _initializerDefineProperty(this, "websockets", _descriptor, this);
       _initializerDefineProperty(this, "user", _descriptor2, this);
-      _initializerDefineProperty(this, "currentLobby", _descriptor3, this);
+      _initializerDefineProperty(this, "session", _descriptor3, this);
+      _initializerDefineProperty(this, "currentLobby", _descriptor4, this);
       // Current lobby details
       _defineProperty(this, "socketRef", null);
     }
     async connectToLobby(tournamentName) {
-      const wsUrl = `wss://localhost/ws/tournament/${tournamentName}/`;
+      const token = this.session.data.authenticated.access;
+      const wsUrl = `wss://localhost/ws/tournament/${tournamentName}/?token=${encodeURIComponent(token)}`;
       this.disconnectFromLobby(); // Disconnect from any existing lobby first
       this.socketRef = this.websockets.socketFor(wsUrl);
 
@@ -4127,7 +4134,12 @@
     enumerable: true,
     writable: true,
     initializer: null
-  }), _descriptor3 = _applyDecoratedDescriptor(_class.prototype, "currentLobby", [_tracking.tracked], {
+  }), _descriptor3 = _applyDecoratedDescriptor(_class.prototype, "session", [_service.inject], {
+    configurable: true,
+    enumerable: true,
+    writable: true,
+    initializer: null
+  }), _descriptor4 = _applyDecoratedDescriptor(_class.prototype, "currentLobby", [_tracking.tracked], {
     configurable: true,
     enumerable: true,
     writable: true,
@@ -4249,9 +4261,11 @@
         <Scoreboard @selectUser={{this.selectUser}}/>
       </div>
       <div class="container-fluid col-3 footer p-1">
-        {{#unless (eq this.activeRoute "chat")}}
-          <Chat />
-        {{/unless}}
+        {{#if this.session.isAuthenticated}}
+          {{#unless (eq this.activeRoute "chat")}}
+            <Chat />
+          {{/unless}}
+        {{/if}}
       </div>
     </div>    
   </div>
@@ -4260,8 +4274,8 @@
   
   */
   {
-    "id": "S4UpYiRl",
-    "block": "[[[10,\"main\"],[12],[1,\"\\n\"],[1,[30,0,[\"isAuthenticated\"]]],[1,\"\\n\"],[10,0],[14,0,\"container-fluid body\"],[12],[1,\"\\n  \"],[10,0],[14,0,\"container-fluid row\"],[12],[1,\"\\n    \"],[10,0],[14,0,\"col header\"],[12],[1,\"\\n     \"],[8,[39,2],null,null,null],[1,\"\\n    \"],[13],[1,\"\\n    \"],[10,0],[14,0,\"col header\"],[12],[1,\"\\n\"],[41,[30,0,[\"selectedUser\"]],[[[1,\"        \"],[8,[39,4],null,[[\"@selectedUser\",\"@selectUser\"],[[30,0,[\"selectedUser\"]],[30,0,[\"selectUser\"]]]],null],[1,\"\\n\"]],[]],[[[1,\"        \"],[8,[39,5],null,null,null],[1,\"\\n\"]],[]]],[1,\"    \"],[13],[1,\"\\n  \"],[13],[1,\"\\n  \"],[10,0],[14,0,\"container-fluid row\"],[12],[1,\"\\n    \"],[10,0],[14,0,\"container-fluid col-3 middle\"],[12],[1,\"\\n        \"],[8,[39,6],null,null,null],[1,\"\\n    \"],[13],[1,\"\\n    \"],[10,0],[14,0,\"container-fluid col-6 middle custom-bg-black\"],[12],[1,\"\\n\\t\\t\"],[46,[28,[37,8],null,null],null,null,null],[1,\"\\n    \"],[13],[1,\"\\n    \"],[10,0],[14,0,\"container-fluid col-3 middle\"],[12],[1,\"\\n      \"],[8,[39,9],null,null,null],[1,\"\\n      \"],[8,[39,10],null,[[\"@selectUser\"],[[30,0,[\"selectUser\"]]]],null],[1,\"\\n    \"],[13],[1,\"\\n  \"],[13],[1,\"\\n  \"],[10,0],[14,0,\"container-fluid row\"],[12],[1,\"\\n    \"],[10,0],[14,0,\"container-fluid col-3 footer\"],[12],[1,\"\\n            \"],[8,[39,11],[[24,0,\"nav-button\"]],[[\"@route\"],[\"choose-game\"]],[[\"default\"],[[[[1,\"Game\"]],[]]]]],[1,\"\\n            \"],[8,[39,11],[[24,0,\"nav-button\"]],[[\"@route\"],[\"chat\"]],[[\"default\"],[[[[1,\"Chat\"]],[]]]]],[1,\"            \\n            \"],[8,[39,11],[[24,0,\"nav-button\"],[4,[38,12],[\"click\",[28,[37,13],[[30,0,[\"tournament\",\"connectToLobby\"]],[30,0,[\"user\",\"profile\",\"nickname\"]]],null]],null]],[[\"@route\"],[\"tournament\"]],[[\"default\"],[[[[1,\"Create Tournament\"]],[]]]]],[1,\"\\n    \"],[13],[1,\"\\n    \"],[10,0],[14,0,\"container-fluid col-6 footer\"],[12],[1,\"\\n      \"],[8,[39,14],null,[[\"@selectUser\"],[[30,0,[\"selectUser\"]]]],null],[1,\"\\n    \"],[13],[1,\"\\n    \"],[10,0],[14,0,\"container-fluid col-3 footer p-1\"],[12],[1,\"\\n\"],[41,[51,[28,[37,16],[[30,0,[\"activeRoute\"]],\"chat\"],null]],[[[1,\"        \"],[8,[39,17],null,null,null],[1,\"\\n\"]],[]],null],[1,\"    \"],[13],[1,\"\\n  \"],[13],[1,\"    \\n\"],[13],[1,\"\\n\\n\"],[13],[1,\"\\n\"]],[],false,[\"main\",\"div\",\"profile-own\",\"if\",\"profile-other\",\"title-animation\",\"tournament-list\",\"component\",\"-outlet\",\"navigation-bar\",\"user-list\",\"link-to\",\"on\",\"fn\",\"scoreboard\",\"unless\",\"eq\",\"chat\"]]",
+    "id": "bo8FKMgW",
+    "block": "[[[10,\"main\"],[12],[1,\"\\n\"],[1,[30,0,[\"isAuthenticated\"]]],[1,\"\\n\"],[10,0],[14,0,\"container-fluid body\"],[12],[1,\"\\n  \"],[10,0],[14,0,\"container-fluid row\"],[12],[1,\"\\n    \"],[10,0],[14,0,\"col header\"],[12],[1,\"\\n     \"],[8,[39,2],null,null,null],[1,\"\\n    \"],[13],[1,\"\\n    \"],[10,0],[14,0,\"col header\"],[12],[1,\"\\n\"],[41,[30,0,[\"selectedUser\"]],[[[1,\"        \"],[8,[39,4],null,[[\"@selectedUser\",\"@selectUser\"],[[30,0,[\"selectedUser\"]],[30,0,[\"selectUser\"]]]],null],[1,\"\\n\"]],[]],[[[1,\"        \"],[8,[39,5],null,null,null],[1,\"\\n\"]],[]]],[1,\"    \"],[13],[1,\"\\n  \"],[13],[1,\"\\n  \"],[10,0],[14,0,\"container-fluid row\"],[12],[1,\"\\n    \"],[10,0],[14,0,\"container-fluid col-3 middle\"],[12],[1,\"\\n        \"],[8,[39,6],null,null,null],[1,\"\\n    \"],[13],[1,\"\\n    \"],[10,0],[14,0,\"container-fluid col-6 middle custom-bg-black\"],[12],[1,\"\\n\\t\\t\"],[46,[28,[37,8],null,null],null,null,null],[1,\"\\n    \"],[13],[1,\"\\n    \"],[10,0],[14,0,\"container-fluid col-3 middle\"],[12],[1,\"\\n      \"],[8,[39,9],null,null,null],[1,\"\\n      \"],[8,[39,10],null,[[\"@selectUser\"],[[30,0,[\"selectUser\"]]]],null],[1,\"\\n    \"],[13],[1,\"\\n  \"],[13],[1,\"\\n  \"],[10,0],[14,0,\"container-fluid row\"],[12],[1,\"\\n    \"],[10,0],[14,0,\"container-fluid col-3 footer\"],[12],[1,\"\\n            \"],[8,[39,11],[[24,0,\"nav-button\"]],[[\"@route\"],[\"choose-game\"]],[[\"default\"],[[[[1,\"Game\"]],[]]]]],[1,\"\\n            \"],[8,[39,11],[[24,0,\"nav-button\"]],[[\"@route\"],[\"chat\"]],[[\"default\"],[[[[1,\"Chat\"]],[]]]]],[1,\"            \\n            \"],[8,[39,11],[[24,0,\"nav-button\"],[4,[38,12],[\"click\",[28,[37,13],[[30,0,[\"tournament\",\"connectToLobby\"]],[30,0,[\"user\",\"profile\",\"nickname\"]]],null]],null]],[[\"@route\"],[\"tournament\"]],[[\"default\"],[[[[1,\"Create Tournament\"]],[]]]]],[1,\"\\n    \"],[13],[1,\"\\n    \"],[10,0],[14,0,\"container-fluid col-6 footer\"],[12],[1,\"\\n      \"],[8,[39,14],null,[[\"@selectUser\"],[[30,0,[\"selectUser\"]]]],null],[1,\"\\n    \"],[13],[1,\"\\n    \"],[10,0],[14,0,\"container-fluid col-3 footer p-1\"],[12],[1,\"\\n\"],[41,[30,0,[\"session\",\"isAuthenticated\"]],[[[41,[51,[28,[37,16],[[30,0,[\"activeRoute\"]],\"chat\"],null]],[[[1,\"          \"],[8,[39,17],null,null,null],[1,\"\\n\"]],[]],null]],[]],null],[1,\"    \"],[13],[1,\"\\n  \"],[13],[1,\"    \\n\"],[13],[1,\"\\n\\n\"],[13],[1,\"\\n\"]],[],false,[\"main\",\"div\",\"profile-own\",\"if\",\"profile-other\",\"title-animation\",\"tournament-list\",\"component\",\"-outlet\",\"navigation-bar\",\"user-list\",\"link-to\",\"on\",\"fn\",\"scoreboard\",\"unless\",\"eq\",\"chat\"]]",
     "moduleName": "myapp/templates/application.hbs",
     "isStrictMode": false
   });

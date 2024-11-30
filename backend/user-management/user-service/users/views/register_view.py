@@ -26,7 +26,8 @@ class UserRegisterView(APIView):
 			serializer.save()
 			# logger.info("User created successfully: %s", serializer.data)
 			return Response(
-			    {"message": "User created successfully"}, status=status.HTTP_201_CREATED
+				{"message": "User created successfully"},
+				status=status.HTTP_201_CREATED,
 			)
 
 		logger.error("Registration failed: %s", serializer.errors)

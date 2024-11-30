@@ -90,7 +90,7 @@ DATABASES = {
         "HOST": "user-db",
         "PORT": "5432",
         "OPTIONS": {
-            "sslmode": "require",  # we use this to enforce ssl on the database also
+            "sslmode": "disable",  # we use this to enforce ssl on the database also
         },
     }
 }
