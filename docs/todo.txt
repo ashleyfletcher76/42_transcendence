@@ -1,0 +1,38 @@
+Userprofile:
+profile.json
+{
+    username: "username",
+    nickname: "nickname",
+    avatar: "picture",
+    status: "online",
+    wins: "12",
+    losses: "11",
+    games: "23",
+    trophies: "1",
+    friends: [friends_list] (use nicknames for friendslist i use the nickname in the frontend for everything, username is only important for login)
+    blocks: [blocked_list],
+    ...(add everything you want)
+}
+
+
+API Userservice:
+
+-Endpoint to get all userprofiles (nickname, status and trophies)
+
+-Enpoint to get userprofile by nickname (response should be previous defined profile json)
+
+-Endpoint to update Nickname and Avatar (tbd)
+
+-update endpoint for add_friend (both users should get added as friends by each other with one call.)
+    request is { user1: "user", user2: "player", type: "add/remove"} --> add/remove player as friend of user and add/remove user as friend of player.
+
+same logic for block_user
+    request is { user1: "user", user2: "player", type: "add/remove"} --> add/remove player from/to blocklist of user and add/remove user from/to blocklist of player.
+
+
+Torunament-Chat-Interaction:
+
+The Tournamentsystem should create a group in the chatservice if a new tournament get created.
+Everytime a new user joins the tournament it should get add to the chatgroup. The chatgroup should have the name of the tournament.
+If a user leaves it get removed again from the chatgroup. if the tournament get closed the chat group also need to be closed.
+The Tournament Service should be able to send messages in this chatgroup for launching/warning the next matches.
