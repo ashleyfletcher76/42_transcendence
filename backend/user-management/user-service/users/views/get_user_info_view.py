@@ -29,3 +29,22 @@ def get_usernames(request):
 		return JsonResponse({"error": "Invalid user ID's"}, status=400)
 	except Exception as e:
 		return JsonResponse({"error": str(e)}, status=500)
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def get_user_profile(request):
+	try:
+		user = request.user
+		profile = user.profile
+		return JsonResponse(
+			{
+				"user_id": user.id,
+				"username": user.username,
+				"nickname": profile.nickname,
+				"avatar": profile.avatar.url if profile.avatar else None,
+				"bio": profile.bio,
+			},
+			status=200,
+		)
+	except User.DoesNotExist:
+		return JsonResponse({"error": "User not found."}, status=404)

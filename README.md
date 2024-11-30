@@ -333,7 +333,7 @@ Update User profile:
 curl -X PUT http://localhost:8001/users/profile/ \
      -H "Content-Type: application/json" \
      -H "Authorization: Bearer <access_token>" \
-     -d '{"display_name": "New User", "bio": "This is my bio", "avatar": null}'
+     -d '{"nickname": "New User", "bio": "This is my bio", "avatar": null}'
 ```
 
 Logout user:

@@ -10,7 +10,6 @@ from ..serializer import UserProfileSerializer
 
 User = get_user_model()
 
-
 @api_view(['POST'])
 @permission_classes([AllowAny])
 def verify_user(request):
@@ -18,7 +17,17 @@ def verify_user(request):
     password = request.data.get("password")
     user = authenticate(username=username, password=password)
     if user:
-        return Response({"user_id": user.id, "message": "User verified"}, status=status.HTTP_200_OK)
+        # fetch user info
+        user_profile = user.profile
+        nickname = user_profile.nickname
+        return Response(
+            {
+                "user_id": user.id,
+                "nickname": nickname,
+                "message": "User verified",
+            },
+            status=status.HTTP_200_OK
+        )
     return Response({"error": "Invalid credentials"}, status=status.HTTP_401_UNAUTHORIZED)
 
 class UserExistsView(View):
