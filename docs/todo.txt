@@ -9,7 +9,7 @@ profile.json
     losses: "11",
     games: "23",
     trophies: "1",
-    friends: [friends_list] (use nicknames for friendslist i use the nickname in the frontend for everything, username is only important for login)
+    friends: [friends_list] (use usernames for friendslist i use the nickname in the frontend for everything so in the backend we need a function like get_username_by_nickname(nickname))
     blocks: [blocked_list],
     ...(add everything you want)
 }
@@ -17,9 +17,9 @@ profile.json
 
 API Userservice:
 
--Endpoint to get all userprofiles (nickname, status and trophies)
+-Endpoint to get all userprofiles (nickname, status and trophies is enough)
 
--Enpoint to get userprofile by nickname (response should be previous defined profile json)
+-Enpoint to get userprofile by nickname (response should be previous defined profile.json)
 
 -Endpoint to update Nickname and Avatar (tbd)
 
@@ -34,5 +34,5 @@ Torunament-Chat-Interaction:
 
 The Tournamentsystem should create a group in the chatservice if a new tournament get created.
 Everytime a new user joins the tournament it should get add to the chatgroup. The chatgroup should have the name of the tournament.
-If a user leaves it get removed again from the chatgroup. if the tournament get closed the chat group also need to be closed.
+If a user leaves the tournament he get removed from the chatgroup. if the tournament get closed the chat group also need to be closed.
 The Tournament Service should be able to send messages in this chatgroup for launching/warning the next matches.
