@@ -11,10 +11,10 @@ class GameState(models.Model):
     ball_y = models.FloatField(default = 0.5)
     ball_speed_x = models.FloatField(default = 0.01)
     ball_speed_y = models.FloatField(default = 0.01)
-    left_paddle_y = models.FloatField(default=0.5)  # Left paddle position (0.0 to 1.0)
-    right_paddle_y = models.FloatField(default=0.5)  # Right paddle position (0.0 to 1.0)
-    left_score = models.IntegerField(default=0)  # Left player's score
-    right_score = models.IntegerField(default=0)  # Right player's score
+    left_paddle_y = models.FloatField(default=0.5)
+    right_paddle_y = models.FloatField(default=0.5)
+    left_score = models.IntegerField(default=0)
+    right_score = models.IntegerField(default=0)
     paused = models.BooleanField(default=True)
     game_type = models.CharField(max_length=255, default="None")
 

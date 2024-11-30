@@ -150,7 +150,6 @@ def create_room(request):
         print(player_1)
         print(game_type)
 
-        # Check if a waiting room exists for remote mode
         if game_type == "remote":
             waiting_room = GameState.objects.filter(player2="remote").first()
             if waiting_room:
