@@ -4,6 +4,7 @@ from .views.health_check_view import health_check
 from .views.add_friend_view import AddFriendView
 from .views.block_user_view import BlockUserView
 from .views.verify_views import verify_user, UserExistsView, UserProfileView
+from .views.update_profile_view import update_profile
 from .views.get_user_info_view import (
 	get_single_username,
 	get_usernames,
@@ -24,6 +25,7 @@ urlpatterns = [
 	path("profile-info-token/", get_profile_token, name="get-user-profile"),
 	path("profile-info/", get_profile_info, name="get-profile-info"),
 	path("profile-list/", get_all_profiles, name="get-all-profiles"),
+	path("update-profile/", update_profile, name="update-profiles"),
 
 	path("get-single-username/<int:user_id>/", get_single_username, name="get-single-username"),
 	path("get-usernames/", get_usernames, name="get-usernames"),

@@ -166,6 +166,66 @@ class UserServiceTests(TestCase):
 
 		# assertions
 		self.assertEqual(response.status_code, 200)
-		self.assertEqual(len(response.data), 3)  # Assuming 3 test users created
+		self.assertEqual(len(response.data), 3)
 		self.assertEqual(response.data[0]["username"], "user1")
 		self.assertEqual(response.data[1]["status"], "TBD")
+
+	def test_update_nickname(self):
+		"""Test updating only the nickname."""
+		url = "/users/update-profile/"
+		payload = {"nickname": "newNickname"}
+		response = self.client.put(url, payload)
+
+		self.assertEqual(response.status_code, 200)
+		self.assertEqual(response.json()["success"], True)
+		self.assertEqual(response.json()["message"], "Nickname updated successfully.")
+		self.user1_profile.refresh_from_db()
+		self.assertEqual(self.user1_profile.nickname, "newNickname")
+
+	def test_update_avatar(self):
+		"""Test updating only the avatar."""
+		url = "/users/update-profile/"
+		payload = {"avatar": "newAvatarPath"}
+		response = self.client.put(url, payload)
+
+		self.assertEqual(response.status_code, 200)
+		self.assertEqual(response.json()["success"], True)
+		self.assertEqual(response.json()["message"], "Avatar updated successfully.")
+		self.user1_profile.refresh_from_db()
+		self.assertEqual(self.user1_profile.avatar, "newAvatarPath")
+
+	def test_update_both_fields(self):
+		"""Test updating both nickname and avatar."""
+		url = "/users/update-profile/"
+		payload = {"nickname": "newNickname", "avatar": "newAvatarPath"}
+		response = self.client.put(url, payload)
+
+		self.assertEqual(response.status_code, 200)
+		self.assertEqual(response.json()["success"], True)
+		self.assertEqual(response.json()["message"], "Nickname and avatar updated successfully.")
+		self.user1_profile.refresh_from_db()
+		self.assertEqual(self.user1_profile.nickname, "newNickname")
+		self.assertEqual(self.user1_profile.avatar, "newAvatarPath")
+
+	def test_no_changes(self):
+		"""Test when no changes are provided."""
+		url = "/users/update-profile/"
+		payload = {}
+		response = self.client.put(url, payload)
+
+		self.assertEqual(response.status_code, 400)
+		self.assertEqual(response.json()["success"], False)
+		self.assertEqual(response.json()["message"], "No changes detected in the request.")
+		self.user1_profile.refresh_from_db()
+		self.assertEqual(self.user1_profile.nickname, self.user1_profile.nickname)
+		self.assertEqual(self.user1_profile.avatar, self.user1_profile.avatar)
+
+	def test_update_profile_unauthenticated(self):
+		"""Test accessing update-profile without authentication."""
+		self.client.credentials()
+		url = "/users/update-profile/"
+		payload = {"nickname": "newNickname"}
+		response = self.client.put(url, payload)
+
+		self.assertEqual(response.status_code, 401)
+		self.assertIn("Authentication credentials were not provided.", response.json()["detail"])
