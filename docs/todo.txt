@@ -54,6 +54,9 @@ Endpoints:
 #####  Get the information for all users ##### fetch all ##### GET Request #####
 /users/profile-list
 
+#################
+## GET request ##
+#################
     Response JSON Example for 2 users:
     [
         {
@@ -74,7 +77,11 @@ Endpoints:
 
     Note: The other profile information get requested if needed with the Enpoint /users/profile-info
 
-/users/update-profile ### PUT request ###
+/users/update-profile
+
+###################
+### PUT request ###
+###################
 
     Allows updating the user's nickname and avatar.
 
@@ -90,6 +97,51 @@ Endpoints:
         "success": true,
         "message": "Nickname and avatar updated successfully."
     }
+
+    ### SEE BELOW FOR NEW REQUEST FIELDS ###
+
+##############################
+### Update profile version ###
+##############################
+
+For updating the nickname only:
+
+{
+    "nickname": "newNickname"
+}
+
+For updating the avatar only:
+
+{
+    "avatar": "newAvatarPath"
+}
+
+For updating both nickname and avatar:
+
+{
+    "nickname": "newNickname",
+    "avatar": "newAvatarPath"
+}
+
+* Response
+{
+    "success": true,
+    "message": "Nickname and avatar updated successfully."
+}
+
+or
+
+{
+    "success": true,
+    "message": "Nickname updated successfully."
+}
+
+or
+
+{
+    "success": true,
+    "message": "Avatar updated successfully."
+}
 
 
 /add-friend
