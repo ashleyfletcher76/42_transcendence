@@ -6,7 +6,7 @@
 		</div>
 		<div class="button-container col-5">
 		<button class="nav-button start" type="button" >Start Tournament</button>
-		<button class="nav-button cancel" type="button" {{on "click" this.tournament.disconnectFromLobby}}>Leave</button> 
+		<button class="nav-button cancel" type="button" {{on "click" (fn this.tournament.disconnectFromLobby this.user.profile.nickname)}}>Leave</button> 
 		</div>
 	{{else}}
 		<div class="d-flex justify-content-center align-items-center">

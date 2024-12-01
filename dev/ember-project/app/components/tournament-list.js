@@ -1,8 +1,10 @@
 import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
 import { action } from '@ember/object';
+import { inject as service } from '@ember/service';
 
 export default class TournamentListComponent extends Component {
+  @service session;
   @tracked tournaments = [];
   intervalId = null; // To store the interval ID for cleanup
 
@@ -27,7 +29,14 @@ export default class TournamentListComponent extends Component {
   @action
   async fetchTournaments() {
     try {
-      const response = await fetch('https://localhost/lobby/list/');
+		const response = await fetch('/lobby/list/', {
+			method: 'GET',
+			headers: {
+				Authorization: `Bearer ${this.session.data.authenticated.access}`,
+				'Content-Type': 'application/json',
+			},
+			});
+
       if (!response.ok) {
         throw new Error('Failed to fetch lobby list');
       }

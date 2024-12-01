@@ -15,6 +15,6 @@ export default class TournamentItemComponent extends Component {
   @action
   onLeaveClick() {
     console.log('Leave clicked!');
-    this.tournament.disconnectFromLobby();
+    this.tournament.disconnectFromLobby(this.user.profile.nickname);
   }
 }

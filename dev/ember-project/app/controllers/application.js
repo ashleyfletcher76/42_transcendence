@@ -23,7 +23,7 @@ export default class ApplicationController extends Controller {
 
   async fetchUserData(nickname) {
     try {
-      const response = await fetch('/users/profile-info', {
+      const response = await fetch('/users/users/profile-info/', {
         method: 'POST', 
         headers: {
           Authorization: `Bearer ${this.session.data.authenticated.access}`, 
@@ -31,12 +31,12 @@ export default class ApplicationController extends Controller {
         },
         body: JSON.stringify({ nickname }) 
       });
-  
+
       if (!response.ok) {
         throw new Error('Failed to fetch user profile');
       }
       const data = await response.json();
-      this.selectUser = data;
+      this.selectedUser = data;
     } catch (error) {
       console.error('Error fetching user profile:', error);
     }

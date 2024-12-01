@@ -67,16 +67,17 @@ export default class LoginController extends Controller {
     }
   }
 
-  async fetchUserData() {
+  async fetchUserData(nickname) {
     try {
       const response = await fetch('/users/users/profile-info/', {
-        method: 'GET',
+        method: 'POST', 
         headers: {
-          Authorization: `Bearer ${this.session.data.authenticated.access}`, // Use token from session
+          Authorization: `Bearer ${this.session.data.authenticated.access}`, 
           'Content-Type': 'application/json',
         },
+        body: JSON.stringify({ nickname }) 
       });
-
+  
       if (!response.ok) {
         throw new Error('Failed to fetch user profile');
       }
@@ -88,27 +89,4 @@ export default class LoginController extends Controller {
       console.error('Error fetching user profile:', error);
     }
   }
-
-  // async fetchUserData(nickname) {
-  //   try {
-  //     const response = await fetch('/users/profile-info', {
-  //       method: 'POST', 
-  //       headers: {
-  //         Authorization: `Bearer ${this.session.data.authenticated.access}`, 
-  //         'Content-Type': 'application/json',
-  //       },
-  //       body: JSON.stringify({ nickname }) 
-  //     });
-  
-  //     if (!response.ok) {
-  //       throw new Error('Failed to fetch user profile');
-  //     }
-  //     const data = await response.json();
-  //     console.log(data);
-  //     this.user.setProfile(data); // Store user data for use in the template
-  //     console.log(this.user.profile);
-  //   } catch (error) {
-  //     console.error('Error fetching user profile:', error);
-  //   }
-  // }
 }
