@@ -1218,8 +1218,8 @@
             Authorization: `Bearer ${this.session.data.authenticated.access}`
           },
           body: JSON.stringify({
-            user1: this.args.ownNickname,
-            user2: this.args.message.from
+            user: this.args.message.from,
+            type: "add"
           })
         });
         if (!response.ok) {
@@ -1478,7 +1478,7 @@
     value: true
   });
   _exports.default = void 0;
-  var _class, _descriptor, _descriptor2, _descriptor3, _descriptor4, _descriptor5, _descriptor6, _descriptor7, _descriptor8, _descriptor9;
+  var _class, _descriptor, _descriptor2, _descriptor3, _descriptor4, _descriptor5, _descriptor6, _descriptor7, _descriptor8, _descriptor9, _descriptor10;
   0; //eaimeta@70e063a35619d71f0,"@glimmer/component",0,"@glimmer/tracking",0,"@ember/service",0,"@ember/template-factory",0,"@ember/component"eaimeta@70e063a35619d71f
   function _initializerDefineProperty(e, i, r, l) { r && Object.defineProperty(e, i, { enumerable: r.enumerable, configurable: r.configurable, writable: r.writable, value: r.initializer ? r.initializer.call(l) : void 0 }); }
   function _defineProperty(e, r, t) { return (r = _toPropertyKey(r)) in e ? Object.defineProperty(e, r, { value: t, enumerable: !0, configurable: !0, writable: !0 }) : e[r] = t, e; }
@@ -1521,6 +1521,7 @@
       _initializerDefineProperty(this, "winner", _descriptor7, this);
       _initializerDefineProperty(this, "gameData", _descriptor8, this);
       _initializerDefineProperty(this, "session", _descriptor9, this);
+      _initializerDefineProperty(this, "tournament", _descriptor10, this);
       // Track the state of key presses
       _defineProperty(this, "p1UpKeyPressed", false);
       _defineProperty(this, "p1DownKeyPressed", false);
@@ -1646,7 +1647,10 @@
       this.leftScore = data.left_score;
       this.rightScore = data.right_score;
       this.winner = data.winner;
-      if (this.winner) this.willDestroy();
+      if (this.winner) {
+        this.willDestroy();
+        this.tournament.sendWinner(this.winner);
+      }
     }
     willDestroy() {
       super.willDestroy();
@@ -1707,6 +1711,11 @@
     writable: true,
     initializer: null
   }), _descriptor9 = _applyDecoratedDescriptor(_class.prototype, "session", [_service.inject], {
+    configurable: true,
+    enumerable: true,
+    writable: true,
+    initializer: null
+  }), _descriptor10 = _applyDecoratedDescriptor(_class.prototype, "tournament", [_service.inject], {
     configurable: true,
     enumerable: true,
     writable: true,
@@ -2109,7 +2118,7 @@
     }
     onLeaveClick() {
       console.log('Leave clicked!');
-      this.tournament.disconnectFromLobby();
+      this.tournament.disconnectFromLobby(this.user.profile.nickname);
     }
   }, _descriptor = _applyDecoratedDescriptor(_class.prototype, "tournament", [_service.inject], {
     configurable: true,
@@ -2124,15 +2133,15 @@
   }), _applyDecoratedDescriptor(_class.prototype, "onJoinClick", [_object.action], Object.getOwnPropertyDescriptor(_class.prototype, "onJoinClick"), _class.prototype), _applyDecoratedDescriptor(_class.prototype, "onLeaveClick", [_object.action], Object.getOwnPropertyDescriptor(_class.prototype, "onLeaveClick"), _class.prototype), _class);
   (0, _component.setComponentTemplate)(__COLOCATED_TEMPLATE__, TournamentItemComponent);
 });
-;define("myapp/components/tournament-list", ["exports", "@ember/component", "@glimmer/component", "@glimmer/tracking", "@ember/object", "@ember/template-factory"], function (_exports, _component, _component2, _tracking, _object, _templateFactory) {
+;define("myapp/components/tournament-list", ["exports", "@ember/component", "@glimmer/component", "@glimmer/tracking", "@ember/object", "@ember/service", "@ember/template-factory"], function (_exports, _component, _component2, _tracking, _object, _service, _templateFactory) {
   "use strict";
 
   Object.defineProperty(_exports, "__esModule", {
     value: true
   });
   _exports.default = void 0;
-  var _class, _descriptor;
-  0; //eaimeta@70e063a35619d71f0,"@glimmer/component",0,"@glimmer/tracking",0,"@ember/object",0,"@ember/template-factory",0,"@ember/component"eaimeta@70e063a35619d71f
+  var _class, _descriptor, _descriptor2;
+  0; //eaimeta@70e063a35619d71f0,"@glimmer/component",0,"@glimmer/tracking",0,"@ember/object",0,"@ember/service",0,"@ember/template-factory",0,"@ember/component"eaimeta@70e063a35619d71f
   function _initializerDefineProperty(e, i, r, l) { r && Object.defineProperty(e, i, { enumerable: r.enumerable, configurable: r.configurable, writable: r.writable, value: r.initializer ? r.initializer.call(l) : void 0 }); }
   function _defineProperty(e, r, t) { return (r = _toPropertyKey(r)) in e ? Object.defineProperty(e, r, { value: t, enumerable: !0, configurable: !0, writable: !0 }) : e[r] = t, e; }
   function _toPropertyKey(t) { var i = _toPrimitive(t, "string"); return "symbol" == typeof i ? i : i + ""; }
@@ -2163,7 +2172,8 @@
 
     constructor() {
       super(...arguments);
-      _initializerDefineProperty(this, "tournaments", _descriptor, this);
+      _initializerDefineProperty(this, "session", _descriptor, this);
+      _initializerDefineProperty(this, "tournaments", _descriptor2, this);
       _defineProperty(this, "intervalId", null);
       this.startFetchingTournaments();
     }
@@ -2183,7 +2193,13 @@
      */
     async fetchTournaments() {
       try {
-        const response = await fetch('https://localhost/lobby/list/');
+        const response = await fetch('/lobby/list/', {
+          method: 'GET',
+          headers: {
+            Authorization: `Bearer ${this.session.data.authenticated.access}`,
+            'Content-Type': 'application/json'
+          }
+        });
         if (!response.ok) {
           throw new Error('Failed to fetch lobby list');
         }
@@ -2203,7 +2219,12 @@
         clearInterval(this.intervalId); // Clear the interval
       }
     }
-  }, _descriptor = _applyDecoratedDescriptor(_class.prototype, "tournaments", [_tracking.tracked], {
+  }, _descriptor = _applyDecoratedDescriptor(_class.prototype, "session", [_service.inject], {
+    configurable: true,
+    enumerable: true,
+    writable: true,
+    initializer: null
+  }), _descriptor2 = _applyDecoratedDescriptor(_class.prototype, "tournaments", [_tracking.tracked], {
     configurable: true,
     enumerable: true,
     writable: true,
@@ -2255,15 +2276,15 @@
   }), _class);
   (0, _component.setComponentTemplate)(__COLOCATED_TEMPLATE__, UserListComponent);
 });
-;define("myapp/components/user-list", ["exports", "@ember/component", "@glimmer/component", "@glimmer/tracking", "@ember/object", "@ember/template-factory"], function (_exports, _component, _component2, _tracking, _object, _templateFactory) {
+;define("myapp/components/user-list", ["exports", "@ember/component", "@glimmer/component", "@glimmer/tracking", "@ember/object", "@ember/service", "@ember/template-factory"], function (_exports, _component, _component2, _tracking, _object, _service, _templateFactory) {
   "use strict";
 
   Object.defineProperty(_exports, "__esModule", {
     value: true
   });
   _exports.default = void 0;
-  var _class, _descriptor;
-  0; //eaimeta@70e063a35619d71f0,"@glimmer/component",0,"@glimmer/tracking",0,"@ember/object",0,"@ember/template-factory",0,"@ember/component"eaimeta@70e063a35619d71f
+  var _class, _descriptor, _descriptor2;
+  0; //eaimeta@70e063a35619d71f0,"@glimmer/component",0,"@glimmer/tracking",0,"@ember/object",0,"@ember/service",0,"@ember/template-factory",0,"@ember/component"eaimeta@70e063a35619d71f
   function _initializerDefineProperty(e, i, r, l) { r && Object.defineProperty(e, i, { enumerable: r.enumerable, configurable: r.configurable, writable: r.writable, value: r.initializer ? r.initializer.call(l) : void 0 }); }
   function _defineProperty(e, r, t) { return (r = _toPropertyKey(r)) in e ? Object.defineProperty(e, r, { value: t, enumerable: !0, configurable: !0, writable: !0 }) : e[r] = t, e; }
   function _toPropertyKey(t) { var i = _toPrimitive(t, "string"); return "symbol" == typeof i ? i : i + ""; }
@@ -2285,20 +2306,46 @@
     "isStrictMode": false
   });
   let UserListComponent = _exports.default = (_class = class UserListComponent extends _component2.default {
+    // To store the interval ID for cleanup
+
     constructor() {
       super(...arguments);
       _initializerDefineProperty(this, "users", _descriptor, this);
-      this.fetchUsers();
+      _initializerDefineProperty(this, "session", _descriptor2, this);
+      _defineProperty(this, "intervalId", null);
+      this.startFetchingUsers();
+    }
+
+    /**
+     * Start fetching tournaments every 10 seconds
+     */
+    startFetchingUsers() {
+      this.fetchUsers(); // Fetch immediately on load
+      this.intervalId = setInterval(() => {
+        this.fetchUsers();
+      }, 10000); // 10 seconds
     }
     async fetchUsers() {
       try {
-        const response = await fetch('/users/profile-list'); // Simulating API call
+        const response = await fetch('/users/users/profile-list/', {
+          method: 'GET',
+          headers: {
+            Authorization: `Bearer ${this.session.data.authenticated.access}`,
+            'Content-Type': 'application/json'
+          }
+        });
         if (!response.ok) {
           throw new Error('Network response was not ok');
         }
         this.users = await response.json();
       } catch (error) {
         console.error('Failed to fetch users:', error);
+      }
+    }
+    willDestroy() {
+      super.willDestroy(...arguments);
+      if (this.intervalId) {
+        clearInterval(this.intervalId); // Clear the interval
       }
     }
   }, _descriptor = _applyDecoratedDescriptor(_class.prototype, "users", [_tracking.tracked], {
@@ -2308,6 +2355,11 @@
     initializer: function () {
       return [];
     }
+  }), _descriptor2 = _applyDecoratedDescriptor(_class.prototype, "session", [_service.inject], {
+    configurable: true,
+    enumerable: true,
+    writable: true,
+    initializer: null
   }), _applyDecoratedDescriptor(_class.prototype, "fetchUsers", [_object.action], Object.getOwnPropertyDescriptor(_class.prototype, "fetchUsers"), _class.prototype), _class);
   (0, _component.setComponentTemplate)(__COLOCATED_TEMPLATE__, UserListComponent);
 });
@@ -2435,7 +2487,7 @@
     }
     async fetchUserData(nickname) {
       try {
-        const response = await fetch('/users/profile-info', {
+        const response = await fetch('/users/users/profile-info/', {
           method: 'POST',
           headers: {
             Authorization: `Bearer ${this.session.data.authenticated.access}`,
@@ -2449,7 +2501,7 @@
           throw new Error('Failed to fetch user profile');
         }
         const data = await response.json();
-        this.selectUser = data;
+        this.selectedUser = data;
       } catch (error) {
         console.error('Error fetching user profile:', error);
       }
@@ -2636,15 +2688,17 @@
         this.error = error.message || 'An error occurred during registration';
       }
     }
-    async fetchUserData() {
+    async fetchUserData(nickname) {
       try {
         const response = await fetch('/users/users/profile-info/', {
-          method: 'GET',
+          method: 'POST',
           headers: {
             Authorization: `Bearer ${this.session.data.authenticated.access}`,
-            // Use token from session
             'Content-Type': 'application/json'
-          }
+          },
+          body: JSON.stringify({
+            nickname
+          })
         });
         if (!response.ok) {
           throw new Error('Failed to fetch user profile');
@@ -2657,29 +2711,6 @@
         console.error('Error fetching user profile:', error);
       }
     }
-
-    // async fetchUserData(nickname) {
-    //   try {
-    //     const response = await fetch('/users/profile-info', {
-    //       method: 'POST', 
-    //       headers: {
-    //         Authorization: `Bearer ${this.session.data.authenticated.access}`, 
-    //         'Content-Type': 'application/json',
-    //       },
-    //       body: JSON.stringify({ nickname }) 
-    //     });
-
-    //     if (!response.ok) {
-    //       throw new Error('Failed to fetch user profile');
-    //     }
-    //     const data = await response.json();
-    //     console.log(data);
-    //     this.user.setProfile(data); // Store user data for use in the template
-    //     console.log(this.user.profile);
-    //   } catch (error) {
-    //     console.error('Error fetching user profile:', error);
-    //   }
-    // }
   }, _descriptor = _applyDecoratedDescriptor(_class.prototype, "session", [_service.inject], {
     configurable: true,
     enumerable: true,
@@ -3790,7 +3821,7 @@
     value: true
   });
   _exports.default = void 0;
-  var _class, _descriptor, _descriptor2, _descriptor3, _descriptor4, _descriptor5, _descriptor6;
+  var _class, _descriptor, _descriptor2, _descriptor3, _descriptor4, _descriptor5, _descriptor6, _descriptor7;
   0; //eaimeta@70e063a35619d71f0,"@ember/service",0,"@ember/service",0,"@glimmer/tracking"eaimeta@70e063a35619d71f
   function _initializerDefineProperty(e, i, r, l) { r && Object.defineProperty(e, i, { enumerable: r.enumerable, configurable: r.configurable, writable: r.writable, value: r.initializer ? r.initializer.call(l) : void 0 }); }
   function _defineProperty(e, r, t) { return (r = _toPropertyKey(r)) in e ? Object.defineProperty(e, r, { value: t, enumerable: !0, configurable: !0, writable: !0 }) : e[r] = t, e; }
@@ -3819,6 +3850,7 @@
       _initializerDefineProperty(this, "user", _descriptor4, this);
       _initializerDefineProperty(this, "websockets", _descriptor5, this);
       _initializerDefineProperty(this, "session", _descriptor6, this);
+      _initializerDefineProperty(this, "tournament", _descriptor7, this);
       _defineProperty(this, "socketRef", null);
       _defineProperty(this, "inputElement", null);
       // Reference to the input element
@@ -3889,7 +3921,12 @@
         timestamp: new Date().toISOString()
       })}`);
       if (this.type === "invite") this.privateRoom(this.user.profile.nickname, "create");
-      if (messageContent) {
+      if (this.type === this.tournament) this.tournament.sendMessage(JSON.stringify({
+        action: messageContent,
+        sender: this.user.profile.nickname,
+        content: messageContent,
+        timestamp: new Date().toISOString()
+      }));else if (messageContent) {
         this.socketRef.send(JSON.stringify({
           type: this.type,
           from: this.user.profile.nickname,
@@ -3961,6 +3998,11 @@
     writable: true,
     initializer: null
   }), _descriptor6 = _applyDecoratedDescriptor(_class.prototype, "session", [_service.inject], {
+    configurable: true,
+    enumerable: true,
+    writable: true,
+    initializer: null
+  }), _descriptor7 = _applyDecoratedDescriptor(_class.prototype, "tournament", [_service.inject], {
     configurable: true,
     enumerable: true,
     writable: true,
@@ -4162,44 +4204,57 @@
       _initializerDefineProperty(this, "websockets", _descriptor, this);
       _initializerDefineProperty(this, "user", _descriptor2, this);
       _initializerDefineProperty(this, "session", _descriptor3, this);
-      _initializerDefineProperty(this, "currentLobby", _descriptor4, this);
+      _initializerDefineProperty(this, "chat", _descriptor4, this);
+      _initializerDefineProperty(this, "currentLobby", _descriptor5, this);
       // Current lobby details
-      _initializerDefineProperty(this, "messages", _descriptor5, this);
       _initializerDefineProperty(this, "currentPlayers", _descriptor6, this);
       _defineProperty(this, "socketRef", null);
+      _defineProperty(this, "startTournament", () => {
+        const data = {
+          action: 'start_tournament'
+        };
+        this.sendMessage(data);
+      });
     }
     async connectToLobby(tournamentName) {
-      console.log("1");
       const token = this.session.data.authenticated.access;
       const wsUrl = `wss://localhost/ws/tournament/${tournamentName}/?token=${encodeURIComponent(token)}`;
-      if (this.currentLobby) this.disconnectFromLobby(); // Disconnect from any existing lobby first
-      this.socketRef = this.websockets.socketFor(wsUrl);
-      console.log("2");
-
-      // Register WebSocket event handlers
-      this.socketRef.on('open', () => this.onOpen(tournamentName), this);
-      this.socketRef.on('message', this.onMessage, this);
-      this.socketRef.on('close', this.onClose, this);
-    }
-    async disconnectFromLobby() {
       if (this.socketRef) {
-        // Remove event handlers
-        this.socketRef.off('open', this.onOpen, this);
-        this.socketRef.off('message', this.onMessage, this);
-        this.socketRef.off('close', this.onClose, this);
-
-        // Close WebSocket and wait for it to close
-        this.socketRef.close();
-        while (this.socketRef.readyState !== WebSocket.CLOSED) {
-          console.log("closing");
-          this.socketRef.close();
-          await new Promise(resolve => setTimeout(resolve, 50)); // Small delay to wait for closure
-        }
-
-        // Reset state
-        this.socketRef = null;
+        console.log("disconnect");
+        this.disconnectFromLobby(this.currentLobby);
       }
-      this.onClose();
+      const socket = this.websockets.socketFor(wsUrl);
+      // Register WebSocket event handlers
+      socket.on('open', () => this.onOpen(tournamentName), this);
+      socket.on('message', this.onMessage, this);
+      socket.on('close', this.onClose, this);
+      this.set('socketRef', socket);
+    }
+    async disconnectFromLobby(tournamentName) {
+      // Remove event handlers
+      this.socketRef.off('open', this.onOpen, this);
+      this.socketRef.off('message', this.onMessage, this);
+      this.socketRef.off('close', this.onClose, this);
+
+      // Reset WebSocket reference
+      this.socketRef = null;
+      const token = this.session.data.authenticated.access;
+      const wsUrl = `wss://localhost/ws/tournament/${tournamentName}/?token=${encodeURIComponent(token)}`;
+      this.websockets.closeSocketFor(wsUrl);
+      console.log("websocket1", this.websockets.sockets);
+
+      // Reset state or perform other cleanup as needed
+      this.currentLobby = null;
+      this.messages = [];
+      this.currentPlayers = [];
+    }
+    sendWinner(winner) {
+      const data = {
+        action: 'winner',
+        // message/start
+        winner: winner
+      };
+      this.sendMessage(data);
     }
     sendMessage(data) {
       if (this.socketRef) {
@@ -4212,7 +4267,7 @@
       const data = {
         action: 'create_or_join',
         tournament_name: tournamentName,
-        username: this.user.profile.nickname
+        nickname: this.user.profile.nickname
       };
       console.log('WebSocket connection opened:');
       this.sendMessage(data);
@@ -4222,11 +4277,97 @@
     onMessage(event) {
       console.log('WebSocket message received:', event.data);
       const parsedMessage = JSON.parse(event.data);
-      this.messages = [...this.messages, parsedMessage];
-      if (parsedMessage.message === "Player added to the tournament.") {
-        this.currentPlayers = [...this.currentPlayers, "user"];
+      switch (parsedMessage.type) {
+        case "create":
+          handleCreate(parsedMessage);
+          break;
+        case "join":
+          handleJoin(parsedMessage);
+          break;
+        case "message":
+          handleMessage(parsedMessage);
+          break;
+        case "leave":
+          handleLeave(parsedMessage);
+          break;
+        case "match":
+          handleMatch(parsedMessage);
+          break;
+        case "tournament_winner":
+          handleTournamentWinner(parsedMessage);
+          break;
+        default:
+          // Handle the default case here (if needed)
+          break;
       }
     }
+    handleCreate(parsedMessage) {
+      this.currentPlayers = parsedMessage.players;
+      const data = {
+        type: 'tournament',
+        from: 'System',
+        content: 'You created the Tournament ' + this.currentLobby
+      };
+      const newMessage = JSON.parse(data);
+      this.chat.messages = [...this.chat.messages, newMessage];
+    }
+    handleJoin(parsedMessage) {
+      this.currentPlayers = parsedMessage.players;
+      const data = {
+        type: 'tournament',
+        from: 'System',
+        content: parsedMessage.player + ' joined the Tournament!'
+      };
+      const newMessage = JSON.parse(data);
+      this.chat.messages = [...this.chat.messages, newMessage];
+    }
+    handleMessage(parsedMessage) {
+      const data = {
+        type: 'tournament',
+        from: parsedMessage.sender,
+        content: parsedMessage.message
+      };
+      const newMessage = JSON.parse(data);
+      this.chat.messages = [...this.chat.messages, newMessage];
+    }
+    handleStart(parsedMessage) {
+      const data = {
+        type: 'tournament',
+        from: 'System',
+        content: parsedMessage.message
+      };
+      const newMessage = JSON.parse(data);
+      this.chat.messages = [...this.chat.messages, newMessage];
+    }
+    handleLeave(parsedMessage) {
+      this.currentPlayers = parsedMessage.players;
+      const data = {
+        type: 'tournament',
+        from: 'System',
+        content: parsedMessage.player + ' left the Tournament!'
+      };
+      const newMessage = JSON.parse(data);
+      this.chat.messages = [...this.chat.messages, newMessage];
+    }
+    handleMatch(parsedMessage) {
+      const opponent = parsedMessage.player1;
+      if (parsedMessage.player1 === this.user.profile.nickname) opponent = parsedMessage.player2;
+      const data = {
+        type: 'tournament',
+        from: 'System',
+        content: "Get ready! Your next game is against " + opponent + " and it starts in just 20 seconds!"
+      };
+      const newMessage = JSON.parse(data);
+      this.chat.messages = [...this.chat.messages, newMessage];
+      const roomdata = {
+        roomname: parsedMessage.room,
+        player1: parsedMessage.player1,
+        player2: parsedMessage.player2
+      };
+      this.gameData.setGameData("tournament", roomdata);
+      this.router.transitionTo('pong-game');
+    }
+    handleTournamentWinner(parsedMessage) {}
     onClose(event) {
       console.log('WebSocket connection closed:', event);
       this.currentLobby = null;
@@ -4246,19 +4387,17 @@
     enumerable: true,
     writable: true,
     initializer: null
-  }), _descriptor4 = _applyDecoratedDescriptor(_class.prototype, "currentLobby", [_tracking.tracked], {
+  }), _descriptor4 = _applyDecoratedDescriptor(_class.prototype, "chat", [_service.inject], {
+    configurable: true,
+    enumerable: true,
+    writable: true,
+    initializer: null
+  }), _descriptor5 = _applyDecoratedDescriptor(_class.prototype, "currentLobby", [_tracking.tracked], {
     configurable: true,
     enumerable: true,
     writable: true,
     initializer: function () {
       return null;
-    }
-  }), _descriptor5 = _applyDecoratedDescriptor(_class.prototype, "messages", [_tracking.tracked], {
-    configurable: true,
-    enumerable: true,
-    writable: true,
-    initializer: function () {
-      return [];
     }
   }), _descriptor6 = _applyDecoratedDescriptor(_class.prototype, "currentPlayers", [_tracking.tracked], {
     configurable: true,
@@ -4529,11 +4668,11 @@
   0; //eaimeta@70e063a35619d71f0,"@ember/template-factory"eaimeta@70e063a35619d71f
   var _default = _exports.default = (0, _templateFactory.createTemplateFactory)(
   /*
-    <PongGame @gameType={{this.model.gameType}} @roomData={{this.model.roomData}} />
+    <PongGame />
   */
   {
-    "id": "Zi00vfEc",
-    "block": "[[[8,[39,0],null,[[\"@gameType\",\"@roomData\"],[[30,0,[\"model\",\"gameType\"]],[30,0,[\"model\",\"roomData\"]]]],null]],[],false,[\"pong-game\"]]",
+    "id": "rI24dgfT",
+    "block": "[[[8,[39,0],null,null,null]],[],false,[\"pong-game\"]]",
     "moduleName": "myapp/templates/pong-game.hbs",
     "isStrictMode": false
   });
@@ -4555,8 +4694,8 @@
   			<UserListTournament/>
   		</div>
   		<div class="button-container col-5">
-  		<button class="nav-button start" type="button" >Start Tournament</button>
-  		<button class="nav-button cancel" type="button" {{on "click" this.tournament.disconnectFromLobby}}>Leave</button> 
+  		<button class="nav-button start" type="button" {{on "click" (fn this.tournament.startTournament)}}>Start Tournament</button>
+  		<button class="nav-button cancel" type="button" {{on "click" (fn this.tournament.disconnectFromLobby this.user.profile.nickname)}}>Leave</button> 
   		</div>
   	{{else}}
   		<div class="d-flex justify-content-center align-items-center">
@@ -4572,8 +4711,8 @@
   </div>
   */
   {
-    "id": "rVVV0+l6",
-    "block": "[[[10,0],[14,0,\"container-fluid row\"],[12],[1,\"\\n\"],[41,[30,0,[\"tournament\",\"currentLobby\"]],[[[1,\"\\t\\t\"],[10,0],[14,0,\"col-7\"],[12],[1,\"\\n\\t\\t\\t\"],[10,\"h2\"],[14,0,\"points center\"],[12],[1,\"👥 1/10\"],[13],[1,\"\\n\\t\\t\\t\"],[8,[39,3],null,null,null],[1,\"\\n\\t\\t\"],[13],[1,\"\\n\\t\\t\"],[10,0],[14,0,\"button-container col-5\"],[12],[1,\"\\n\\t\\t\"],[10,\"button\"],[14,0,\"nav-button start\"],[14,4,\"button\"],[12],[1,\"Start Tournament\"],[13],[1,\"\\n\\t\\t\"],[11,\"button\"],[24,0,\"nav-button cancel\"],[24,4,\"button\"],[4,[38,5],[\"click\",[30,0,[\"tournament\",\"disconnectFromLobby\"]]],null],[12],[1,\"Leave\"],[13],[1,\" \\n\\t\\t\"],[13],[1,\"\\n\"]],[]],[[[1,\"\\t\\t\"],[10,0],[14,0,\"d-flex justify-content-center align-items-center\"],[12],[1,\"\\n\\t\\t\\t\"],[11,\"button\"],[24,0,\"nav-button mt-5\"],[24,4,\"button\"],[4,[38,5],[\"click\",[28,[37,6],[[30,0,[\"tournament\",\"connectToLobby\"]],[30,0,[\"user\",\"profile\",\"nickname\"]]],null]],null],[12],[1,\"\\n\\t\\t\\tCreate Tournament\\n\\t\\t\\t\"],[13],[1,\"\\n\\t\\t\\t\"],[13],[1,\"\\n\"]],[]]],[13]],[],false,[\"div\",\"if\",\"h2\",\"user-list-tournament\",\"button\",\"on\",\"fn\"]]",
+    "id": "3KfjPbdU",
+    "block": "[[[10,0],[14,0,\"container-fluid row\"],[12],[1,\"\\n\"],[41,[30,0,[\"tournament\",\"currentLobby\"]],[[[1,\"\\t\\t\"],[10,0],[14,0,\"col-7\"],[12],[1,\"\\n\\t\\t\\t\"],[10,\"h2\"],[14,0,\"points center\"],[12],[1,\"👥 1/10\"],[13],[1,\"\\n\\t\\t\\t\"],[8,[39,3],null,null,null],[1,\"\\n\\t\\t\"],[13],[1,\"\\n\\t\\t\"],[10,0],[14,0,\"button-container col-5\"],[12],[1,\"\\n\\t\\t\"],[11,\"button\"],[24,0,\"nav-button start\"],[24,4,\"button\"],[4,[38,5],[\"click\",[28,[37,6],[[30,0,[\"tournament\",\"startTournament\"]]],null]],null],[12],[1,\"Start Tournament\"],[13],[1,\"\\n\\t\\t\"],[11,\"button\"],[24,0,\"nav-button cancel\"],[24,4,\"button\"],[4,[38,5],[\"click\",[28,[37,6],[[30,0,[\"tournament\",\"disconnectFromLobby\"]],[30,0,[\"user\",\"profile\",\"nickname\"]]],null]],null],[12],[1,\"Leave\"],[13],[1,\" \\n\\t\\t\"],[13],[1,\"\\n\"]],[]],[[[1,\"\\t\\t\"],[10,0],[14,0,\"d-flex justify-content-center align-items-center\"],[12],[1,\"\\n\\t\\t\\t\"],[11,\"button\"],[24,0,\"nav-button mt-5\"],[24,4,\"button\"],[4,[38,5],[\"click\",[28,[37,6],[[30,0,[\"tournament\",\"connectToLobby\"]],[30,0,[\"user\",\"profile\",\"nickname\"]]],null]],null],[12],[1,\"\\n\\t\\t\\tCreate Tournament\\n\\t\\t\\t\"],[13],[1,\"\\n\\t\\t\\t\"],[13],[1,\"\\n\"]],[]]],[13]],[],false,[\"div\",\"if\",\"h2\",\"user-list-tournament\",\"button\",\"on\",\"fn\"]]",
     "moduleName": "myapp/templates/tournament.hbs",
     "isStrictMode": false
   });
