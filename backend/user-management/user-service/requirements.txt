@@ -10,3 +10,4 @@ Werkzeug==2.3.7
 pyOpenSSL==23.2.0
 Pillow==11.0.0
 setuptools==75.3.0
+channels_redis==4.0.0

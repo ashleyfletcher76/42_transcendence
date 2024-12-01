@@ -1,6 +1,10 @@
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
+import redis
+import json
+from django.db.models import Q
+from ..models import UserProfile
 
 @api_view(['PUT'])
 @permission_classes([IsAuthenticated])
@@ -10,13 +14,44 @@ def update_profile(request):
 	data = request.data
 
 	updated_fields = []
+	old_nickname = profile.nickname
+
+	# initialize Redis client
+	try:
+		redis_client = redis.StrictRedis(host="redis", port=6379, db=0)
+		redis_client.ping()
+	except redis.ConnectionError:
+		redis_client = None
 
 	# update nickname
 	new_nickname = data.get("nickname")
 	if new_nickname:
 		if new_nickname != profile.nickname:
+			# validate nickname uniqueness
+			if UserProfile.objects.filter(Q(nickname=new_nickname)).exists():
+				return Response(
+					{"success": False, "message": "Nickname is already taken."},
+					status=400,
+				)
+
 			profile.nickname = new_nickname
 			updated_fields.append("nickname")
+
+			# publish nickname change event
+			if redis_client:
+				try:
+					redis_client.publish(
+						"nicknames_updates",
+						json.dumps(
+							{
+								"user_id": user.id,
+								"old_nickname": old_nickname,
+								"new_nickname": new_nickname,
+							}
+						),
+					)
+				except redis.ConnectionError as e:
+					print(f"Warning: Redis publishing failed - {str(e)}")
 
 	# update avatar
 	new_avatar = data.get("avatar")
@@ -28,20 +63,17 @@ def update_profile(request):
 	if updated_fields:
 		profile.save()
 
-		# generate the response
+		# generate response
 		updated_fields_str = " and ".join(updated_fields)
 		return Response(
 			{
 				"success": True,
-				"message": f"{updated_fields_str.capitalize()} updated successfully."
+				"message": f"{updated_fields_str.capitalize()} updated successfully.",
 			},
 			status=200,
 		)
 
 	return Response(
-		{
-			"success": False,
-			"message": "No changes detected in the request."
-		},
+		{"success": False, "message": "No changes detected in the request."},
 		status=400,
 	)

@@ -79,7 +79,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "config.wsgi.application"
 
-
 # Default database setup for production and development
 DATABASES = {
     "default": {
