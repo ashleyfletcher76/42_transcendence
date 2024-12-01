@@ -16,7 +16,7 @@ class AddFriendView(APIView):
 				)
 
 		try:
-			target_user = UserProfile.objects.get(display_name=target_username)
+			target_user = UserProfile.objects.get(nickname=target_username)
 			user_profile = request.user.profile
 
 			if target_user == user_profile:

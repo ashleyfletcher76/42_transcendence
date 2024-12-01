@@ -23,9 +23,11 @@ class LoginView(APIView):
 			# verifed, now extract
 			user_data = response.json()
 			user_id = user_data["user_id"]
+			nickname = user_data["nickname"]
 
 			refresh = RefreshToken()
 			refresh["user_id"] = user_id
+			refresh["nickname"] = nickname
 			access_token = refresh.access_token
 
 			print("Tokens created for user_id:", user_id)
@@ -33,7 +35,8 @@ class LoginView(APIView):
 				{
 					"refresh": str(refresh),
 					"access": str(access_token),
-					"user_id": user_id
+					"user_id": user_id,
+					"nickname": nickname
 				},
 				status=status.HTTP_200_OK
 			)

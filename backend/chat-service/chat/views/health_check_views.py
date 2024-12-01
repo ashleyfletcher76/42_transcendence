@@ -6,15 +6,6 @@ import logging
 
 logger = logging.getLogger(__name__)
 
-class SendMessageView(APIView):
-    def post(self, request):
-        return Response({"message": "Message sent!"})
-
-
-class ChatHistoryView(APIView):
-    def get(self, request):
-        return Response({"chat_history": []})
-
 def health_check(request):
     try:
         connection.ensure_connection()

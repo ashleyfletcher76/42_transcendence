@@ -1761,7 +1761,7 @@
             🚫
           </button>
         </div>
-        <h2 class="points">{{@selectedUser.points}}🏆</h2>
+        <h2 class="points">{{@selectedUser.trophies}}🏆</h2>
       </div>
   
       {{!-- Second row of profile details --}}
@@ -1783,8 +1783,8 @@
   </div>
   */
   {
-    "id": "wwC6PAvY",
-    "block": "[[[10,0],[14,0,\"container-fluid row fill p-2\"],[12],[1,\"\\n\"],[1,\"  \"],[10,0],[14,0,\"col center no-padding position-relative\"],[12],[1,\"\\n    \"],[10,\"button\"],[14,0,\"btn-close top-left\"],[15,\"onclick\",[30,0,[\"onCloseClick\"]]],[14,4,\"button\"],[12],[13],[1,\"\\n    \"],[10,\"img\"],[15,\"src\",[30,1,[\"avatar\"]]],[14,\"alt\",\"Profile Picture\"],[14,0,\"profile-pic\"],[12],[13],[1,\"\\n  \"],[13],[1,\"\\n\\n\"],[1,\"  \"],[10,0],[14,0,\"col-10\"],[12],[1,\"\\n\"],[1,\"    \"],[10,0],[14,0,\"profile-details\"],[12],[1,\"\\n      \"],[10,\"h2\"],[14,0,\"name\"],[12],[1,[30,1,[\"nickname\"]]],[13],[1,\"\\n      \"],[10,0],[14,0,\"actions\"],[12],[1,\"\\n        \"],[11,\"button\"],[24,0,\"emoji-button info\"],[24,\"data-bs-toggle\",\"tooltip\"],[24,\"data-bs-placement\",\"top\"],[24,\"title\",\"Live Chat\"],[24,4,\"button\"],[4,[38,4],[\"click\",[30,0,[\"startLiveChat\"]]],null],[12],[1,\"\\n          💬\\n        \"],[13],[1,\"\\n        \"],[11,\"button\"],[24,0,\"emoji-button info\"],[24,\"data-bs-toggle\",\"tooltip\"],[24,\"data-bs-placement\",\"top\"],[24,\"title\",\"Play Game\"],[24,4,\"button\"],[4,[38,4],[\"click\",[30,0,[\"playGame\"]]],null],[12],[1,\"\\n          🎮\\n        \"],[13],[1,\"\\n        \"],[11,\"button\"],[24,0,\"emoji-button info\"],[24,\"data-bs-toggle\",\"tooltip\"],[24,\"data-bs-placement\",\"top\"],[24,\"title\",\"Add Friend\"],[24,4,\"button\"],[4,[38,4],[\"click\",[30,0,[\"addFriend\"]]],null],[12],[1,\"\\n          ➕\\n        \"],[13],[1,\"\\n        \"],[11,\"button\"],[24,0,\"emoji-button info\"],[24,\"data-bs-toggle\",\"tooltip\"],[24,\"data-bs-placement\",\"top\"],[24,\"title\",\"Block User\"],[24,4,\"button\"],[4,[38,4],[\"click\",[28,[37,5],[[30,0,[\"blockUser\"]],\"block\"],null]],null],[12],[1,\"\\n          🚫\\n        \"],[13],[1,\"\\n      \"],[13],[1,\"\\n      \"],[10,\"h2\"],[14,0,\"points\"],[12],[1,[30,1,[\"points\"]]],[1,\"🏆\"],[13],[1,\"\\n    \"],[13],[1,\"\\n\\n\"],[1,\"    \"],[10,0],[14,0,\"profile-details\"],[12],[1,\"\\n      \"],[10,\"h2\"],[14,0,\"info\"],[12],[1,\"Games: \"],[1,[30,1,[\"games_total\"]]],[13],[1,\"\\n      \"],[10,\"h2\"],[14,0,\"info\"],[12],[1,\"Wins: \"],[1,[30,1,[\"wins\"]]],[13],[1,\"\\n    \"],[13],[1,\"\\n\\n    \"],[10,0],[14,0,\"profile-details\"],[12],[1,\"\\n\"],[41,[30,0,[\"isOnline\"]],[[[1,\"      \"],[10,\"h2\"],[14,0,\"info\"],[12],[1,\"🟢 online\"],[13],[1,\"\\n\"]],[]],[[[1,\"      \"],[10,\"h2\"],[14,0,\"info\"],[12],[1,\"🔴 offline\"],[13],[1,\"\\n\"]],[]]],[1,\"      \"],[10,\"h2\"],[14,0,\"info\"],[12],[1,\"Losses: \"],[1,[30,1,[\"losses\"]]],[13],[1,\"\\n    \"],[13],[1,\"\\n\\n  \"],[13],[1,\"\\n\"],[13]],[\"@selectedUser\"],false,[\"div\",\"button\",\"img\",\"h2\",\"on\",\"fn\",\"if\"]]",
+    "id": "llH/TKqy",
+    "block": "[[[10,0],[14,0,\"container-fluid row fill p-2\"],[12],[1,\"\\n\"],[1,\"  \"],[10,0],[14,0,\"col center no-padding position-relative\"],[12],[1,\"\\n    \"],[10,\"button\"],[14,0,\"btn-close top-left\"],[15,\"onclick\",[30,0,[\"onCloseClick\"]]],[14,4,\"button\"],[12],[13],[1,\"\\n    \"],[10,\"img\"],[15,\"src\",[30,1,[\"avatar\"]]],[14,\"alt\",\"Profile Picture\"],[14,0,\"profile-pic\"],[12],[13],[1,\"\\n  \"],[13],[1,\"\\n\\n\"],[1,\"  \"],[10,0],[14,0,\"col-10\"],[12],[1,\"\\n\"],[1,\"    \"],[10,0],[14,0,\"profile-details\"],[12],[1,\"\\n      \"],[10,\"h2\"],[14,0,\"name\"],[12],[1,[30,1,[\"nickname\"]]],[13],[1,\"\\n      \"],[10,0],[14,0,\"actions\"],[12],[1,\"\\n        \"],[11,\"button\"],[24,0,\"emoji-button info\"],[24,\"data-bs-toggle\",\"tooltip\"],[24,\"data-bs-placement\",\"top\"],[24,\"title\",\"Live Chat\"],[24,4,\"button\"],[4,[38,4],[\"click\",[30,0,[\"startLiveChat\"]]],null],[12],[1,\"\\n          💬\\n        \"],[13],[1,\"\\n        \"],[11,\"button\"],[24,0,\"emoji-button info\"],[24,\"data-bs-toggle\",\"tooltip\"],[24,\"data-bs-placement\",\"top\"],[24,\"title\",\"Play Game\"],[24,4,\"button\"],[4,[38,4],[\"click\",[30,0,[\"playGame\"]]],null],[12],[1,\"\\n          🎮\\n        \"],[13],[1,\"\\n        \"],[11,\"button\"],[24,0,\"emoji-button info\"],[24,\"data-bs-toggle\",\"tooltip\"],[24,\"data-bs-placement\",\"top\"],[24,\"title\",\"Add Friend\"],[24,4,\"button\"],[4,[38,4],[\"click\",[30,0,[\"addFriend\"]]],null],[12],[1,\"\\n          ➕\\n        \"],[13],[1,\"\\n        \"],[11,\"button\"],[24,0,\"emoji-button info\"],[24,\"data-bs-toggle\",\"tooltip\"],[24,\"data-bs-placement\",\"top\"],[24,\"title\",\"Block User\"],[24,4,\"button\"],[4,[38,4],[\"click\",[28,[37,5],[[30,0,[\"blockUser\"]],\"block\"],null]],null],[12],[1,\"\\n          🚫\\n        \"],[13],[1,\"\\n      \"],[13],[1,\"\\n      \"],[10,\"h2\"],[14,0,\"points\"],[12],[1,[30,1,[\"trophies\"]]],[1,\"🏆\"],[13],[1,\"\\n    \"],[13],[1,\"\\n\\n\"],[1,\"    \"],[10,0],[14,0,\"profile-details\"],[12],[1,\"\\n      \"],[10,\"h2\"],[14,0,\"info\"],[12],[1,\"Games: \"],[1,[30,1,[\"games_total\"]]],[13],[1,\"\\n      \"],[10,\"h2\"],[14,0,\"info\"],[12],[1,\"Wins: \"],[1,[30,1,[\"wins\"]]],[13],[1,\"\\n    \"],[13],[1,\"\\n\\n    \"],[10,0],[14,0,\"profile-details\"],[12],[1,\"\\n\"],[41,[30,0,[\"isOnline\"]],[[[1,\"      \"],[10,\"h2\"],[14,0,\"info\"],[12],[1,\"🟢 online\"],[13],[1,\"\\n\"]],[]],[[[1,\"      \"],[10,\"h2\"],[14,0,\"info\"],[12],[1,\"🔴 offline\"],[13],[1,\"\\n\"]],[]]],[1,\"      \"],[10,\"h2\"],[14,0,\"info\"],[12],[1,\"Losses: \"],[1,[30,1,[\"losses\"]]],[13],[1,\"\\n    \"],[13],[1,\"\\n\\n  \"],[13],[1,\"\\n\"],[13]],[\"@selectedUser\"],false,[\"div\",\"button\",\"img\",\"h2\",\"on\",\"fn\",\"if\"]]",
     "moduleName": "myapp/components/profile-other.hbs",
     "isStrictMode": false
   });
@@ -1886,7 +1886,7 @@
           {{/if}}
           <button class="logout-button" type="button" {{on "click" this.logout}}>Logout</button>
         {{/if}}
-        <h2 class="points info">{{this.user.profile.points}} 🏆</h2>
+        <h2 class="points info">{{this.user.profile.trophies}} 🏆</h2>
       </div>
   
       <!-- Second row of profile details -->
@@ -1909,8 +1909,8 @@
   
   */
   {
-    "id": "FP3Czx9h",
-    "block": "[[[10,0],[14,0,\"container-fluid row fill p-2\"],[12],[1,\"\\n  \"],[3,\" Profile picture column (1 part) \"],[1,\"\\n  \"],[10,0],[14,0,\"col center\"],[12],[1,\"\\n    \"],[10,\"img\"],[15,\"src\",[30,0,[\"user\",\"profile\",\"avatar\"]]],[14,\"alt\",\"Profile Picture\"],[14,0,\"profile-pic\"],[12],[13],[1,\"\\n  \"],[13],[1,\"\\n\\n  \"],[3,\" Profile details column (3 parts) \"],[1,\"\\n  \"],[10,0],[14,0,\"col-10\"],[12],[1,\"\\n    \"],[3,\" First row of profile details \"],[1,\"\\n    \"],[10,0],[14,0,\"profile-details\"],[12],[1,\"\\n\"],[41,[30,0,[\"isAuthenticated\"]],[[[1,\"        \"],[41,[30,0,[\"user\",\"profile\"]],[[[1,\" \"],[3,\" Access the user directly from the service \"],[1,\"\\n          \"],[10,\"h2\"],[14,0,\"name\"],[12],[1,[30,0,[\"user\",\"profile\",\"nickname\"]]],[13],[1,\"\\n          \"],[8,[39,4],null,null,null],[1,\"\\n\"]],[]],[[[1,\"          \"],[10,2],[12],[1,\"Loading user...\"],[13],[1,\" \"],[3,\" Or another fallback message \"],[1,\"\\n\"]],[]]],[1,\"        \"],[11,\"button\"],[24,0,\"logout-button\"],[24,4,\"button\"],[4,[38,7],[\"click\",[30,0,[\"logout\"]]],null],[12],[1,\"Logout\"],[13],[1,\"\\n\"]],[]],null],[1,\"      \"],[10,\"h2\"],[14,0,\"points info\"],[12],[1,[30,0,[\"user\",\"profile\",\"points\"]]],[1,\" 🏆\"],[13],[1,\"\\n    \"],[13],[1,\"\\n\\n    \"],[3,\" Second row of profile details \"],[1,\"\\n    \"],[10,0],[14,0,\"profile-details\"],[12],[1,\"\\n      \"],[10,\"h2\"],[14,0,\"info\"],[12],[1,\"Games: \"],[1,[30,0,[\"user\",\"profile\",\"games_total\"]]],[13],[1,\"\\n      \"],[10,\"h2\"],[14,0,\"info\"],[12],[1,\"Wins: \"],[1,[30,0,[\"user\",\"profile\",\"wins\"]]],[13],[1,\"\\n    \"],[13],[1,\"\\n\\n    \"],[10,0],[14,0,\"profile-details\"],[12],[1,\"\\n\"],[41,[30,0,[\"isOnline\"]],[[[1,\"        \"],[10,\"h2\"],[14,0,\"info\"],[12],[1,\"🟢 online\"],[13],[1,\"\\n\"]],[]],[[[1,\"        \"],[10,\"h2\"],[14,0,\"info\"],[12],[1,\"🔴 offline\"],[13],[1,\"\\n\"]],[]]],[1,\"      \"],[10,\"h2\"],[14,0,\"info\"],[12],[1,\"Losses: \"],[1,[30,0,[\"user\",\"profile\",\"losses\"]]],[13],[1,\"\\n    \"],[13],[1,\"\\n  \"],[13],[1,\"\\n\"],[13],[1,\"\\n\\n\"]],[],false,[\"div\",\"img\",\"if\",\"h2\",\"modal-profile\",\"p\",\"button\",\"on\"]]",
+    "id": "DNR9Sl7i",
+    "block": "[[[10,0],[14,0,\"container-fluid row fill p-2\"],[12],[1,\"\\n  \"],[3,\" Profile picture column (1 part) \"],[1,\"\\n  \"],[10,0],[14,0,\"col center\"],[12],[1,\"\\n    \"],[10,\"img\"],[15,\"src\",[30,0,[\"user\",\"profile\",\"avatar\"]]],[14,\"alt\",\"Profile Picture\"],[14,0,\"profile-pic\"],[12],[13],[1,\"\\n  \"],[13],[1,\"\\n\\n  \"],[3,\" Profile details column (3 parts) \"],[1,\"\\n  \"],[10,0],[14,0,\"col-10\"],[12],[1,\"\\n    \"],[3,\" First row of profile details \"],[1,\"\\n    \"],[10,0],[14,0,\"profile-details\"],[12],[1,\"\\n\"],[41,[30,0,[\"isAuthenticated\"]],[[[1,\"        \"],[41,[30,0,[\"user\",\"profile\"]],[[[1,\" \"],[3,\" Access the user directly from the service \"],[1,\"\\n          \"],[10,\"h2\"],[14,0,\"name\"],[12],[1,[30,0,[\"user\",\"profile\",\"nickname\"]]],[13],[1,\"\\n          \"],[8,[39,4],null,null,null],[1,\"\\n\"]],[]],[[[1,\"          \"],[10,2],[12],[1,\"Loading user...\"],[13],[1,\" \"],[3,\" Or another fallback message \"],[1,\"\\n\"]],[]]],[1,\"        \"],[11,\"button\"],[24,0,\"logout-button\"],[24,4,\"button\"],[4,[38,7],[\"click\",[30,0,[\"logout\"]]],null],[12],[1,\"Logout\"],[13],[1,\"\\n\"]],[]],null],[1,\"      \"],[10,\"h2\"],[14,0,\"points info\"],[12],[1,[30,0,[\"user\",\"profile\",\"trophies\"]]],[1,\" 🏆\"],[13],[1,\"\\n    \"],[13],[1,\"\\n\\n    \"],[3,\" Second row of profile details \"],[1,\"\\n    \"],[10,0],[14,0,\"profile-details\"],[12],[1,\"\\n      \"],[10,\"h2\"],[14,0,\"info\"],[12],[1,\"Games: \"],[1,[30,0,[\"user\",\"profile\",\"games_total\"]]],[13],[1,\"\\n      \"],[10,\"h2\"],[14,0,\"info\"],[12],[1,\"Wins: \"],[1,[30,0,[\"user\",\"profile\",\"wins\"]]],[13],[1,\"\\n    \"],[13],[1,\"\\n\\n    \"],[10,0],[14,0,\"profile-details\"],[12],[1,\"\\n\"],[41,[30,0,[\"isOnline\"]],[[[1,\"        \"],[10,\"h2\"],[14,0,\"info\"],[12],[1,\"🟢 online\"],[13],[1,\"\\n\"]],[]],[[[1,\"        \"],[10,\"h2\"],[14,0,\"info\"],[12],[1,\"🔴 offline\"],[13],[1,\"\\n\"]],[]]],[1,\"      \"],[10,\"h2\"],[14,0,\"info\"],[12],[1,\"Losses: \"],[1,[30,0,[\"user\",\"profile\",\"losses\"]]],[13],[1,\"\\n    \"],[13],[1,\"\\n  \"],[13],[1,\"\\n\"],[13],[1,\"\\n\\n\"]],[],false,[\"div\",\"img\",\"if\",\"h2\",\"modal-profile\",\"p\",\"button\",\"on\"]]",
     "moduleName": "myapp/components/profile-own.hbs",
     "isStrictMode": false
   });
@@ -2213,6 +2213,48 @@
   }), _applyDecoratedDescriptor(_class.prototype, "fetchTournaments", [_object.action], Object.getOwnPropertyDescriptor(_class.prototype, "fetchTournaments"), _class.prototype), _class);
   (0, _component.setComponentTemplate)(__COLOCATED_TEMPLATE__, TournamentListComponent);
 });
+;define("myapp/components/user-list-tournament", ["exports", "@ember/component", "@glimmer/component", "@ember/object", "@ember/service", "@ember/template-factory"], function (_exports, _component, _component2, _object, _service, _templateFactory) {
+  "use strict";
+
+  Object.defineProperty(_exports, "__esModule", {
+    value: true
+  });
+  _exports.default = void 0;
+  var _class, _descriptor;
+  0; //eaimeta@70e063a35619d71f0,"@glimmer/component",0,"@ember/object",0,"@ember/service",0,"@ember/template-factory",0,"@ember/component"eaimeta@70e063a35619d71f
+  function _initializerDefineProperty(e, i, r, l) { r && Object.defineProperty(e, i, { enumerable: r.enumerable, configurable: r.configurable, writable: r.writable, value: r.initializer ? r.initializer.call(l) : void 0 }); }
+  function _defineProperty(e, r, t) { return (r = _toPropertyKey(r)) in e ? Object.defineProperty(e, r, { value: t, enumerable: !0, configurable: !0, writable: !0 }) : e[r] = t, e; }
+  function _toPropertyKey(t) { var i = _toPrimitive(t, "string"); return "symbol" == typeof i ? i : i + ""; }
+  function _toPrimitive(t, r) { if ("object" != typeof t || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != typeof i) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
+  function _applyDecoratedDescriptor(i, e, r, n, l) { var a = {}; return Object.keys(n).forEach(function (i) { a[i] = n[i]; }), a.enumerable = !!a.enumerable, a.configurable = !!a.configurable, ("value" in a || a.initializer) && (a.writable = !0), a = r.slice().reverse().reduce(function (r, n) { return n(i, e, r) || r; }, a), l && void 0 !== a.initializer && (a.value = a.initializer ? a.initializer.call(l) : void 0, a.initializer = void 0), void 0 === a.initializer ? (Object.defineProperty(i, e, a), null) : a; }
+  function _initializerWarningHelper(r, e) { throw Error("Decorating class property failed. Please ensure that transform-class-properties is enabled and runs after the decorators transform."); }
+  const __COLOCATED_TEMPLATE__ = (0, _templateFactory.createTemplateFactory)(
+  /*
+    <div class="scrollable-list middle-scroll">
+      {{#each this.tournament.currentPlayers as |user|}}
+          <User @user={{user}} @selectUser={{null}} />
+      {{/each}}
+  </div>
+  */
+  {
+    "id": "P2DdJXcY",
+    "block": "[[[10,0],[14,0,\"scrollable-list middle-scroll\"],[12],[1,\"\\n\"],[42,[28,[37,2],[[28,[37,2],[[30,0,[\"tournament\",\"currentPlayers\"]]],null]],null],null,[[[1,\"        \"],[8,[39,3],null,[[\"@user\",\"@selectUser\"],[[30,1],null]],null],[1,\"\\n\"]],[1]],null],[13]],[\"user\"],false,[\"div\",\"each\",\"-track-array\",\"user\"]]",
+    "moduleName": "myapp/components/user-list-tournament.hbs",
+    "isStrictMode": false
+  });
+  let UserListComponent = _exports.default = (_class = class UserListComponent extends _component2.default {
+    constructor(...args) {
+      super(...args);
+      _initializerDefineProperty(this, "tournament", _descriptor, this);
+    }
+  }, _descriptor = _applyDecoratedDescriptor(_class.prototype, "tournament", [_service.inject], {
+    configurable: true,
+    enumerable: true,
+    writable: true,
+    initializer: null
+  }), _class);
+  (0, _component.setComponentTemplate)(__COLOCATED_TEMPLATE__, UserListComponent);
+});
 ;define("myapp/components/user-list", ["exports", "@ember/component", "@glimmer/component", "@glimmer/tracking", "@ember/object", "@ember/template-factory"], function (_exports, _component, _component2, _tracking, _object, _templateFactory) {
   "use strict";
 
@@ -2250,7 +2292,7 @@
     }
     async fetchUsers() {
       try {
-        const response = await fetch('/api/users.json'); // Simulating API call
+        const response = await fetch('/users/profile-list'); // Simulating API call
         if (!response.ok) {
           throw new Error('Network response was not ok');
         }
@@ -2294,14 +2336,14 @@
           {{else}}
           <h2 class="info">{{@user.nickname}} 🔴</h2>
           {{/if}}
-          <h2 class="points info">{{@user.points}} 🏆</h2>        
+          <h2 class="points info">{{@user.trophies}} 🏆</h2>        
       </div>
   </div>
   
   */
   {
-    "id": "ANw/cM/6",
-    "block": "[[[10,0],[14,0,\"user-card\"],[14,\"role\",\"button\"],[15,\"onclick\",[30,0,[\"select\"]]],[12],[1,\"\\n    \"],[10,\"img\"],[15,\"src\",[30,1,[\"avatar\"]]],[14,\"alt\",\"Profile Picture\"],[14,0,\"user-pic user\"],[12],[13],[1,\"\\n    \"],[10,0],[14,0,\"profile-details\"],[12],[1,\"\\n\"],[41,[30,0,[\"isOnline\"]],[[[1,\"        \"],[10,\"h2\"],[14,0,\"info\"],[12],[1,[30,1,[\"nickname\"]]],[1,\" 🟢\"],[13],[1,\"\\n\"]],[]],[[[1,\"        \"],[10,\"h2\"],[14,0,\"info\"],[12],[1,[30,1,[\"nickname\"]]],[1,\" 🔴\"],[13],[1,\"\\n\"]],[]]],[1,\"        \"],[10,\"h2\"],[14,0,\"points info\"],[12],[1,[30,1,[\"points\"]]],[1,\" 🏆\"],[13],[1,\"        \\n    \"],[13],[1,\"\\n\"],[13],[1,\"\\n\"]],[\"@user\"],false,[\"div\",\"img\",\"if\",\"h2\"]]",
+    "id": "KFUQYBB5",
+    "block": "[[[10,0],[14,0,\"user-card\"],[14,\"role\",\"button\"],[15,\"onclick\",[30,0,[\"select\"]]],[12],[1,\"\\n    \"],[10,\"img\"],[15,\"src\",[30,1,[\"avatar\"]]],[14,\"alt\",\"Profile Picture\"],[14,0,\"user-pic user\"],[12],[13],[1,\"\\n    \"],[10,0],[14,0,\"profile-details\"],[12],[1,\"\\n\"],[41,[30,0,[\"isOnline\"]],[[[1,\"        \"],[10,\"h2\"],[14,0,\"info\"],[12],[1,[30,1,[\"nickname\"]]],[1,\" 🟢\"],[13],[1,\"\\n\"]],[]],[[[1,\"        \"],[10,\"h2\"],[14,0,\"info\"],[12],[1,[30,1,[\"nickname\"]]],[1,\" 🔴\"],[13],[1,\"\\n\"]],[]]],[1,\"        \"],[10,\"h2\"],[14,0,\"points info\"],[12],[1,[30,1,[\"trophies\"]]],[1,\" 🏆\"],[13],[1,\"        \\n    \"],[13],[1,\"\\n\"],[13],[1,\"\\n\"]],[\"@user\"],false,[\"div\",\"img\",\"if\",\"h2\"]]",
     "moduleName": "myapp/components/user.hbs",
     "isStrictMode": false
   });
@@ -2363,7 +2405,7 @@
     value: true
   });
   _exports.default = void 0;
-  var _class, _descriptor, _descriptor2, _descriptor3, _descriptor4, _descriptor5, _descriptor6;
+  var _class, _descriptor, _descriptor2, _descriptor3, _descriptor4, _descriptor5;
   0; //eaimeta@70e063a35619d71f0,"@ember/controller",0,"@glimmer/tracking",0,"@ember/object",0,"@ember/service"eaimeta@70e063a35619d71f
   function _initializerDefineProperty(e, i, r, l) { r && Object.defineProperty(e, i, { enumerable: r.enumerable, configurable: r.configurable, writable: r.writable, value: r.initializer ? r.initializer.call(l) : void 0 }); }
   function _defineProperty(e, r, t) { return (r = _toPropertyKey(r)) in e ? Object.defineProperty(e, r, { value: t, enumerable: !0, configurable: !0, writable: !0 }) : e[r] = t, e; }
@@ -2381,7 +2423,6 @@
       _initializerDefineProperty(this, "session", _descriptor3, this);
       _initializerDefineProperty(this, "router", _descriptor4, this);
       _initializerDefineProperty(this, "user", _descriptor5, this);
-      _initializerDefineProperty(this, "tournament", _descriptor6, this);
     }
     get activeRoute() {
       return this.router.currentRouteName;
@@ -2390,7 +2431,28 @@
     // Action to handle the user selection
     selectUser(user) {
       console.log('Selected User:', user);
-      this.selectedUser = user; // Update the selected user
+      this.fetchUserData(user.nickname);
+    }
+    async fetchUserData(nickname) {
+      try {
+        const response = await fetch('/users/profile-info', {
+          method: 'POST',
+          headers: {
+            Authorization: `Bearer ${this.session.data.authenticated.access}`,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            nickname
+          })
+        });
+        if (!response.ok) {
+          throw new Error('Failed to fetch user profile');
+        }
+        const data = await response.json();
+        this.selectUser = data;
+      } catch (error) {
+        console.error('Error fetching user profile:', error);
+      }
     }
   }, _descriptor = _applyDecoratedDescriptor(_class.prototype, "selectedUser", [_tracking.tracked], {
     configurable: true,
@@ -2417,11 +2479,6 @@
     writable: true,
     initializer: null
   }), _descriptor5 = _applyDecoratedDescriptor(_class.prototype, "user", [_service.inject], {
-    configurable: true,
-    enumerable: true,
-    writable: true,
-    initializer: null
-  }), _descriptor6 = _applyDecoratedDescriptor(_class.prototype, "tournament", [_service.inject], {
     configurable: true,
     enumerable: true,
     writable: true,
@@ -2548,7 +2605,7 @@
       event.preventDefault();
       try {
         await this.session.authenticate('authenticator:token', this.username, this.password);
-        this.fetchUserData(this.username);
+        this.fetchUserData("");
         console.log(this.session.data);
         console.log(this.session.data.authenticated.access);
         this.router.transitionTo('choose-game');
@@ -2574,15 +2631,15 @@
 
         // Optionally, log in the user directly after registration
         await this.session.authenticate('authenticator:token', this.username, this.password);
-        this.fetchUserData(this.username);
+        this.fetchUserData("");
         this.router.transitionTo('choose-game');
       } catch (error) {
         this.error = error.message || 'An error occurred during registration';
       }
     }
-    async fetchUserData(username) {
+    async fetchUserData() {
       try {
-        const response = await fetch('/api/profile.json', {
+        const response = await fetch('/users/users/profile-info/', {
           method: 'GET',
           headers: {
             Authorization: `Bearer ${this.session.data.authenticated.access}`,
@@ -2601,6 +2658,29 @@
         console.error('Error fetching user profile:', error);
       }
     }
+
+    // async fetchUserData(nickname) {
+    //   try {
+    //     const response = await fetch('/users/profile-info', {
+    //       method: 'POST', 
+    //       headers: {
+    //         Authorization: `Bearer ${this.session.data.authenticated.access}`, 
+    //         'Content-Type': 'application/json',
+    //       },
+    //       body: JSON.stringify({ nickname }) 
+    //     });
+
+    //     if (!response.ok) {
+    //       throw new Error('Failed to fetch user profile');
+    //     }
+    //     const data = await response.json();
+    //     console.log(data);
+    //     this.user.setProfile(data); // Store user data for use in the template
+    //     console.log(this.user.profile);
+    //   } catch (error) {
+    //     console.error('Error fetching user profile:', error);
+    //   }
+    // }
   }, _descriptor = _applyDecoratedDescriptor(_class.prototype, "session", [_service.inject], {
     configurable: true,
     enumerable: true,
@@ -2632,6 +2712,39 @@
     writable: true,
     initializer: null
   }), _applyDecoratedDescriptor(_class.prototype, "update", [_object.action], Object.getOwnPropertyDescriptor(_class.prototype, "update"), _class.prototype), _applyDecoratedDescriptor(_class.prototype, "login", [_object.action], Object.getOwnPropertyDescriptor(_class.prototype, "login"), _class.prototype), _applyDecoratedDescriptor(_class.prototype, "register", [_object.action], Object.getOwnPropertyDescriptor(_class.prototype, "register"), _class.prototype), _class);
+});
+;define("myapp/controllers/tournament", ["exports", "@ember/controller", "@ember/service"], function (_exports, _controller, _service) {
+  "use strict";
+
+  Object.defineProperty(_exports, "__esModule", {
+    value: true
+  });
+  _exports.default = void 0;
+  var _class, _descriptor, _descriptor2;
+  0; //eaimeta@70e063a35619d71f0,"@ember/controller",0,"@ember/service"eaimeta@70e063a35619d71f
+  function _initializerDefineProperty(e, i, r, l) { r && Object.defineProperty(e, i, { enumerable: r.enumerable, configurable: r.configurable, writable: r.writable, value: r.initializer ? r.initializer.call(l) : void 0 }); }
+  function _defineProperty(e, r, t) { return (r = _toPropertyKey(r)) in e ? Object.defineProperty(e, r, { value: t, enumerable: !0, configurable: !0, writable: !0 }) : e[r] = t, e; }
+  function _toPropertyKey(t) { var i = _toPrimitive(t, "string"); return "symbol" == typeof i ? i : i + ""; }
+  function _toPrimitive(t, r) { if ("object" != typeof t || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != typeof i) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
+  function _applyDecoratedDescriptor(i, e, r, n, l) { var a = {}; return Object.keys(n).forEach(function (i) { a[i] = n[i]; }), a.enumerable = !!a.enumerable, a.configurable = !!a.configurable, ("value" in a || a.initializer) && (a.writable = !0), a = r.slice().reverse().reduce(function (r, n) { return n(i, e, r) || r; }, a), l && void 0 !== a.initializer && (a.value = a.initializer ? a.initializer.call(l) : void 0, a.initializer = void 0), void 0 === a.initializer ? (Object.defineProperty(i, e, a), null) : a; }
+  function _initializerWarningHelper(r, e) { throw Error("Decorating class property failed. Please ensure that transform-class-properties is enabled and runs after the decorators transform."); }
+  let TournamentController = _exports.default = (_class = class TournamentController extends _controller.default {
+    constructor(...args) {
+      super(...args);
+      _initializerDefineProperty(this, "tournament", _descriptor, this);
+      _initializerDefineProperty(this, "user", _descriptor2, this);
+    }
+  }, _descriptor = _applyDecoratedDescriptor(_class.prototype, "tournament", [_service.inject], {
+    configurable: true,
+    enumerable: true,
+    writable: true,
+    initializer: null
+  }), _descriptor2 = _applyDecoratedDescriptor(_class.prototype, "user", [_service.inject], {
+    configurable: true,
+    enumerable: true,
+    writable: true,
+    initializer: null
+  }), _class);
 });
 ;define("myapp/data-adapter", ["exports", "@ember-data/debug/data-adapter"], function (_exports, _dataAdapter) {
   "use strict";
@@ -3907,25 +4020,26 @@
       this.player_1 = null;
       this.player_2 = null;
     }
-    async fetchUserData(username) {
+    async fetchUserData(nickname) {
       try {
-        // Use proper string interpolation with backticks and `${}`
-        const response = await fetch(`/api/${username}.json`, {
-          method: 'GET',
+        const response = await fetch('/users/profile-info', {
+          method: 'POST',
           headers: {
             Authorization: `Bearer ${this.session.data.authenticated.access}`,
             'Content-Type': 'application/json'
-          }
+          },
+          body: JSON.stringify({
+            nickname
+          })
         });
         if (!response.ok) {
-          throw new Error(`Failed to fetch profile for user: ${username}`);
+          throw new Error('Failed to fetch user profile');
         }
         const data = await response.json();
-        console.log(`Fetched user data for ${username}:`, data);
+        console.log(data);
         return data;
       } catch (error) {
         console.error('Error fetching user profile:', error);
-        return null; // Return null or handle the error in a way appropriate for your app
       }
     }
   }, _descriptor = _applyDecoratedDescriptor(_class.prototype, "gameType", [_tracking.tracked], {
@@ -4035,7 +4149,7 @@
     value: true
   });
   _exports.default = void 0;
-  var _class, _descriptor, _descriptor2, _descriptor3, _descriptor4;
+  var _class, _descriptor, _descriptor2, _descriptor3, _descriptor4, _descriptor5, _descriptor6;
   0; //eaimeta@70e063a35619d71f0,"@ember/service",0,"@glimmer/tracking",0,"@ember/object",0,"@ember/service"eaimeta@70e063a35619d71f
   function _initializerDefineProperty(e, i, r, l) { r && Object.defineProperty(e, i, { enumerable: r.enumerable, configurable: r.configurable, writable: r.writable, value: r.initializer ? r.initializer.call(l) : void 0 }); }
   function _defineProperty(e, r, t) { return (r = _toPropertyKey(r)) in e ? Object.defineProperty(e, r, { value: t, enumerable: !0, configurable: !0, writable: !0 }) : e[r] = t, e; }
@@ -4051,74 +4165,68 @@
       _initializerDefineProperty(this, "session", _descriptor3, this);
       _initializerDefineProperty(this, "currentLobby", _descriptor4, this);
       // Current lobby details
+      _initializerDefineProperty(this, "messages", _descriptor5, this);
+      _initializerDefineProperty(this, "currentPlayers", _descriptor6, this);
       _defineProperty(this, "socketRef", null);
     }
     async connectToLobby(tournamentName) {
+      console.log("1");
       const token = this.session.data.authenticated.access;
       const wsUrl = `wss://localhost/ws/tournament/${tournamentName}/?token=${encodeURIComponent(token)}`;
-      this.disconnectFromLobby(); // Disconnect from any existing lobby first
+      if (this.currentLobby) this.disconnectFromLobby(); // Disconnect from any existing lobby first
       this.socketRef = this.websockets.socketFor(wsUrl);
+      console.log("2");
 
       // Register WebSocket event handlers
-      this.socketRef.on('open', this.onOpen, this);
+      this.socketRef.on('open', () => this.onOpen(tournamentName), this);
       this.socketRef.on('message', this.onMessage, this);
       this.socketRef.on('close', this.onClose, this);
-      const data = {
-        action: 'create_or_join',
-        tournament_name: tournamentName,
-        username: this.user.profile.nickname
-      };
-
-      // Wait for the WebSocket to open before sending the data
-      await this.waitForWebSocketOpen();
-      this.sendMessage(data); // Send the join/create request
-      this.currentLobby = tournamentName; // Track current lobby
     }
-    async waitForWebSocketOpen() {
-      return new Promise((resolve, reject) => {
-        if (this.socketRef.readyState === WebSocket.OPEN) {
-          // If already open, resolve immediately
-          resolve();
-        } else {
-          // Otherwise, wait for the 'open' event
-          const onOpen = () => {
-            this.socketRef.off('open', onOpen); // Clean up the event listener
-            resolve();
-          };
-          const onError = error => {
-            this.socketRef.off('error', onError); // Clean up the error listener
-            reject(new Error(`WebSocket failed to connect: ${error.message}`));
-          };
-          this.socketRef.on('open', onOpen);
-          this.socketRef.on('error', onError);
-        }
-      });
-    }
-    disconnectFromLobby() {
+    async disconnectFromLobby() {
       if (this.socketRef) {
+        // Remove event handlers
         this.socketRef.off('open', this.onOpen, this);
         this.socketRef.off('message', this.onMessage, this);
         this.socketRef.off('close', this.onClose, this);
+
+        // Close WebSocket and wait for it to close
         this.socketRef.close();
+        while (this.socketRef.readyState !== WebSocket.CLOSED) {
+          console.log("closing");
+          this.socketRef.close();
+          await new Promise(resolve => setTimeout(resolve, 50)); // Small delay to wait for closure
+        }
+
+        // Reset state
         this.socketRef = null;
       }
-      this.currentLobby = null;
+      this.onClose();
     }
     sendMessage(data) {
-      console.log("send tournament create");
       if (this.socketRef) {
         this.socketRef.send(JSON.stringify(data));
       } else {
         console.error('WebSocket is not connected.');
       }
     }
-    onOpen(event) {
-      console.log('WebSocket connection opened:', event);
+    onOpen(tournamentName) {
+      const data = {
+        action: 'create_or_join',
+        tournament_name: tournamentName,
+        username: this.user.profile.nickname
+      };
+      console.log('WebSocket connection opened:');
+      this.sendMessage(data);
+      this.currentLobby = tournamentName;
+      console.log(this.currentLobby);
     }
     onMessage(event) {
       console.log('WebSocket message received:', event.data);
       const parsedMessage = JSON.parse(event.data);
       this.messages = [...this.messages, parsedMessage];
+      if (parsedMessage.message === "Player added to the tournament.") {
+        this.currentPlayers = [...this.currentPlayers, "user"];
+      }
     }
     onClose(event) {
       console.log('WebSocket connection closed:', event);
@@ -4145,6 +4253,20 @@
     writable: true,
     initializer: function () {
       return null;
+    }
+  }), _descriptor5 = _applyDecoratedDescriptor(_class.prototype, "messages", [_tracking.tracked], {
+    configurable: true,
+    enumerable: true,
+    writable: true,
+    initializer: function () {
+      return [];
+    }
+  }), _descriptor6 = _applyDecoratedDescriptor(_class.prototype, "currentPlayers", [_tracking.tracked], {
+    configurable: true,
+    enumerable: true,
+    writable: true,
+    initializer: function () {
+      return [];
     }
   }), _applyDecoratedDescriptor(_class.prototype, "connectToLobby", [_object.action], Object.getOwnPropertyDescriptor(_class.prototype, "connectToLobby"), _class.prototype), _applyDecoratedDescriptor(_class.prototype, "disconnectFromLobby", [_object.action], Object.getOwnPropertyDescriptor(_class.prototype, "disconnectFromLobby"), _class.prototype), _class);
 });
@@ -4255,7 +4377,7 @@
       <div class="container-fluid col-3 footer">
               <LinkTo @route="choose-game" class="nav-button">Game</LinkTo>
               <LinkTo @route="chat" class="nav-button">Chat</LinkTo>            
-              <LinkTo @route="tournament" class="nav-button" {{on "click" (fn this.tournament.connectToLobby this.user.profile.nickname)}}>Create Tournament</LinkTo>
+              <LinkTo @route="tournament" class="nav-button">Tournament</LinkTo>
       </div>
       <div class="container-fluid col-6 footer">
         <Scoreboard @selectUser={{this.selectUser}}/>
@@ -4274,8 +4396,8 @@
   
   */
   {
-    "id": "bo8FKMgW",
-    "block": "[[[10,\"main\"],[12],[1,\"\\n\"],[1,[30,0,[\"isAuthenticated\"]]],[1,\"\\n\"],[10,0],[14,0,\"container-fluid body\"],[12],[1,\"\\n  \"],[10,0],[14,0,\"container-fluid row\"],[12],[1,\"\\n    \"],[10,0],[14,0,\"col header\"],[12],[1,\"\\n     \"],[8,[39,2],null,null,null],[1,\"\\n    \"],[13],[1,\"\\n    \"],[10,0],[14,0,\"col header\"],[12],[1,\"\\n\"],[41,[30,0,[\"selectedUser\"]],[[[1,\"        \"],[8,[39,4],null,[[\"@selectedUser\",\"@selectUser\"],[[30,0,[\"selectedUser\"]],[30,0,[\"selectUser\"]]]],null],[1,\"\\n\"]],[]],[[[1,\"        \"],[8,[39,5],null,null,null],[1,\"\\n\"]],[]]],[1,\"    \"],[13],[1,\"\\n  \"],[13],[1,\"\\n  \"],[10,0],[14,0,\"container-fluid row\"],[12],[1,\"\\n    \"],[10,0],[14,0,\"container-fluid col-3 middle\"],[12],[1,\"\\n        \"],[8,[39,6],null,null,null],[1,\"\\n    \"],[13],[1,\"\\n    \"],[10,0],[14,0,\"container-fluid col-6 middle custom-bg-black\"],[12],[1,\"\\n\\t\\t\"],[46,[28,[37,8],null,null],null,null,null],[1,\"\\n    \"],[13],[1,\"\\n    \"],[10,0],[14,0,\"container-fluid col-3 middle\"],[12],[1,\"\\n      \"],[8,[39,9],null,null,null],[1,\"\\n      \"],[8,[39,10],null,[[\"@selectUser\"],[[30,0,[\"selectUser\"]]]],null],[1,\"\\n    \"],[13],[1,\"\\n  \"],[13],[1,\"\\n  \"],[10,0],[14,0,\"container-fluid row\"],[12],[1,\"\\n    \"],[10,0],[14,0,\"container-fluid col-3 footer\"],[12],[1,\"\\n            \"],[8,[39,11],[[24,0,\"nav-button\"]],[[\"@route\"],[\"choose-game\"]],[[\"default\"],[[[[1,\"Game\"]],[]]]]],[1,\"\\n            \"],[8,[39,11],[[24,0,\"nav-button\"]],[[\"@route\"],[\"chat\"]],[[\"default\"],[[[[1,\"Chat\"]],[]]]]],[1,\"            \\n            \"],[8,[39,11],[[24,0,\"nav-button\"],[4,[38,12],[\"click\",[28,[37,13],[[30,0,[\"tournament\",\"connectToLobby\"]],[30,0,[\"user\",\"profile\",\"nickname\"]]],null]],null]],[[\"@route\"],[\"tournament\"]],[[\"default\"],[[[[1,\"Create Tournament\"]],[]]]]],[1,\"\\n    \"],[13],[1,\"\\n    \"],[10,0],[14,0,\"container-fluid col-6 footer\"],[12],[1,\"\\n      \"],[8,[39,14],null,[[\"@selectUser\"],[[30,0,[\"selectUser\"]]]],null],[1,\"\\n    \"],[13],[1,\"\\n    \"],[10,0],[14,0,\"container-fluid col-3 footer p-1\"],[12],[1,\"\\n\"],[41,[30,0,[\"session\",\"isAuthenticated\"]],[[[41,[51,[28,[37,16],[[30,0,[\"activeRoute\"]],\"chat\"],null]],[[[1,\"          \"],[8,[39,17],null,null,null],[1,\"\\n\"]],[]],null]],[]],null],[1,\"    \"],[13],[1,\"\\n  \"],[13],[1,\"    \\n\"],[13],[1,\"\\n\\n\"],[13],[1,\"\\n\"]],[],false,[\"main\",\"div\",\"profile-own\",\"if\",\"profile-other\",\"title-animation\",\"tournament-list\",\"component\",\"-outlet\",\"navigation-bar\",\"user-list\",\"link-to\",\"on\",\"fn\",\"scoreboard\",\"unless\",\"eq\",\"chat\"]]",
+    "id": "00o/NGBf",
+    "block": "[[[10,\"main\"],[12],[1,\"\\n\"],[1,[30,0,[\"isAuthenticated\"]]],[1,\"\\n\"],[10,0],[14,0,\"container-fluid body\"],[12],[1,\"\\n  \"],[10,0],[14,0,\"container-fluid row\"],[12],[1,\"\\n    \"],[10,0],[14,0,\"col header\"],[12],[1,\"\\n     \"],[8,[39,2],null,null,null],[1,\"\\n    \"],[13],[1,\"\\n    \"],[10,0],[14,0,\"col header\"],[12],[1,\"\\n\"],[41,[30,0,[\"selectedUser\"]],[[[1,\"        \"],[8,[39,4],null,[[\"@selectedUser\",\"@selectUser\"],[[30,0,[\"selectedUser\"]],[30,0,[\"selectUser\"]]]],null],[1,\"\\n\"]],[]],[[[1,\"        \"],[8,[39,5],null,null,null],[1,\"\\n\"]],[]]],[1,\"    \"],[13],[1,\"\\n  \"],[13],[1,\"\\n  \"],[10,0],[14,0,\"container-fluid row\"],[12],[1,\"\\n    \"],[10,0],[14,0,\"container-fluid col-3 middle\"],[12],[1,\"\\n        \"],[8,[39,6],null,null,null],[1,\"\\n    \"],[13],[1,\"\\n    \"],[10,0],[14,0,\"container-fluid col-6 middle custom-bg-black\"],[12],[1,\"\\n\\t\\t\"],[46,[28,[37,8],null,null],null,null,null],[1,\"\\n    \"],[13],[1,\"\\n    \"],[10,0],[14,0,\"container-fluid col-3 middle\"],[12],[1,\"\\n      \"],[8,[39,9],null,null,null],[1,\"\\n      \"],[8,[39,10],null,[[\"@selectUser\"],[[30,0,[\"selectUser\"]]]],null],[1,\"\\n    \"],[13],[1,\"\\n  \"],[13],[1,\"\\n  \"],[10,0],[14,0,\"container-fluid row\"],[12],[1,\"\\n    \"],[10,0],[14,0,\"container-fluid col-3 footer\"],[12],[1,\"\\n            \"],[8,[39,11],[[24,0,\"nav-button\"]],[[\"@route\"],[\"choose-game\"]],[[\"default\"],[[[[1,\"Game\"]],[]]]]],[1,\"\\n            \"],[8,[39,11],[[24,0,\"nav-button\"]],[[\"@route\"],[\"chat\"]],[[\"default\"],[[[[1,\"Chat\"]],[]]]]],[1,\"            \\n            \"],[8,[39,11],[[24,0,\"nav-button\"]],[[\"@route\"],[\"tournament\"]],[[\"default\"],[[[[1,\"Tournament\"]],[]]]]],[1,\"\\n    \"],[13],[1,\"\\n    \"],[10,0],[14,0,\"container-fluid col-6 footer\"],[12],[1,\"\\n      \"],[8,[39,12],null,[[\"@selectUser\"],[[30,0,[\"selectUser\"]]]],null],[1,\"\\n    \"],[13],[1,\"\\n    \"],[10,0],[14,0,\"container-fluid col-3 footer p-1\"],[12],[1,\"\\n\"],[41,[30,0,[\"session\",\"isAuthenticated\"]],[[[41,[51,[28,[37,14],[[30,0,[\"activeRoute\"]],\"chat\"],null]],[[[1,\"          \"],[8,[39,15],null,null,null],[1,\"\\n\"]],[]],null]],[]],null],[1,\"    \"],[13],[1,\"\\n  \"],[13],[1,\"    \\n\"],[13],[1,\"\\n\\n\"],[13],[1,\"\\n\"]],[],false,[\"main\",\"div\",\"profile-own\",\"if\",\"profile-other\",\"title-animation\",\"tournament-list\",\"component\",\"-outlet\",\"navigation-bar\",\"user-list\",\"link-to\",\"scoreboard\",\"unless\",\"eq\",\"chat\"]]",
     "moduleName": "myapp/templates/application.hbs",
     "isStrictMode": false
   });
@@ -4428,19 +4550,31 @@
   var _default = _exports.default = (0, _templateFactory.createTemplateFactory)(
   /*
     <div class="container-fluid row">
-  	<div class="col-7">
-  	  <h2 class="points center">👥 1/10</h2>
-     	  
-  	</div>
-  	<div class="button-container col-5">
-  	  <button class="nav-button start" type="button" >Start Tournament</button>
-        <button class="nav-button cancel" type="button">Cancel Tournament</button> 
-  	</div>
+  	{{#if this.tournament.currentLobby}}
+  		<div class="col-7">
+  			<h2 class="points center">👥 1/10</h2>
+  			<UserListTournament/>
+  		</div>
+  		<div class="button-container col-5">
+  		<button class="nav-button start" type="button" >Start Tournament</button>
+  		<button class="nav-button cancel" type="button" {{on "click" this.tournament.disconnectFromLobby}}>Leave</button> 
+  		</div>
+  	{{else}}
+  		<div class="d-flex justify-content-center align-items-center">
+  			<button 
+  				class="nav-button mt-5" 
+  				type="button" 
+  				{{on "click" (fn this.tournament.connectToLobby this.user.profile.nickname)}}
+  			>
+  			Create Tournament
+  			</button>
+  			</div>
+  	{{/if}}
   </div>
   */
   {
-    "id": "fFPEY2B5",
-    "block": "[[[10,0],[14,0,\"container-fluid row\"],[12],[1,\"\\n\\t\"],[10,0],[14,0,\"col-7\"],[12],[1,\"\\n\\t  \"],[10,\"h2\"],[14,0,\"points center\"],[12],[1,\"👥 1/10\"],[13],[1,\"\\n   \\t  \\n\\t\"],[13],[1,\"\\n\\t\"],[10,0],[14,0,\"button-container col-5\"],[12],[1,\"\\n\\t  \"],[10,\"button\"],[14,0,\"nav-button start\"],[14,4,\"button\"],[12],[1,\"Start Tournament\"],[13],[1,\"\\n      \"],[10,\"button\"],[14,0,\"nav-button cancel\"],[14,4,\"button\"],[12],[1,\"Cancel Tournament\"],[13],[1,\" \\n\\t\"],[13],[1,\"\\n\"],[13]],[],false,[\"div\",\"h2\",\"button\"]]",
+    "id": "rVVV0+l6",
+    "block": "[[[10,0],[14,0,\"container-fluid row\"],[12],[1,\"\\n\"],[41,[30,0,[\"tournament\",\"currentLobby\"]],[[[1,\"\\t\\t\"],[10,0],[14,0,\"col-7\"],[12],[1,\"\\n\\t\\t\\t\"],[10,\"h2\"],[14,0,\"points center\"],[12],[1,\"👥 1/10\"],[13],[1,\"\\n\\t\\t\\t\"],[8,[39,3],null,null,null],[1,\"\\n\\t\\t\"],[13],[1,\"\\n\\t\\t\"],[10,0],[14,0,\"button-container col-5\"],[12],[1,\"\\n\\t\\t\"],[10,\"button\"],[14,0,\"nav-button start\"],[14,4,\"button\"],[12],[1,\"Start Tournament\"],[13],[1,\"\\n\\t\\t\"],[11,\"button\"],[24,0,\"nav-button cancel\"],[24,4,\"button\"],[4,[38,5],[\"click\",[30,0,[\"tournament\",\"disconnectFromLobby\"]]],null],[12],[1,\"Leave\"],[13],[1,\" \\n\\t\\t\"],[13],[1,\"\\n\"]],[]],[[[1,\"\\t\\t\"],[10,0],[14,0,\"d-flex justify-content-center align-items-center\"],[12],[1,\"\\n\\t\\t\\t\"],[11,\"button\"],[24,0,\"nav-button mt-5\"],[24,4,\"button\"],[4,[38,5],[\"click\",[28,[37,6],[[30,0,[\"tournament\",\"connectToLobby\"]],[30,0,[\"user\",\"profile\",\"nickname\"]]],null]],null],[12],[1,\"\\n\\t\\t\\tCreate Tournament\\n\\t\\t\\t\"],[13],[1,\"\\n\\t\\t\\t\"],[13],[1,\"\\n\"]],[]]],[13]],[],false,[\"div\",\"if\",\"h2\",\"user-list-tournament\",\"button\",\"on\",\"fn\"]]",
     "moduleName": "myapp/templates/tournament.hbs",
     "isStrictMode": false
   });
