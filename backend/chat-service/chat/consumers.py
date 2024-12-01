@@ -26,7 +26,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
 		await self.channel_layer.group_add("chat_all", self.channel_name)
 
 		# Register the user in `user_channels`
-		if self.username not in user_channels:
+		if self.username not in user_channels: ## update to nickname
 			user_channels[self.username] = []
 		user_channels[self.username].append(self.channel_name)
 
@@ -57,7 +57,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
 			elif message_type == "add":
 				await self.route_whisper(data)
 			elif message_type == "invite":
-				await self.route_whisper(data) 
+				await self.route_whisper(data)
 			else:
 				await self.send(text_data=json.dumps({"error": "Invalid message type."}))
 		except json.JSONDecodeError as e:

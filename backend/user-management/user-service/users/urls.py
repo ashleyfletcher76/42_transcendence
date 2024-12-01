@@ -1,18 +1,31 @@
 from django.urls import path
-from . import views
-from .views import health_check, verify_user, UserExistsView, UserProfileView, AddFriendView, BlockUserView
-from .views.get_user_info_view import get_single_username, get_usernames, get_user_profile
+from .views.register_view import UserRegisterView
+from .views.health_check_view import health_check
+from .views.add_friend_view import AddFriendView
+from .views.block_user_view import BlockUserView
+from .views.verify_views import verify_user, UserExistsView, UserProfileView
+from .views.get_user_info_view import (
+	get_single_username,
+	get_usernames,
+	get_profile_token,
+	get_profile_info
+)
 
 urlpatterns = [
-	path("register/", views.UserRegisterView.as_view(), name="user-register"),
-	path("verify/", verify_user, name="verify-user"),
 	path("health/", health_check, name="health-check"),
+
+	path("register/", UserRegisterView.as_view(), name="user-register"),
+
+	path("verify/", verify_user, name="verify-user"),
 	path("exists/<int:user_id>/", UserExistsView.as_view(), name="user-exists"),
+
 	# path("profile/", UserProfileView.as_view(), name="user-profile"),
-	path("profile-info/", get_user_profile, name="get-user-profile"),
+	path("profile-info-token/", get_profile_token, name="get-user-profile"),
+	path("profile-info/", get_profile_info, name="get-profile-info"),
+
 	path("get-single-username/<int:user_id>/", get_single_username, name="get-single-username"),
 	path("get-usernames/", get_usernames, name="get-usernames"),
 
-	path("add-friend/", views.AddFriendView.as_view(), name="add-friend"),
-	path("block-user/", views.BlockUserView.as_view(), name="block-user"),
+	path("add-friend/", AddFriendView.as_view(), name="add-friend"),
+	path("block-user/", BlockUserView.as_view(), name="block-user"),
 ]

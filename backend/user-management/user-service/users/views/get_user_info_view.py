@@ -32,7 +32,7 @@ def get_usernames(request):
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
-def get_user_profile(request):
+def get_profile_token(request):
 	try:
 		user = request.user
 		profile = user.profile
@@ -48,3 +48,51 @@ def get_user_profile(request):
 		)
 	except User.DoesNotExist:
 		return JsonResponse({"error": "User not found."}, status=404)
+
+##################################################
+### Latest user profile enquiry using nickname ###
+##################################################
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def get_profile_info(request):
+	try:
+		# extract nickname from request
+		data = request.data
+		nickname = data.get("nickname", "").strip()
+
+		if nickname:
+			user = User.objects.filter(profile__nickname=nickname).first()
+			if not user:
+				return JsonResponse(
+					{"error": "User with given nickname not found."},
+					status=404
+				)
+		else:
+			# fetch from requester
+			user = request.user
+
+		# retrieve profile details
+		profile = user.profile
+		friends = list(profile.friends.values_list('nickname', flat=True))
+		blocked = list(profile.blocked_users.values_list('nickname', flat=True))
+
+		# response
+		response = {
+			"username": user.username,
+			"nickname": profile.nickname,
+			"avatar": profile.avatar.url if profile.avatar else None,
+			"trophies": "TBD",
+			"games_total": "TBD",
+			"wins": "TBD",
+			"losses": "TBD",
+			"blocked": blocked,
+			"friends": friends,
+			"history": "TBD",
+			"status": "TBD",
+		}
+		return JsonResponse(response, status=200)
+
+	except Exception as e:
+		return JsonResponse({"error": str(e)}, status=500)
+
