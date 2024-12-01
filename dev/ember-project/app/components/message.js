@@ -30,9 +30,9 @@ export default class MessageComponent extends Component {
           "Content-Type": "application/json",
           Authorization: `Bearer ${this.session.data.authenticated.access}`,
         },
-        body: JSON.stringify({ 
-            user1: this.args.ownNickname, 
-            user2: this.args.message.from,
+        body: JSON.stringify({  
+            user: this.args.message.from,
+            type: "add",
         }),
       });
   
@@ -77,6 +77,4 @@ export default class MessageComponent extends Component {
       console.error('Error:', error);
     }
   }
-
-  
 }
