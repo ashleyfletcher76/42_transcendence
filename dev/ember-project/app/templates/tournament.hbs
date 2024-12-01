@@ -1,10 +1,22 @@
 <div class="container-fluid row">
-	<div class="col-7">
-	  <h2 class="points center">👥 1/10</h2>
-   	  
-	</div>
-	<div class="button-container col-5">
-	  <button class="nav-button start" type="button" >Start Tournament</button>
-      <button class="nav-button cancel" type="button">Cancel Tournament</button> 
-	</div>
+	{{#if this.tournament.currentLobby}}
+		<div class="col-7">
+			<h2 class="points center">👥 1/10</h2>
+			<UserListTournament/>
+		</div>
+		<div class="button-container col-5">
+		<button class="nav-button start" type="button" >Start Tournament</button>
+		<button class="nav-button cancel" type="button" {{on "click" this.tournament.disconnectFromLobby}}>Leave</button> 
+		</div>
+	{{else}}
+		<div class="d-flex justify-content-center align-items-center">
+			<button 
+				class="nav-button mt-5" 
+				type="button" 
+				{{on "click" (fn this.tournament.connectToLobby this.user.profile.nickname)}}
+			>
+			Create Tournament
+			</button>
+			</div>
+	{{/if}}
 </div>

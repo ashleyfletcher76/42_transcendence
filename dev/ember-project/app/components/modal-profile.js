@@ -48,7 +48,7 @@ export default class ModalProfileComponent extends Component {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${this.session.data.authenticated.token}`,
+          Authorization: `Bearer ${this.session.data.authenticated.access}`,
         },
         body: JSON.stringify({
           nickname: newNickname,

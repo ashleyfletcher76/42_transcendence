@@ -63,7 +63,7 @@ export default class PongGameComponent extends Component {
         {
           method: 'POST',
           headers: {
-            Authorization: `Bearer ${this.session.data.authenticated.token}`,
+            Authorization: `Bearer ${this.session.data.authenticated.access}`,
             'Content-Type': 'application/json',
           },
           body: requestBody,

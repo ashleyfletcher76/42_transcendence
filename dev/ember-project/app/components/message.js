@@ -28,7 +28,7 @@ export default class MessageComponent extends Component {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${this.session.data.authenticated.token}`,
+          Authorization: `Bearer ${this.session.data.authenticated.access}`,
         },
         body: JSON.stringify({ 
             user1: this.args.ownNickname, 
@@ -54,7 +54,7 @@ export default class MessageComponent extends Component {
       const response = await fetch('/pong/pong/join-room', {
         method: 'POST',
         headers: { 
-            Authorization: `Bearer ${this.session.data.authenticated.token}`,
+            Authorization: `Bearer ${this.session.data.authenticated.access}`,
             'Content-Type': 'application/json',
         },
         body: JSON.stringify({

@@ -9,7 +9,7 @@ export default class GameDataService extends Service {
   @tracked player_2 = null;
 
   @service session;
-  
+
   async setGameData(gameType, roomData) {
     this.gameType = gameType;
     this.roomData = roomData;
@@ -26,27 +26,25 @@ export default class GameDataService extends Service {
     this.player_2 = null;
   }
 
-  async fetchUserData(username) {
+  async fetchUserData(nickname) {
     try {
-      // Use proper string interpolation with backticks and `${}`
-      const response = await fetch(`/api/${username}.json`, {
-        method: 'GET',
+      const response = await fetch('/users/profile-info', {
+        method: 'POST', 
         headers: {
-          Authorization: `Bearer ${this.session.data.authenticated.token}`,
+          Authorization: `Bearer ${this.session.data.authenticated.access}`, 
           'Content-Type': 'application/json',
         },
+        body: JSON.stringify({ nickname }) 
       });
-
+  
       if (!response.ok) {
-        throw new Error(`Failed to fetch profile for user: ${username}`);
+        throw new Error('Failed to fetch user profile');
       }
-
       const data = await response.json();
-      console.log(`Fetched user data for ${username}:`, data);
+      console.log(data);
       return data;
     } catch (error) {
       console.error('Error fetching user profile:', error);
-      return null; // Return null or handle the error in a way appropriate for your app
     }
   }
 }

@@ -26,7 +26,7 @@ export default class ChooseGameController extends Controller {
           'Content-Type': 'application/json' 
         },
         body: JSON.stringify({
-          player: this.user.nickname, // Add player_1 with the user's value
+          player: this.user.profile.nickname, // Add player_1 with the user's value
           gameType: gameType, // Set the selected game type
         }),
       });

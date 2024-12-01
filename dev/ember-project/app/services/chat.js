@@ -38,7 +38,10 @@ export default class ChatService extends Service {
     super(...arguments);
 
     // Initialize the WebSocket connection
-    const socket = this.websockets.socketFor('ws://localhost:8888/');
+    console.log("connect ...");
+    const token = this.session.data.authenticated.access;
+    const url = `wss://localhost/ws/chat/lobby/?token=${encodeURIComponent(token)}`;
+    const socket = this.websockets.socketFor(url);
 
     socket.on('open', this.myOpenHandler, this);
     socket.on('message', this.myMessageHandler, this);
@@ -48,11 +51,11 @@ export default class ChatService extends Service {
   }
 
   myOpenHandler(event) {
-    console.log(`On open event has been called: ${event}`);
+    console.log(`On open event has been called token: ${this.session.data.authenticated.access}`);
   }
 
   myMessageHandler(event) {
-    console.log(`Message: ${event.data}`);
+    console.log(`Message recieve: ${event.data}`);
     const newMessage = JSON.parse(event.data);
     this.messages = [...this.messages, newMessage]; // Add the new message to the tracked array
     console.log(newMessage.content);
@@ -92,8 +95,14 @@ export default class ChatService extends Service {
     let messageContent = this.messageInput.trim();
     if (this.type !== "all"){
       messageContent = this.words.slice(1).join(' ');
-      console.log(messageContent);
     }
+    console.log(`Message send: ${JSON.stringify({
+      type: this.type,
+      from: this.user.profile.nickname,
+      to: this.to_user,
+      content: messageContent,
+      timestamp: new Date().toISOString(),
+    })}`);
     if (this.type === "invite")
       this.privateRoom(this.user.profile.nickname, "create");
     if (messageContent) {
@@ -119,7 +128,7 @@ export default class ChatService extends Service {
       const response = await fetch('/pong/pong/private-room', {
         method: 'POST',
         headers: { 
-          Authorization: `Bearer ${this.session.data.authenticated.token}`,
+          Authorization: `Bearer ${this.session.data.authenticated.access}`,
           'Content-Type': 'application/json' 
         },
         body: JSON.stringify({

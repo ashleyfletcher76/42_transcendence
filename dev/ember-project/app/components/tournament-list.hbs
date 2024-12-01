@@ -4,6 +4,6 @@
 </nav>
 <div class="scrollable-list middle-scroll">
     {{#each this.tournaments as |tournament|}}
-        <TournamentItem @creator={{tournament.creator}} @current_players={{tournament.current_players}} @max_players={{tournament.max_players}}/>
+        <TournamentItem @creator={{tournament.name}} @current_players={{tournament.num_players}} @max_players="10"/>
     {{/each}}
 </div>

@@ -34,7 +34,7 @@ export default class ProfileOtherComponent extends Component {
       const response = await fetch(apiEndpoint, {
         method: "PUT",
         headers: {
-          Authorization: `Bearer ${this.session.data.authenticated.token}`,
+          Authorization: `Bearer ${this.session.data.authenticated.access}`,
           "Content-Type": "application/json",
         },
         body: JSON.stringify({ 

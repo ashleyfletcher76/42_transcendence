@@ -13,7 +13,7 @@ export default class UserListComponent extends Component {
   @action
   async fetchUsers() {
     try {
-      const response = await fetch('/api/users.json'); // Simulating API call
+      const response = await fetch('/users/profile-list'); // Simulating API call
       if (!response.ok) {
         throw new Error('Network response was not ok');
       }

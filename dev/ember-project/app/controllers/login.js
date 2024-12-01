@@ -27,8 +27,9 @@ export default class LoginController extends Controller {
         this.username,
         this.password,
       );
-      this.fetchUserData(this.username);
-      console.log(this.session.data.authenticated.token);
+      this.fetchUserData("");
+      console.log(this.session.data);
+      console.log(this.session.data.authenticated.access);
       this.router.transitionTo('choose-game');
     } catch (error) {
       this.error = error;
@@ -59,19 +60,19 @@ export default class LoginController extends Controller {
         this.username,
         this.password,
       );
-      this.fetchUserData(this.username);
+      this.fetchUserData("");
       this.router.transitionTo('choose-game');
     } catch (error) {
       this.error = error.message || 'An error occurred during registration';
     }
   }
 
-  async fetchUserData(username) {
+  async fetchUserData() {
     try {
-      const response = await fetch('/api/profile.json', {
+      const response = await fetch('/users/users/profile-info/', {
         method: 'GET',
         headers: {
-          Authorization: `Bearer ${this.session.data.authenticated.token}`, // Use token from session
+          Authorization: `Bearer ${this.session.data.authenticated.access}`, // Use token from session
           'Content-Type': 'application/json',
         },
       });
@@ -87,4 +88,27 @@ export default class LoginController extends Controller {
       console.error('Error fetching user profile:', error);
     }
   }
+
+  // async fetchUserData(nickname) {
+  //   try {
+  //     const response = await fetch('/users/profile-info', {
+  //       method: 'POST', 
+  //       headers: {
+  //         Authorization: `Bearer ${this.session.data.authenticated.access}`, 
+  //         'Content-Type': 'application/json',
+  //       },
+  //       body: JSON.stringify({ nickname }) 
+  //     });
+  
+  //     if (!response.ok) {
+  //       throw new Error('Failed to fetch user profile');
+  //     }
+  //     const data = await response.json();
+  //     console.log(data);
+  //     this.user.setProfile(data); // Store user data for use in the template
+  //     console.log(this.user.profile);
+  //   } catch (error) {
+  //     console.error('Error fetching user profile:', error);
+  //   }
+  // }
 }

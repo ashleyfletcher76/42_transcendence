@@ -31,7 +31,8 @@ export default class TournamentListComponent extends Component {
       if (!response.ok) {
         throw new Error('Failed to fetch lobby list');
       }
-      this.tournaments = await response.json();
+      const data = await response.json();
+      this.tournaments = data.tournaments;
     } catch (error) {
       console.error('Error fetching tournaments:', error);
     }

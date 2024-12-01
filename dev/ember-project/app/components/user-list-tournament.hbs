@@ -1,0 +1,5 @@
+<div class="scrollable-list middle-scroll">
+    {{#each this.tournament.currentPlayers as |user|}}
+        <User @user={{user}} @selectUser={{null}} />
+    {{/each}}
+</div>

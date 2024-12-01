@@ -9,8 +9,7 @@ export default class ApplicationController extends Controller {
   @service session;
   @service router;
   @service user;
-  @service tournament;
-  
+
   get activeRoute() {
     return this.router.currentRouteName;
   }
@@ -19,6 +18,27 @@ export default class ApplicationController extends Controller {
   @action
   selectUser(user) {
     console.log('Selected User:', user);
-    this.selectedUser = user; // Update the selected user
+    this.fetchUserData(user.nickname);
+  }
+
+  async fetchUserData(nickname) {
+    try {
+      const response = await fetch('/users/profile-info', {
+        method: 'POST', 
+        headers: {
+          Authorization: `Bearer ${this.session.data.authenticated.access}`, 
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ nickname }) 
+      });
+  
+      if (!response.ok) {
+        throw new Error('Failed to fetch user profile');
+      }
+      const data = await response.json();
+      this.selectUser = data;
+    } catch (error) {
+      console.error('Error fetching user profile:', error);
+    }
   }
 }

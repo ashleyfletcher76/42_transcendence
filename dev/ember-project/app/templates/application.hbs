@@ -30,15 +30,17 @@
     <div class="container-fluid col-3 footer">
             <LinkTo @route="choose-game" class="nav-button">Game</LinkTo>
             <LinkTo @route="chat" class="nav-button">Chat</LinkTo>            
-            <LinkTo @route="tournament" class="nav-button" {{on "click" (fn this.tournament.connectToLobby this.user.profile.nickname)}}>Create Tournament</LinkTo>
+            <LinkTo @route="tournament" class="nav-button">Tournament</LinkTo>
     </div>
     <div class="container-fluid col-6 footer">
       <Scoreboard @selectUser={{this.selectUser}}/>
     </div>
     <div class="container-fluid col-3 footer p-1">
-      {{#unless (eq this.activeRoute "chat")}}
-        <Chat />
-      {{/unless}}
+      {{#if this.session.isAuthenticated}}
+        {{#unless (eq this.activeRoute "chat")}}
+          <Chat />
+        {{/unless}}
+      {{/if}}
     </div>
   </div>    
 </div>
