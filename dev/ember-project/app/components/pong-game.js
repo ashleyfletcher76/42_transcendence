@@ -12,6 +12,7 @@ export default class PongGameComponent extends Component {
   @tracked winner;
   @service gameData;
   @service session;
+  @service tournament;
 
   // Track the state of key presses
   p1UpKeyPressed = false;
@@ -155,9 +156,12 @@ export default class PongGameComponent extends Component {
     this.leftScore = data.left_score;
     this.rightScore = data.right_score;
     this.winner = data.winner;
-    if (this.winner) this.willDestroy();
+    if (this.winner)
+	{
+		this.willDestroy();
+		this.tournament.sendWinner(this.winner);
+	}
   }
-
   willDestroy() {
     super.willDestroy();
     window.removeEventListener('keydown', this.handleKeyDown.bind(this));

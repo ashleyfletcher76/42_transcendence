@@ -7,9 +7,9 @@ export default class TournamentService extends Service {
 	@service websockets;
 	@service user;
 	@service session;
+	@service chat;
 
 	@tracked currentLobby = null; // Current lobby details
-	@tracked messages = [];
 	@tracked currentPlayers = [];
 	socketRef = null;
 
@@ -17,8 +17,12 @@ export default class TournamentService extends Service {
 	async connectToLobby(tournamentName) {
 		const token = this.session.data.authenticated.access;
 		const wsUrl = `wss://localhost/ws/tournament/${tournamentName}/?token=${encodeURIComponent(token)}`;
+		if (this.socketRef)
+		{
+			console.log("disconnect");
+			this.disconnectFromLobby(this.currentLobby);
+		}
 		const socket = this.websockets.socketFor(wsUrl);
-
 		// Register WebSocket event handlers
 		socket.on('open', () => this.onOpen(tournamentName), this);
 		socket.on('message', this.onMessage, this);
@@ -47,6 +51,21 @@ export default class TournamentService extends Service {
 		this.currentPlayers = [];
 	}
 
+	startTournament = () => {
+		const data = {
+		  action: 'start_tournament',
+		};
+		this.sendMessage(data);
+	  };
+
+	sendWinner(winner)
+	{
+		const data = {
+			action: 'winner', // message/start
+			winner: winner
+		};
+		this.sendMessage(data);
+	}
 
 	sendMessage(data) {
 		if (this.socketRef) {
@@ -58,12 +77,10 @@ export default class TournamentService extends Service {
 
 	onOpen(tournamentName) {
 		const data = {
-			action: 'create_or_join', // message/start
+			action: 'create_or_join',
 			tournament_name: tournamentName,
-			username: this.user.profile.nickname,
-			message: "",
+			nickname: this.user.profile.nickname,
 		};
-
 		console.log('WebSocket connection opened:');
 		this.sendMessage(data);
 		this.currentLobby = tournamentName;
@@ -73,11 +90,111 @@ export default class TournamentService extends Service {
 	onMessage(event) {
 		console.log('WebSocket message received:', event.data);
 		const parsedMessage = JSON.parse(event.data);
-		this.messages = [...this.messages, parsedMessage];
-		if (parsedMessage.message === "Player added to the tournament.") {
-			this.currentPlayers = [...this.currentPlayers, "user"];
-		}
+		switch (parsedMessage.type) {
+			case "create":
+				handleCreate(parsedMessage)
+				break;
+		
+			case "join":
+				handleJoin(parsedMessage)
+				break;
+			
+			case "message":
+				handleMessage(parsedMessage)
+				break;
+			
+			case "leave":
+				handleLeave(parsedMessage)
+				break;
 
+			case "match":
+				handleMatch(parsedMessage)
+				break;
+
+			case "tournament_winner":
+				handleTournamentWinner(parsedMessage)
+				break;
+			default:
+				// Handle the default case here (if needed)
+				break;
+		}
+	}
+
+	handleCreate(parsedMessage) {
+		this.currentPlayers = parsedMessage.players;
+		const data = {
+			type: 'tournament',
+			from: 'System',
+			content: 'You created the Tournament ' + this.currentLobby
+		};
+		const newMessage = JSON.parse(data);
+		this.chat.messages = [...this.chat.messages, newMessage];
+	}
+
+	handleJoin(parsedMessage) {
+		this.currentPlayers = parsedMessage.players;
+		const data = {
+			type: 'tournament',
+			from: 'System',
+			content: parsedMessage.player + ' joined the Tournament!'
+		};
+		const newMessage = JSON.parse(data);
+		this.chat.messages = [...this.chat.messages, newMessage];
+	}
+
+	handleMessage(parsedMessage) {
+		const data = {
+			type: 'tournament',
+			from: parsedMessage.sender,
+			content: parsedMessage.message
+		};
+		const newMessage = JSON.parse(data);
+		this.chat.messages = [...this.chat.messages, newMessage];
+	}
+
+	handleStart(parsedMessage) {
+		const data = {
+			type: 'tournament',
+			from: 'System',
+			content: parsedMessage.message
+		};
+		const newMessage = JSON.parse(data);
+		this.chat.messages = [...this.chat.messages, newMessage];
+	}
+
+	handleLeave(parsedMessage) {
+		this.currentPlayers = parsedMessage.players;
+		const data = {
+			type: 'tournament',
+			from: 'System',
+			content: parsedMessage.player + ' left the Tournament!'
+		};
+		const newMessage = JSON.parse(data);
+		this.chat.messages = [...this.chat.messages, newMessage];
+	}
+
+	handleMatch(parsedMessage) {
+		const opponent = parsedMessage.player1;
+		if (parsedMessage.player1 === this.user.profile.nickname)
+			opponent = parsedMessage.player2;
+		const data = {
+			type: 'tournament',
+			from: 'System',
+			content: "Get ready! Your next game is against " + opponent + " and it starts in just 20 seconds!"
+		};
+		const newMessage = JSON.parse(data);
+		this.chat.messages = [...this.chat.messages, newMessage];
+		const roomdata = {
+			roomname: parsedMessage.room,
+			player1: parsedMessage.player1,
+			player2: parsedMessage.player2
+		};
+		this.gameData.setGameData("tournament", roomdata);
+        this.router.transitionTo('pong-game');
+	}
+
+	handleTournamentWinner(parsedMessage) {
+		
 	}
 
 	onClose(event) {

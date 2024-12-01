@@ -10,7 +10,8 @@ export default class ChatService extends Service {
   @service user;
   @service websockets;
   @service session;
-  
+  @service tournament;
+
   socketRef = null;
   inputElement = null; // Reference to the input element
   type = "all";
@@ -105,7 +106,15 @@ export default class ChatService extends Service {
     })}`);
     if (this.type === "invite")
       this.privateRoom(this.user.profile.nickname, "create");
-    if (messageContent) {
+	if (this.type === this.tournament)
+		this.tournament.sendMessage(
+			JSON.stringify({
+				action: messageContent,
+				sender: this.user.profile.nickname,
+				content: messageContent,
+				timestamp: new Date().toISOString(),
+			  }))
+    else if (messageContent) {
       this.socketRef.send(
         JSON.stringify({
           type: this.type,
