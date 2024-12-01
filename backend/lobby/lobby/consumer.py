@@ -161,13 +161,27 @@ class TournamentConsumer(AsyncWebsocketConsumer):
     def remove_player_from_tournament(self, username):
         try:
             player = Player.objects.get(user__username=username)
-            tournaments = Tournament.objects.filter(players=player)
-            for tournament in tournaments:
-                tournament.players.remove(player)
-                tournament.num_players -= 1
-                if (tournament.num_players <= 0):
-                    tournament.active = False
-                    del tournament
+            tournament = Tournament.objects.get(players=player)
+            print(player.user.username)
+            print(tournament.name)
+            tournament.players.remove(player)
+            if player.admin:
+                other_players = tournament.players.exclude(id=player.id)
+                if other_players.exists():
+                    new_admin = other_players.first()
+                    new_admin.admin = True
+                    new_admin.save()
+                    print(f"New admin assigned: {new_admin.user.username}")
+                else:
+                    print("No other players available to assign as admin.")
+
+            tournament.num_players = tournament.players.count()
+            print(tournament.num_players)
+            if (tournament.num_players <= 0):
+                tournament.active = False
+                tournament.delete()
+                print("debug info!")
+            else:
                 tournament.save()
         except Player.DoesNotExist:
             pass
@@ -178,6 +192,8 @@ class TournamentConsumer(AsyncWebsocketConsumer):
         try:
             user, user_created = User.objects.get_or_create(username=username)
             player, player_created = Player.objects.get_or_create(user=user)
+            player.admin = False
+            player.save()
             return player
         except User.DoesNotExist:
             return None
@@ -192,7 +208,7 @@ class TournamentConsumer(AsyncWebsocketConsumer):
     @sync_to_async
     def add_player_to_tournament(self, tournament, player):
         tournament.players.add(player)
-        tournament.num_players += 1
+        tournament.num_players = tournament.players.count()
         tournament.save()
 
     @sync_to_async

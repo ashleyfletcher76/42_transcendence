@@ -23,7 +23,9 @@ def index(request):
 def listLobby(request):
     if request.method == 'GET':
         if Tournament.objects.exists():
-            Tournament.objects.filter(active=False).delete()
+            inactive_tournaments = Tournament.objects.filter(active=False)
+            inactive_tournaments.delete()
+
             tournaments = Tournament.objects.values('name', 'num_players')
             tournaments_list = list(tournaments)
             response = {"tournaments": tournaments_list}

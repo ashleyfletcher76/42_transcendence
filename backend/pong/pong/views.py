@@ -19,7 +19,6 @@ BALL_RADIUS = 10
 PADDLE_WIDTH = 10
 PADDLE_HEIGHT = 100
 
-# Health check view to ensure the database connection is healthy
 def health_check(request):
     try:
         connection.ensure_connection()
@@ -27,10 +26,8 @@ def health_check(request):
         return JsonResponse({"status": "error", "message": str(e)}, status=500)
     return JsonResponse({"status": "ok"}, status=200)
 
-# Game view (renders the game HTML)
 def game_view(request):
     return render(request, 'index.html')
-
 
 @api_view(['GET', 'POST'])
 def game_state_view(request, room_name):
@@ -38,13 +35,12 @@ def game_state_view(request, room_name):
         game = GameState.objects.get(room_name=room_name)
 
         if request.method == 'POST':
-            
+
             if game.player2 == "remote":
                 game.save()
                 serializer = GameStateSerializer(game)
                 return Response(serializer.data)
 
-            print(request.data)
             player = request.data.get("player", {})
             keypress_p1 = request.data.get('keypress_p1', {})
             keypress_p2 = request.data.get('keypress_p2', {})
@@ -71,6 +67,19 @@ def game_state_view(request, room_name):
                     if keypress_p1 == 'down' and player == game.player2:
                         move_right_paddle(game, 1)
 
+            if game.right_score >= 5 or game.left_score >= 5:
+                if game.right_score >= 5:
+                    winner = game.player1
+                else:
+                    winner = game.player2
+                game.paused = True
+                game.save()
+                serializer = GameStateSerializer(game)
+                response_data = {
+                    "game_state": serializer.data,
+                    "winner": winner,
+                }
+                return Response(response_data, status=200)
             game.save()
 
             serializer = GameStateSerializer(game)
@@ -179,8 +188,8 @@ def create_room(request):
             room_name=room_name,
             ball_x=0,
             ball_y=0,
-            ball_speed_x=random.choice([0.01, -0.01]),
-            ball_speed_y=random.choice([0.01, -0.01]),
+            ball_speed_x=random.choice([0.02, -0.02]),
+            ball_speed_y=random.choice([0.02, -0.02]),
             left_paddle_y=0,
             right_paddle_y=0,
             left_score=0,
