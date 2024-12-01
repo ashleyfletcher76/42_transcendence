@@ -193,10 +193,12 @@ class TournamentConsumer(AsyncWebsocketConsumer):
             user, user_created = User.objects.get_or_create(username=username)
             player, player_created = Player.objects.get_or_create(user=user)
             player.admin = False
+            player.score = 0
             player.save()
             return player
         except User.DoesNotExist:
             return None
+
 
     @sync_to_async
     def create_or_get_tournament(self, tournament_name):
@@ -207,6 +209,7 @@ class TournamentConsumer(AsyncWebsocketConsumer):
 
     @sync_to_async
     def add_player_to_tournament(self, tournament, player):
+        self.remove_player_from_tournament(player.user.username)
         tournament.players.add(player)
         tournament.num_players = tournament.players.count()
         tournament.save()
