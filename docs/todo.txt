@@ -5,6 +5,9 @@ Endpoints:
 /users/profile-info
 
     Gets the profile information for the requested user
+    #####################
+    #### POST request ###
+    #####################
 
     Request Format
     {

@@ -3,6 +3,7 @@ from django.contrib.auth import get_user_model
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
+from ..models import UserProfile
 
 User = get_user_model()
 
@@ -64,7 +65,7 @@ def get_profile_info(request):
 		if nickname:
 			user = User.objects.filter(profile__nickname=nickname).first()
 			if not user:
-				return JsonResponse(
+				return Response(
 					{"error": "User with given nickname not found."},
 					status=404
 				)
@@ -78,7 +79,7 @@ def get_profile_info(request):
 		blocked = list(profile.blocked_users.values_list('nickname', flat=True))
 
 		# response
-		response = {
+		profile_response = {
 			"username": user.username,
 			"nickname": profile.nickname,
 			"avatar": profile.avatar.url if profile.avatar else None,
@@ -91,8 +92,33 @@ def get_profile_info(request):
 			"history": "TBD",
 			"status": "TBD",
 		}
-		return JsonResponse(response, status=200)
+		return Response(profile_response, status=200)
 
 	except Exception as e:
-		return JsonResponse({"error": str(e)}, status=500)
+		return Response({"error": str(e)}, status=500)
 
+
+############################
+### Profile list enquiry ###
+############################
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def get_all_profiles(request):
+	try:
+		profiles = UserProfile.objects.all().select_related('user')
+		profile_list = [
+			{
+				"username": profile.user.username,
+				"nickname": profile.nickname,
+				"avatar": profile.avatar.url if profile.avatar else None,
+				"trophies": "TBD",
+				"status": "TBD",
+			}
+			for profile in profiles
+		]
+
+		return Response(profile_list, status=200)
+
+	except Exception as e:
+		return Response({"error": str(e)}, status=500)

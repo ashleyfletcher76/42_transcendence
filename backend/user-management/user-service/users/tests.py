@@ -112,3 +112,60 @@ class UserServiceTests(TestCase):
 		self.assertEqual(response.status_code, 404)
 		self.assertIn("Target user not found.", response.data["error"])
 
+	def test_get_own_profile_info(self):
+		"""Test retrieving the profile info for the authenticated user."""
+		url = "/users/profile-info/"
+		response = self.client.post(url, {})
+
+		# assertions
+		self.assertEqual(response.status_code, 200)
+		self.assertEqual(response.data["username"], self.user1.username)
+		self.assertEqual(response.data["nickname"], self.user1_profile.nickname)
+		self.assertEqual(response.data["blocked"], [])
+		self.assertEqual(response.data["friends"], [])
+
+	def test_get_profile_info_by_nickname(self):
+		"""Test retrieving the profile info for a specific user by nickname."""
+		# set up user2's profile with a nickname
+		self.user2_profile.nickname = "UserTwo"
+		self.user2_profile.save()
+
+		url = "/users/profile-info/"
+		response = self.client.post(url, {"nickname": "UserTwo"})
+
+		# assertions
+		self.assertEqual(response.status_code, 200)
+		self.assertEqual(response.data["username"], self.user2.username)
+		self.assertEqual(response.data["nickname"], self.user2_profile.nickname)
+
+	def test_get_profile_info_nonexistent_nickname(self):
+		"""Test requesting profile info for a non-existent nickname."""
+		url = "/users/profile-info/"
+		response = self.client.post(url, {"nickname": "NonExistentUser"})
+
+		# assertions
+		self.assertEqual(response.status_code, 404)
+		self.assertIn("User with given nickname not found.", response.data["error"])
+
+	def test_get_profile_info_unauthenticated(self):
+		"""Test accessing profile info without authentication."""
+		# remove credentials to simulate unauthenticated access
+		self.client.credentials()
+
+		url = "/users/profile-info/"
+		response = self.client.post(url, {})
+
+		# assertions
+		self.assertEqual(response.status_code, 401)
+		self.assertIn("Authentication credentials were not provided.", response.data["detail"])
+
+	def test_get_all_profiles(self):
+		"""Test retrieving the list of all profiles."""
+		url = "/users/profile-list/"
+		response = self.client.get(url)
+
+		# assertions
+		self.assertEqual(response.status_code, 200)
+		self.assertEqual(len(response.data), 3)  # Assuming 3 test users created
+		self.assertEqual(response.data[0]["username"], "user1")
+		self.assertEqual(response.data[1]["status"], "TBD")
