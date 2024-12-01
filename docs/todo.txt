@@ -1,38 +1,128 @@
-Userprofile:
-profile.json
-{
-    username: "username",
-    nickname: "nickname",
-    avatar: "picture",
-    status: "online",
-    wins: "12",
-    losses: "11",
-    games: "23",
-    trophies: "1",
-    friends: [friends_list] (use usernames for friendslist i use the nickname in the frontend for everything so in the backend we need a function like get_username_by_nickname(nickname))
-    blocks: [blocked_list],
-    ...(add everything you want)
-}
+API Documentation
+
+Endpoints:
+
+/users/profile-info
+
+    Gets the profile information for the requested user
+
+    Request Format
+    {
+        "nickname": "nickname" (if empty get the profile of the requester(by token))
+    }
+
+    Response JSON
+    {
+        "username": "username",
+        "nickname": "nickname",
+        "avatar": "picture (tbd)",
+        "trophies": "100",
+        "games_total": "6",
+        "wins": "5",
+        "losses": "1",
+        "blocked": [
+            "username1",
+            "username2"
+        ],
+        "friends": [
+            "username1",
+            "username2"
+        ],
+        "history": [
+            {
+                "opponent": "opponentUser1",
+                "result": "win",
+                "score": "3-1"
+            },
+            {
+                "opponent": "opponentUser2",
+                "result": "lose",
+                "score": "5-2"
+            },
+            {
+                "opponent": "opponentUser3",
+                "result": "win",
+                "score": "2-8"
+            }
+        ],
+        "status": "online"
+    }
 
 
-API Userservice:
+/users/profile-list
 
--Endpoint to get all userprofiles (nickname, status and trophies is enough)
+    Response JSON Example for 2 users:
+    [
+        {
+            "username": "user1",
+            "nickname": "nickname1",
+            "avatar": "picture1",
+            "trophies": 150,
+            "status": "online"
+        },
+        {
+            "username": "user2",
+            "nickname": "nickname2",
+            "avatar": "picture2",
+            "trophies": 200,
+            "status": "offline"
+        }
+    ]
 
--Enpoint to get userprofile by nickname (response should be previous defined profile.json)
-
--Endpoint to update Nickname and Avatar (tbd)
-
--update endpoint for add_friend (both users should get added as friends by each other with one call.)
-    request is { user1: "user", user2: "player", type: "add/remove"} --> add/remove player as friend of user and add/remove user as friend of player.
-
-same logic for block_user
-    request is { user1: "user", user2: "player", type: "add/remove"} --> add/remove player from/to blocklist of user and add/remove user from/to blocklist of player.
+    Note: The other profile information get requested if needed with the Enpoint /users/profile-info
 
 
-Torunament-Chat-Interaction:
+/users/update-profile
 
-The Tournamentsystem should create a group in the chatservice if a new tournament get created.
-Everytime a new user joins the tournament it should get add to the chatgroup. The chatgroup should have the name of the tournament.
-If a user leaves the tournament he get removed from the chatgroup. if the tournament get closed the chat group also need to be closed.
-The Tournament Service should be able to send messages in this chatgroup for launching/warning the next matches.
+    Allows updating the user's nickname and avatar.
+
+    Request Format
+    {
+        "username": "user",
+        "nickname": "newNickname",
+        "avatar": "newAvatar"
+    }
+
+    Response Example
+    {
+        "success": true,
+        "message": "Nickname and avatar updated successfully."
+    }
+
+
+/add-friend
+
+    Adds or removes a user as a friend. This endpoint updates the friend lists of both users simultaneously.
+    
+    Request Format
+    {
+        "user1": "user",
+        "user2": "player",
+        "type": "add/remove"  // Use "add" to add a friend or "remove" to remove a friend
+    }
+
+    Response Example
+    {
+        "success": true,
+        "message": "Friendship updated successfully."
+    }
+
+/block-user
+
+    Blocks or unblocks a user. This endpoint updates the blocklists of both users simultaneously.
+    
+    Request Format
+    {
+        "user": "user",
+        "type": "add/remove"  // Use "add" to block a user or "remove" to unblock (add user to the blocked list of the responding user(get via token))
+    }
+
+    Response Example
+    {
+        "success": true,
+        "message": "Blocklist updated successfully."
+    }
+
+
+Only allow letters and numbers 0-9 a-z A-Z for usernames and nicknames
+

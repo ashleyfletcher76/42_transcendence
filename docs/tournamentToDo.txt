@@ -1,0 +1,11 @@
+1. Fix Closing Events and test reconnection
+
+2. If a new player connects send a message with all currentPlayers to the new joined user and a message that a new user joined to all previously joined users. If a user leaves send a message that the user leaved to all users of the tournament. 
+
+3. Rename Tournament and switch creator if the current creator leaves the tournament
+
+4. Define Start of Tournament.
+    - Tournament need to be deleted from the Tournement List so no new user can join.
+    - What happens if a person leaves/disconnect while the tournament is running? Handle Matchmaking or cancel Tournament with actual state and winner
+    - After Tournament add Trophies and after each Game add Wins and Losses to each Player in the user-database.
+    - 
