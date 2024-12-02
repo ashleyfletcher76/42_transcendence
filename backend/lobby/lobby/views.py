@@ -24,9 +24,14 @@ def listLobby(request):
     if request.method == 'GET':
         if Tournament.objects.exists():
             inactive_tournaments = Tournament.objects.filter(active=False)
-            inactive_tournaments.delete()
-
-            tournaments = Tournament.objects.values('name', 'num_players')
+            for inactive in inactive_tournaments:
+                inactive.delete()
+                
+            inactive_tournaments = Tournament.objects.filter(num_players=0)
+            for inactive in inactive_tournaments:
+                inactive.delete()
+            
+            tournaments = Tournament.objects.values('name', 'num_players', 'active')
             tournaments_list = list(tournaments)
             response = {"tournaments": tournaments_list}
         else:

@@ -1,7 +1,7 @@
 import django
 django.setup()
 
-from channels.generic.websocket import AsyncWebsocketConsumer
+from channels.generic.websocket import WebsocketConsumer
 from django.db.models import ObjectDoesNotExist
 import json
 from .models import Tournament, Player
@@ -10,61 +10,76 @@ from asgiref.sync import sync_to_async
 import random
 import requests
 
-class TournamentConsumer(AsyncWebsocketConsumer):
+class TournamentConsumer(WebsocketConsumer):
 
     active_connections = {}
     game_service_url = "http://pong-game:8000/pong"
 
-    async def connect(self):
+    def connect(self):
         self.tournament_name = self.scope["url_route"]["kwargs"]["room_name"]
         self.username = self.scope["user"].username if self.scope["user"].is_authenticated else None
         TournamentConsumer.active_connections[self.username] = self
-        await self.accept()
+        self.accept()
 
-    async def disconnect(self, close_code):
+    def disconnect(self, close_code):
         if self.username in TournamentConsumer.active_connections:
             del TournamentConsumer.active_connections[self.username]
         username = self.scope.get("username")
         if username:
-            await self.remove_player_from_tournament(username)
+            self.remove_player_from_tournament(username)
 
 
-    async def receive(self, text_data):
+    def receive(self, text_data):
         data = json.loads(text_data)
+        print(data)
         action = data.get("action")
         tournament_name = data.get("tournament_name")
-        username = data.get("username")
+        username = data.get("nickname")
+        sender = data.get("sender")
+        message = data.get("message")
 
         #if not tournament_name or not username:
         #    await self.notify_user("username", "Tournament or player not found!")
         if action == "create_or_join":
             self.scope["username"] = username
-            response = await self.handle_create_or_join(tournament_name, username)
-            await self.send(json.dumps(response))
+            response = self.handle_create_or_join(tournament_name, username)
+            self.broadcast_message(response)
+        elif action == "message":
+            response = self.lobby_message(message, sender)
+            self.broadcast_message(response)
         elif action == "start_tournament":
-            response = await self.start_tournament(username)
-            await self.send(json.dumps(response))
-        elif action == "player_list":
-            response = await self.get_player_list()
-            await self.send(json.dumps(response))
-        elif action == "result":
-            response = await self.game_result(data)
-            await self.send(json.dumps(response))
+            response = self.start_tournament()
+            self.send(json.dumps(response))
+        elif action == "winner":
+            response = self.game_result(data)
+            self.send(json.dumps(response))
         else:
-            await self.send(json.dumps({"error": "Invalid action."}))
+            self.send(json.dumps({"error": "Invalid action."}))
 
 
-    @sync_to_async
+    def lobby_message(self, message, sender):
+        print(message)
+        print(sender)
+        return {
+            "type": "message",
+            "sender": sender,
+            "message": message
+        }
+
+    def broadcast_message(self, message):
+        for connection in TournamentConsumer.active_connections.values():
+            connection.send(json.dumps(message))
+
+
     def game_result(self, data):
         username = self.scope["username"]
         player = Player.objects.get(user__username=username)
 
-    @sync_to_async
-    def start_tournament(self, username):
+    def start_tournament(self):
         try:
             tournament = Tournament.objects.get(name=self.tournament_name)
             players = list(tournament.players.all())
-            admin = Player.objects.get(user__username=username).admin
+            admin = Player.objects.get(user__username=self.scope["username"]).admin
             if not admin:
                 return {"error": "You are not the admin of this lobby!"}
             random.shuffle(players)
@@ -95,11 +110,14 @@ class TournamentConsumer(AsyncWebsocketConsumer):
             return {"error": "Matchkaing Error!"}
 
     def notify_match(self, player1, player2, room_data):
+        print(room_data)
         if player1 in self.active_connections:
             connection = self.active_connections[player1]
             connection.send(json.dumps({
                 "type": "match",
-                "opponent": player2,
+                "player1": player1,
+                "player2": player2,
+                "room" : room_data.room_name,
                 room_data : room_data
             }))
 
@@ -107,7 +125,7 @@ class TournamentConsumer(AsyncWebsocketConsumer):
         if player in self.active_connections:
             connection = self.active_connections[player]
             connection.send(json.dumps({
-                "type": "bye",
+                "type": "message",
                 "message" : "You have a bye this Round. Please wait for the next round."
             }))
 
@@ -133,14 +151,12 @@ class TournamentConsumer(AsyncWebsocketConsumer):
 
 
 
-    @sync_to_async
     def notify_user(self, username, message):
         consumer_instance = TournamentConsumer.active_connections.get(username)
         if consumer_instance:
             consumer_instance.send(json.dumps({"notification": message}))
 
 
-    @sync_to_async
     def get_player_list(self):
         try:
             tournament = Tournament.objects.get(name=self.tournament_name)
@@ -152,42 +168,33 @@ class TournamentConsumer(AsyncWebsocketConsumer):
                     "admin": is_admin
                 }
                 player_list.append(player_data)
-            print(player_list)
             return {"players":list(player_list)}
         except Tournament.DoesNotExist:
             return {"error": "Tournament not found"}
 
-    @sync_to_async
     def remove_player_from_tournament(self, username):
         try:
             player = Player.objects.get(user__username=username)
-            tournament = Tournament.objects.get(players=player)
-            print(player.user.username)
-            print(tournament.name)
-            tournament.players.remove(player)
-            if player.admin:
-                other_players = tournament.players.exclude(id=player.id)
-                if other_players.exists():
-                    new_admin = other_players.first()
-                    new_admin.admin = True
-                    new_admin.save()
-                    print(f"New admin assigned: {new_admin.user.username}")
-                else:
-                    print("No other players available to assign as admin.")
-
-            tournament.num_players = tournament.players.count()
-            print(tournament.num_players)
-            if (tournament.num_players <= 0):
-                tournament.active = False
-                tournament.delete()
-                print("debug info!")
-            else:
+            tournament = Tournament.objects.filter(players=player).first()
+            if tournament:
+                tournament.players.remove(player)
+                if player.admin:
+                    other_players = tournament.players.exclude(id=player.id)
+                    if other_players.exists():
+                        new_admin = other_players.first()
+                        new_admin.admin = True
+                        new_admin.save()
+                    else:
+                        tournament.players.delete()
+                        tournament.delete()
+                        return
+                tournament.num_players = tournament.players.count()
                 tournament.save()
         except Player.DoesNotExist:
             pass
 
 
-    @sync_to_async
+
     def get_player(self, username):
         try:
             user, user_created = User.objects.get_or_create(username=username)
@@ -200,45 +207,51 @@ class TournamentConsumer(AsyncWebsocketConsumer):
             return None
 
 
-    @sync_to_async
     def create_or_get_tournament(self, tournament_name):
         return Tournament.objects.get_or_create(
             name=tournament_name,
             defaults={'num_players': 0, 'active': True}
         )
 
-    @sync_to_async
     def add_player_to_tournament(self, tournament, player):
-        self.remove_player_from_tournament(player.user.username)
         tournament.players.add(player)
         tournament.num_players = tournament.players.count()
         tournament.save()
 
-    @sync_to_async
     def is_Player_Exists(self, tournament, player):
         return tournament.players.filter(user=player.user).exists()
 
-    @sync_to_async
     def make_admin(self, tournament, player):
         player.admin = True
         player.save()
         tournament.save()
 
-    async def handle_create_or_join(self, tournament_name, username):
-        player = await self.get_player(username)
+    def get_players_usernames(self, tournament):
+        players = list(tournament.players.all())
+        usernames = [player.user.username for player in players]
+        return usernames
+
+
+    def handle_create_or_join(self, tournament_name, username):
+        player = self.get_player(username)
         if not player:
             return {"error": "Player does not exists"}
     
-        tournament, created = await (self.create_or_get_tournament(tournament_name))
+        tournament, created = (self.create_or_get_tournament(tournament_name))
 
         if created:
-            await self.add_player_to_tournament(tournament, player)
-            await self.make_admin(tournament, player)
-            return {"message": "Tournament created and player added.", "tournament_name": tournament_name}
+            self.add_player_to_tournament(tournament, player)
+            self.make_admin(tournament, player)
         else:
-            exits = await self.is_Player_Exists(tournament, player)
+            exits = self.is_Player_Exists(tournament, player)
             if exits:
+                print("returning from here")
                 return {"error": "Player is already in tournament"}
+            self.add_player_to_tournament(tournament, player)
 
-            await self.add_player_to_tournament(tournament, player)
-            return {"message": "Player added to the tournament.", "tournament_name": tournament_name}
+        usernames = self.get_players_usernames(tournament)
+        return {
+            "type": "join/create",
+            "players": usernames,
+            "player": player.user.username
+        }
