@@ -49,7 +49,7 @@ class TournamentConsumer(WebsocketConsumer):
             self.broadcast_message(response)
         elif action == "start_tournament":
             response = self.start_tournament()
-            self.send(json.dumps(response))
+            self.broadcast_message(response)
         elif action == "winner":
             response = self.game_result(data)
             self.send(json.dumps(response))
@@ -105,7 +105,7 @@ class TournamentConsumer(WebsocketConsumer):
                     self.notify_match(player1, player2, room_data)
                 else:
                     self.notify_bye(player1)
-            return {"message": "Tournament matchmaking started.", "matches": matches}
+            return {"type": "start", "message": "Tournament started"}
         except Tournament.DoesNotExist:
             return {"error": "Matchkaing Error!"}
 
@@ -194,7 +194,8 @@ class TournamentConsumer(WebsocketConsumer):
                         new_admin.admin = True
                         new_admin.save()
                     else:
-                        tournament.players.delete()
+                        for player in tournament.players.all():
+                            player.delete()
                         tournament.delete()
                         return
                 tournament.num_players = tournament.players.count()
