@@ -81,6 +81,7 @@ class TournamentConsumer(WebsocketConsumer):
             players = list(tournament.players.all())
             admin = Player.objects.get(user__username=self.scope["username"]).admin
             if not admin:
+                print({"error": "You are not the admin of this lobby!"})
                 return {"error": "You are not the admin of this lobby!"}
             random.shuffle(players)
             numPlayers = tournament.num_players
@@ -102,7 +103,6 @@ class TournamentConsumer(WebsocketConsumer):
                 if player2:
                     room_data = self.create_game_room(player1, player2)
                     self.notify_match(player1, player2, room_data)
-                    self.notify_match(player2, player1, room_data)
                 else:
                     self.notify_bye(player1)
             return {"message": "Tournament matchmaking started.", "matches": matches}
@@ -110,15 +110,24 @@ class TournamentConsumer(WebsocketConsumer):
             return {"error": "Matchkaing Error!"}
 
     def notify_match(self, player1, player2, room_data):
-        print(room_data)
+        room_name = room_data.get("room_name")
         if player1 in self.active_connections:
             connection = self.active_connections[player1]
             connection.send(json.dumps({
                 "type": "match",
                 "player1": player1,
                 "player2": player2,
-                "room" : room_data.room_name,
-                room_data : room_data
+                "room" : room_name,
+                "room_data" : room_data
+            }))
+        if player2 in self.active_connections:
+            connection = self.active_connections[player2]
+            connection.send(json.dumps({
+                "type": "match",
+                "player1": player1,
+                "player2": player2,
+                "room" : room_name,
+                "room_data" : room_data
             }))
 
     def notify_bye(self, player):
