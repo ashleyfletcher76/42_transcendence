@@ -37,6 +37,8 @@ class ChatConsumer(AsyncWebsocketConsumer):
 				user_channels[self.nickname] = []
 			user_channels[self.nickname].append(self.channel_name)
 
+		# print(f"User {self.nickname} is connecting. Current user_channels: {user_channels}")
+
 		await self.accept()
 
 	async def disconnect(self, close_code):
@@ -49,6 +51,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
 				user_channels[self.nickname].remove(self.channel_name)
 				if not user_channels[self.nickname]:
 					del user_channels[self.nickname]
+		# print(f"User {self.nickname} is disconnecting. Current user_channels: {user_channels}")
 
 	def start_redis_listener(self):
 		"""Start a thread to listen for redis events"""
@@ -99,6 +102,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
 	async def route_whisper(self, data):
 		target_nickname = data.get("to")
 
+		# print(f"Attempting to whisper to {target_nickname}. Current user_channels: {user_channels}")
 		if not target_nickname:
 			await self.send(text_data=json.dumps({"error": "Target nickname is required."}))
 			return
