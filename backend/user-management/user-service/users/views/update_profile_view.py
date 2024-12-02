@@ -1,6 +1,7 @@
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
+from datetime import timezone
 import redis
 import json
 from django.db.models import Q
@@ -59,6 +60,18 @@ def update_profile(request):
 		if new_avatar != profile.avatar:
 			profile.avatar = new_avatar
 			updated_fields.append("avatar")
+
+	## UPDATE ONLINE STATUS ##
+	new_online_status = data.get("online")
+	if new_online_status is not None:
+		if not isinstance(new_online_status, bool):
+			return Response(
+				{"success": False, "message": "Online status must be boolean."},
+				status=400,
+			)
+		profile.online = new_online_status
+		updated_fields.append("online")
+
 
 	if updated_fields:
 		profile.save()

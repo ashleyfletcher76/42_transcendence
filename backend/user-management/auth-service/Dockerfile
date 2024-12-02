@@ -18,8 +18,15 @@ RUN pip install --no-cache-dir -r requirements.txt
 # copy the rest
 COPY . /app/
 
-# expose HTTP port
+# add entrypoing and copy script
+COPY entrypoint.sh .
+RUN chmod +x /app/entrypoint.sh
+
+# expose the port
 EXPOSE 8000
 
+# use an entrypoint script
+ENTRYPOINT ["/app/entrypoint.sh"]
+
 # run dev server without SSL
-CMD ["sh", "-c", "python manage.py migrate && python manage.py runserver 0.0.0.0:8000"]
+CMD ["sh", "-c", "python manage.py runserver 0.0.0.0:8000"]

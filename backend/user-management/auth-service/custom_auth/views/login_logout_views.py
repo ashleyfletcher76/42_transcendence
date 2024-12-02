@@ -25,6 +25,12 @@ class LoginView(APIView):
 			user_id = user_data["user_id"]
 			nickname = user_data["nickname"]
 
+			# mark as online
+			request.patch(
+				f"http://user-service:8000/users/update-profile/",
+				json={"nickname": nickname, "online": True}
+			)
+
 			refresh = RefreshToken()
 			refresh["user_id"] = user_id
 			refresh["nickname"] = nickname
@@ -51,6 +57,11 @@ class LogoutView(APIView):
 			refresh_token = request.data["refresh_token"]
 			token = RefreshToken(refresh_token)
 			token.blacklist()
+			nickname = token.get("nickname")
+			request.patch(
+				f"http://user-service:8000/users/update-profile/",
+				json={"nickname": nickname, "online": False}
+			)
 			return Response(
 				{"message": "Logged out successfully"},
 				status=status.HTTP_205_RESET_CONTENT,

@@ -107,6 +107,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
 			await self.send(text_data=json.dumps({"error": "Target nickname is required."}))
 			return
 
+		# print(f"Nickname: {target_nickname}")
 		target_channels = user_channels.get(target_nickname)
 		if target_channels:
 			# Send the message to the target user

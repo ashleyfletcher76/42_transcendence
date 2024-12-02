@@ -13,35 +13,35 @@ User = get_user_model()
 @api_view(['POST'])
 @permission_classes([AllowAny])
 def verify_user(request):
-    username = request.data.get("username")
-    password = request.data.get("password")
-    user = authenticate(username=username, password=password)
-    if user:
-        # fetch user info
-        user_profile = user.profile
-        nickname = user_profile.nickname
-        return Response(
-            {
-                "user_id": user.id,
-                "nickname": nickname,
-                "message": "User verified",
-            },
-            status=status.HTTP_200_OK
-        )
-    return Response({"error": "Invalid credentials"}, status=status.HTTP_401_UNAUTHORIZED)
+	username = request.data.get("username")
+	password = request.data.get("password")
+	user = authenticate(username=username, password=password)
+	if user:
+		# fetch user info
+		user_profile = user.profile
+		nickname = user_profile.nickname
+		return Response(
+			{
+				"user_id": user.id,
+				"nickname": nickname,
+				"message": "User verified",
+			},
+			status=status.HTTP_200_OK
+		)
+	return Response({"error": "Invalid credentials"}, status=status.HTTP_401_UNAUTHORIZED)
 
 class UserExistsView(View):
-    def get(self, request, user_id):
-        try:
-            # check if exists
-            user = User.objects.get(id=user_id)
-            return JsonResponse({"exists": True}, status=200)
-        except User.DoesNotExist:
-            return JsonResponse({"exists": False}, status=404)
+	def get(self, request, user_id):
+		try:
+			# check if exists
+			user = User.objects.get(id=user_id)
+			return JsonResponse({"exists": True}, status=200)
+		except User.DoesNotExist:
+			return JsonResponse({"exists": False}, status=404)
 
 class UserProfileView(generics.RetrieveUpdateAPIView):
-    serializer_class = UserProfileSerializer
-    permission_classes = [IsAuthenticated]
+	serializer_class = UserProfileSerializer
+	permission_classes = [IsAuthenticated]
 
-    def get_object(self):
-        return self.request.user.profile
+	def get_object(self):
+		return self.request.user.profile
