@@ -65,28 +65,39 @@ class ValidateUserView(APIView):
 			)
 
 class GetUserFromTokenView(APIView):
+	authentication_classes = []
+	permission_classes = []
+
 	def post(self, request):
+		print("Received request to validate token")
 		token = request.data.get("token")
+		print(f"Token: {token}")
 		if not token:
+			print("Error: Token missing in request")
 			return Response({"error": "Token is required"}, status=status.HTTP_400_BAD_REQUEST)
 
 		try:
 			jwt_auth = JWTAuthentication()
 			validated_token = jwt_auth.get_validated_token(token)
+			print(f"Validated token payload: {validated_token}")
 			user_id = validated_token.get("user_id")
 			print(f"Token id: {user_id}")
 			if not user_id:
 				raise AuthenticationFailed("Token does contain user_id")
 
 			# query from user-service the username
+			print(f"Querying user-service for user_id: {user_id}")
 			response = requests.get(
 				f"http://user-service:8000/users/get-single-username/{user_id}/",
 				headers={"Authorization": f"Bearer {token}"}
 			)
 			if response.status_code == 200:
 				user_data = response.json()
+				print(f"User-service response: {user_data}")
 				return Response(user_data, status=status.HTTP_200_OK)
 			else:
+				print(f"User-service error response: {response.status_code} - {response.text}")
 				return Response({"error": "User not found"}, status=status.HTTP_404_NOT_FOUND)
 		except Exception as e:
+			print(f"Error during token validation or user-service query: {e}")
 			return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
