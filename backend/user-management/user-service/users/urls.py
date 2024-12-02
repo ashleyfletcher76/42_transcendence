@@ -6,7 +6,7 @@ from .views.block_user_view import BlockUserView
 from .views.verify_views import verify_user, UserExistsView, UserProfileView
 from .views.update_profile_view import update_profile
 from .views.get_user_info_view import (
-	get_single_username,
+	get_single_user_data,
 	get_usernames,
 	get_profile_token,
 	get_profile_info,
@@ -27,7 +27,7 @@ urlpatterns = [
 	path("profile-list/", get_all_profiles, name="get-all-profiles"),
 	path("update-profile/", update_profile, name="update-profiles"),
 
-	path("get-single-username/<int:user_id>/", get_single_username, name="get-single-username"),
+	path("get-single-user-data/<int:user_id>/", get_single_user_data, name="get-single-user-data"),
 	path("get-usernames/", get_usernames, name="get-usernames"),
 
 	path("add-friend/", AddFriendView.as_view(), name="add-friend"),

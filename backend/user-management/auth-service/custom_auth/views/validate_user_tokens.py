@@ -69,9 +69,8 @@ class GetUserFromTokenView(APIView):
 	permission_classes = []
 
 	def post(self, request):
-		print("Received request to validate token")
 		token = request.data.get("token")
-		print(f"Token: {token}")
+		# print(f"Token: {token}")
 		if not token:
 			print("Error: Token missing in request")
 			return Response({"error": "Token is required"}, status=status.HTTP_400_BAD_REQUEST)
@@ -79,7 +78,7 @@ class GetUserFromTokenView(APIView):
 		try:
 			jwt_auth = JWTAuthentication()
 			validated_token = jwt_auth.get_validated_token(token)
-			print(f"Validated token payload: {validated_token}")
+			# print(f"Validated token payload: {validated_token}")
 			user_id = validated_token.get("user_id")
 			print(f"Token id: {user_id}")
 			if not user_id:
@@ -88,7 +87,7 @@ class GetUserFromTokenView(APIView):
 			# query from user-service the username
 			print(f"Querying user-service for user_id: {user_id}")
 			response = requests.get(
-				f"http://user-service:8000/users/get-single-username/{user_id}/",
+				f"http://user-service:8000/users/get-single-user-data/{user_id}/",
 				headers={"Authorization": f"Bearer {token}"}
 			)
 			if response.status_code == 200:

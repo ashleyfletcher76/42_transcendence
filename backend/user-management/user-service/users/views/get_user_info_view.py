@@ -9,14 +9,22 @@ User = get_user_model()
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
-def get_single_username(request, user_id):
+def get_single_user_data(request, user_id):
 	try:
 		print(f"Recived request for user ID: {user_id}")
 		user = User.objects.get(id=user_id)
-		return JsonResponse({"user_id": user.id, "username": user.username})
+		profile = user.profile
+
+		user_data = {
+			"user_id": user.id,
+			"username": user.username,
+			"nickname": profile.nickname,
+		}
+		# print(f"Returning user data: {user_data}")
+		return Response(user_data, status=200)
 	except User.DoesNotExist:
-		print("Failure inside get user single")
-		return JsonResponse({"error": "User not found"}, status=404)
+		print(f"User ID {user_id} not found")
+		return Response({"error": "User not found"}, status=404)
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
