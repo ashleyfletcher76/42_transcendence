@@ -17,6 +17,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
 			await self.close(code=4001)
 			return
 
+		# print(f"Token inside Connect: {token}")
 		# Authenticate the user using the auth service
 		try:
 			user_data = await self.get_user_from_auth_service(token)
@@ -27,12 +28,12 @@ class ChatConsumer(AsyncWebsocketConsumer):
 			await self.close(code=4001)
 			return
 
-		# Add the user to the "all" group (previously "lobby")
+		# Add the user to the "all"
 		await self.channel_layer.group_add("chat_all", self.channel_name)
 
 		# Register the user in `user_channels`
 		with channels_lock:
-			if self.nickname not in user_channels: ## update to nickname
+			if self.nickname not in user_channels:
 				user_channels[self.nickname] = []
 			user_channels[self.nickname].append(self.channel_name)
 
@@ -164,3 +165,4 @@ class ChatConsumer(AsyncWebsocketConsumer):
 			if header[0].decode("utf-8") == "authorization":
 				return header[1].decode("utf-8").split("Bearer ")[-1]
 		return None
+
