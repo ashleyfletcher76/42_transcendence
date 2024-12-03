@@ -1,82 +1,118 @@
-import json, requests, redis, asyncio
+import json, requests, asyncio, time
 from channels.generic.websocket import AsyncWebsocketConsumer
-from threading import Thread, Lock
+from threading import Lock, Thread
+from chat.redis_client import get_redis_client
 
 user_channels = {}
 channels_lock = Lock()
 
 class ChatConsumer(AsyncWebsocketConsumer):
 	async def connect(self):
-		# start redis listener
-		self.start_redis_listener()
+		"""Handle WebSocket connection."""
+		# initialize Redis client
+		self.redis_client = get_redis_client()
 
-		# Extract JWT token from headers
+		# extract JWT token from headers
 		token = self.get_jwt_from_headers(self.scope["headers"])
 		if not token:
 			print("No token found in headers")
 			await self.close(code=4001)
 			return
 
-		# print(f"Token inside Connect: {token}")
-		# Authenticate the user using the auth service
+		# authenticate user using auth service
 		try:
 			user_data = await self.get_user_from_auth_service(token)
 			self.user_id = user_data["user_id"]
 			self.nickname = user_data["nickname"]
+
+			# mark user as online
+			if self.redis_client:
+				try:
+					self.redis_client.publish(
+						"online_status_updates",
+						json.dumps({"nickname": self.nickname, "online": True}),
+					)
+				except Exception as e:
+					print(f"Error publishing online status: {e}")
 		except Exception as e:
 			print(f"Error authenticating user: {e}")
 			await self.close(code=4001)
 			return
 
-		# Add the user to the "all"
+		# add user to "chat_all" group
 		await self.channel_layer.group_add("chat_all", self.channel_name)
 
-		# Register the user in `user_channels`
+		# register user in user_channels
 		with channels_lock:
 			if self.nickname not in user_channels:
 				user_channels[self.nickname] = []
 			user_channels[self.nickname].append(self.channel_name)
 
-		# print(f"User {self.nickname} is connecting. Current user_channels: {user_channels}")
-
 		await self.accept()
 
 	async def disconnect(self, close_code):
-		# Remove the user from the "all" group
+		"""Handle WebSocket disconnect."""
+		# remove user from "chat_all" group
 		await self.channel_layer.group_discard("chat_all", self.channel_name)
 
-		# Remove the user's channel from `user_channels`
+		# remove user's channel from user_channels
 		with channels_lock:
 			if self.nickname in user_channels:
 				user_channels[self.nickname].remove(self.channel_name)
 				if not user_channels[self.nickname]:
 					del user_channels[self.nickname]
-		# print(f"User {self.nickname} is disconnecting. Current user_channels: {user_channels}")
+
+		# mark user as offline after delay
+		disconnect_time = time.time()
+		await asyncio.sleep(10)
+
+		with channels_lock:
+			is_still_connected = self.nickname in user_channels
+
+		if not is_still_connected and self.redis_client:
+			try:
+				self.redis_client.publish(
+					"online_status_updates",
+					json.dumps({"nickname": self.nickname, "online": False}),
+				)
+			except Exception as e:
+				print(f"Error publishing offline status: {e}")
 
 	def start_redis_listener(self):
-		"""Start a thread to listen for redis events"""
+		"""Start a thread to listen for Redis events."""
 		def redis_listener():
-			redis_client = redis.StrictRedis(host="redis", port=6379, db=0)
-			pubsub = redis_client.pubsub()
-			pubsub.subscribe("nicknames_updates")
+			try:
+				pubsub = self.redis_client.pubsub()
+				pubsub.subscribe("nicknames_updates")
 
-			for message in pubsub.listen():
-				if message["type"] == "message":
-					data = json.loads(message["data"])
-					self.handle_nickname_update(data)
+				for message in pubsub.listen():
+					if message["type"] == "message":
+						data = json.loads(message["data"])
+						self.handle_nickname_update(data)
+			except Exception as e:
+				print(f"Redis listener error: {e}")
 
 		listener_thread = Thread(target=redis_listener, daemon=True)
 		listener_thread.start()
 
 	def handle_nickname_update(self, data):
-		"""Handle nickname updates"""
+		"""Handle nickname updates from Redis."""
 		old_nickname = data["old_nickname"]
 		new_nickname = data["new_nickname"]
 
-		# update user_channels
 		with channels_lock:
 			if old_nickname in user_channels:
+				# move channels to new nickname
 				user_channels[new_nickname] = user_channels.pop(old_nickname)
+
+		if self.redis_client:
+			try:
+				self.redis_client.publish(
+					"online_status_updates",
+					json.dumps({"nickname": new_nickname, "online": True}),
+				)
+			except Exception as e:
+				print(f"Error publishing online status for new nickname: {e}")
 
 	async def receive(self, text_data):
 		try:

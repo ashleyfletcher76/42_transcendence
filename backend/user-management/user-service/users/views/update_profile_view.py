@@ -2,10 +2,10 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from datetime import timezone
-import redis
-import json
+import redis, json
 from django.db.models import Q
 from ..models import UserProfile
+from ..redis_client import get_redis_client
 
 @api_view(['PUT'])
 @permission_classes([IsAuthenticated])
@@ -18,11 +18,7 @@ def update_profile(request):
 	old_nickname = profile.nickname
 
 	# initialize Redis client
-	try:
-		redis_client = redis.StrictRedis(host="redis", port=6379, db=0)
-		redis_client.ping()
-	except redis.ConnectionError:
-		redis_client = None
+	redis_client = get_redis_client()
 
 	# update nickname
 	new_nickname = data.get("nickname")
@@ -71,6 +67,15 @@ def update_profile(request):
 			)
 		profile.online = new_online_status
 		updated_fields.append("online")
+
+		if redis_client:
+			try:
+				redis_client.publish(
+					"online_status_updates",
+					json.dumps({"nickname": profile.nickname, "online": new_online_status}),
+				)
+			except Exception as e:
+				print(f"Warning: Redis publishing failed - {str(e)}")
 
 
 	if updated_fields:

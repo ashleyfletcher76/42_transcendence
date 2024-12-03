@@ -253,6 +253,3 @@ class UserServiceTests(TestCase):
 		response = self.client.put(url, payload, content_type="application/json")
 		self.assertEqual(response.status_code, 400)
 		self.assertEqual(response.json()["message"], "Online status must be a boolean.")
-
-
-
