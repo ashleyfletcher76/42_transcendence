@@ -77,5 +77,8 @@ npm install
 exit
 npm install
 exit
+<<<<<<< Updated upstream
 npm install
 exit
+=======
+>>>>>>> Stashed changes

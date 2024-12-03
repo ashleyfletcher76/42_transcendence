@@ -15,7 +15,6 @@
 
 <div class="scrollable-list chat" >
   {{#each this.filteredMessages as |message|}}
-    {{this.scrollToBottom}}
     <Message @message={{message}} @ownNickname={{this.chat.user.profile.nickname}}/>
   {{/each}}
 </div>

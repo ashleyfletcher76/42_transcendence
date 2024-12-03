@@ -28,11 +28,11 @@ export default class ProfileOtherComponent extends Component {
 
   @action
   async blockUser(type) {
-    const apiEndpoint = "http://localhost:8001/users/block/";
+    const apiEndpoint = "users/users/block-user/";
 
     try {
       const response = await fetch(apiEndpoint, {
-        method: "PUT",
+        method: "POST",
         headers: {
           Authorization: `Bearer ${this.session.data.authenticated.access}`,
           "Content-Type": "application/json",

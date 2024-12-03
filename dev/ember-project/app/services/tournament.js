@@ -92,27 +92,31 @@ export default class TournamentService extends Service {
 		const parsedMessage = JSON.parse(event.data);
 		switch (parsedMessage.type) {
 			case "create":
-				handleCreate(parsedMessage)
+				this.handleCreate(parsedMessage)
 				break;
 		
-			case "join":
-				handleJoin(parsedMessage)
+			case "join/create":
+				this.handleJoin(parsedMessage)
 				break;
 			
+      case "join":
+				this.handleJoin(parsedMessage)
+				break;
+
 			case "message":
-				handleMessage(parsedMessage)
+				this.handleMessage(parsedMessage)
 				break;
 			
 			case "leave":
-				handleLeave(parsedMessage)
+				this.handleLeave(parsedMessage)
 				break;
 
 			case "match":
-				handleMatch(parsedMessage)
+				this.handleMatch(parsedMessage)
 				break;
 
 			case "tournament_winner":
-				handleTournamentWinner(parsedMessage)
+				this.handleTournamentWinner(parsedMessage)
 				break;
 			default:
 				// Handle the default case here (if needed)
@@ -121,25 +125,26 @@ export default class TournamentService extends Service {
 	}
 
 	handleCreate(parsedMessage) {
-		this.currentPlayers = parsedMessage.players;
+		this.currentPlayers = [...parsedMessage.players];
 		const data = {
 			type: 'tournament',
 			from: 'System',
 			content: 'You created the Tournament ' + this.currentLobby
 		};
-		const newMessage = JSON.parse(data);
-		this.chat.messages = [...this.chat.messages, newMessage];
+		this.chat.messages = [...this.chat.messages, data];
 	}
 
 	handleJoin(parsedMessage) {
-		this.currentPlayers = parsedMessage.players;
+    console.log(parsedMessage);
+		this.currentPlayers = [...parsedMessage.players];
+    console.log(this.currentPlayers);
 		const data = {
 			type: 'tournament',
 			from: 'System',
 			content: parsedMessage.player + ' joined the Tournament!'
 		};
-		const newMessage = JSON.parse(data);
-		this.chat.messages = [...this.chat.messages, newMessage];
+		this.chat.messages = [...this.chat.messages, data];
+    console.log("chat:", this.chat.messages);
 	}
 
 	handleMessage(parsedMessage) {
@@ -148,8 +153,7 @@ export default class TournamentService extends Service {
 			from: parsedMessage.sender,
 			content: parsedMessage.message
 		};
-		const newMessage = JSON.parse(data);
-		this.chat.messages = [...this.chat.messages, newMessage];
+		this.chat.messages = [...this.chat.messages, data];
 	}
 
 	handleStart(parsedMessage) {
@@ -158,19 +162,17 @@ export default class TournamentService extends Service {
 			from: 'System',
 			content: parsedMessage.message
 		};
-		const newMessage = JSON.parse(data);
-		this.chat.messages = [...this.chat.messages, newMessage];
+		this.chat.messages = [...this.chat.messages, data];
 	}
 
 	handleLeave(parsedMessage) {
-		this.currentPlayers = parsedMessage.players;
+		this.currentPlayers = [...parsedMessage.players];
 		const data = {
 			type: 'tournament',
 			from: 'System',
 			content: parsedMessage.player + ' left the Tournament!'
 		};
-		const newMessage = JSON.parse(data);
-		this.chat.messages = [...this.chat.messages, newMessage];
+		this.chat.messages = [...this.chat.messages, data];
 	}
 
 	handleMatch(parsedMessage) {
@@ -182,8 +184,7 @@ export default class TournamentService extends Service {
 			from: 'System',
 			content: "Get ready! Your next game is against " + opponent + " and it starts in just 20 seconds!"
 		};
-		const newMessage = JSON.parse(data);
-		this.chat.messages = [...this.chat.messages, newMessage];
+		this.chat.messages = [...this.chat.messages, data];
 		const roomdata = {
 			roomname: parsedMessage.room,
 			player1: parsedMessage.player1,

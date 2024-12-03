@@ -10,7 +10,7 @@ export default class MessageComponent extends Component {
   acceptFriend(event) {
     event.preventDefault();
     console.log(`${this.args.message.from} accepted as a friend!`);
-    makeFriends();
+    this.makeFriends();
   }
 
   @action
@@ -21,17 +21,17 @@ export default class MessageComponent extends Component {
   }
 
   async makeFriends() {
-    const apiEndpoint = "http://localhost:8001/users/friends/";
+    const apiEndpoint = "users/users/add-friend/";
 
     try {
       const response = await fetch(apiEndpoint, {
-        method: "PUT",
+        method: "POST",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${this.session.data.authenticated.access}`,
         },
         body: JSON.stringify({  
-            user: this.args.message.from,
+            nickname: this.args.message.from,
             type: "add",
         }),
       });
