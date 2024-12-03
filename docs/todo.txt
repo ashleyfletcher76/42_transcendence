@@ -150,8 +150,7 @@ or
     #### dont store as nickname, store as username/user id but send out nickname when someone requests this friend in their profile ###
     Request Format
     {
-        "user1": "user",
-        "user2": "player",
+        "nickname": "user",
         "type": "add/remove"  // Use "add" to add a friend or "remove" to remove a friend
     }
 
@@ -167,7 +166,7 @@ or
 
     Request Format
     {
-        "user": "user",
+        "nickname": "user",
         "type": "add/remove"  // Use "add" to block a user or "remove" to unblock (add user to the blocked list of the responding user(get via token))
     }
 
