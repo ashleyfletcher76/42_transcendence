@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.utils.timezone import now
 import uuid
 
 class UserProfile(models.Model):
@@ -10,6 +11,9 @@ class UserProfile(models.Model):
 
 	friends = models.ManyToManyField('self', symmetrical=True, blank=True, related_name='friend_profile')
 	blocked_users = models.ManyToManyField('self', symmetrical=False, blank=True, related_name='blocked_by')
+
+	online = models.BooleanField(default=False)
+	last_seen = models.DateTimeField(default=now)
 
 	def __str__(self):
 		return self.nickname or self.user.username

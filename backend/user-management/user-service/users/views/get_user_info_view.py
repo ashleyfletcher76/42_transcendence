@@ -98,7 +98,8 @@ def get_profile_info(request):
 			"blocked": blocked,
 			"friends": friends,
 			"history": "TBD",
-			"status": "TBD",
+			"status": "online" if profile.online else "offline",
+			"last_seen": profile.last_seen
 		}
 		return Response(profile_response, status=200)
 

@@ -256,15 +256,6 @@ services:
       - "6379:6379"
     restart: always
 
-  # stunnel:
-  #   build: ./../backend/stunnel
-  #   container_name: stunnel
-  #   networks:
-  #     my_network:
-  #   ports:
-  #     - "6380:6380" # Redis TLS port
-  #   restart: always
-
   nginx:
     build: ./../frontend
     container_name: nginx
@@ -273,8 +264,8 @@ services:
         condition: service_healthy
       user-service:
         condition: service_healthy
-     # chat-service:
-     #   condition: service_healthy
+      chat-service:
+        condition: service_healthy
       pong-game:
         condition: service_healthy
       lobby:

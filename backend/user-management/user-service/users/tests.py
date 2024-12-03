@@ -3,6 +3,7 @@ from rest_framework.test import APIClient
 from django.contrib.auth.models import User
 from .models import UserProfile
 from rest_framework_simplejwt.tokens import RefreshToken
+import json
 
 class UserServiceTests(TestCase):
 	def setUp(self):
@@ -229,3 +230,26 @@ class UserServiceTests(TestCase):
 
 		self.assertEqual(response.status_code, 401)
 		self.assertIn("Authentication credentials were not provided.", response.json()["detail"])
+
+	def test_update_online_status_to_true(self):
+		url = "/users/update-profile/"
+		payload = json.dumps({"online": True})
+		response = self.client.put(url, payload, content_type="application/json")
+		self.assertEqual(response.status_code, 200)
+		self.user1_profile.refresh_from_db()
+		self.assertTrue(self.user1_profile.online)
+
+	def test_update_online_status_to_false(self):
+		url = "/users/update-profile/"
+		payload = json.dumps({"online": False})
+		response = self.client.put(url, payload, content_type="application/json")
+		self.assertEqual(response.status_code, 200)
+		self.user1_profile.refresh_from_db()
+		self.assertFalse(self.user1_profile.online)
+
+	def test_invalid_online_status(self):
+		url = "/users/update-profile/"
+		payload = json.dumps({"online": "invalid_value"})
+		response = self.client.put(url, payload, content_type="application/json")
+		self.assertEqual(response.status_code, 400)
+		self.assertEqual(response.json()["message"], "Online status must be a boolean.")

@@ -30,6 +30,17 @@ class LoginView(APIView):
 			refresh["nickname"] = nickname
 			access_token = refresh.access_token
 
+			# mark as online
+			update_url = f"http://user-service:8000/users/update-profile/"
+			update_response = requests.put(
+				update_url,
+				json={"nickname": nickname, "online": True},
+				headers={"Authorization": f"Bearer {access_token}"}
+			)
+
+			if update_response.status_code != 200:
+				print("Faield to update online status:", update_response.json())
+
 			print("Tokens created for user_id:", user_id)
 			return Response(
 				{
@@ -50,12 +61,24 @@ class LogoutView(APIView):
 		try:
 			refresh_token = request.data["refresh_token"]
 			token = RefreshToken(refresh_token)
+			
+			# mark as offline
+			update_url = f"http://user-service:8000/users/update-profile/"
+			updated_response = requests.put(
+				update_url,
+				json={"nickname": nickname, "online": False},
+				headers={"Authorization": f"Bearer {token}"}
+			)
+
+			if updated_response != 200:
+				print("Failed to update online status:", updated_response.json())
+
 			token.blacklist()
+			nickname = token.get("nickname")
+
 			return Response(
 				{"message": "Logged out successfully"},
 				status=status.HTTP_205_RESET_CONTENT,
 			)
 		except Exception as e:
 			return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
-
-
