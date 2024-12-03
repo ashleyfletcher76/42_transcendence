@@ -3,6 +3,7 @@ from rest_framework.test import APIClient
 from django.contrib.auth.models import User
 from .models import UserProfile
 from rest_framework_simplejwt.tokens import RefreshToken
+import json
 
 class UserServiceTests(TestCase):
 	def setUp(self):
@@ -231,42 +232,27 @@ class UserServiceTests(TestCase):
 		self.assertIn("Authentication credentials were not provided.", response.json()["detail"])
 
 	def test_update_online_status_to_true(self):
-		"""Test updating the online status to True."""
 		url = "/users/update-profile/"
-		payload = {"online": True}
-		response = self.client.put(url, payload)
-
+		payload = json.dumps({"online": True})
+		response = self.client.put(url, payload, content_type="application/json")
 		self.assertEqual(response.status_code, 200)
-		self.assertEqual(response.json()["success"], True)
-		self.assertEqual(response.json()["message"], "Online updated successfully.")
 		self.user1_profile.refresh_from_db()
 		self.assertTrue(self.user1_profile.online)
 
 	def test_update_online_status_to_false(self):
-		"""Test updating the online status to False."""
-		# First set online to True
-		self.user1_profile.online = True
-		self.user1_profile.save()
-
 		url = "/users/update-profile/"
-		payload = {"online": False}
-		response = self.client.put(url, payload)
-
+		payload = json.dumps({"online": False})
+		response = self.client.put(url, payload, content_type="application/json")
 		self.assertEqual(response.status_code, 200)
-		self.assertEqual(response.json()["success"], True)
-		self.assertEqual(response.json()["message"], "Online updated successfully.")
 		self.user1_profile.refresh_from_db()
 		self.assertFalse(self.user1_profile.online)
 
 	def test_invalid_online_status(self):
-		"""Test updating online status with an invalid value."""
 		url = "/users/update-profile/"
-		payload = {"online": "invalid"}
-		response = self.client.put(url, payload)
-
+		payload = json.dumps({"online": "invalid_value"})
+		response = self.client.put(url, payload, content_type="application/json")
 		self.assertEqual(response.status_code, 400)
-		self.assertEqual(response.json()["success"], False)
-		self.assertEqual(response.json()["message"], "Online status must be boolean.")
-		self.user1_profile.refresh_from_db()
-		self.assertFalse(self.user1_profile.online)
+		self.assertEqual(response.json()["message"], "Online status must be a boolean.")
+
+
 

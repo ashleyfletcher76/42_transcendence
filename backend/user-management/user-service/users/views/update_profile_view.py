@@ -66,7 +66,7 @@ def update_profile(request):
 	if new_online_status is not None:
 		if not isinstance(new_online_status, bool):
 			return Response(
-				{"success": False, "message": "Online status must be boolean."},
+				{"success": False, "message": "Online status must be a boolean."},
 				status=400,
 			)
 		profile.online = new_online_status
