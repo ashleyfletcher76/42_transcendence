@@ -62,9 +62,28 @@ class ChatConsumer(AsyncWebsocketConsumer):
 				if not user_channels[self.nickname]:
 					del user_channels[self.nickname]
 
+		print(f"[DEBUG] Disconnect triggered for user: {self.nickname}")
+
 		# mark user as offline after delay
-		disconnect_time = time.time()
 		await asyncio.sleep(10)
+		print(f"[DEBUG] Disconnect delay elapsed for user: {self.nickname}")
+
+		with channels_lock:
+			is_still_connected = self.nickname in user_channels
+
+		print(f"[DEBUG] Checking if user {self.nickname} is still connected: {is_still_connected}")
+
+		if not is_still_connected and self.redis_client:
+			try:
+				print(f"[DEBUG] Publishing offline status for {self.nickname}")
+				self.redis_client.publish(
+					"online_status_updates",
+					json.dumps({"nickname": self.nickname, "online": False}),
+				)
+				print(f"[DEBUG] Offline status published for {self.nickname}")
+			except Exception as e:
+				print(f"[ERROR] Error publishing offline status: {e}")
+
 
 		with channels_lock:
 			is_still_connected = self.nickname in user_channels

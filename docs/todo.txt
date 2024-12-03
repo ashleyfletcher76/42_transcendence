@@ -179,15 +179,7 @@ or
 
 Only allow letters and numbers 0-9 a-z A-Z for usernames and nicknames
 
-
-## Profile info needed by username ##
-
-## Add people to tournament chat ##
-
-## Do we want to block simultaneously?? ##
-
 ## Send errror response regarding false nickname/username ##
 
-## When updating nickname in the update info we send a API call to the web socket to uopdate their name ###
 
 
