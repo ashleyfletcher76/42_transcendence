@@ -93,8 +93,4 @@ exec-%:
 test:
 	$(DOCKER_COMPOSE) exec user-service python manage.py test
 
-# to run unit testing for specifc API
-test-%:
-	$(DOCKER_COMPOSE) exec chat-service python manage.py test "$*"
-
 .PHONY: up build-nocache re fclean logs down clean-volumes clean-images clean-all superuser
