@@ -1015,7 +1015,6 @@
   
   <div class="scrollable-list chat" >
     {{#each this.filteredMessages as |message|}}
-      {{this.scrollToBottom}}
       <Message @message={{message}} @ownNickname={{this.chat.user.profile.nickname}}/>
     {{/each}}
   </div>
@@ -1041,8 +1040,8 @@
   </div>
   */
   {
-    "id": "gUdsd81G",
-    "block": "[[[10,0],[14,0,\"container-row chat-container\"],[12],[1,\"\\n\"],[10,0],[14,0,\"btn-group\"],[14,\"role\",\"group\"],[14,\"aria-label\",\"Basic checkbox toggle button group\"],[12],[1,\"\\n  \"],[11,\"input\"],[24,0,\"btn-check\"],[24,1,\"btncheck1\"],[24,\"autocomplete\",\"off\"],[16,\"checked\",[30,0,[\"showGeneral\"]]],[24,4,\"checkbox\"],[4,[38,2],[\"change\",[28,[37,3],[[30,0,[\"toggleCheckbox\"]],\"all\"],null]],null],[12],[13],[1,\"\\n  \"],[10,\"label\"],[14,0,\"btn btn-outline-secondary btn-sm\"],[14,\"for\",\"btncheck1\"],[12],[1,\"General\"],[13],[1,\"\\n\\n  \"],[11,\"input\"],[24,0,\"btn-check\"],[24,1,\"btncheck2\"],[24,\"autocomplete\",\"off\"],[16,\"checked\",[30,0,[\"showWhisper\"]]],[24,4,\"checkbox\"],[4,[38,2],[\"change\",[28,[37,3],[[30,0,[\"toggleCheckbox\"]],\"whisper\"],null]],null],[12],[13],[1,\"\\n  \"],[10,\"label\"],[14,0,\"btn btn-outline-secondary btn-sm\"],[14,\"for\",\"btncheck2\"],[12],[1,\"Whisper\"],[13],[1,\"\\n\\n  \"],[11,\"input\"],[24,0,\"btn-check\"],[24,1,\"btncheck3\"],[24,\"autocomplete\",\"off\"],[16,\"checked\",[30,0,[\"showTournament\"]]],[24,4,\"checkbox\"],[4,[38,2],[\"change\",[28,[37,3],[[30,0,[\"toggleCheckbox\"]],\"tournament\"],null]],null],[12],[13],[1,\"\\n  \"],[10,\"label\"],[14,0,\"btn btn-outline-secondary btn-sm\"],[14,\"for\",\"btncheck3\"],[12],[1,\"Tournament\"],[13],[1,\"\\n\\n  \"],[11,\"input\"],[24,0,\"btn-check\"],[24,1,\"btncheck4\"],[24,\"autocomplete\",\"off\"],[16,\"checked\",[30,0,[\"showSystem\"]]],[24,4,\"checkbox\"],[4,[38,2],[\"change\",[28,[37,3],[[30,0,[\"toggleCheckbox\"]],\"system\"],null]],null],[12],[13],[1,\"\\n  \"],[10,\"label\"],[14,0,\"btn btn-outline-secondary btn-sm\"],[14,\"for\",\"btncheck4\"],[12],[1,\"System\"],[13],[1,\"\\n\"],[13],[1,\"\\n\\n\"],[10,0],[14,0,\"scrollable-list chat\"],[12],[1,\"\\n\"],[42,[28,[37,6],[[28,[37,6],[[30,0,[\"filteredMessages\"]]],null]],null],null,[[[1,\"    \"],[1,[30,0,[\"scrollToBottom\"]]],[1,\"\\n    \"],[8,[39,7],null,[[\"@message\",\"@ownNickname\"],[[30,1],[30,0,[\"chat\",\"user\",\"profile\",\"nickname\"]]]],null],[1,\"\\n\"]],[1]],null],[13],[1,\"\\n\\n\"],[10,0],[14,0,\"input-group\"],[12],[1,\"\\n  \"],[11,\"input\"],[24,0,\"form-control\"],[24,\"placeholder\",\"Put your message here\"],[16,5,[29,[\"color: \",[30,0,[\"chat\",\"inputColor\"]],\";\"]]],[24,\"aria-label\",\"Recipient's username\"],[24,\"aria-describedby\",\"basic-addon2\"],[16,2,[30,0,[\"chat\",\"messageInput\"]]],[24,4,\"text\"],[4,[38,2],[\"input\",[30,0,[\"updateInputValue\"]]],null],[4,[38,2],[\"keydown\",[30,0,[\"handleKeyDown\"]]],null],[4,[38,8],[[30,0,[\"setInputRef\"]]],null],[12],[13],[1,\"\\n  \"],[10,0],[14,0,\"input-group-append\"],[12],[1,\"\\n    \"],[11,\"button\"],[24,0,\"btn btn-outline-secondary\"],[24,4,\"button\"],[4,[38,2],[\"click\",[30,0,[\"sendMessage\"]]],null],[12],[1,\"Send\"],[13],[1,\"\\n  \"],[13],[1,\"\\n\"],[13],[1,\"\\n\"],[13]],[\"message\"],false,[\"div\",\"input\",\"on\",\"fn\",\"label\",\"each\",\"-track-array\",\"message\",\"did-insert\",\"button\"]]",
+    "id": "cHPyaJUo",
+    "block": "[[[10,0],[14,0,\"container-row chat-container\"],[12],[1,\"\\n\"],[10,0],[14,0,\"btn-group\"],[14,\"role\",\"group\"],[14,\"aria-label\",\"Basic checkbox toggle button group\"],[12],[1,\"\\n  \"],[11,\"input\"],[24,0,\"btn-check\"],[24,1,\"btncheck1\"],[24,\"autocomplete\",\"off\"],[16,\"checked\",[30,0,[\"showGeneral\"]]],[24,4,\"checkbox\"],[4,[38,2],[\"change\",[28,[37,3],[[30,0,[\"toggleCheckbox\"]],\"all\"],null]],null],[12],[13],[1,\"\\n  \"],[10,\"label\"],[14,0,\"btn btn-outline-secondary btn-sm\"],[14,\"for\",\"btncheck1\"],[12],[1,\"General\"],[13],[1,\"\\n\\n  \"],[11,\"input\"],[24,0,\"btn-check\"],[24,1,\"btncheck2\"],[24,\"autocomplete\",\"off\"],[16,\"checked\",[30,0,[\"showWhisper\"]]],[24,4,\"checkbox\"],[4,[38,2],[\"change\",[28,[37,3],[[30,0,[\"toggleCheckbox\"]],\"whisper\"],null]],null],[12],[13],[1,\"\\n  \"],[10,\"label\"],[14,0,\"btn btn-outline-secondary btn-sm\"],[14,\"for\",\"btncheck2\"],[12],[1,\"Whisper\"],[13],[1,\"\\n\\n  \"],[11,\"input\"],[24,0,\"btn-check\"],[24,1,\"btncheck3\"],[24,\"autocomplete\",\"off\"],[16,\"checked\",[30,0,[\"showTournament\"]]],[24,4,\"checkbox\"],[4,[38,2],[\"change\",[28,[37,3],[[30,0,[\"toggleCheckbox\"]],\"tournament\"],null]],null],[12],[13],[1,\"\\n  \"],[10,\"label\"],[14,0,\"btn btn-outline-secondary btn-sm\"],[14,\"for\",\"btncheck3\"],[12],[1,\"Tournament\"],[13],[1,\"\\n\\n  \"],[11,\"input\"],[24,0,\"btn-check\"],[24,1,\"btncheck4\"],[24,\"autocomplete\",\"off\"],[16,\"checked\",[30,0,[\"showSystem\"]]],[24,4,\"checkbox\"],[4,[38,2],[\"change\",[28,[37,3],[[30,0,[\"toggleCheckbox\"]],\"system\"],null]],null],[12],[13],[1,\"\\n  \"],[10,\"label\"],[14,0,\"btn btn-outline-secondary btn-sm\"],[14,\"for\",\"btncheck4\"],[12],[1,\"System\"],[13],[1,\"\\n\"],[13],[1,\"\\n\\n\"],[10,0],[14,0,\"scrollable-list chat\"],[12],[1,\"\\n\"],[42,[28,[37,6],[[28,[37,6],[[30,0,[\"filteredMessages\"]]],null]],null],null,[[[1,\"    \"],[8,[39,7],null,[[\"@message\",\"@ownNickname\"],[[30,1],[30,0,[\"chat\",\"user\",\"profile\",\"nickname\"]]]],null],[1,\"\\n\"]],[1]],null],[13],[1,\"\\n\\n\"],[10,0],[14,0,\"input-group\"],[12],[1,\"\\n  \"],[11,\"input\"],[24,0,\"form-control\"],[24,\"placeholder\",\"Put your message here\"],[16,5,[29,[\"color: \",[30,0,[\"chat\",\"inputColor\"]],\";\"]]],[24,\"aria-label\",\"Recipient's username\"],[24,\"aria-describedby\",\"basic-addon2\"],[16,2,[30,0,[\"chat\",\"messageInput\"]]],[24,4,\"text\"],[4,[38,2],[\"input\",[30,0,[\"updateInputValue\"]]],null],[4,[38,2],[\"keydown\",[30,0,[\"handleKeyDown\"]]],null],[4,[38,8],[[30,0,[\"setInputRef\"]]],null],[12],[13],[1,\"\\n  \"],[10,0],[14,0,\"input-group-append\"],[12],[1,\"\\n    \"],[11,\"button\"],[24,0,\"btn btn-outline-secondary\"],[24,4,\"button\"],[4,[38,2],[\"click\",[30,0,[\"sendMessage\"]]],null],[12],[1,\"Send\"],[13],[1,\"\\n  \"],[13],[1,\"\\n\"],[13],[1,\"\\n\"],[13]],[\"message\"],false,[\"div\",\"input\",\"on\",\"fn\",\"label\",\"each\",\"-track-array\",\"message\",\"did-insert\",\"button\"]]",
     "moduleName": "myapp/components/chat.hbs",
     "isStrictMode": false
   });
@@ -1201,7 +1200,7 @@
     acceptFriend(event) {
       event.preventDefault();
       console.log(`${this.args.message.from} accepted as a friend!`);
-      makeFriends();
+      this.makeFriends();
     }
     joinGame(event) {
       event.preventDefault();
@@ -1209,16 +1208,16 @@
       this.joinRoom(this.args.message.from);
     }
     async makeFriends() {
-      const apiEndpoint = "http://localhost:8001/users/friends/";
+      const apiEndpoint = "users/users/add-friend/";
       try {
         const response = await fetch(apiEndpoint, {
-          method: "PUT",
+          method: "POST",
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${this.session.data.authenticated.access}`
           },
           body: JSON.stringify({
-            user: this.args.message.from,
+            nickname: this.args.message.from,
             type: "add"
           })
         });
@@ -1818,10 +1817,10 @@
       this.chat.sendMessage();
     }
     async blockUser(type) {
-      const apiEndpoint = "http://localhost:8001/users/block/";
+      const apiEndpoint = "users/users/block-user/";
       try {
         const response = await fetch(apiEndpoint, {
-          method: "PUT",
+          method: "POST",
           headers: {
             Authorization: `Bearer ${this.session.data.authenticated.access}`,
             "Content-Type": "application/json"
@@ -2570,7 +2569,6 @@
     async createRoom(gameType) {
       try {
         //const response = await fetch('/api/create-room.json', {
-		console.log(this.user.nickname)
         const response = await fetch('/pong/pong/create-room', {
           method: 'POST',
           headers: {
@@ -4280,22 +4278,25 @@
       const parsedMessage = JSON.parse(event.data);
       switch (parsedMessage.type) {
         case "create":
-          handleCreate(parsedMessage);
+          this.handleCreate(parsedMessage);
+          break;
+        case "join/create":
+          this.handleJoin(parsedMessage);
           break;
         case "join":
-          handleJoin(parsedMessage);
+          this.handleJoin(parsedMessage);
           break;
         case "message":
-          handleMessage(parsedMessage);
+          this.handleMessage(parsedMessage);
           break;
         case "leave":
-          handleLeave(parsedMessage);
+          this.handleLeave(parsedMessage);
           break;
         case "match":
-          handleMatch(parsedMessage);
+          this.handleMatch(parsedMessage);
           break;
         case "tournament_winner":
-          handleTournamentWinner(parsedMessage);
+          this.handleTournamentWinner(parsedMessage);
           break;
         default:
           // Handle the default case here (if needed)
@@ -4303,24 +4304,25 @@
       }
     }
     handleCreate(parsedMessage) {
-      this.currentPlayers = parsedMessage.players;
+      this.currentPlayers = [...parsedMessage.players];
       const data = {
         type: 'tournament',
         from: 'System',
         content: 'You created the Tournament ' + this.currentLobby
       };
-      const newMessage = JSON.parse(data);
-      this.chat.messages = [...this.chat.messages, newMessage];
+      this.chat.messages = [...this.chat.messages, data];
     }
     handleJoin(parsedMessage) {
-      this.currentPlayers = parsedMessage.players;
+      console.log(parsedMessage);
+      this.currentPlayers = [...parsedMessage.players];
+      console.log(this.currentPlayers);
       const data = {
         type: 'tournament',
         from: 'System',
         content: parsedMessage.player + ' joined the Tournament!'
       };
-      const newMessage = JSON.parse(data);
-      this.chat.messages = [...this.chat.messages, newMessage];
+      this.chat.messages = [...this.chat.messages, data];
+      console.log("chat:", this.chat.messages);
     }
     handleMessage(parsedMessage) {
       const data = {
@@ -4328,8 +4330,7 @@
         from: parsedMessage.sender,
         content: parsedMessage.message
       };
-      const newMessage = JSON.parse(data);
-      this.chat.messages = [...this.chat.messages, newMessage];
+      this.chat.messages = [...this.chat.messages, data];
     }
     handleStart(parsedMessage) {
       const data = {
@@ -4337,18 +4338,16 @@
         from: 'System',
         content: parsedMessage.message
       };
-      const newMessage = JSON.parse(data);
-      this.chat.messages = [...this.chat.messages, newMessage];
+      this.chat.messages = [...this.chat.messages, data];
     }
     handleLeave(parsedMessage) {
-      this.currentPlayers = parsedMessage.players;
+      this.currentPlayers = [...parsedMessage.players];
       const data = {
         type: 'tournament',
         from: 'System',
         content: parsedMessage.player + ' left the Tournament!'
       };
-      const newMessage = JSON.parse(data);
-      this.chat.messages = [...this.chat.messages, newMessage];
+      this.chat.messages = [...this.chat.messages, data];
     }
     handleMatch(parsedMessage) {
       const opponent = parsedMessage.player1;
@@ -4358,8 +4357,7 @@
         from: 'System',
         content: "Get ready! Your next game is against " + opponent + " and it starts in just 20 seconds!"
       };
-      const newMessage = JSON.parse(data);
-      this.chat.messages = [...this.chat.messages, newMessage];
+      this.chat.messages = [...this.chat.messages, data];
       const roomdata = {
         roomname: parsedMessage.room,
         player1: parsedMessage.player1,
