@@ -4695,7 +4695,7 @@
   		</div>
   		<div class="button-container col-5">
   		<button class="nav-button start" type="button" {{on "click" (fn this.tournament.startTournament)}}>Start Tournament</button>
-  		<button class="nav-button cancel" type="button" {{on "click" (fn this.tournament.disconnectFromLobby this.user.profile.nickname)}}>Leave</button> 
+  		<button class="nav-button cancel" type="button" {{on "click" (fn this.tournament.disconnectFromLobby this.tournament.currentLobby)}}>Leave</button> 
   		</div>
   	{{else}}
   		<div class="d-flex justify-content-center align-items-center">
@@ -4711,8 +4711,8 @@
   </div>
   */
   {
-    "id": "3KfjPbdU",
-    "block": "[[[10,0],[14,0,\"container-fluid row\"],[12],[1,\"\\n\"],[41,[30,0,[\"tournament\",\"currentLobby\"]],[[[1,\"\\t\\t\"],[10,0],[14,0,\"col-7\"],[12],[1,\"\\n\\t\\t\\t\"],[10,\"h2\"],[14,0,\"points center\"],[12],[1,\"👥 1/10\"],[13],[1,\"\\n\\t\\t\\t\"],[8,[39,3],null,null,null],[1,\"\\n\\t\\t\"],[13],[1,\"\\n\\t\\t\"],[10,0],[14,0,\"button-container col-5\"],[12],[1,\"\\n\\t\\t\"],[11,\"button\"],[24,0,\"nav-button start\"],[24,4,\"button\"],[4,[38,5],[\"click\",[28,[37,6],[[30,0,[\"tournament\",\"startTournament\"]]],null]],null],[12],[1,\"Start Tournament\"],[13],[1,\"\\n\\t\\t\"],[11,\"button\"],[24,0,\"nav-button cancel\"],[24,4,\"button\"],[4,[38,5],[\"click\",[28,[37,6],[[30,0,[\"tournament\",\"disconnectFromLobby\"]],[30,0,[\"user\",\"profile\",\"nickname\"]]],null]],null],[12],[1,\"Leave\"],[13],[1,\" \\n\\t\\t\"],[13],[1,\"\\n\"]],[]],[[[1,\"\\t\\t\"],[10,0],[14,0,\"d-flex justify-content-center align-items-center\"],[12],[1,\"\\n\\t\\t\\t\"],[11,\"button\"],[24,0,\"nav-button mt-5\"],[24,4,\"button\"],[4,[38,5],[\"click\",[28,[37,6],[[30,0,[\"tournament\",\"connectToLobby\"]],[30,0,[\"user\",\"profile\",\"nickname\"]]],null]],null],[12],[1,\"\\n\\t\\t\\tCreate Tournament\\n\\t\\t\\t\"],[13],[1,\"\\n\\t\\t\\t\"],[13],[1,\"\\n\"]],[]]],[13]],[],false,[\"div\",\"if\",\"h2\",\"user-list-tournament\",\"button\",\"on\",\"fn\"]]",
+    "id": "O22zL/cw",
+    "block": "[[[10,0],[14,0,\"container-fluid row\"],[12],[1,\"\\n\"],[41,[30,0,[\"tournament\",\"currentLobby\"]],[[[1,\"\\t\\t\"],[10,0],[14,0,\"col-7\"],[12],[1,\"\\n\\t\\t\\t\"],[10,\"h2\"],[14,0,\"points center\"],[12],[1,\"👥 1/10\"],[13],[1,\"\\n\\t\\t\\t\"],[8,[39,3],null,null,null],[1,\"\\n\\t\\t\"],[13],[1,\"\\n\\t\\t\"],[10,0],[14,0,\"button-container col-5\"],[12],[1,\"\\n\\t\\t\"],[11,\"button\"],[24,0,\"nav-button start\"],[24,4,\"button\"],[4,[38,5],[\"click\",[28,[37,6],[[30,0,[\"tournament\",\"startTournament\"]]],null]],null],[12],[1,\"Start Tournament\"],[13],[1,\"\\n\\t\\t\"],[11,\"button\"],[24,0,\"nav-button cancel\"],[24,4,\"button\"],[4,[38,5],[\"click\",[28,[37,6],[[30,0,[\"tournament\",\"disconnectFromLobby\"]],[30,0,[\"tournament\",\"currentLobby\"]]],null]],null],[12],[1,\"Leave\"],[13],[1,\" \\n\\t\\t\"],[13],[1,\"\\n\"]],[]],[[[1,\"\\t\\t\"],[10,0],[14,0,\"d-flex justify-content-center align-items-center\"],[12],[1,\"\\n\\t\\t\\t\"],[11,\"button\"],[24,0,\"nav-button mt-5\"],[24,4,\"button\"],[4,[38,5],[\"click\",[28,[37,6],[[30,0,[\"tournament\",\"connectToLobby\"]],[30,0,[\"user\",\"profile\",\"nickname\"]]],null]],null],[12],[1,\"\\n\\t\\t\\tCreate Tournament\\n\\t\\t\\t\"],[13],[1,\"\\n\\t\\t\\t\"],[13],[1,\"\\n\"]],[]]],[13]],[],false,[\"div\",\"if\",\"h2\",\"user-list-tournament\",\"button\",\"on\",\"fn\"]]",
     "moduleName": "myapp/templates/tournament.hbs",
     "isStrictMode": false
   });
