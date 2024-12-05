@@ -32,6 +32,12 @@ export default class TournamentService extends Service {
 
 	@action
 	async disconnectFromLobby(tournamentName) {
+		const token = this.session.data.authenticated.access;
+		const wsUrl = `wss://localhost/ws/tournament/${tournamentName}/?token=${encodeURIComponent(token)}`;
+		console.log(tournamentName);
+		this.websockets.closeSocketFor(wsUrl);
+		console.log("websocket1", this.websockets.sockets);
+		
 		// Remove event handlers
 		this.socketRef.off('open', this.onOpen, this);
 		this.socketRef.off('message', this.onMessage, this);
@@ -39,12 +45,6 @@ export default class TournamentService extends Service {
 
 		// Reset WebSocket reference
 		this.socketRef = null;
-
-		const token = this.session.data.authenticated.access;
-		const wsUrl = `wss://localhost/ws/tournament/${tournamentName}/?token=${encodeURIComponent(token)}`;
-		this.websockets.closeSocketFor(wsUrl);
-		console.log("websocket1", this.websockets.sockets);
-
 		// Reset state or perform other cleanup as needed
 		this.currentLobby = null;
 		this.messages = [];
@@ -99,7 +99,7 @@ export default class TournamentService extends Service {
 				this.handleJoin(parsedMessage)
 				break;
 			
-      case "join":
+      		case "join":
 				this.handleJoin(parsedMessage)
 				break;
 

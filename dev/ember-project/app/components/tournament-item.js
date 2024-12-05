@@ -8,13 +8,13 @@ export default class TournamentItemComponent extends Component {
 
   @action
   onJoinClick(creator) {
-    console.log('Join clicked!');
-    this.tournament.connectToLobby(creator, this.user.profile.nickname);
+    console.log('Join clicked!', creator);
+    this.tournament.connectToLobby(creator);
   }
 
   @action
-  onLeaveClick() {
-    console.log('Leave clicked!');
-    this.tournament.disconnectFromLobby(this.user.profile.nickname);
+  onLeaveClick(creator) {
+    console.log('Leave clicked!', creator);
+    this.tournament.disconnectFromLobby(creator);
   }
 }

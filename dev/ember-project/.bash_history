@@ -82,3 +82,7 @@ npm install
 exit
 =======
 >>>>>>> Stashed changes
+npm install
+exit
+npm install
+exit
