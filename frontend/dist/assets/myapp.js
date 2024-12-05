@@ -2112,12 +2112,12 @@
       _initializerDefineProperty(this, "user", _descriptor2, this);
     }
     onJoinClick(creator) {
-      console.log('Join clicked!');
-      this.tournament.connectToLobby(creator, this.user.profile.nickname);
+      console.log('Join clicked!', creator);
+      this.tournament.connectToLobby(creator);
     }
-    onLeaveClick() {
-      console.log('Leave clicked!');
-      this.tournament.disconnectFromLobby(this.user.profile.nickname);
+    onLeaveClick(creator) {
+      console.log('Leave clicked!', creator);
+      this.tournament.disconnectFromLobby(creator);
     }
   }, _descriptor = _applyDecoratedDescriptor(_class.prototype, "tournament", [_service.inject], {
     configurable: true,
@@ -4230,6 +4230,12 @@
       this.set('socketRef', socket);
     }
     async disconnectFromLobby(tournamentName) {
+      const token = this.session.data.authenticated.access;
+      const wsUrl = `wss://localhost/ws/tournament/${tournamentName}/?token=${encodeURIComponent(token)}`;
+      console.log(tournamentName);
+      this.websockets.closeSocketFor(wsUrl);
+      console.log("websocket1", this.websockets.sockets);
+
       // Remove event handlers
       this.socketRef.off('open', this.onOpen, this);
       this.socketRef.off('message', this.onMessage, this);
@@ -4237,11 +4243,6 @@
 
       // Reset WebSocket reference
       this.socketRef = null;
-      const token = this.session.data.authenticated.access;
-      const wsUrl = `wss://localhost/ws/tournament/${tournamentName}/?token=${encodeURIComponent(token)}`;
-      this.websockets.closeSocketFor(wsUrl);
-      console.log("websocket1", this.websockets.sockets);
-
       // Reset state or perform other cleanup as needed
       this.currentLobby = null;
       this.messages = [];
