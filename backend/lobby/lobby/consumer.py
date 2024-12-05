@@ -91,10 +91,12 @@ class TournamentConsumer(AsyncWebsocketConsumer):
         players = event["players"]
         player = event["player"]
         message = event["message"]
+        admin = event["admin"]
         await self.send(text_data=json.dumps({
             "type": "join",
             "players": players,
             "player": player,
+            "admin": admin,
             "message" : message
         }))
 
@@ -102,10 +104,12 @@ class TournamentConsumer(AsyncWebsocketConsumer):
         players = event["players"]
         player = event["player"]
         message = event["message"]
+        admin = event["admin"]
         await self.send(text_data=json.dumps({
             "type": "create",
             "players": players,
             "player": player,
+            "admin" : admin,
             "message" : message
         }))
     
@@ -113,20 +117,23 @@ class TournamentConsumer(AsyncWebsocketConsumer):
         players = event["players"]
         player = event["player"]
         message = event["message"]
+        admin = event["admin"]
         await self.send(text_data=json.dumps({
             "type": "leave",
             "players": players,
             "player": player,
+            "admin" : admin,
             "message" : message
         }))
 
     async def handle_leave(self):
         tournament, created = await self.create_or_get_tournament(self.room_name)
-        usernames = await self.get_player_usernames(tournament)
+        usernames, admin = await self.get_player_usernames(tournament)
         return {
             "type": "leave",
             "players": usernames,
             "player": self.username,
+            "admin": admin,
             "message" : "User left the room."
         }
 
@@ -172,12 +179,13 @@ class TournamentConsumer(AsyncWebsocketConsumer):
                     }
             await self.add_player_to_tournament(tournament, player)
 
-        usernames = await self.get_player_usernames(tournament)
+        usernames, admin = await self.get_player_usernames(tournament)
         self.joined = True
         return {
             "type" : type,
             "players" : usernames,
             "player" : self.username,
+            "admin" : admin,
             "message" : "User joined the tournament."
         }
 
@@ -195,6 +203,7 @@ class TournamentConsumer(AsyncWebsocketConsumer):
                 defaults={'num_players': 0, 'active': True}
             )
             return tournament, created
+
 
     @sync_to_async
     def add_player_to_tournament(self, tournament, player):
@@ -219,8 +228,10 @@ class TournamentConsumer(AsyncWebsocketConsumer):
     def get_player_usernames(self, tournament):
         with transaction.atomic():
             players = list(tournament.players.all())
+            admin = tournament.players.filter(admin=True).first()
+            admin_username = admin.user.username
             usernames = [player.user.username for player in players]
-            return usernames
+            return usernames, admin_username
 
     @sync_to_async
     def get_player(self):
