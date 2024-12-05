@@ -33,6 +33,9 @@ class TournamentConsumer(AsyncWebsocketConsumer):
             await self.remove_player_from_tournament()
             print(username, " removed from tournament.")
 
+        print("debug!!!")
+        response = await self.handle_leave()
+        await self.lobby_message(response)
         await self.channel_layer.group_discard(
             self.room_group_name,
             self.channel_name
@@ -43,6 +46,7 @@ class TournamentConsumer(AsyncWebsocketConsumer):
     async def receive(self, text_data):
         data = json.loads(text_data)
         action = data.get("action")
+        print(data)
         tournament_name = data.get("tournament_name")
         username = data.get("nickname")
         sender = data.get("sender")
@@ -57,9 +61,6 @@ class TournamentConsumer(AsyncWebsocketConsumer):
         elif action == "message":
             response = await self.handle_message(message=message, sender=sender)
             await self.lobby_message(response)
-
-
-
 
 
 
@@ -119,6 +120,16 @@ class TournamentConsumer(AsyncWebsocketConsumer):
             "message" : message
         }))
 
+    async def handle_leave(self):
+        tournament, created = await self.create_or_get_tournament(self.room_name)
+        usernames = await self.get_player_usernames(tournament)
+        return {
+            "type": "leave",
+            "players": usernames,
+            "player": self.username,
+            "message" : "User left the room."
+        }
+
 
 
 
@@ -136,11 +147,6 @@ class TournamentConsumer(AsyncWebsocketConsumer):
             "sender" : sender,
             "message" : message
         }
-
-
-
-
-
 
 
 

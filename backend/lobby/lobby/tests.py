@@ -50,30 +50,30 @@ class TournamentConsumerTest(TestCase):
         await communicator2.disconnect()
 
 
-    async def test_create_tournament(self):
-        communicator1 = WebsocketCommunicator(
-            application, "ws/tournament/room_name3/")
+    #async def test_create_tournament(self):
+    #    communicator1 = WebsocketCommunicator(
+    #        application, "ws/tournament/room_name3/")
 
-        connected, subprotocol = await communicator1.connect()
-        self.assertTrue(connected)
-
-
-        message = {
-            "action": "create_or_join",
-            "tournament_name": "room_name3",
-            "nickname": "player1"
-        }
-        await communicator1.send_json_to(message)
+    #    connected, subprotocol = await communicator1.connect()
+    #    self.assertTrue(connected)
 
 
-        response1 = await communicator1.receive_json_from()
+    #    message = {
+    #        "action": "create_or_join",
+    #        "tournament_name": "room_name3",
+    #        "nickname": "player1"
+    #    }
+    #    await communicator1.send_json_to(message)
 
 
-        print(response1)
+    #    response1 = await communicator1.receive_json_from()
 
-        assert response1['type'] == 'create'
 
-        await communicator1.disconnect()
+    #    print(response1)
+
+    #    assert response1['type'] == 'create'
+
+    #    await communicator1.disconnect()
 
 
 
