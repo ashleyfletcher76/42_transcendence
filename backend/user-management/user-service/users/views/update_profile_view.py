@@ -13,52 +13,50 @@ def update_profile(request):
 	user = request.user
 	profile = user.profile
 	data = request.data
+	redis_client = get_redis_client()
+
+	request_old_nickname = data.get("old_nickname")
+	if request_old_nickname and request_old_nickname != profile.nickname:
+		return Response(
+			{"success": False, "message": "Invalid old_nickname provided."},
+			status=400,
+		)
+
 
 	updated_fields = []
 	old_nickname = profile.nickname
 
-	# initialize Redis client
-	redis_client = get_redis_client()
+	## create event for Redis channel ##
+	event = {
+		"type": "user_update",
+		"old_nickname": old_nickname,
+		"new_nickname": None,
+		"online_status": None,
+	}
 
-	# update nickname
-	new_nickname = data.get("nickname")
-	if new_nickname:
-		if new_nickname != profile.nickname:
-			# validate nickname uniqueness
-			if UserProfile.objects.filter(Q(nickname=new_nickname)).exists():
-				return Response(
-					{"success": False, "message": "Nickname is already taken."},
-					status=400,
-				)
+	## update nickname ##
+	new_nickname = data.get("new_nickname")
+	if new_nickname and new_nickname != profile.nickname:
+		## validate nickname uniqueness ##
+		if UserProfile.objects.filter(Q(nickname=new_nickname)).exists():
+			return Response(
+				{"success": False, "message": "Nickname is already taken."},
+				status=400,
+			)
 
-			profile.nickname = new_nickname
-			updated_fields.append("nickname")
+		profile.nickname = new_nickname
+		updated_fields.append("nickname")
+		event["new_nickname"] = new_nickname
 
-			# publish nickname change event
-			if redis_client:
-				try:
-					redis_client.publish(
-						"nicknames_updates",
-						json.dumps(
-							{
-								"user_id": user.id,
-								"old_nickname": old_nickname,
-								"new_nickname": new_nickname,
-							}
-						),
-					)
-				except redis.ConnectionError as e:
-					print(f"Warning: Redis publishing failed - {str(e)}")
-
-	# update avatar
+	## update avatar ##
 	new_avatar = data.get("avatar")
 	if new_avatar:
 		if new_avatar != profile.avatar:
 			profile.avatar = new_avatar
 			updated_fields.append("avatar")
 
-	## UPDATE ONLINE STATUS ##
-	new_online_status = data.get("online")
+	## update online status ##
+	new_online_status = data.get("online_status")
 	if new_online_status is not None:
 		if not isinstance(new_online_status, bool):
 			return Response(
@@ -67,21 +65,18 @@ def update_profile(request):
 			)
 		profile.online = new_online_status
 		updated_fields.append("online")
+		event["online_status"] = new_online_status
 
-		if redis_client:
-			try:
-				redis_client.publish(
-					"online_status_updates",
-					json.dumps({"nickname": profile.nickname, "online": new_online_status}),
-				)
-			except Exception as e:
-				print(f"Warning: Redis publishing failed - {str(e)}")
-
-
+	## save profile info in database and publish event if changes ##
 	if updated_fields:
 		profile.save()
+		try:
+			redis_client.publish("user_update", json.dumps(event))
+			print(f"[INFO] Published event to Redis: {event}")
+		except Exception as e:
+			print(f"[ERROR] Failed to publish to Redis: {e}")
 
-		# generate response
+		## generate response for successful updates ##
 		updated_fields_str = " and ".join(updated_fields)
 		return Response(
 			{
@@ -91,7 +86,9 @@ def update_profile(request):
 			status=200,
 		)
 
+	## no updates detected, no event published ##
 	return Response(
 		{"success": False, "message": "No changes detected in the request."},
 		status=400,
 	)
+

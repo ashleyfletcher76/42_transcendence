@@ -25,15 +25,6 @@ class ChatConsumer(AsyncWebsocketConsumer):
 			self.user_id = user_data["user_id"]
 			self.nickname = user_data["nickname"]
 
-			# mark user as online
-			if self.redis_client:
-				try:
-					self.redis_client.publish(
-						"online_status_updates",
-						json.dumps({"nickname": self.nickname, "online": True}),
-					)
-				except Exception as e:
-					print(f"Error publishing online status: {e}")
 		except Exception as e:
 			print(f"Error authenticating user: {e}")
 			await self.close(code=4001)
@@ -61,77 +52,6 @@ class ChatConsumer(AsyncWebsocketConsumer):
 				user_channels[self.nickname].remove(self.channel_name)
 				if not user_channels[self.nickname]:
 					del user_channels[self.nickname]
-
-		print(f"[DEBUG] Disconnect triggered for user: {self.nickname}")
-
-		# mark user as offline after delay
-		await asyncio.sleep(10)
-		print(f"[DEBUG] Disconnect delay elapsed for user: {self.nickname}")
-
-		with channels_lock:
-			is_still_connected = self.nickname in user_channels
-
-		print(f"[DEBUG] Checking if user {self.nickname} is still connected: {is_still_connected}")
-
-		if not is_still_connected and self.redis_client:
-			try:
-				print(f"[DEBUG] Publishing offline status for {self.nickname}")
-				self.redis_client.publish(
-					"online_status_updates",
-					json.dumps({"nickname": self.nickname, "online": False}),
-				)
-				print(f"[DEBUG] Offline status published for {self.nickname}")
-			except Exception as e:
-				print(f"[ERROR] Error publishing offline status: {e}")
-
-
-		with channels_lock:
-			is_still_connected = self.nickname in user_channels
-
-		if not is_still_connected and self.redis_client:
-			try:
-				self.redis_client.publish(
-					"online_status_updates",
-					json.dumps({"nickname": self.nickname, "online": False}),
-				)
-			except Exception as e:
-				print(f"Error publishing offline status: {e}")
-
-	def start_redis_listener(self):
-		"""Start a thread to listen for Redis events."""
-		def redis_listener():
-			try:
-				pubsub = self.redis_client.pubsub()
-				pubsub.subscribe("nicknames_updates")
-
-				for message in pubsub.listen():
-					if message["type"] == "message":
-						data = json.loads(message["data"])
-						self.handle_nickname_update(data)
-			except Exception as e:
-				print(f"Redis listener error: {e}")
-
-		listener_thread = Thread(target=redis_listener, daemon=True)
-		listener_thread.start()
-
-	def handle_nickname_update(self, data):
-		"""Handle nickname updates from Redis."""
-		old_nickname = data["old_nickname"]
-		new_nickname = data["new_nickname"]
-
-		with channels_lock:
-			if old_nickname in user_channels:
-				# move channels to new nickname
-				user_channels[new_nickname] = user_channels.pop(old_nickname)
-
-		if self.redis_client:
-			try:
-				self.redis_client.publish(
-					"online_status_updates",
-					json.dumps({"nickname": new_nickname, "online": True}),
-				)
-			except Exception as e:
-				print(f"Error publishing online status for new nickname: {e}")
 
 	async def receive(self, text_data):
 		try:

@@ -51,6 +51,30 @@ rebuild-%:
 	$(DOCKER_COMPOSE) build --no-cache $*
 	$(DOCKER_COMPOSE) up -d $*
 
+rebuild:
+	@$(eval TARGETS=$(filter-out rebuild,$(MAKECMDGOALS)))
+	@if [ -z "$(TARGETS)" ]; then \
+		echo "Error: No containers specified. Usage: make rebuild <container1> <container2> ..."; \
+		exit 1; \
+	fi; \
+	for container in $(TARGETS); do \
+		if echo "$$container" | grep -q "db"; then \
+			echo "Looking up volumes for $$container..."; \
+			VOLUME_NAME=$$(docker volume ls --format "{{.Name}}" | grep "$$container" || echo ""); \
+			if [ -n "$$VOLUME_NAME" ]; then \
+				echo "Cleaning volume $$VOLUME_NAME for $$container..."; \
+				docker volume rm -f $$VOLUME_NAME || echo "Failed to clean volume $$VOLUME_NAME."; \
+			else \
+				echo "No volume found for $$container."; \
+			fi; \
+		fi; \
+		echo "Rebuilding $$container..."; \
+		$(DOCKER_COMPOSE) build --no-cache $$container && $(DOCKER_COMPOSE) up -d $$container; \
+	done
+
+%:
+	@true
+
 # create a Django superuser
 superuser:
 	$(DOCKER_COMPOSE) exec chat-service python manage.py createsuperuser
@@ -93,4 +117,4 @@ exec-%:
 test:
 	$(DOCKER_COMPOSE) exec user-service python manage.py test
 
-.PHONY: up build-nocache re fclean logs down clean-volumes clean-images clean-all superuser
+.PHONY: up build-nocache re fclean logs down clean-volumes clean-images clean-all superuser rebuild

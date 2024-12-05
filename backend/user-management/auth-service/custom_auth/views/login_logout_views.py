@@ -34,7 +34,7 @@ class LoginView(APIView):
 			update_url = f"http://user-service:8000/users/update-profile/"
 			update_response = requests.put(
 				update_url,
-				json={"nickname": nickname, "online": True},
+				json={"online": True}, ## json={"nickname": nickname, "online": True},  ## Check this if login error
 				headers={"Authorization": f"Bearer {access_token}"}
 			)
 
@@ -61,7 +61,7 @@ class LogoutView(APIView):
 		try:
 			refresh_token = request.data["refresh_token"]
 			token = RefreshToken(refresh_token)
-			
+
 			# mark as offline
 			update_url = f"http://user-service:8000/users/update-profile/"
 			updated_response = requests.put(

@@ -9,7 +9,7 @@ def get_redis_client():
 	with _redis_lock:
 		if _redis_client is None:
 			try:
-				_redis_client = redis.StrictRedis(host="redis", port=6379, db=0)
+				_redis_client = redis.StrictRedis.from_url("redis://redis:6379")
 				_redis_client.ping()
 				print("Redis client initialized successfully.")
 			except redis.ConnectionError as e:

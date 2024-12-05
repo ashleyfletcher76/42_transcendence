@@ -29,6 +29,8 @@ SECURE_CONTENT_TYPE_NOSNIFF = True
 # Enable the browser XSS protection
 SECURE_BROWSER_XSS_FILTER = True
 
+REDIS_URL = "redis://redis:6379"
+
 # Application definition
 
 INSTALLED_APPS = [
