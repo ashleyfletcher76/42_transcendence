@@ -15,21 +15,21 @@ def update_profile(request):
 	data = request.data
 	redis_client = get_redis_client()
 
-	request_old_nickname = data.get("old_nickname")
+	request_old_nickname = data.get("nickname")
 	if request_old_nickname and request_old_nickname != profile.nickname:
 		return Response(
-			{"success": False, "message": "Invalid old_nickname provided."},
+			{"success": False, "message": "Invalid nickname provided."},
 			status=400,
 		)
 
 
 	updated_fields = []
-	old_nickname = profile.nickname
+	nickname = profile.nickname
 
 	## create event for Redis channel ##
 	event = {
 		"type": "user_update",
-		"old_nickname": old_nickname,
+		"old_nickname": nickname,
 		"new_nickname": None,
 		"online_status": None,
 	}
