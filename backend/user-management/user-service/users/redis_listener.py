@@ -1,45 +1,39 @@
-import redis, json, threading
-from .models import UserProfile
+import json, threading, redis
 from .redis_client import get_redis_client
 
-def handle_online_status_update(data):
-	"""Proces the online status update and update UserProfile inside the database"""
-	try:
-		nickname = data["nickname"]
-		online_status = data["online"]
-
-		# update the UserProfile in the database
-		user_profile = UserProfile.objects.filter(nickname=nickname).first()
-		if user_profile:
-			user_profile.online = online_status
-			user_profile.save()
-			print(f"[DEBUG] Updated online status for {nickname} to {online_status}")
-		else:
-			print(f"[WARNING] No user found for {nickname}")
-	except KeyError as e:
-		print(f"[ERROR] Missing key in online_status_updates data: {e}")
-	except Exception as e:
-		print(f"[ERROR] Failed to update online status: {e}")
-
-def start_redis_listener():
-	"""Start Redis listener for online_status_updates"""
+def redis_listener():
+	"""Listen for Redis events and handle updates"""
 	redis_client = get_redis_client()
+	pubsub = redis_client.pubsub()
+	pubsub.subscribe("user_update")
 
-	def redis_listener():
+	print("[INFO] Redis listener started for user-service.")
+
+	for message in pubsub.listen():
+		if message["type"] == "message":
+			try:
+				event_data = json.loads(message["data"])
+				handle_status_update(event_data)
+			except json.JSONDecodeError as e:
+				print(f"[ERROR] Failed to decode Redis message: {e}")
+
+def handle_status_update(event_data):
+	from .models import UserProfile
+	"""Handle status updates received from Redis."""
+
+	action = event_data.get("action")
+	old_nickname = event_data.get("old_nickname")
+	online_status = event_data.get("online_status")
+
+	if action == "online_status_update" and old_nickname:
+		# update online status in database
 		try:
-			pubsub = redis_client.pubsub()
-			pubsub.subscribe("online_status_updates")
-			print("[DEBUG] Subscribed to online_status_updates")
-
-			print("[INFO] Redis listener for online_status_updates started...")
-			for message in pubsub.listen():
-				print(f"[DEBUG] Message received: {message}")
-				if message["type"] == "message":
-					data = json.loads(message["data"])
-					handle_online_status_update(data)
-		except Exception as e:
-			print(f"[ERROR] Redis listener error: {e}")
-
-	listener_thread = threading.Thread(target=redis_listener, daemon=True)
-	listener_thread.start()
+			profile = UserProfile.objects.get(nickname=old_nickname)
+			profile.online = online_status
+			profile.save()
+			print(f"[INFO] Updated online status for {profile.nickname} to {online_status}")
+		except UserProfile.DoesNotExist:
+			print(f"[WARNING] User with nickname {old_nickname} does not exist.")
+	else:
+		print(f"[WARNING] Unhandled Redis action: {event_data}")
 

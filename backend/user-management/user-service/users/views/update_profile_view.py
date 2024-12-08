@@ -26,14 +26,6 @@ def update_profile(request):
 	updated_fields = []
 	nickname = profile.nickname
 
-	## create event for Redis channel ##
-	event = {
-		"type": "user_update",
-		"old_nickname": nickname,
-		"new_nickname": None,
-		"online_status": None,
-	}
-
 	## update nickname ##
 	new_nickname = data.get("new_nickname")
 	if new_nickname and new_nickname != profile.nickname:
@@ -46,7 +38,19 @@ def update_profile(request):
 
 		profile.nickname = new_nickname
 		updated_fields.append("nickname")
-		event["new_nickname"] = new_nickname
+
+		## create nickname event for Redis channel ##
+		nickname_event = {
+			"action": "nickname_change",
+			"old_nickname": nickname,
+			"new_nickname": new_nickname,
+		}
+
+		try:
+			redis_client.publish("user_update", json.dumps(nickname_event))
+			print(f"[INFO] Published nickname change event to Redis: {nickname_event}")
+		except Exception as e:
+			print(f"[ERROR] Failed to publish nickname change to Redis: {e}")
 
 	## update avatar ##
 	new_avatar = data.get("avatar")
@@ -65,16 +69,23 @@ def update_profile(request):
 			)
 		profile.online = new_online_status
 		updated_fields.append("online")
-		event["online_status"] = new_online_status
+
+		## create status event for Redis channel ##
+		status_event = {
+			"action": "online_status_update",
+			"old_nickname": nickname,
+			"online_status": new_online_status,
+		}
+
+		try:
+			redis_client.publish("user_update", json.dumps(status_event))
+			print(f"[INFO] Published online status change event to Redis: {status_event}")
+		except Exception as e:
+			print(f"[ERROR] Failed to publish online status change to Redis: {e}")
 
 	## save profile info in database and publish event if changes ##
 	if updated_fields:
 		profile.save()
-		try:
-			redis_client.publish("user_update", json.dumps(event))
-			print(f"[INFO] Published event to Redis: {event}")
-		except Exception as e:
-			print(f"[ERROR] Failed to publish to Redis: {e}")
 
 		## generate response for successful updates ##
 		updated_fields_str = " and ".join(updated_fields)

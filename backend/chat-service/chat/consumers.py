@@ -11,6 +11,8 @@ class ChatConsumer(AsyncWebsocketConsumer):
 		"""Handle WebSocket connection."""
 		# initialize Redis client
 		self.redis_client = get_redis_client()
+		self.redis_thread = None
+		self.listen_redis_channel()
 
 		# extract JWT token from headers
 		token = self.get_jwt_from_headers(self.scope["headers"])
