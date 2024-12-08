@@ -5,7 +5,7 @@ def redis_listener():
 	"""Listen for Redis events and handle updates"""
 	redis_client = get_redis_client()
 	pubsub = redis_client.pubsub()
-	pubsub.subscribe("user_update")
+	pubsub.subscribe("chat_service_updates")
 
 	print("[INFO] Redis listener started for user-service.")
 

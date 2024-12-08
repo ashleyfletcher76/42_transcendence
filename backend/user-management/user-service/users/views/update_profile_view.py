@@ -47,7 +47,7 @@ def update_profile(request):
 		}
 
 		try:
-			redis_client.publish("user_update", json.dumps(nickname_event))
+			redis_client.publish("user_service_updates", json.dumps(nickname_event))
 			print(f"[INFO] Published nickname change event to Redis: {nickname_event}")
 		except Exception as e:
 			print(f"[ERROR] Failed to publish nickname change to Redis: {e}")
@@ -78,7 +78,7 @@ def update_profile(request):
 		}
 
 		try:
-			redis_client.publish("user_update", json.dumps(status_event))
+			redis_client.publish("user_service_updates", json.dumps(status_event))
 			print(f"[INFO] Published online status change event to Redis: {status_event}")
 		except Exception as e:
 			print(f"[ERROR] Failed to publish online status change to Redis: {e}")
