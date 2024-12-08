@@ -1,6 +1,7 @@
 import redis, threading
 
 _redis_client = None
+listener_started = False
 _redis_lock = threading.Lock()
 
 def get_redis_client():

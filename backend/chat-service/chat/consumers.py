@@ -1,18 +1,15 @@
-import json, requests, asyncio, time
+import json, requests, threading, redis
 from channels.generic.websocket import AsyncWebsocketConsumer
 from threading import Lock, Thread
 from chat.redis_client import get_redis_client
 
 user_channels = {}
 channels_lock = Lock()
+stop_signal = threading.Event()
 
 class ChatConsumer(AsyncWebsocketConsumer):
 	async def connect(self):
 		"""Handle WebSocket connection."""
-		# initialize Redis client
-		self.redis_client = get_redis_client()
-		self.redis_thread = None
-		self.listen_redis_channel()
 
 		# extract JWT token from headers
 		token = self.get_jwt_from_headers(self.scope["headers"])
@@ -148,3 +145,52 @@ class ChatConsumer(AsyncWebsocketConsumer):
 				return header[1].decode("utf-8").split("Bearer ")[-1]
 		return None
 
+
+## REDIS LISTENER FOR UPDATING NICKNAME
+def redis_listener():
+	"""Listen for Redis events and update user_channels."""
+	try:
+		redis_client = get_redis_client()
+		pubsub = redis_client.pubsub()
+		pubsub.subscribe("user_service_updates")
+		print("[INFO] Redis listener started for chat-service.")
+	except redis.ConnectionError as e:
+		print(f"[ERROR] Failed to connect to Redis: {e}")
+		return  # Exit the thread gracefully
+
+	for message in pubsub.listen():
+		print(f"[DEBUG] Received message: {message}")
+		if stop_signal.is_set():
+			print("[INFO] Redis listener stopping gracefully.")
+			break
+		if message["type"] == "message":
+			try:
+				event_data = json.loads(message["data"])
+				print(f"[DEBUG] Event data: {event_data}")
+				handle_user_service_event(event_data)
+			except json.JSONDecodeError as e:
+				print(f"[ERROR] Failed to decode Redis message: {e}. Message ignored.")
+
+
+def handle_user_service_event(event_data):
+	"""Handle events from user-service"""
+	action = event_data.get("action")
+	old_nickname = event_data.get("old_nickname")
+	new_nickname = event_data.get("new_nickname")
+
+	print(f"[DEBUG] Handling event: {event_data}")
+
+	if action == "nickname_change" and old_nickname and new_nickname:
+		with channels_lock:
+			print(f"[DEBUG] user_channels before update: {user_channels}")
+			if old_nickname in user_channels:
+				# transfer from old to new
+				user_channels[new_nickname] = user_channels.pop(old_nickname)
+				print(f"[INFO] Updated nickname in user_channels: {old_nickname} -> {new_nickname}")
+	else:
+		print(f"[WARNING] Unhandled event: {event_data}")
+
+## Start the thread inside here to avoid circular imports that could happen in apps.py ##
+listener_thread = Thread(target=redis_listener, daemon=True)
+listener_thread.start()
+print("[INFO] Redis listener thread started in chat-service.")
