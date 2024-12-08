@@ -11,6 +11,7 @@ export default class TournamentService extends Service {
 
 	@tracked currentLobby = null; // Current lobby details
 	@tracked currentPlayers = [];
+	@tracked admin;
 	socketRef = null;
 
 	@action
@@ -69,6 +70,7 @@ export default class TournamentService extends Service {
 
 	sendMessage(data) {
 		if (this.socketRef) {
+			console.log(data);
 			this.socketRef.send(JSON.stringify(data));
 		} else {
 			console.error('WebSocket is not connected.');
@@ -126,6 +128,7 @@ export default class TournamentService extends Service {
 
 	handleCreate(parsedMessage) {
 		this.currentPlayers = [...parsedMessage.players];
+		this.admin = parsedMessage.admin;
 		const data = {
 			type: 'tournament',
 			from: 'System',
@@ -135,16 +138,14 @@ export default class TournamentService extends Service {
 	}
 
 	handleJoin(parsedMessage) {
-    console.log(parsedMessage);
-		this.currentPlayers = [...parsedMessage.players];
-    console.log(this.currentPlayers);
+	this.currentPlayers = [...parsedMessage.players];
+	this.admin = parsedMessage.admin;
 		const data = {
 			type: 'tournament',
 			from: 'System',
 			content: parsedMessage.player + ' joined the Tournament!'
 		};
 		this.chat.messages = [...this.chat.messages, data];
-    console.log("chat:", this.chat.messages);
 	}
 
 	handleMessage(parsedMessage) {
@@ -166,6 +167,7 @@ export default class TournamentService extends Service {
 	}
 
 	handleLeave(parsedMessage) {
+		this.admin = parsedMessage.admin;
 		this.currentPlayers = [...parsedMessage.players];
 		const data = {
 			type: 'tournament',

@@ -7,6 +7,8 @@ export default class GameDataService extends Service {
   @tracked roomData = null;
   @tracked player_1 = null;
   @tracked player_2 = null;
+  @tracked left_score = 0;
+  @tracked right_score = 0;
 
   @service session;
 
@@ -15,8 +17,24 @@ export default class GameDataService extends Service {
     this.roomData = roomData;
 
     // Fetch user data for player_1 and player_2 asynchronously
-    this.player_1 = await this.fetchUserData(roomData.player_1);
-    this.player_2 = await this.fetchUserData(roomData.player_2);
+    if(roomData.player1 !== "AI")
+      this.player_1 = await this.fetchUserData(roomData.player1);
+    else
+      this.player_1 = {
+				nickname: "Computer",
+				avatar: "/images/default-profile.jpeg",
+				trophies: 999,
+        status: "online"
+			  }
+    if(roomData.player2 !== "AI")
+      this.player_2 = await this.fetchUserData(roomData.player2);
+    else 
+      this.player_2 = {
+				nickname: "Computer",
+				avatar: "/images/default-profile.jpeg",
+				trophies: 999,
+        status: "online"
+			  }
   }
 
   clearGameData() {
@@ -28,7 +46,7 @@ export default class GameDataService extends Service {
 
   async fetchUserData(nickname) {
     try {
-      const response = await fetch('/users/profile-info', {
+      const response = await fetch('/users/users/profile-info/', {
         method: 'POST', 
         headers: {
           Authorization: `Bearer ${this.session.data.authenticated.access}`, 
@@ -36,12 +54,11 @@ export default class GameDataService extends Service {
         },
         body: JSON.stringify({ nickname }) 
       });
-  
+
       if (!response.ok) {
         throw new Error('Failed to fetch user profile');
       }
       const data = await response.json();
-      console.log(data);
       return data;
     } catch (error) {
       console.error('Error fetching user profile:', error);

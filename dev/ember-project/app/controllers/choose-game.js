@@ -39,6 +39,7 @@ export default class ChooseGameController extends Controller {
 
       if (data.room_name) {
         this.loading = false;
+        console.log("data:", data);
         this.gameData.setGameData(gameType, data);
         this.router.transitionTo('pong-game');
       }

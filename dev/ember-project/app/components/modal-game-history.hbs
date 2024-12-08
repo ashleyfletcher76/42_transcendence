@@ -1,0 +1,15 @@
+<button class="btn btn-success p-1 mb-1" type="button" {{on "click" this.openModal}}>
+          Games: {{this.user.profile.games_total}}
+</button>
+
+<BsModal
+  @open={{this.isModalOpen}}
+  as |modal|
+>
+  <modal.header>
+    <h4 class="modal-title">
+      Match History
+    </h4>
+  </modal.header>
+
+</BsModal>

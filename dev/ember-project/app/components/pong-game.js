@@ -7,8 +7,6 @@ export default class PongGameComponent extends Component {
   @tracked rightPaddlePosition = 0.5; // Normalize between 0 and 1
   @tracked ballPositionX = 0.5; // Ball position
   @tracked ballPositionY = 0.5; // Ball position
-  @tracked leftScore = 0;
-  @tracked rightScore = 0;
   @tracked winner;
   @service gameData;
   @service session;
@@ -148,24 +146,30 @@ export default class PongGameComponent extends Component {
   }
 
   updateGameState(data) {
+    console.log(data);
     this.ballPositionX =
       data.ball_x * (25 - visualViewport.height / visualViewport.width);
     this.ballPositionY = data.ball_y * 24;
     this.leftPaddlePosition = data.left_paddle_y * 10;
     this.rightPaddlePosition = data.right_paddle_y * 10;
-    this.leftScore = data.left_score;
-    this.rightScore = data.right_score;
     this.winner = data.winner;
+    if (!this.winner)
+    {
+      this.gameData.left_score = data.left_score;
+      this.gameData.right_score = data.right_score;
+    }
     if (this.winner)
-	{
-		this.willDestroy();
-		this.tournament.sendWinner(this.winner);
-	}
+	  {
+      if (this.tournament.currentLobby)
+  		  this.tournament.sendWinner(this.winner);
+		  this.willDestroy();
+	  }
   }
+
   willDestroy() {
-    super.willDestroy();
     window.removeEventListener('keydown', this.handleKeyDown.bind(this));
     window.removeEventListener('keyup', this.handleKeyUp.bind(this));
     clearInterval(this.pollingInterval);
+    super.willDestroy();
   }
 }

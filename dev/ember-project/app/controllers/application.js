@@ -5,7 +5,6 @@ import { inject as service } from '@ember/service';
 
 export default class ApplicationController extends Controller {
   @tracked selectedUser = null; // Initially no user is selected
-  @tracked ownUser = null; // Tracks user data for the template
   @service session;
   @service router;
   @service user;
@@ -18,7 +17,10 @@ export default class ApplicationController extends Controller {
   @action
   selectUser(user) {
     console.log('Selected User:', user);
-    this.fetchUserData(user.nickname);
+    if (user && (user.nickname !== this.user.profile.nickname))
+      this.fetchUserData(user.nickname);
+    else
+      this.selectedUser = null;
   }
 
   async fetchUserData(nickname) {

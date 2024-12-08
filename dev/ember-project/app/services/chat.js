@@ -94,27 +94,21 @@ export default class ChatService extends Service {
 
   sendMessage() {
     let messageContent = this.messageInput.trim();
+
     if (this.type !== "all"){
       messageContent = this.words.slice(1).join(' ');
     }
-    console.log(`Message send: ${JSON.stringify({
-      type: this.type,
-      from: this.user.profile.nickname,
-      to: this.to_user,
-      content: messageContent,
-      timestamp: new Date().toISOString(),
-    })}`);
-    if (this.type === "invite")
-      this.privateRoom(this.user.profile.nickname, "create");
-	if (this.type === this.tournament)
-		this.tournament.sendMessage(
-			JSON.stringify({
-				action: messageContent,
+	  if (this.type === "tournament")
+    {
+      const data = {
+				action: "message",
 				sender: this.user.profile.nickname,
-				content: messageContent,
+				message: messageContent,
 				timestamp: new Date().toISOString(),
-			  }))
-    else if (messageContent) {
+			  }
+      this.tournament.sendMessage(data)
+    }
+    else if (messageContent && (this.to_user !== this.user.profile.nickname)) {
       this.socketRef.send(
         JSON.stringify({
           type: this.type,
@@ -124,41 +118,10 @@ export default class ChatService extends Service {
           timestamp: new Date().toISOString(),
         }),
       );
-      if (this.type === "all")
-        this.messageInput = '';
-      else
-        this.messageInput = this.words[0] + " ";
     }
-  }
-
-  async privateRoom(name, type) {
-    try {
-      //const response = await fetch('/api/create-room.json', {
-      const response = await fetch('/pong/pong/private-room', {
-        method: 'POST',
-        headers: { 
-          Authorization: `Bearer ${this.session.data.authenticated.access}`,
-          'Content-Type': 'application/json' 
-        },
-        body: JSON.stringify({
-          player: this.user.profile.nickname, // Add player_1 with the user's value
-          room_name: name, // Set the selected game type
-          type: type,
-        }),
-      });
-
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
-
-      const data = await response.json();
-
-      if (data.room_name) {
-        this.gameData.setGameData("private", data);
-        this.router.transitionTo('pong-game');
-      }
-    } catch (error) {
-      console.error('Error:', error);
-    }
+    if (this.type === "all")
+      this.messageInput = '';
+    else
+      this.messageInput = this.words[0] + " ";
   }
 }

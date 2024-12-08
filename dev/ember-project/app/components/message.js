@@ -5,6 +5,7 @@ import { inject as service } from '@ember/service';
 export default class MessageComponent extends Component {
   @service session;
   @service gameData;
+  @service user;
 
   @action
   acceptFriend(event) {
@@ -14,10 +15,42 @@ export default class MessageComponent extends Component {
   }
 
   @action
-  joinGame(event) {
+  acceptGame(event) {
     event.preventDefault();
     console.log(`${this.args.message.from} accepted game`);
-    this.joinRoom(this.args.message.from);
+    this.createPrivateRoom("privat");
+  }
+
+  async createRoom(gameType) {
+    try {
+      const response = await fetch('/pong/pong/create-room', {
+        method: 'POST',
+        headers: { 
+          Authorization: `Bearer ${this.session.data.authenticated.token}`,
+          'Content-Type': 'application/json' 
+        },
+        body: JSON.stringify({
+          player: this.user.profile.nickname, 
+          player_2: this.args.message.from,
+          gameType: gameType, // Set the selected game type
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+
+      const data = await response.json();
+
+      if (data.room_name) {
+        this.loading = false;
+        console.log("data:", data);
+        this.gameData.setGameData(gameType, data);
+        this.router.transitionTo('pong-game');
+      }
+    } catch (error) {
+      console.error('Error:', error);
+    }
   }
 
   async makeFriends() {
@@ -46,35 +79,6 @@ export default class MessageComponent extends Component {
     } catch (error) {
       console.error("Error adding friend:", error.message);
       throw error;
-    }
-  }  
-
-  async joinRoom(name) {
-    try {
-      const response = await fetch('/pong/pong/join-room', {
-        method: 'POST',
-        headers: { 
-            Authorization: `Bearer ${this.session.data.authenticated.access}`,
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          player: this.args.ownNickname,
-          name: name, // Set the selected game type
-        }),
-      });
-
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
-      const data = await response.json();
-      if (data.room_name) {
-        this.gameData.setGameData("private", data);
-        this.router.transitionTo('pong-game');
-      }
-      else
-        console.log("Invitation not valid");
-    } catch (error) {
-      console.error('Error:', error);
     }
   }
 }

@@ -21,7 +21,7 @@
   {{else}}
     <div class="alert alert-danger p-2 mt-1 mb-1" role="alert">
       {{@message.from}} invited you to a game
-      <a href="#" class="alert-link" {{on "click" (fn this.joinGame @message.from)}}>PLAY</a>
+      <a href="#" class="alert-link" {{on "click" this.acceptGame}}>PLAY</a>
     </div>
   {{/if}}
 {{else}}
