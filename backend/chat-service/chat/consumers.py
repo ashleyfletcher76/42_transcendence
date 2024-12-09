@@ -37,6 +37,17 @@ class ChatConsumer(AsyncWebsocketConsumer):
 			if self.nickname not in user_channels:
 				user_channels[self.nickname] = []
 			user_channels[self.nickname].append(self.channel_name)
+			try:
+				redis_client = get_redis_client()
+				status_event = {
+					"action": "online_status_update",
+					"old_nickname": self.nickname,
+					"online_status": True
+					}
+				redis_client.publish("chat_service_updates", json.dumps(status_event))
+				print(f"[INFO] Published online status for {self.nickname}")
+			except Exception as e:
+				print(f"[ERROR] Failed to publish online status change to Redis: {e}")
 
 		await self.accept()
 
