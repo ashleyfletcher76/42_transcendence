@@ -162,7 +162,7 @@ or
 
 /block-user
 
-    Blocks or unblocks a user. This endpoint updates the blocklists of both users simultaneously.
+    Blocks or unblocks a user.
 
     Request Format
     {
