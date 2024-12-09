@@ -51,6 +51,17 @@ class ChatConsumer(AsyncWebsocketConsumer):
 				user_channels[self.nickname].remove(self.channel_name)
 				if not user_channels[self.nickname]:
 					del user_channels[self.nickname]
+					try:
+						redis_client = get_redis_client()
+						status_event = {
+							"action": "online_status_update",
+							"old_nickname": self.nickname,
+							"online_status": False
+						}
+						redis_client.publish("chat_service_updates", json.dumps(status_event))
+						print(f"[INFO] Published offline status for {self.nickname}")
+					except Exception as e:
+						print(f"[ERROR] Failed to publish online status change to Redis: {e}")
 
 	async def receive(self, text_data):
 		try:

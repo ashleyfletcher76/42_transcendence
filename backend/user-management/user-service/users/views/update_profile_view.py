@@ -69,19 +69,6 @@ def update_profile(request):
 		profile.online = new_online_status
 		updated_fields.append("online")
 
-		# ## create status event for Redis channel ##
-		# status_event = {
-		# 	"action": "online_status_update",
-		# 	"old_nickname": nickname,
-		# 	"online_status": new_online_status,
-		# }
-
-		# try:
-		# 	redis_client.publish("user_service_updates", json.dumps(status_event))
-		# 	print(f"[INFO] Published online status change event to Redis: {status_event}")
-		# except Exception as e:
-		# 	print(f"[ERROR] Failed to publish online status change to Redis: {e}")
-
 	## save profile info in database and publish event if changes ##
 	if updated_fields:
 		profile.save()
