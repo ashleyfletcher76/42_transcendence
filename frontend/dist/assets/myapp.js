@@ -1144,7 +1144,7 @@
     value: true
   });
   _exports.default = void 0;
-  var _class, _descriptor, _descriptor2;
+  var _class, _descriptor, _descriptor2, _descriptor3;
   0; //eaimeta@70e063a35619d71f0,"@glimmer/component",0,"@ember/object",0,"@ember/service",0,"@ember/template-factory",0,"@ember/component"eaimeta@70e063a35619d71f
   function _initializerDefineProperty(e, i, r, l) { r && Object.defineProperty(e, i, { enumerable: r.enumerable, configurable: r.configurable, writable: r.writable, value: r.initializer ? r.initializer.call(l) : void 0 }); }
   function _defineProperty(e, r, t) { return (r = _toPropertyKey(r)) in e ? Object.defineProperty(e, r, { value: t, enumerable: !0, configurable: !0, writable: !0 }) : e[r] = t, e; }
@@ -1177,7 +1177,7 @@
     {{else}}
       <div class="alert alert-danger p-2 mt-1 mb-1" role="alert">
         {{@message.from}} invited you to a game
-        <a href="#" class="alert-link" {{on "click" (fn this.joinGame @message.from)}}>PLAY</a>
+        <a href="#" class="alert-link" {{on "click" this.acceptGame}}>PLAY</a>
       </div>
     {{/if}}
   {{else}}
@@ -1186,8 +1186,8 @@
   
   */
   {
-    "id": "KCLSmEve",
-    "block": "[[[41,[28,[37,1],[[30,1,[\"type\"]],\"tournament\"],null],[[[1,\"  \"],[10,0],[14,0,\"message-item message-tournament\"],[12],[1,\"[\"],[1,[30,1,[\"from\"]]],[1,\"] \"],[1,[30,1,[\"content\"]]],[13],[1,\"\\n\"]],[]],[[[41,[28,[37,1],[[30,1,[\"type\"]],\"whisper\"],null],[[[1,\"  \"],[10,0],[14,0,\"message-item message-whisper\"],[12],[1,\"[\"],[1,[30,1,[\"from\"]]],[1,\"] \"],[1,[30,1,[\"content\"]]],[13],[1,\"\\n\"]],[]],[[[41,[28,[37,1],[[30,1,[\"type\"]],\"add\"],null],[[[41,[28,[37,1],[[30,1,[\"from\"]],[30,2]],null],[[[1,\"    \"],[10,0],[14,0,\"alert alert-success p-2 mt-1 mb-1\"],[14,\"role\",\"alert\"],[12],[1,\"\\n      You sent a friend request to \"],[1,[30,1,[\"to\"]]],[1,\".\\n    \"],[13],[1,\"\\n\"]],[]],[[[1,\"    \"],[10,0],[14,0,\"alert alert-success p-2 mt-1 mb-1\"],[14,\"role\",\"alert\"],[12],[1,\"\\n      \"],[1,[30,1,[\"from\"]]],[1,\" wants to add you as a friend \\n      \"],[11,3],[24,6,\"#\"],[24,0,\"alert-link\"],[4,[38,4],[\"click\",[30,0,[\"acceptFriend\"]]],null],[12],[1,\"ACCEPT\"],[13],[1,\"\\n    \"],[13],[1,\"\\n\"]],[]]]],[]],[[[41,[28,[37,1],[[30,1,[\"type\"]],\"invite\"],null],[[[41,[28,[37,1],[[30,1,[\"from\"]],[30,2]],null],[[[1,\"    \"],[10,0],[14,0,\"alert alert-danger p-2 mt-1 mb-1\"],[14,\"role\",\"alert\"],[12],[1,\"\\n      You invited \"],[1,[30,1,[\"to\"]]],[1,\" to a game.\\n    \"],[13],[1,\"\\n\"]],[]],[[[1,\"    \"],[10,0],[14,0,\"alert alert-danger p-2 mt-1 mb-1\"],[14,\"role\",\"alert\"],[12],[1,\"\\n      \"],[1,[30,1,[\"from\"]]],[1,\" invited you to a game\\n      \"],[11,3],[24,6,\"#\"],[24,0,\"alert-link\"],[4,[38,4],[\"click\",[28,[37,5],[[30,0,[\"joinGame\"]],[30,1,[\"from\"]]],null]],null],[12],[1,\"PLAY\"],[13],[1,\"\\n    \"],[13],[1,\"\\n\"]],[]]]],[]],[[[1,\"  \"],[10,0],[14,0,\"message-item message-default\"],[12],[1,\"[\"],[1,[30,1,[\"from\"]]],[1,\"] \"],[1,[30,1,[\"content\"]]],[13],[1,\"\\n\"]],[]]]],[]]]],[]]]],[]]]],[\"@message\",\"@ownNickname\"],false,[\"if\",\"eq\",\"div\",\"a\",\"on\",\"fn\"]]",
+    "id": "qxcghq3o",
+    "block": "[[[41,[28,[37,1],[[30,1,[\"type\"]],\"tournament\"],null],[[[1,\"  \"],[10,0],[14,0,\"message-item message-tournament\"],[12],[1,\"[\"],[1,[30,1,[\"from\"]]],[1,\"] \"],[1,[30,1,[\"content\"]]],[13],[1,\"\\n\"]],[]],[[[41,[28,[37,1],[[30,1,[\"type\"]],\"whisper\"],null],[[[1,\"  \"],[10,0],[14,0,\"message-item message-whisper\"],[12],[1,\"[\"],[1,[30,1,[\"from\"]]],[1,\"] \"],[1,[30,1,[\"content\"]]],[13],[1,\"\\n\"]],[]],[[[41,[28,[37,1],[[30,1,[\"type\"]],\"add\"],null],[[[41,[28,[37,1],[[30,1,[\"from\"]],[30,2]],null],[[[1,\"    \"],[10,0],[14,0,\"alert alert-success p-2 mt-1 mb-1\"],[14,\"role\",\"alert\"],[12],[1,\"\\n      You sent a friend request to \"],[1,[30,1,[\"to\"]]],[1,\".\\n    \"],[13],[1,\"\\n\"]],[]],[[[1,\"    \"],[10,0],[14,0,\"alert alert-success p-2 mt-1 mb-1\"],[14,\"role\",\"alert\"],[12],[1,\"\\n      \"],[1,[30,1,[\"from\"]]],[1,\" wants to add you as a friend \\n      \"],[11,3],[24,6,\"#\"],[24,0,\"alert-link\"],[4,[38,4],[\"click\",[30,0,[\"acceptFriend\"]]],null],[12],[1,\"ACCEPT\"],[13],[1,\"\\n    \"],[13],[1,\"\\n\"]],[]]]],[]],[[[41,[28,[37,1],[[30,1,[\"type\"]],\"invite\"],null],[[[41,[28,[37,1],[[30,1,[\"from\"]],[30,2]],null],[[[1,\"    \"],[10,0],[14,0,\"alert alert-danger p-2 mt-1 mb-1\"],[14,\"role\",\"alert\"],[12],[1,\"\\n      You invited \"],[1,[30,1,[\"to\"]]],[1,\" to a game.\\n    \"],[13],[1,\"\\n\"]],[]],[[[1,\"    \"],[10,0],[14,0,\"alert alert-danger p-2 mt-1 mb-1\"],[14,\"role\",\"alert\"],[12],[1,\"\\n      \"],[1,[30,1,[\"from\"]]],[1,\" invited you to a game\\n      \"],[11,3],[24,6,\"#\"],[24,0,\"alert-link\"],[4,[38,4],[\"click\",[30,0,[\"acceptGame\"]]],null],[12],[1,\"PLAY\"],[13],[1,\"\\n    \"],[13],[1,\"\\n\"]],[]]]],[]],[[[1,\"  \"],[10,0],[14,0,\"message-item message-default\"],[12],[1,\"[\"],[1,[30,1,[\"from\"]]],[1,\"] \"],[1,[30,1,[\"content\"]]],[13],[1,\"\\n\"]],[]]]],[]]]],[]]]],[]]]],[\"@message\",\"@ownNickname\"],false,[\"if\",\"eq\",\"div\",\"a\",\"on\"]]",
     "moduleName": "myapp/components/message.hbs",
     "isStrictMode": false
   });
@@ -1196,16 +1196,45 @@
       super(...args);
       _initializerDefineProperty(this, "session", _descriptor, this);
       _initializerDefineProperty(this, "gameData", _descriptor2, this);
+      _initializerDefineProperty(this, "user", _descriptor3, this);
     }
     acceptFriend(event) {
       event.preventDefault();
       console.log(`${this.args.message.from} accepted as a friend!`);
       this.makeFriends();
     }
-    joinGame(event) {
+    acceptGame(event) {
       event.preventDefault();
       console.log(`${this.args.message.from} accepted game`);
-      this.joinRoom(this.args.message.from);
+      this.createPrivateRoom("privat");
+    }
+    async createRoom(gameType) {
+      try {
+        const response = await fetch('/pong/pong/create-room', {
+          method: 'POST',
+          headers: {
+            Authorization: `Bearer ${this.session.data.authenticated.token}`,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            player: this.user.profile.nickname,
+            player_2: this.args.message.from,
+            gameType: gameType // Set the selected game type
+          })
+        });
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        const data = await response.json();
+        if (data.room_name) {
+          this.loading = false;
+          console.log("data:", data);
+          this.gameData.setGameData(gameType, data);
+          this.router.transitionTo('pong-game');
+        }
+      } catch (error) {
+        console.error('Error:', error);
+      }
     }
     async makeFriends() {
       const apiEndpoint = "users/users/add-friend/";
@@ -1232,31 +1261,6 @@
         throw error;
       }
     }
-    async joinRoom(name) {
-      try {
-        const response = await fetch('/pong/pong/join-room', {
-          method: 'POST',
-          headers: {
-            Authorization: `Bearer ${this.session.data.authenticated.access}`,
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({
-            player: this.args.ownNickname,
-            name: name // Set the selected game type
-          })
-        });
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
-        }
-        const data = await response.json();
-        if (data.room_name) {
-          this.gameData.setGameData("private", data);
-          this.router.transitionTo('pong-game');
-        } else console.log("Invitation not valid");
-      } catch (error) {
-        console.error('Error:', error);
-      }
-    }
   }, _descriptor = _applyDecoratedDescriptor(_class.prototype, "session", [_service.inject], {
     configurable: true,
     enumerable: true,
@@ -1267,8 +1271,101 @@
     enumerable: true,
     writable: true,
     initializer: null
-  }), _applyDecoratedDescriptor(_class.prototype, "acceptFriend", [_object.action], Object.getOwnPropertyDescriptor(_class.prototype, "acceptFriend"), _class.prototype), _applyDecoratedDescriptor(_class.prototype, "joinGame", [_object.action], Object.getOwnPropertyDescriptor(_class.prototype, "joinGame"), _class.prototype), _class);
+  }), _descriptor3 = _applyDecoratedDescriptor(_class.prototype, "user", [_service.inject], {
+    configurable: true,
+    enumerable: true,
+    writable: true,
+    initializer: null
+  }), _applyDecoratedDescriptor(_class.prototype, "acceptFriend", [_object.action], Object.getOwnPropertyDescriptor(_class.prototype, "acceptFriend"), _class.prototype), _applyDecoratedDescriptor(_class.prototype, "acceptGame", [_object.action], Object.getOwnPropertyDescriptor(_class.prototype, "acceptGame"), _class.prototype), _class);
   (0, _component.setComponentTemplate)(__COLOCATED_TEMPLATE__, MessageComponent);
+});
+;define("myapp/components/modal-game-history", ["exports", "@ember/component", "@glimmer/component", "@ember/object", "@glimmer/tracking", "@ember/service", "@ember/template-factory"], function (_exports, _component, _component2, _object, _tracking, _service, _templateFactory) {
+  "use strict";
+
+  Object.defineProperty(_exports, "__esModule", {
+    value: true
+  });
+  _exports.default = void 0;
+  var _class, _descriptor, _descriptor2, _descriptor3, _descriptor4;
+  0; //eaimeta@70e063a35619d71f0,"@glimmer/component",0,"@ember/object",0,"@glimmer/tracking",0,"@ember/service",0,"@ember/template-factory",0,"@ember/component"eaimeta@70e063a35619d71f
+  function _initializerDefineProperty(e, i, r, l) { r && Object.defineProperty(e, i, { enumerable: r.enumerable, configurable: r.configurable, writable: r.writable, value: r.initializer ? r.initializer.call(l) : void 0 }); }
+  function _defineProperty(e, r, t) { return (r = _toPropertyKey(r)) in e ? Object.defineProperty(e, r, { value: t, enumerable: !0, configurable: !0, writable: !0 }) : e[r] = t, e; }
+  function _toPropertyKey(t) { var i = _toPrimitive(t, "string"); return "symbol" == typeof i ? i : i + ""; }
+  function _toPrimitive(t, r) { if ("object" != typeof t || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != typeof i) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
+  function _applyDecoratedDescriptor(i, e, r, n, l) { var a = {}; return Object.keys(n).forEach(function (i) { a[i] = n[i]; }), a.enumerable = !!a.enumerable, a.configurable = !!a.configurable, ("value" in a || a.initializer) && (a.writable = !0), a = r.slice().reverse().reduce(function (r, n) { return n(i, e, r) || r; }, a), l && void 0 !== a.initializer && (a.value = a.initializer ? a.initializer.call(l) : void 0, a.initializer = void 0), void 0 === a.initializer ? (Object.defineProperty(i, e, a), null) : a; }
+  function _initializerWarningHelper(r, e) { throw Error("Decorating class property failed. Please ensure that transform-class-properties is enabled and runs after the decorators transform."); }
+  const __COLOCATED_TEMPLATE__ = (0, _templateFactory.createTemplateFactory)(
+  /*
+    <button class="btn btn-success p-1 mb-1" type="button" {{on "click" this.openModal}}>
+            Games: {{this.user.profile.games_total}}
+  </button>
+  
+  <BsModal
+    @open={{this.isModalOpen}}
+    as |modal|
+  >
+    <modal.header>
+      <h4 class="modal-title">
+        Match History
+      </h4>
+    </modal.header>
+  
+  </BsModal>
+  
+  */
+  {
+    "id": "cpTVf5M2",
+    "block": "[[[11,\"button\"],[24,0,\"btn btn-success p-1 mb-1\"],[24,4,\"button\"],[4,[38,1],[\"click\",[30,0,[\"openModal\"]]],null],[12],[1,\"\\n          Games: \"],[1,[30,0,[\"user\",\"profile\",\"games_total\"]]],[1,\"\\n\"],[13],[1,\"\\n\\n\"],[8,[39,2],null,[[\"@open\"],[[30,0,[\"isModalOpen\"]]]],[[\"default\"],[[[[1,\"\\n  \"],[8,[30,1,[\"header\"]],null,null,[[\"default\"],[[[[1,\"\\n    \"],[10,\"h4\"],[14,0,\"modal-title\"],[12],[1,\"\\n      Match History\\n    \"],[13],[1,\"\\n  \"]],[]]]]],[1,\"\\n\\n\"]],[1]]]]],[1,\"\\n\"]],[\"modal\"],false,[\"button\",\"on\",\"bs-modal\",\"h4\"]]",
+    "moduleName": "myapp/components/modal-game-history.hbs",
+    "isStrictMode": false
+  });
+  let ModalProfileComponent = _exports.default = (_class = class ModalProfileComponent extends _component2.default {
+    constructor(...args) {
+      super(...args);
+      // Property to manage modal visibility
+      _initializerDefineProperty(this, "isModalOpen", _descriptor, this);
+      _initializerDefineProperty(this, "newNickname", _descriptor2, this);
+      _initializerDefineProperty(this, "user", _descriptor3, this);
+      _initializerDefineProperty(this, "session", _descriptor4, this);
+    }
+    openModal() {
+      console.log('openModal0');
+      this.isModalOpen = true;
+      this.newNickname = this.user.profile.nickname;
+      console.log(this.isModalOpen);
+    }
+    closeModal() {
+      console.log('Closing modal');
+      this.isModalOpen = false;
+    }
+    cancel() {
+      console.log('Modal canceled');
+      this.closeModal(); // Close the modal without submitting
+    }
+  }, _descriptor = _applyDecoratedDescriptor(_class.prototype, "isModalOpen", [_tracking.tracked], {
+    configurable: true,
+    enumerable: true,
+    writable: true,
+    initializer: function () {
+      return false;
+    }
+  }), _descriptor2 = _applyDecoratedDescriptor(_class.prototype, "newNickname", [_tracking.tracked], {
+    configurable: true,
+    enumerable: true,
+    writable: true,
+    initializer: null
+  }), _descriptor3 = _applyDecoratedDescriptor(_class.prototype, "user", [_service.inject], {
+    configurable: true,
+    enumerable: true,
+    writable: true,
+    initializer: null
+  }), _descriptor4 = _applyDecoratedDescriptor(_class.prototype, "session", [_service.inject], {
+    configurable: true,
+    enumerable: true,
+    writable: true,
+    initializer: null
+  }), _applyDecoratedDescriptor(_class.prototype, "openModal", [_object.action], Object.getOwnPropertyDescriptor(_class.prototype, "openModal"), _class.prototype), _applyDecoratedDescriptor(_class.prototype, "closeModal", [_object.action], Object.getOwnPropertyDescriptor(_class.prototype, "closeModal"), _class.prototype), _applyDecoratedDescriptor(_class.prototype, "cancel", [_object.action], Object.getOwnPropertyDescriptor(_class.prototype, "cancel"), _class.prototype), _class);
+  (0, _component.setComponentTemplate)(__COLOCATED_TEMPLATE__, ModalProfileComponent);
 });
 ;define("myapp/components/modal-profile", ["exports", "@ember/component", "@glimmer/component", "@ember/object", "@glimmer/tracking", "@ember/service", "@ember/template-factory"], function (_exports, _component, _component2, _object, _tracking, _service, _templateFactory) {
   "use strict";
@@ -1477,7 +1574,7 @@
     value: true
   });
   _exports.default = void 0;
-  var _class, _descriptor, _descriptor2, _descriptor3, _descriptor4, _descriptor5, _descriptor6, _descriptor7, _descriptor8, _descriptor9, _descriptor10;
+  var _class, _descriptor, _descriptor2, _descriptor3, _descriptor4, _descriptor5, _descriptor6, _descriptor7, _descriptor8;
   0; //eaimeta@70e063a35619d71f0,"@glimmer/component",0,"@glimmer/tracking",0,"@ember/service",0,"@ember/template-factory",0,"@ember/component"eaimeta@70e063a35619d71f
   function _initializerDefineProperty(e, i, r, l) { r && Object.defineProperty(e, i, { enumerable: r.enumerable, configurable: r.configurable, writable: r.writable, value: r.initializer ? r.initializer.call(l) : void 0 }); }
   function _defineProperty(e, r, t) { return (r = _toPropertyKey(r)) in e ? Object.defineProperty(e, r, { value: t, enumerable: !0, configurable: !0, writable: !0 }) : e[r] = t, e; }
@@ -1515,12 +1612,10 @@
       // Ball position
       _initializerDefineProperty(this, "ballPositionY", _descriptor4, this);
       // Ball position
-      _initializerDefineProperty(this, "leftScore", _descriptor5, this);
-      _initializerDefineProperty(this, "rightScore", _descriptor6, this);
-      _initializerDefineProperty(this, "winner", _descriptor7, this);
-      _initializerDefineProperty(this, "gameData", _descriptor8, this);
-      _initializerDefineProperty(this, "session", _descriptor9, this);
-      _initializerDefineProperty(this, "tournament", _descriptor10, this);
+      _initializerDefineProperty(this, "winner", _descriptor5, this);
+      _initializerDefineProperty(this, "gameData", _descriptor6, this);
+      _initializerDefineProperty(this, "session", _descriptor7, this);
+      _initializerDefineProperty(this, "tournament", _descriptor8, this);
       // Track the state of key presses
       _defineProperty(this, "p1UpKeyPressed", false);
       _defineProperty(this, "p1DownKeyPressed", false);
@@ -1639,23 +1734,26 @@
       }
     }
     updateGameState(data) {
+      console.log(data);
       this.ballPositionX = data.ball_x * (25 - visualViewport.height / visualViewport.width);
       this.ballPositionY = data.ball_y * 24;
       this.leftPaddlePosition = data.left_paddle_y * 10;
       this.rightPaddlePosition = data.right_paddle_y * 10;
-      this.leftScore = data.left_score;
-      this.rightScore = data.right_score;
       this.winner = data.winner;
+      if (!this.winner) {
+        this.gameData.left_score = data.left_score;
+        this.gameData.right_score = data.right_score;
+      }
       if (this.winner) {
+        if (this.tournament.currentLobby) this.tournament.sendWinner(this.winner);
         this.willDestroy();
-        this.tournament.sendWinner(this.winner);
       }
     }
     willDestroy() {
-      super.willDestroy();
       window.removeEventListener('keydown', this.handleKeyDown.bind(this));
       window.removeEventListener('keyup', this.handleKeyUp.bind(this));
       clearInterval(this.pollingInterval);
+      super.willDestroy();
     }
   }, _descriptor = _applyDecoratedDescriptor(_class.prototype, "leftPaddlePosition", [_tracking.tracked], {
     configurable: true,
@@ -1685,36 +1783,22 @@
     initializer: function () {
       return 0.5;
     }
-  }), _descriptor5 = _applyDecoratedDescriptor(_class.prototype, "leftScore", [_tracking.tracked], {
-    configurable: true,
-    enumerable: true,
-    writable: true,
-    initializer: function () {
-      return 0;
-    }
-  }), _descriptor6 = _applyDecoratedDescriptor(_class.prototype, "rightScore", [_tracking.tracked], {
-    configurable: true,
-    enumerable: true,
-    writable: true,
-    initializer: function () {
-      return 0;
-    }
-  }), _descriptor7 = _applyDecoratedDescriptor(_class.prototype, "winner", [_tracking.tracked], {
+  }), _descriptor5 = _applyDecoratedDescriptor(_class.prototype, "winner", [_tracking.tracked], {
     configurable: true,
     enumerable: true,
     writable: true,
     initializer: null
-  }), _descriptor8 = _applyDecoratedDescriptor(_class.prototype, "gameData", [_service.inject], {
+  }), _descriptor6 = _applyDecoratedDescriptor(_class.prototype, "gameData", [_service.inject], {
     configurable: true,
     enumerable: true,
     writable: true,
     initializer: null
-  }), _descriptor9 = _applyDecoratedDescriptor(_class.prototype, "session", [_service.inject], {
+  }), _descriptor7 = _applyDecoratedDescriptor(_class.prototype, "session", [_service.inject], {
     configurable: true,
     enumerable: true,
     writable: true,
     initializer: null
-  }), _descriptor10 = _applyDecoratedDescriptor(_class.prototype, "tournament", [_service.inject], {
+  }), _descriptor8 = _applyDecoratedDescriptor(_class.prototype, "tournament", [_service.inject], {
     configurable: true,
     enumerable: true,
     writable: true,
@@ -1774,7 +1858,7 @@
   
       {{!-- Second row of profile details --}}
       <div class="profile-details">
-        <h2 class="info">Games: {{@selectedUser.games_total}}</h2>
+        <ModalGameHistory />
         <h2 class="info">Wins: {{@selectedUser.wins}}</h2>
       </div>
   
@@ -1791,8 +1875,8 @@
   </div>
   */
   {
-    "id": "llH/TKqy",
-    "block": "[[[10,0],[14,0,\"container-fluid row fill p-2\"],[12],[1,\"\\n\"],[1,\"  \"],[10,0],[14,0,\"col center no-padding position-relative\"],[12],[1,\"\\n    \"],[10,\"button\"],[14,0,\"btn-close top-left\"],[15,\"onclick\",[30,0,[\"onCloseClick\"]]],[14,4,\"button\"],[12],[13],[1,\"\\n    \"],[10,\"img\"],[15,\"src\",[30,1,[\"avatar\"]]],[14,\"alt\",\"Profile Picture\"],[14,0,\"profile-pic\"],[12],[13],[1,\"\\n  \"],[13],[1,\"\\n\\n\"],[1,\"  \"],[10,0],[14,0,\"col-10\"],[12],[1,\"\\n\"],[1,\"    \"],[10,0],[14,0,\"profile-details\"],[12],[1,\"\\n      \"],[10,\"h2\"],[14,0,\"name\"],[12],[1,[30,1,[\"nickname\"]]],[13],[1,\"\\n      \"],[10,0],[14,0,\"actions\"],[12],[1,\"\\n        \"],[11,\"button\"],[24,0,\"emoji-button info\"],[24,\"data-bs-toggle\",\"tooltip\"],[24,\"data-bs-placement\",\"top\"],[24,\"title\",\"Live Chat\"],[24,4,\"button\"],[4,[38,4],[\"click\",[30,0,[\"startLiveChat\"]]],null],[12],[1,\"\\n          💬\\n        \"],[13],[1,\"\\n        \"],[11,\"button\"],[24,0,\"emoji-button info\"],[24,\"data-bs-toggle\",\"tooltip\"],[24,\"data-bs-placement\",\"top\"],[24,\"title\",\"Play Game\"],[24,4,\"button\"],[4,[38,4],[\"click\",[30,0,[\"playGame\"]]],null],[12],[1,\"\\n          🎮\\n        \"],[13],[1,\"\\n        \"],[11,\"button\"],[24,0,\"emoji-button info\"],[24,\"data-bs-toggle\",\"tooltip\"],[24,\"data-bs-placement\",\"top\"],[24,\"title\",\"Add Friend\"],[24,4,\"button\"],[4,[38,4],[\"click\",[30,0,[\"addFriend\"]]],null],[12],[1,\"\\n          ➕\\n        \"],[13],[1,\"\\n        \"],[11,\"button\"],[24,0,\"emoji-button info\"],[24,\"data-bs-toggle\",\"tooltip\"],[24,\"data-bs-placement\",\"top\"],[24,\"title\",\"Block User\"],[24,4,\"button\"],[4,[38,4],[\"click\",[28,[37,5],[[30,0,[\"blockUser\"]],\"block\"],null]],null],[12],[1,\"\\n          🚫\\n        \"],[13],[1,\"\\n      \"],[13],[1,\"\\n      \"],[10,\"h2\"],[14,0,\"points\"],[12],[1,[30,1,[\"trophies\"]]],[1,\"🏆\"],[13],[1,\"\\n    \"],[13],[1,\"\\n\\n\"],[1,\"    \"],[10,0],[14,0,\"profile-details\"],[12],[1,\"\\n      \"],[10,\"h2\"],[14,0,\"info\"],[12],[1,\"Games: \"],[1,[30,1,[\"games_total\"]]],[13],[1,\"\\n      \"],[10,\"h2\"],[14,0,\"info\"],[12],[1,\"Wins: \"],[1,[30,1,[\"wins\"]]],[13],[1,\"\\n    \"],[13],[1,\"\\n\\n    \"],[10,0],[14,0,\"profile-details\"],[12],[1,\"\\n\"],[41,[30,0,[\"isOnline\"]],[[[1,\"      \"],[10,\"h2\"],[14,0,\"info\"],[12],[1,\"🟢 online\"],[13],[1,\"\\n\"]],[]],[[[1,\"      \"],[10,\"h2\"],[14,0,\"info\"],[12],[1,\"🔴 offline\"],[13],[1,\"\\n\"]],[]]],[1,\"      \"],[10,\"h2\"],[14,0,\"info\"],[12],[1,\"Losses: \"],[1,[30,1,[\"losses\"]]],[13],[1,\"\\n    \"],[13],[1,\"\\n\\n  \"],[13],[1,\"\\n\"],[13]],[\"@selectedUser\"],false,[\"div\",\"button\",\"img\",\"h2\",\"on\",\"fn\",\"if\"]]",
+    "id": "8OqFHzEo",
+    "block": "[[[10,0],[14,0,\"container-fluid row fill p-2\"],[12],[1,\"\\n\"],[1,\"  \"],[10,0],[14,0,\"col center no-padding position-relative\"],[12],[1,\"\\n    \"],[10,\"button\"],[14,0,\"btn-close top-left\"],[15,\"onclick\",[30,0,[\"onCloseClick\"]]],[14,4,\"button\"],[12],[13],[1,\"\\n    \"],[10,\"img\"],[15,\"src\",[30,1,[\"avatar\"]]],[14,\"alt\",\"Profile Picture\"],[14,0,\"profile-pic\"],[12],[13],[1,\"\\n  \"],[13],[1,\"\\n\\n\"],[1,\"  \"],[10,0],[14,0,\"col-10\"],[12],[1,\"\\n\"],[1,\"    \"],[10,0],[14,0,\"profile-details\"],[12],[1,\"\\n      \"],[10,\"h2\"],[14,0,\"name\"],[12],[1,[30,1,[\"nickname\"]]],[13],[1,\"\\n      \"],[10,0],[14,0,\"actions\"],[12],[1,\"\\n        \"],[11,\"button\"],[24,0,\"emoji-button info\"],[24,\"data-bs-toggle\",\"tooltip\"],[24,\"data-bs-placement\",\"top\"],[24,\"title\",\"Live Chat\"],[24,4,\"button\"],[4,[38,4],[\"click\",[30,0,[\"startLiveChat\"]]],null],[12],[1,\"\\n          💬\\n        \"],[13],[1,\"\\n        \"],[11,\"button\"],[24,0,\"emoji-button info\"],[24,\"data-bs-toggle\",\"tooltip\"],[24,\"data-bs-placement\",\"top\"],[24,\"title\",\"Play Game\"],[24,4,\"button\"],[4,[38,4],[\"click\",[30,0,[\"playGame\"]]],null],[12],[1,\"\\n          🎮\\n        \"],[13],[1,\"\\n        \"],[11,\"button\"],[24,0,\"emoji-button info\"],[24,\"data-bs-toggle\",\"tooltip\"],[24,\"data-bs-placement\",\"top\"],[24,\"title\",\"Add Friend\"],[24,4,\"button\"],[4,[38,4],[\"click\",[30,0,[\"addFriend\"]]],null],[12],[1,\"\\n          ➕\\n        \"],[13],[1,\"\\n        \"],[11,\"button\"],[24,0,\"emoji-button info\"],[24,\"data-bs-toggle\",\"tooltip\"],[24,\"data-bs-placement\",\"top\"],[24,\"title\",\"Block User\"],[24,4,\"button\"],[4,[38,4],[\"click\",[28,[37,5],[[30,0,[\"blockUser\"]],\"block\"],null]],null],[12],[1,\"\\n          🚫\\n        \"],[13],[1,\"\\n      \"],[13],[1,\"\\n      \"],[10,\"h2\"],[14,0,\"points\"],[12],[1,[30,1,[\"trophies\"]]],[1,\"🏆\"],[13],[1,\"\\n    \"],[13],[1,\"\\n\\n\"],[1,\"    \"],[10,0],[14,0,\"profile-details\"],[12],[1,\"\\n      \"],[8,[39,6],null,null,null],[1,\"\\n      \"],[10,\"h2\"],[14,0,\"info\"],[12],[1,\"Wins: \"],[1,[30,1,[\"wins\"]]],[13],[1,\"\\n    \"],[13],[1,\"\\n\\n    \"],[10,0],[14,0,\"profile-details\"],[12],[1,\"\\n\"],[41,[30,0,[\"isOnline\"]],[[[1,\"      \"],[10,\"h2\"],[14,0,\"info\"],[12],[1,\"🟢 online\"],[13],[1,\"\\n\"]],[]],[[[1,\"      \"],[10,\"h2\"],[14,0,\"info\"],[12],[1,\"🔴 offline\"],[13],[1,\"\\n\"]],[]]],[1,\"      \"],[10,\"h2\"],[14,0,\"info\"],[12],[1,\"Losses: \"],[1,[30,1,[\"losses\"]]],[13],[1,\"\\n    \"],[13],[1,\"\\n\\n  \"],[13],[1,\"\\n\"],[13]],[\"@selectedUser\"],false,[\"div\",\"button\",\"img\",\"h2\",\"on\",\"fn\",\"modal-game-history\",\"if\"]]",
     "moduleName": "myapp/components/profile-other.hbs",
     "isStrictMode": false
   });
@@ -1899,7 +1983,7 @@
   
       <!-- Second row of profile details -->
       <div class="profile-details">
-        <h2 class="info">Games: {{this.user.profile.games_total}}</h2>
+        <ModalGameHistory />
         <h2 class="info">Wins: {{this.user.profile.wins}}</h2>
       </div>
   
@@ -1917,8 +2001,8 @@
   
   */
   {
-    "id": "DNR9Sl7i",
-    "block": "[[[10,0],[14,0,\"container-fluid row fill p-2\"],[12],[1,\"\\n  \"],[3,\" Profile picture column (1 part) \"],[1,\"\\n  \"],[10,0],[14,0,\"col center\"],[12],[1,\"\\n    \"],[10,\"img\"],[15,\"src\",[30,0,[\"user\",\"profile\",\"avatar\"]]],[14,\"alt\",\"Profile Picture\"],[14,0,\"profile-pic\"],[12],[13],[1,\"\\n  \"],[13],[1,\"\\n\\n  \"],[3,\" Profile details column (3 parts) \"],[1,\"\\n  \"],[10,0],[14,0,\"col-10\"],[12],[1,\"\\n    \"],[3,\" First row of profile details \"],[1,\"\\n    \"],[10,0],[14,0,\"profile-details\"],[12],[1,\"\\n\"],[41,[30,0,[\"isAuthenticated\"]],[[[1,\"        \"],[41,[30,0,[\"user\",\"profile\"]],[[[1,\" \"],[3,\" Access the user directly from the service \"],[1,\"\\n          \"],[10,\"h2\"],[14,0,\"name\"],[12],[1,[30,0,[\"user\",\"profile\",\"nickname\"]]],[13],[1,\"\\n          \"],[8,[39,4],null,null,null],[1,\"\\n\"]],[]],[[[1,\"          \"],[10,2],[12],[1,\"Loading user...\"],[13],[1,\" \"],[3,\" Or another fallback message \"],[1,\"\\n\"]],[]]],[1,\"        \"],[11,\"button\"],[24,0,\"logout-button\"],[24,4,\"button\"],[4,[38,7],[\"click\",[30,0,[\"logout\"]]],null],[12],[1,\"Logout\"],[13],[1,\"\\n\"]],[]],null],[1,\"      \"],[10,\"h2\"],[14,0,\"points info\"],[12],[1,[30,0,[\"user\",\"profile\",\"trophies\"]]],[1,\" 🏆\"],[13],[1,\"\\n    \"],[13],[1,\"\\n\\n    \"],[3,\" Second row of profile details \"],[1,\"\\n    \"],[10,0],[14,0,\"profile-details\"],[12],[1,\"\\n      \"],[10,\"h2\"],[14,0,\"info\"],[12],[1,\"Games: \"],[1,[30,0,[\"user\",\"profile\",\"games_total\"]]],[13],[1,\"\\n      \"],[10,\"h2\"],[14,0,\"info\"],[12],[1,\"Wins: \"],[1,[30,0,[\"user\",\"profile\",\"wins\"]]],[13],[1,\"\\n    \"],[13],[1,\"\\n\\n    \"],[10,0],[14,0,\"profile-details\"],[12],[1,\"\\n\"],[41,[30,0,[\"isOnline\"]],[[[1,\"        \"],[10,\"h2\"],[14,0,\"info\"],[12],[1,\"🟢 online\"],[13],[1,\"\\n\"]],[]],[[[1,\"        \"],[10,\"h2\"],[14,0,\"info\"],[12],[1,\"🔴 offline\"],[13],[1,\"\\n\"]],[]]],[1,\"      \"],[10,\"h2\"],[14,0,\"info\"],[12],[1,\"Losses: \"],[1,[30,0,[\"user\",\"profile\",\"losses\"]]],[13],[1,\"\\n    \"],[13],[1,\"\\n  \"],[13],[1,\"\\n\"],[13],[1,\"\\n\\n\"]],[],false,[\"div\",\"img\",\"if\",\"h2\",\"modal-profile\",\"p\",\"button\",\"on\"]]",
+    "id": "gQKzSoKE",
+    "block": "[[[10,0],[14,0,\"container-fluid row fill p-2\"],[12],[1,\"\\n  \"],[3,\" Profile picture column (1 part) \"],[1,\"\\n  \"],[10,0],[14,0,\"col center\"],[12],[1,\"\\n    \"],[10,\"img\"],[15,\"src\",[30,0,[\"user\",\"profile\",\"avatar\"]]],[14,\"alt\",\"Profile Picture\"],[14,0,\"profile-pic\"],[12],[13],[1,\"\\n  \"],[13],[1,\"\\n\\n  \"],[3,\" Profile details column (3 parts) \"],[1,\"\\n  \"],[10,0],[14,0,\"col-10\"],[12],[1,\"\\n    \"],[3,\" First row of profile details \"],[1,\"\\n    \"],[10,0],[14,0,\"profile-details\"],[12],[1,\"\\n\"],[41,[30,0,[\"isAuthenticated\"]],[[[1,\"        \"],[41,[30,0,[\"user\",\"profile\"]],[[[1,\" \"],[3,\" Access the user directly from the service \"],[1,\"\\n          \"],[10,\"h2\"],[14,0,\"name\"],[12],[1,[30,0,[\"user\",\"profile\",\"nickname\"]]],[13],[1,\"\\n          \"],[8,[39,4],null,null,null],[1,\"\\n\"]],[]],[[[1,\"          \"],[10,2],[12],[1,\"Loading user...\"],[13],[1,\" \"],[3,\" Or another fallback message \"],[1,\"\\n\"]],[]]],[1,\"        \"],[11,\"button\"],[24,0,\"logout-button\"],[24,4,\"button\"],[4,[38,7],[\"click\",[30,0,[\"logout\"]]],null],[12],[1,\"Logout\"],[13],[1,\"\\n\"]],[]],null],[1,\"      \"],[10,\"h2\"],[14,0,\"points info\"],[12],[1,[30,0,[\"user\",\"profile\",\"trophies\"]]],[1,\" 🏆\"],[13],[1,\"\\n    \"],[13],[1,\"\\n\\n    \"],[3,\" Second row of profile details \"],[1,\"\\n    \"],[10,0],[14,0,\"profile-details\"],[12],[1,\"\\n      \"],[8,[39,8],null,null,null],[1,\"\\n      \"],[10,\"h2\"],[14,0,\"info\"],[12],[1,\"Wins: \"],[1,[30,0,[\"user\",\"profile\",\"wins\"]]],[13],[1,\"\\n    \"],[13],[1,\"\\n\\n    \"],[10,0],[14,0,\"profile-details\"],[12],[1,\"\\n\"],[41,[30,0,[\"isOnline\"]],[[[1,\"        \"],[10,\"h2\"],[14,0,\"info\"],[12],[1,\"🟢 online\"],[13],[1,\"\\n\"]],[]],[[[1,\"        \"],[10,\"h2\"],[14,0,\"info\"],[12],[1,\"🔴 offline\"],[13],[1,\"\\n\"]],[]]],[1,\"      \"],[10,\"h2\"],[14,0,\"info\"],[12],[1,\"Losses: \"],[1,[30,0,[\"user\",\"profile\",\"losses\"]]],[13],[1,\"\\n    \"],[13],[1,\"\\n  \"],[13],[1,\"\\n\"],[13],[1,\"\\n\\n\"]],[],false,[\"div\",\"img\",\"if\",\"h2\",\"modal-profile\",\"p\",\"button\",\"on\",\"modal-game-history\"]]",
     "moduleName": "myapp/components/profile-own.hbs",
     "isStrictMode": false
   });
@@ -1976,38 +2060,24 @@
     <div class="container-fluid row border">
     {{!-- Profile picture column (1 part) --}}
     <div class="col-5">
-      <User @user={{this.player_1}} @selectUser={{this.args.selectUser}}/>
+      
+      <User @user={{this.gameData.player_1}} @selectUser={{this.args.selectUser}}/>
     </div>
   
     {{!-- Profile details column (3 parts) --}}
     <div class="col-2">
-      <div class="waviy center"><span style="--i:1">3:1</span></div>
+      <div class="waviy center"><span style="--i:1">{{this.gameData.left_score}}:{{this.gameData.right_score}}</span></div>
     </div>
   
     <div class="col-5">
-      <User @user={{this.player_2}} @selectUser={{this.args.selectUser}}/>
-    </div>
-  </div>
-  <div class="container-fluid row border">
-    {{!-- Profile picture column (1 part) --}}
-    <div class="col-5">
-      <User @user={{this.player_2}} @selectUser={{this.args.selectUser}}/>
-    </div>
-  
-    {{!-- Profile details column (3 parts) --}}
-    <div class="col-2">
-      <h1 class="white center">Next Match</h1>
-    </div>
-  
-    <div class="col-5">
-      <User @user={{this.player_2}} @selectUser={{this.args.selectUser}}/>
+      <User @user={{this.gameData.player_2}} @selectUser={{this.args.selectUser}}/>
     </div>
   </div>
   
   */
   {
-    "id": "CmMHMlfh",
-    "block": "[[[10,0],[14,0,\"container-fluid row border\"],[12],[1,\"\\n\"],[1,\"  \"],[10,0],[14,0,\"col-5\"],[12],[1,\"\\n    \"],[8,[39,1],null,[[\"@user\",\"@selectUser\"],[[30,0,[\"player_1\"]],[30,0,[\"args\",\"selectUser\"]]]],null],[1,\"\\n  \"],[13],[1,\"\\n\\n\"],[1,\"  \"],[10,0],[14,0,\"col-2\"],[12],[1,\"\\n    \"],[10,0],[14,0,\"waviy center\"],[12],[10,1],[14,5,\"--i:1\"],[12],[1,\"3:1\"],[13],[13],[1,\"\\n  \"],[13],[1,\"\\n\\n  \"],[10,0],[14,0,\"col-5\"],[12],[1,\"\\n    \"],[8,[39,1],null,[[\"@user\",\"@selectUser\"],[[30,0,[\"player_2\"]],[30,0,[\"args\",\"selectUser\"]]]],null],[1,\"\\n  \"],[13],[1,\"\\n\"],[13],[1,\"\\n\"],[10,0],[14,0,\"container-fluid row border\"],[12],[1,\"\\n\"],[1,\"  \"],[10,0],[14,0,\"col-5\"],[12],[1,\"\\n    \"],[8,[39,1],null,[[\"@user\",\"@selectUser\"],[[30,0,[\"player_2\"]],[30,0,[\"args\",\"selectUser\"]]]],null],[1,\"\\n  \"],[13],[1,\"\\n\\n\"],[1,\"  \"],[10,0],[14,0,\"col-2\"],[12],[1,\"\\n    \"],[10,\"h1\"],[14,0,\"white center\"],[12],[1,\"Next Match\"],[13],[1,\"\\n  \"],[13],[1,\"\\n\\n  \"],[10,0],[14,0,\"col-5\"],[12],[1,\"\\n    \"],[8,[39,1],null,[[\"@user\",\"@selectUser\"],[[30,0,[\"player_2\"]],[30,0,[\"args\",\"selectUser\"]]]],null],[1,\"\\n  \"],[13],[1,\"\\n\"],[13],[1,\"\\n\"]],[],false,[\"div\",\"user\",\"span\",\"h1\"]]",
+    "id": "ZUTsvi0i",
+    "block": "[[[10,0],[14,0,\"container-fluid row border\"],[12],[1,\"\\n\"],[1,\"  \"],[10,0],[14,0,\"col-5\"],[12],[1,\"\\n    \\n    \"],[8,[39,1],null,[[\"@user\",\"@selectUser\"],[[30,0,[\"gameData\",\"player_1\"]],[30,0,[\"args\",\"selectUser\"]]]],null],[1,\"\\n  \"],[13],[1,\"\\n\\n\"],[1,\"  \"],[10,0],[14,0,\"col-2\"],[12],[1,\"\\n    \"],[10,0],[14,0,\"waviy center\"],[12],[10,1],[14,5,\"--i:1\"],[12],[1,[30,0,[\"gameData\",\"left_score\"]]],[1,\":\"],[1,[30,0,[\"gameData\",\"right_score\"]]],[13],[13],[1,\"\\n  \"],[13],[1,\"\\n\\n  \"],[10,0],[14,0,\"col-5\"],[12],[1,\"\\n    \"],[8,[39,1],null,[[\"@user\",\"@selectUser\"],[[30,0,[\"gameData\",\"player_2\"]],[30,0,[\"args\",\"selectUser\"]]]],null],[1,\"\\n  \"],[13],[1,\"\\n\"],[13],[1,\"\\n\"]],[],false,[\"div\",\"user\",\"span\"]]",
     "moduleName": "myapp/components/scoreboard.hbs",
     "isStrictMode": false
   });
@@ -2015,21 +2085,7 @@
     constructor(...args) {
       super(...args);
       _initializerDefineProperty(this, "gameData", _descriptor, this);
-    }
-    // Inject the game-data service
-
-    get gameType() {
-      return this.gameData.gameType; // Access shared game type
-    }
-    get roomData() {
-      return this.gameData.roomData; // Access shared room data
-    }
-    get player_1() {
-      return this.gameData.player_1; // Access shared room data
-    }
-    get player_2() {
-      return this.gameData.player_2; // Access shared room data
-    }
+    } // Inject the game-data service
   }, _descriptor = _applyDecoratedDescriptor(_class.prototype, "gameData", [_service.inject], {
     configurable: true,
     enumerable: true,
@@ -2112,12 +2168,12 @@
       _initializerDefineProperty(this, "user", _descriptor2, this);
     }
     onJoinClick(creator) {
-      console.log('Join clicked!');
-      this.tournament.connectToLobby(creator, this.user.profile.nickname);
+      console.log('Join clicked!', creator);
+      this.tournament.connectToLobby(creator);
     }
-    onLeaveClick() {
-      console.log('Leave clicked!');
-      this.tournament.disconnectFromLobby(this.user.profile.nickname);
+    onLeaveClick(creator) {
+      console.log('Leave clicked!', creator);
+      this.tournament.disconnectFromLobby(creator);
     }
   }, _descriptor = _applyDecoratedDescriptor(_class.prototype, "tournament", [_service.inject], {
     configurable: true,
@@ -2456,7 +2512,7 @@
     value: true
   });
   _exports.default = void 0;
-  var _class, _descriptor, _descriptor2, _descriptor3, _descriptor4, _descriptor5;
+  var _class, _descriptor, _descriptor2, _descriptor3, _descriptor4;
   0; //eaimeta@70e063a35619d71f0,"@ember/controller",0,"@glimmer/tracking",0,"@ember/object",0,"@ember/service"eaimeta@70e063a35619d71f
   function _initializerDefineProperty(e, i, r, l) { r && Object.defineProperty(e, i, { enumerable: r.enumerable, configurable: r.configurable, writable: r.writable, value: r.initializer ? r.initializer.call(l) : void 0 }); }
   function _defineProperty(e, r, t) { return (r = _toPropertyKey(r)) in e ? Object.defineProperty(e, r, { value: t, enumerable: !0, configurable: !0, writable: !0 }) : e[r] = t, e; }
@@ -2469,11 +2525,9 @@
       super(...args);
       _initializerDefineProperty(this, "selectedUser", _descriptor, this);
       // Initially no user is selected
-      _initializerDefineProperty(this, "ownUser", _descriptor2, this);
-      // Tracks user data for the template
-      _initializerDefineProperty(this, "session", _descriptor3, this);
-      _initializerDefineProperty(this, "router", _descriptor4, this);
-      _initializerDefineProperty(this, "user", _descriptor5, this);
+      _initializerDefineProperty(this, "session", _descriptor2, this);
+      _initializerDefineProperty(this, "router", _descriptor3, this);
+      _initializerDefineProperty(this, "user", _descriptor4, this);
     }
     get activeRoute() {
       return this.router.currentRouteName;
@@ -2482,7 +2536,7 @@
     // Action to handle the user selection
     selectUser(user) {
       console.log('Selected User:', user);
-      this.fetchUserData(user.nickname);
+      if (user && user.nickname !== this.user.profile.nickname) this.fetchUserData(user.nickname);else this.selectedUser = null;
     }
     async fetchUserData(nickname) {
       try {
@@ -2512,24 +2566,17 @@
     initializer: function () {
       return null;
     }
-  }), _descriptor2 = _applyDecoratedDescriptor(_class.prototype, "ownUser", [_tracking.tracked], {
-    configurable: true,
-    enumerable: true,
-    writable: true,
-    initializer: function () {
-      return null;
-    }
-  }), _descriptor3 = _applyDecoratedDescriptor(_class.prototype, "session", [_service.inject], {
+  }), _descriptor2 = _applyDecoratedDescriptor(_class.prototype, "session", [_service.inject], {
     configurable: true,
     enumerable: true,
     writable: true,
     initializer: null
-  }), _descriptor4 = _applyDecoratedDescriptor(_class.prototype, "router", [_service.inject], {
+  }), _descriptor3 = _applyDecoratedDescriptor(_class.prototype, "router", [_service.inject], {
     configurable: true,
     enumerable: true,
     writable: true,
     initializer: null
-  }), _descriptor5 = _applyDecoratedDescriptor(_class.prototype, "user", [_service.inject], {
+  }), _descriptor4 = _applyDecoratedDescriptor(_class.prototype, "user", [_service.inject], {
     configurable: true,
     enumerable: true,
     writable: true,
@@ -2587,6 +2634,7 @@
         const data = await response.json();
         if (data.room_name) {
           this.loading = false;
+          console.log("data:", data);
           this.gameData.setGameData(gameType, data);
           this.router.transitionTo('pong-game');
         }
@@ -3912,20 +3960,15 @@
       if (this.type !== "all") {
         messageContent = this.words.slice(1).join(' ');
       }
-      console.log(`Message send: ${JSON.stringify({
-        type: this.type,
-        from: this.user.profile.nickname,
-        to: this.to_user,
-        content: messageContent,
-        timestamp: new Date().toISOString()
-      })}`);
-      if (this.type === "invite") this.privateRoom(this.user.profile.nickname, "create");
-      if (this.type === this.tournament) this.tournament.sendMessage(JSON.stringify({
-        action: messageContent,
-        sender: this.user.profile.nickname,
-        content: messageContent,
-        timestamp: new Date().toISOString()
-      }));else if (messageContent) {
+      if (this.type === "tournament") {
+        const data = {
+          action: "message",
+          sender: this.user.profile.nickname,
+          message: messageContent,
+          timestamp: new Date().toISOString()
+        };
+        this.tournament.sendMessage(data);
+      } else if (messageContent && this.to_user !== this.user.profile.nickname) {
         this.socketRef.send(JSON.stringify({
           type: this.type,
           from: this.user.profile.nickname,
@@ -3933,37 +3976,8 @@
           content: messageContent,
           timestamp: new Date().toISOString()
         }));
-        if (this.type === "all") this.messageInput = '';else this.messageInput = this.words[0] + " ";
       }
-    }
-    async privateRoom(name, type) {
-      try {
-        //const response = await fetch('/api/create-room.json', {
-        const response = await fetch('/pong/pong/private-room', {
-          method: 'POST',
-          headers: {
-            Authorization: `Bearer ${this.session.data.authenticated.access}`,
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({
-            player: this.user.profile.nickname,
-            // Add player_1 with the user's value
-            room_name: name,
-            // Set the selected game type
-            type: type
-          })
-        });
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
-        }
-        const data = await response.json();
-        if (data.room_name) {
-          this.gameData.setGameData("private", data);
-          this.router.transitionTo('pong-game');
-        }
-      } catch (error) {
-        console.error('Error:', error);
-      }
+      if (this.type === "all") this.messageInput = '';else this.messageInput = this.words[0] + " ";
     }
   }, _descriptor = _applyDecoratedDescriptor(_class.prototype, "messages", [_tracking.tracked], {
     configurable: true,
@@ -4029,7 +4043,7 @@
     value: true
   });
   _exports.default = void 0;
-  var _class, _descriptor, _descriptor2, _descriptor3, _descriptor4, _descriptor5;
+  var _class, _descriptor, _descriptor2, _descriptor3, _descriptor4, _descriptor5, _descriptor6, _descriptor7;
   0; //eaimeta@70e063a35619d71f0,"@ember/service",0,"@glimmer/tracking",0,"@ember/service"eaimeta@70e063a35619d71f
   function _initializerDefineProperty(e, i, r, l) { r && Object.defineProperty(e, i, { enumerable: r.enumerable, configurable: r.configurable, writable: r.writable, value: r.initializer ? r.initializer.call(l) : void 0 }); }
   function _defineProperty(e, r, t) { return (r = _toPropertyKey(r)) in e ? Object.defineProperty(e, r, { value: t, enumerable: !0, configurable: !0, writable: !0 }) : e[r] = t, e; }
@@ -4044,15 +4058,27 @@
       _initializerDefineProperty(this, "roomData", _descriptor2, this);
       _initializerDefineProperty(this, "player_1", _descriptor3, this);
       _initializerDefineProperty(this, "player_2", _descriptor4, this);
-      _initializerDefineProperty(this, "session", _descriptor5, this);
+      _initializerDefineProperty(this, "left_score", _descriptor5, this);
+      _initializerDefineProperty(this, "right_score", _descriptor6, this);
+      _initializerDefineProperty(this, "session", _descriptor7, this);
     }
     async setGameData(gameType, roomData) {
       this.gameType = gameType;
       this.roomData = roomData;
 
       // Fetch user data for player_1 and player_2 asynchronously
-      this.player_1 = await this.fetchUserData(roomData.player_1);
-      this.player_2 = await this.fetchUserData(roomData.player_2);
+      if (roomData.player1 !== "AI") this.player_1 = await this.fetchUserData(roomData.player1);else this.player_1 = {
+        nickname: "Computer",
+        avatar: "/images/default-profile.jpeg",
+        trophies: 999,
+        status: "online"
+      };
+      if (roomData.player2 !== "AI") this.player_2 = await this.fetchUserData(roomData.player2);else this.player_2 = {
+        nickname: "Computer",
+        avatar: "/images/default-profile.jpeg",
+        trophies: 999,
+        status: "online"
+      };
     }
     clearGameData() {
       this.gameType = null;
@@ -4062,7 +4088,7 @@
     }
     async fetchUserData(nickname) {
       try {
-        const response = await fetch('/users/profile-info', {
+        const response = await fetch('/users/users/profile-info/', {
           method: 'POST',
           headers: {
             Authorization: `Bearer ${this.session.data.authenticated.access}`,
@@ -4076,7 +4102,6 @@
           throw new Error('Failed to fetch user profile');
         }
         const data = await response.json();
-        console.log(data);
         return data;
       } catch (error) {
         console.error('Error fetching user profile:', error);
@@ -4110,7 +4135,21 @@
     initializer: function () {
       return null;
     }
-  }), _descriptor5 = _applyDecoratedDescriptor(_class.prototype, "session", [_service.inject], {
+  }), _descriptor5 = _applyDecoratedDescriptor(_class.prototype, "left_score", [_tracking.tracked], {
+    configurable: true,
+    enumerable: true,
+    writable: true,
+    initializer: function () {
+      return 0;
+    }
+  }), _descriptor6 = _applyDecoratedDescriptor(_class.prototype, "right_score", [_tracking.tracked], {
+    configurable: true,
+    enumerable: true,
+    writable: true,
+    initializer: function () {
+      return 0;
+    }
+  }), _descriptor7 = _applyDecoratedDescriptor(_class.prototype, "session", [_service.inject], {
     configurable: true,
     enumerable: true,
     writable: true,
@@ -4189,7 +4228,7 @@
     value: true
   });
   _exports.default = void 0;
-  var _class, _descriptor, _descriptor2, _descriptor3, _descriptor4, _descriptor5, _descriptor6;
+  var _class, _descriptor, _descriptor2, _descriptor3, _descriptor4, _descriptor5, _descriptor6, _descriptor7;
   0; //eaimeta@70e063a35619d71f0,"@ember/service",0,"@glimmer/tracking",0,"@ember/object",0,"@ember/service"eaimeta@70e063a35619d71f
   function _initializerDefineProperty(e, i, r, l) { r && Object.defineProperty(e, i, { enumerable: r.enumerable, configurable: r.configurable, writable: r.writable, value: r.initializer ? r.initializer.call(l) : void 0 }); }
   function _defineProperty(e, r, t) { return (r = _toPropertyKey(r)) in e ? Object.defineProperty(e, r, { value: t, enumerable: !0, configurable: !0, writable: !0 }) : e[r] = t, e; }
@@ -4207,6 +4246,7 @@
       _initializerDefineProperty(this, "currentLobby", _descriptor5, this);
       // Current lobby details
       _initializerDefineProperty(this, "currentPlayers", _descriptor6, this);
+      _initializerDefineProperty(this, "admin", _descriptor7, this);
       _defineProperty(this, "socketRef", null);
       _defineProperty(this, "startTournament", () => {
         const data = {
@@ -4230,6 +4270,12 @@
       this.set('socketRef', socket);
     }
     async disconnectFromLobby(tournamentName) {
+      const token = this.session.data.authenticated.access;
+      const wsUrl = `wss://localhost/ws/tournament/${tournamentName}/?token=${encodeURIComponent(token)}`;
+      console.log(tournamentName);
+      this.websockets.closeSocketFor(wsUrl);
+      console.log("websocket1", this.websockets.sockets);
+
       // Remove event handlers
       this.socketRef.off('open', this.onOpen, this);
       this.socketRef.off('message', this.onMessage, this);
@@ -4237,11 +4283,6 @@
 
       // Reset WebSocket reference
       this.socketRef = null;
-      const token = this.session.data.authenticated.access;
-      const wsUrl = `wss://localhost/ws/tournament/${tournamentName}/?token=${encodeURIComponent(token)}`;
-      this.websockets.closeSocketFor(wsUrl);
-      console.log("websocket1", this.websockets.sockets);
-
       // Reset state or perform other cleanup as needed
       this.currentLobby = null;
       this.messages = [];
@@ -4257,6 +4298,7 @@
     }
     sendMessage(data) {
       if (this.socketRef) {
+        console.log(data);
         this.socketRef.send(JSON.stringify(data));
       } else {
         console.error('WebSocket is not connected.');
@@ -4305,6 +4347,7 @@
     }
     handleCreate(parsedMessage) {
       this.currentPlayers = [...parsedMessage.players];
+      this.admin = parsedMessage.admin;
       const data = {
         type: 'tournament',
         from: 'System',
@@ -4313,16 +4356,14 @@
       this.chat.messages = [...this.chat.messages, data];
     }
     handleJoin(parsedMessage) {
-      console.log(parsedMessage);
       this.currentPlayers = [...parsedMessage.players];
-      console.log(this.currentPlayers);
+      this.admin = parsedMessage.admin;
       const data = {
         type: 'tournament',
         from: 'System',
         content: parsedMessage.player + ' joined the Tournament!'
       };
       this.chat.messages = [...this.chat.messages, data];
-      console.log("chat:", this.chat.messages);
     }
     handleMessage(parsedMessage) {
       const data = {
@@ -4341,6 +4382,7 @@
       this.chat.messages = [...this.chat.messages, data];
     }
     handleLeave(parsedMessage) {
+      this.admin = parsedMessage.admin;
       this.currentPlayers = [...parsedMessage.players];
       const data = {
         type: 'tournament',
@@ -4405,6 +4447,11 @@
     initializer: function () {
       return [];
     }
+  }), _descriptor7 = _applyDecoratedDescriptor(_class.prototype, "admin", [_tracking.tracked], {
+    configurable: true,
+    enumerable: true,
+    writable: true,
+    initializer: null
   }), _applyDecoratedDescriptor(_class.prototype, "connectToLobby", [_object.action], Object.getOwnPropertyDescriptor(_class.prototype, "connectToLobby"), _class.prototype), _applyDecoratedDescriptor(_class.prototype, "disconnectFromLobby", [_object.action], Object.getOwnPropertyDescriptor(_class.prototype, "disconnectFromLobby"), _class.prototype), _class);
 });
 ;define("myapp/services/user", ["exports", "@ember/service", "@glimmer/tracking"], function (_exports, _service, _tracking) {
@@ -4693,8 +4740,10 @@
   			<UserListTournament/>
   		</div>
   		<div class="button-container col-5">
-  		<button class="nav-button start" type="button" {{on "click" (fn this.tournament.startTournament)}}>Start Tournament</button>
-  		<button class="nav-button cancel" type="button" {{on "click" (fn this.tournament.disconnectFromLobby this.user.profile.nickname)}}>Leave</button> 
+  			{{#if (eq this.tournament.admin this.user.profile.nickname)}}
+  				<button class="nav-button start" type="button" {{on "click" (fn this.tournament.startTournament)}}>Start Tournament</button>
+  			{{/if}}
+  		<button class="nav-button cancel" type="button" {{on "click" (fn this.tournament.disconnectFromLobby this.tournament.currentLobby)}}>Leave</button> 
   		</div>
   	{{else}}
   		<div class="d-flex justify-content-center align-items-center">
@@ -4710,8 +4759,8 @@
   </div>
   */
   {
-    "id": "3KfjPbdU",
-    "block": "[[[10,0],[14,0,\"container-fluid row\"],[12],[1,\"\\n\"],[41,[30,0,[\"tournament\",\"currentLobby\"]],[[[1,\"\\t\\t\"],[10,0],[14,0,\"col-7\"],[12],[1,\"\\n\\t\\t\\t\"],[10,\"h2\"],[14,0,\"points center\"],[12],[1,\"👥 1/10\"],[13],[1,\"\\n\\t\\t\\t\"],[8,[39,3],null,null,null],[1,\"\\n\\t\\t\"],[13],[1,\"\\n\\t\\t\"],[10,0],[14,0,\"button-container col-5\"],[12],[1,\"\\n\\t\\t\"],[11,\"button\"],[24,0,\"nav-button start\"],[24,4,\"button\"],[4,[38,5],[\"click\",[28,[37,6],[[30,0,[\"tournament\",\"startTournament\"]]],null]],null],[12],[1,\"Start Tournament\"],[13],[1,\"\\n\\t\\t\"],[11,\"button\"],[24,0,\"nav-button cancel\"],[24,4,\"button\"],[4,[38,5],[\"click\",[28,[37,6],[[30,0,[\"tournament\",\"disconnectFromLobby\"]],[30,0,[\"user\",\"profile\",\"nickname\"]]],null]],null],[12],[1,\"Leave\"],[13],[1,\" \\n\\t\\t\"],[13],[1,\"\\n\"]],[]],[[[1,\"\\t\\t\"],[10,0],[14,0,\"d-flex justify-content-center align-items-center\"],[12],[1,\"\\n\\t\\t\\t\"],[11,\"button\"],[24,0,\"nav-button mt-5\"],[24,4,\"button\"],[4,[38,5],[\"click\",[28,[37,6],[[30,0,[\"tournament\",\"connectToLobby\"]],[30,0,[\"user\",\"profile\",\"nickname\"]]],null]],null],[12],[1,\"\\n\\t\\t\\tCreate Tournament\\n\\t\\t\\t\"],[13],[1,\"\\n\\t\\t\\t\"],[13],[1,\"\\n\"]],[]]],[13]],[],false,[\"div\",\"if\",\"h2\",\"user-list-tournament\",\"button\",\"on\",\"fn\"]]",
+    "id": "z25Bczj6",
+    "block": "[[[10,0],[14,0,\"container-fluid row\"],[12],[1,\"\\n\"],[41,[30,0,[\"tournament\",\"currentLobby\"]],[[[1,\"\\t\\t\"],[10,0],[14,0,\"col-7\"],[12],[1,\"\\n\\t\\t\\t\"],[10,\"h2\"],[14,0,\"points center\"],[12],[1,\"👥 1/10\"],[13],[1,\"\\n\\t\\t\\t\"],[8,[39,3],null,null,null],[1,\"\\n\\t\\t\"],[13],[1,\"\\n\\t\\t\"],[10,0],[14,0,\"button-container col-5\"],[12],[1,\"\\n\"],[41,[28,[37,4],[[30,0,[\"tournament\",\"admin\"]],[30,0,[\"user\",\"profile\",\"nickname\"]]],null],[[[1,\"\\t\\t\\t\\t\"],[11,\"button\"],[24,0,\"nav-button start\"],[24,4,\"button\"],[4,[38,6],[\"click\",[28,[37,7],[[30,0,[\"tournament\",\"startTournament\"]]],null]],null],[12],[1,\"Start Tournament\"],[13],[1,\"\\n\"]],[]],null],[1,\"\\t\\t\"],[11,\"button\"],[24,0,\"nav-button cancel\"],[24,4,\"button\"],[4,[38,6],[\"click\",[28,[37,7],[[30,0,[\"tournament\",\"disconnectFromLobby\"]],[30,0,[\"tournament\",\"currentLobby\"]]],null]],null],[12],[1,\"Leave\"],[13],[1,\" \\n\\t\\t\"],[13],[1,\"\\n\"]],[]],[[[1,\"\\t\\t\"],[10,0],[14,0,\"d-flex justify-content-center align-items-center\"],[12],[1,\"\\n\\t\\t\\t\"],[11,\"button\"],[24,0,\"nav-button mt-5\"],[24,4,\"button\"],[4,[38,6],[\"click\",[28,[37,7],[[30,0,[\"tournament\",\"connectToLobby\"]],[30,0,[\"user\",\"profile\",\"nickname\"]]],null]],null],[12],[1,\"\\n\\t\\t\\tCreate Tournament\\n\\t\\t\\t\"],[13],[1,\"\\n\\t\\t\\t\"],[13],[1,\"\\n\"]],[]]],[13]],[],false,[\"div\",\"if\",\"h2\",\"user-list-tournament\",\"eq\",\"button\",\"on\",\"fn\"]]",
     "moduleName": "myapp/templates/tournament.hbs",
     "isStrictMode": false
   });

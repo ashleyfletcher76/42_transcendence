@@ -26,8 +26,31 @@ SECRET_KEY = "django-insecure-6btvk)iynnls5dn(b&w6wb@7epz9pms-##=ahsbewtxw8t+#t9
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+BASE_DIR = Path(__file__).resolve().parent.parent
+
+# SECURITY settings
+SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY")
+DEBUG = os.environ.get("DJANGO_DEBUG") == "True"
 ALLOWED_HOSTS = ["*"]
-APPEND_SLASH = False
+ASGI_APPLICATION = "config.asgi.application"
+
+# Set to True to ensure all connections are HTTPS
+SECURE_SSL_REDIRECT = False
+
+# Prevent man in the middle attacks
+SECURE_HSTS_SECONDS = 0  # 1 year
+SECURE_HSTS_INCLUDE_SUBDOMAINS = False
+SECURE_HSTS_PRELOAD = False
+
+# Only allow cookies to be sent over HTTPS
+SESSION_COOKIE_SECURE = False
+CSRF_COOKIE_SECURE = False
+
+# Prevent the browser from guessing the content type
+SECURE_CONTENT_TYPE_NOSNIFF = True
+
+# Enable the browser XSS protection
+SECURE_BROWSER_XSS_FILTER = True
 
 
 # Application definition
@@ -72,8 +95,6 @@ TEMPLATES = [
     },
 ]
 
-#WSGI_APPLICATION = "config.wsgi.application"
-ASGI_APPLICATION = "config.asgi.application"
 
 # Channel layer settings for websockets
 CHANNEL_LAYERS = {
