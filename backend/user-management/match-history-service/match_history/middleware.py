@@ -12,6 +12,3 @@ class HealthCheckLoggingMiddleware:
 
 		response = self.get_response(request)
 		return response
-
-
-###### CHECK THIIS FOR CORRECT URL

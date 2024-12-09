@@ -21,7 +21,6 @@ urlpatterns = [
 	path("verify/", verify_user, name="verify-user"),
 	path("exists/<int:user_id>/", UserExistsView.as_view(), name="user-exists"),
 
-	# path("profile/", UserProfileView.as_view(), name="user-profile"),
 	path("profile-info-token/", get_profile_token, name="get-user-profile"),
 	path("profile-info/", get_profile_info, name="get-profile-info"),
 	path("profile-list/", get_all_profiles, name="get-all-profiles"),
