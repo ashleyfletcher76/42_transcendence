@@ -8,6 +8,10 @@ channels_lock = Lock()
 stop_signal = threading.Event()
 
 class ChatConsumer(AsyncWebsocketConsumer):
+	def __init__(self, *args, **kwargs):
+		super().__init__(*args, **kwargs)
+		self.nickname = None
+
 	async def connect(self):
 		"""Handle WebSocket connection."""
 
@@ -36,14 +40,14 @@ class ChatConsumer(AsyncWebsocketConsumer):
 		with channels_lock:
 			if self.nickname not in user_channels:
 				user_channels[self.nickname] = []
-			user_channels[self.nickname].append(self.channel_name)
+			user_channels[self.nickname].append(self)
 			try:
 				redis_client = get_redis_client()
 				status_event = {
 					"action": "online_status_update",
 					"old_nickname": self.nickname,
 					"online_status": True
-					}
+				}
 				redis_client.publish("chat_service_updates", json.dumps(status_event))
 				print(f"[INFO] Published online status for {self.nickname}")
 			except Exception as e:
@@ -53,15 +57,21 @@ class ChatConsumer(AsyncWebsocketConsumer):
 
 	async def disconnect(self, close_code):
 		"""Handle WebSocket disconnect."""
+		if not self.nickname:
+			print("[DEBUG] No nickname set for this consumer, skipping cleanup.")
+			return
+
 		# remove user from "chat_all" group
 		await self.channel_layer.group_discard("chat_all", self.channel_name)
 
 		# remove user's channel from user_channels
 		with channels_lock:
+			print(f"[DEBUG] Disconnecting {self.nickname} from channels.")
 			if self.nickname in user_channels:
-				user_channels[self.nickname].remove(self.channel_name)
+				user_channels[self.nickname].remove(self)
 				if not user_channels[self.nickname]:
 					del user_channels[self.nickname]
+					print(f"[DEBUG] No channels left for {self.nickname}, publishing offline status.")
 					try:
 						redis_client = get_redis_client()
 						status_event = {
@@ -72,7 +82,12 @@ class ChatConsumer(AsyncWebsocketConsumer):
 						redis_client.publish("chat_service_updates", json.dumps(status_event))
 						print(f"[INFO] Published offline status for {self.nickname}")
 					except Exception as e:
-						print(f"[ERROR] Failed to publish online status change to Redis: {e}")
+						print(f"[ERROR] Failed to publish offline status to Redis: {e}")
+				else:
+					print(f"[DEBUG] Channels still exist for {self.nickname}, not publishing offline status.")
+			else:
+				print(f"[DEBUG] Nickname {self.nickname} not found in user_channels.")
+
 
 	async def receive(self, text_data):
 		try:
@@ -189,9 +204,14 @@ def handle_user_service_event(event_data):
 		with channels_lock:
 			# print(f"[DEBUG] user_channels before update: {user_channels}")
 			if old_nickname in user_channels:
-				# transfer from old to new
-				user_channels[new_nickname] = user_channels.pop(old_nickname)
+				# Update nickname for all consumer instances
+				consumers = user_channels.pop(old_nickname)
+				user_channels[new_nickname] = consumers
+				for consumer in consumers:
+					consumer.nickname = new_nickname
 				print(f"[INFO] Updated nickname in user_channels: {old_nickname} -> {new_nickname}")
+			else:
+				print(f"[WARNING] Old nickname {old_nickname} not found in user_channels.")
 	else:
 		print(f"[WARNING] Unhandled event: {event_data}")
 

@@ -1,11 +1,23 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.utils.timezone import now
+from django.core.validators import RegexValidator
 import uuid
 
 class UserProfile(models.Model):
 	user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="profile")
-	nickname = models.CharField(max_length=50, unique=True, blank=True, default=uuid.uuid4)
+	nickname = models.CharField(
+		max_length=50,
+		unique=True,
+		blank=True,
+		default=uuid.uuid4,
+		validators=[
+			RegexValidator(
+				regex=r'^[a-zA-Z0-9]*$',
+				message="Nickname must contain only letters and numbers.",
+			)
+		],
+	)
 	avatar = models.ImageField(upload_to="avatars/", blank=True, null=True)
 	bio = models.TextField(blank=True)
 

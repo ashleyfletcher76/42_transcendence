@@ -2,7 +2,7 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from datetime import timezone
-import redis, json
+import redis, json, re
 from django.db.models import Q
 from ..models import UserProfile
 from ..redis_client import get_redis_client
@@ -28,6 +28,15 @@ def update_profile(request):
 	## update nickname ##
 	new_nickname = data.get("new_nickname")
 	if new_nickname and new_nickname != profile.nickname:
+		# validate nickname format
+		if not re.match(r'^[a-zA-Z0-9]*$', new_nickname):
+			return Response(
+				{
+					"success": False,
+					"message": "Nickname must contain only letters and numbers."
+				},
+				status=400,
+			)
 		## validate nickname uniqueness ##
 		if UserProfile.objects.filter(Q(nickname=new_nickname)).exists():
 			return Response(

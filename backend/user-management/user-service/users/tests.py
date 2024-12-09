@@ -236,3 +236,19 @@ class UserServiceTests(TestCase):
 		self.assertEqual(response.status_code, 400)
 		self.assertEqual(response.json()["success"], False)
 		self.assertEqual(response.json()["message"], "No changes detected in the request.")
+
+	def test_invalid_nickname_update(self):
+		url = "/users/update-profile/"
+		payload = {"new_nickname": "Invalid!Name"}
+		response = self.client.put(url, payload)
+
+		self.assertEqual(response.status_code, 400)
+		self.assertIn("Nickname must contain only letters and numbers.", response.data["message"])
+
+	def test_invalid_username_registration(self):
+		url = "/users/register/"
+		payload = {"username": "Invalid!User", "password": "password"}
+		response = self.client.post(url, payload)
+
+		self.assertEqual(response.status_code, 400)
+		self.assertIn("Username must contain only letters and numbers.", response.data["error"])
