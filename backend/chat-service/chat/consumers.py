@@ -82,8 +82,6 @@ class ChatConsumer(AsyncWebsocketConsumer):
 
 			if message_type == "whisper":
 				await self.route_whisper(data)
-			elif message_type == "tournament":
-				await self.route_tournament(data)
 			elif message_type == "all":
 				await self.route_all(data)
 			elif message_type == "add":
@@ -98,12 +96,10 @@ class ChatConsumer(AsyncWebsocketConsumer):
 	async def route_whisper(self, data):
 		target_nickname = data.get("to")
 
-		# print(f"Attempting to whisper to {target_nickname}. Current user_channels: {user_channels}")
 		if not target_nickname:
 			await self.send(text_data=json.dumps({"error": "Target nickname is required."}))
 			return
 
-		# print(f"Nickname: {target_nickname}")
 		target_channels = user_channels.get(target_nickname)
 		if target_channels:
 			# Send the message to the target user
@@ -120,19 +116,6 @@ class ChatConsumer(AsyncWebsocketConsumer):
 				)
 		else:
 			await self.send(text_data=json.dumps({"error": f"User {target_nickname} is not online."}))
-
-	async def route_tournament(self, data):
-		tournament_name = data.get("to")
-
-		if not tournament_name:
-			await self.send(text_data=json.dumps({"error": "Tournament group name is required."}))
-			return
-
-		group_name = f"chat_tournament_{tournament_name}"
-		await self.channel_layer.group_send(
-			group_name,
-			{"type": "chat_message", "data": data}
-		)
 
 	async def route_all(self, data):
 		await self.channel_layer.group_send(
@@ -181,14 +164,14 @@ def redis_listener():
 		return  # Exit the thread gracefully
 
 	for message in pubsub.listen():
-		print(f"[DEBUG] Received message: {message}")
+		# print(f"[DEBUG] Received message: {message}")
 		if stop_signal.is_set():
 			print("[INFO] Redis listener stopping gracefully.")
 			break
 		if message["type"] == "message":
 			try:
 				event_data = json.loads(message["data"])
-				print(f"[DEBUG] Event data: {event_data}")
+				# print(f"[DEBUG] Event data: {event_data}")
 				handle_user_service_event(event_data)
 			except json.JSONDecodeError as e:
 				print(f"[ERROR] Failed to decode Redis message: {e}. Message ignored.")
@@ -204,7 +187,7 @@ def handle_user_service_event(event_data):
 
 	if action == "nickname_change" and old_nickname and new_nickname:
 		with channels_lock:
-			print(f"[DEBUG] user_channels before update: {user_channels}")
+			# print(f"[DEBUG] user_channels before update: {user_channels}")
 			if old_nickname in user_channels:
 				# transfer from old to new
 				user_channels[new_nickname] = user_channels.pop(old_nickname)
