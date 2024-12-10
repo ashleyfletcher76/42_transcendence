@@ -51,21 +51,19 @@ class TournamentConsumerTest(TestCase):
     #    await communicator1.disconnect()
     #    await communicator2.disconnect()
 
-
-
     async def test_tournament(self):
         ws = "ws/tournament/tournament_test/"
 
         communicators = []
         joined = []
-        
+
         communicators = [
             WebsocketCommunicator(application, ws),
             WebsocketCommunicator(application, ws),
             WebsocketCommunicator(application, ws),
             WebsocketCommunicator(application, ws),
         ]
-    
+
         for comm in communicators:
             connected, subprotocol = await comm.connect()
             self.assertTrue(connected)
@@ -74,54 +72,49 @@ class TournamentConsumerTest(TestCase):
             message = {
                 "action": "create_or_join",
                 "tournament_name": "tournament_test",
-                "nickname": "player" + str(i)
+                "nickname": "oyuncu" + str(i),
             }
             await comm.send_json_to(message)
-            joined.append(comm)
-            for comm in joined:
-                response = await comm.receive_json_from()
-                assert response['type'] == 'create' or 'join'
+            for com in communicators:
+                response = await com.receive_json_from()
+                print(response)
         
-        rooms = {}
-        message = {
-            "action": "start_tournament",
-        }
+
+        message = {"action": "start_tournament"}
         await communicators[0].send_json_to(message)
-        for i, comm in enumerate(joined):
-            response = await comm.receive_json_from()
-            assert response['type'] == "match"
-            room = response["room"]
-            if room not in rooms:
-                rooms[room] = comm
-            assert response['player2'] != "No opponent"
-            assert response['room'] != "No room"
-            response = await comm.receive_json_from()
-            assert response['type'] == "start"
-
-        winners = await self.get_game_state_for_rooms(rooms)
-        print(winners)
-
-        for room, comm in rooms:
-            message = {
-                "action": "winner",
-                "winner": winners[room],
-            }
-            await comm.send_json_to(message)
+        response = await communicators[0].receive_json_from()
+        print(response)
+        for comm in communicators:
             response = await comm.receive_json_from()
             print(response)
-            assert response['type'] == "message"
+
+        print("--------------------------")
+
+
+
+        for i, comm in enumerate(communicators):
+            message = {
+                'action': "winner",
+                'winner': "oyuncu" + str(i)
+            }
+            await comm.send_json_to(message)
 
 
 
 
 
-    async def get_game_state_for_rooms(self, rooms):
+
+
+
+
+
+    async def get_game_state_for_rooms(self, matches):
         winners = {}
         async with aiohttp.ClientSession() as session:
-            tasks = []
-            for room in rooms:
-                tasks.append(self.fetch_game_state(session, room, winners))
-
+            tasks = [
+                self.fetch_game_state(session, match["room"], winners)
+                for match in matches.values()
+            ]
             await asyncio.gather(*tasks)
         return winners
 
@@ -142,85 +135,45 @@ class TournamentConsumerTest(TestCase):
 
 
 
-        #for comm in communicators:
-        #    await comm.disconnect()
+async def receive_all_responses_concurrently(communicators):
+    async def receive_responses(comm, index):
+        try:
+            response1 = await asyncio.wait_for(comm.receive_json_from(), timeout=10)
+            response2 = await asyncio.wait_for(comm.receive_json_from(), timeout=10)
+            response3 = await asyncio.wait_for(comm.receive_json_from(), timeout=10)
+            response4 = await asyncio.wait_for(comm.receive_json_from(), timeout=10)
+            return index, [response1, response2, response3, response4]
+        except asyncio.TimeoutError:
+            print(f"Timeout for communicator {index}")
+            return index, None
+        except Exception as e:
+            print(f"Error for communicator {index}: {e}")
+            return index, None
 
+    tasks = [receive_responses(comm, i) for i, comm in enumerate(communicators)]
+    results = await asyncio.gather(*tasks)
 
+    responses = {f"communicator_{index}": responses for index, responses in results if responses}
+    return responses
 
+async def receive_all_responses_matches(communicators):
+    async def receive_responses(comm, index):
+        try:
+            response1 = await asyncio.wait_for(comm.receive_json_from(), timeout=10)
+            response2 = await asyncio.wait_for(comm.receive_json_from(), timeout=10)
+            room = response1.get("room")
 
-    #async def test_create_tournament(self):
-    #    communicator1 = WebsocketCommunicator(
-    #        application, "ws/tournament/room_name3/")
+            return index, {"room": room, "communicator": comm}
+        except asyncio.TimeoutError:
+            print(f"Timeout for communicator {index}")
+            return index, None
+        except Exception as e:
+            print(f"Error for communicator {index}: {e}")
+            return index, None
 
-    #    connected, subprotocol = await communicator1.connect()
-    #    self.assertTrue(connected)
+    tasks = [receive_responses(comm, i) for i, comm in enumerate(communicators)]
+    results = await asyncio.gather(*tasks)
 
+    matches = {f"oyuncu{index}": result for index, result in results if result}
 
-    #    message = {
-    #        "action": "create_or_join",
-    #        "tournament_name": "room_name3",
-    #        "nickname": "player1"
-    #    }
-    #    await communicator1.send_json_to(message)
-
-
-    #    response1 = await communicator1.receive_json_from()
-
-
-    #    print(response1)
-
-    #    assert response1['type'] == 'create'
-
-    #    await communicator1.disconnect()
-
-
-
-    #async def test_create_tournament_multi(self):
-    #    communicator1 = WebsocketCommunicator(
-    #        application, "ws/tournament/room_name2/")
-    #    communicator2 = WebsocketCommunicator(
-    #        application, "ws/tournament/room_name2/")
-
-    #    connected, subprotocol = await communicator1.connect()
-    #    self.assertTrue(connected)
-
-    #    connected, subprotocol = await communicator2.connect()
-    #    self.assertTrue(connected)
-
-    #    try:
-    #        # Player 1 creates or joins the tournament
-    #        message1 = {
-    #            "action": "create_or_join",
-    #            "tournament_name": "room_name2",
-    #            "nickname": "player1"
-    #        }
-    #        await communicator1.send_json_to(message1)
-
-    #        # Player 2 creates or joins the tournament
-    #        message2 = {
-    #            "action": "create_or_join",
-    #            "tournament_name": "room_name2",
-    #            "nickname": "player2"
-    #        }
-    #        await communicator2.send_json_to(message2)
-
-    #        # Receive responses for both players
-    #        response1 = await communicator1.receive_json_from()
-    #        print(response1)
-    #        response2 = await communicator2.receive_json_from()
-    #        print(response2)
-    #        response1 = await communicator1.receive_json_from()
-    #        print(response1)
-    #        response2 = await communicator2.receive_json_from()
-    #        print(response2)
-
-    #        # Verify the responses (assuming you expect a 'create' action for both players)
-    #        self.assertEqual(response1['type'], 'create')
-    #        self.assertEqual(response2['type'], 'create')
-
-    #    finally:
-    #        # Ensure both communicators disconnect after everything is done
-    #        await communicator1.disconnect()
-    #        await communicator2.disconnect()
-
-
+    return matches

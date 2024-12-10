@@ -16,5 +16,6 @@ class Tournament(models.Model):
     max_players = models.IntegerField(default=16)
     players = models.ManyToManyField(Player, related_name="tournaments", blank=True) 
     created_at = models.DateTimeField(auto_now_add=True)
+    matches = models.JSONField(default=list, blank=True)
     active = models.BooleanField(default=True)
-    ongoing = models.BooleanField(default=True)
+    ongoing = models.BooleanField(default=False)

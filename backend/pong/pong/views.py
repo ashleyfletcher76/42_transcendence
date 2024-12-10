@@ -18,6 +18,7 @@ SCREEN_HEIGHT = 400
 BALL_RADIUS = 10
 PADDLE_WIDTH = 10
 PADDLE_HEIGHT = 100
+END_SCORE = 1
 
 def health_check(request):
     try:
@@ -67,8 +68,8 @@ def game_state_view(request, room_name):
                     if keypress_p1 == 'down' and player == game.player2:
                         move_right_paddle(game, 1)
 
-            if game.right_score >= 5 or game.left_score >= 5:
-                if game.right_score >= 5:
+            if game.right_score >= END_SCORE or game.left_score >= END_SCORE:
+                if game.right_score >= END_SCORE:
                     winner = game.player1
                 else:
                     winner = game.player2
@@ -141,7 +142,6 @@ def is_paddle_hit(paddle_y, ball_y, paddle_height=0.2):
     paddle_top = paddle_y - paddle_height / 2
     paddle_bottom = paddle_y + paddle_height / 2
     return paddle_top <= ball_y <= paddle_bottom
-
 
 
 
