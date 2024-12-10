@@ -155,16 +155,36 @@ def get_profile_info(request):
 def get_all_profiles(request):
 	try:
 		profiles = UserProfile.objects.all().select_related('user')
-		profile_list = [
-			{
+		user_ids = list(profiles.values_list("user_id", flat=True))
+
+		trophies_map = {}
+		try:
+			token = request.headers.get("Authorization")
+			if not token:
+				raise ValueError("Authorization header is missing")
+
+			match_response = requests.post(
+				f"http://match-history-service:8000/match/batch-trophies/",
+				headers={"Authorization": token},
+				json={"user_ids": user_ids},
+			)
+			if match_response.status_code == 200:
+				trophies_map = match_response.json()
+				print(f"[DEBUG] Trophies map received: {trophies_map}")
+			else:
+				print(f"[DEBUG] Match-history-service returned: {match_response.status_code}, {match_response.text}")
+		except requests.RequestException as e:
+			print(f"[ERROR] Exception contacting match-history-service: {str(e)}")
+
+		profile_list = []
+		for profile in profiles:
+			profile_list.append({
 				"username": profile.user.username,
 				"nickname": profile.nickname,
 				"avatar": profile.avatar.url if profile.avatar else None,
-				"trophies": "TBD",
+				"trophies": trophies_map.get(str(profile.user.id), "TBD"),
 				"status": "online" if profile.online else "offline",
-			}
-			for profile in profiles
-		]
+			})
 
 		return Response(profile_list, status=200)
 
