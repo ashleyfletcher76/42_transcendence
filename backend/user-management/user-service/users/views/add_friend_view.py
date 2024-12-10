@@ -8,49 +8,74 @@ class AddFriendView(APIView):
 	permission_classes = [IsAuthenticated]
 
 	def post(self, request):
-		target_username = request.data.get('target_username')
-		if not target_username:
+		user = request.user.profile
+		target_nickname = request.data.get("nickname")
+		action_type = request.data.get("type")
+
+		if not target_nickname or not action_type:
 			return Response(
-				{"error": "Target username is required."},
+				{"error": "Both 'nickname' and 'type' are required."},
 				status=status.HTTP_400_BAD_REQUEST,
-				)
+			)
+
+		if action_type not in ["add", "remove"]:
+			return Response(
+				{"error": "Invalid type. Use 'add' or 'remove' only."},
+				status=status.HTTP_400_BAD_REQUEST,
+			)
 
 		try:
-			target_user = UserProfile.objects.get(nickname=target_username)
-			user_profile = request.user.profile
+			target_user = UserProfile.objects.get(nickname=target_nickname)
 
-			if target_user == user_profile:
+			if user == target_user:
 				return Response(
-					{"error": "You cannot add yourself as a friend."},
+					{"error": "You cannot add or remove yourself as a friend."},
 					status=status.HTTP_400_BAD_REQUEST,
 				)
 
-			# check if already a friend
-			if target_user in user_profile.friends.all():
-				return Response(
-					{"error": "User is already a friend."},
-					status=status.HTTP_400_BAD_REQUEST,
-				)
-
-			# check if they are already blocked
-			if target_user in  user_profile.blocked_users.all():
+			# check if target user is blocked
+			if target_user in user.blocked_users.all():
 				return Response(
 					{"error": "You cannot add a user you have blocked."},
 					status=status.HTTP_400_BAD_REQUEST,
 				)
 
-			user_profile.friends.add(target_user)
-			return Response(
-				{"message": f"You are now friends with {target_username}."},
-				status=status.HTTP_200_OK,
-			)
+			# add friend logic
+			if action_type == "add":
+				if target_user in user.friends.all():
+					return Response(
+						{"error": "User is already a friend."},
+						status=status.HTTP_400_BAD_REQUEST,
+					)
+				user.friends.add(target_user)
+				target_user.friends.add(user)
+				return Response(
+					{
+						"success": True,
+						"message": f"You are now friends with {target_user.nickname}."
+					},
+					status=status.HTTP_200_OK,
+				)
+
+			# remove friend logic
+			if action_type == "remove":
+				if target_user not in user.friends.all():
+					return Response(
+						{"error": "User is not in your friend list."},
+						status=status.HTTP_400_BAD_REQUEST,
+					)
+				user.friends.remove(target_user)
+				target_user.friends.remove(user)
+				return Response(
+					{
+						"success": True,
+						"message": f"{target_user.nickname} has been removed from your friend list."
+					},
+					status=status.HTTP_200_OK,
+				)
 
 		except UserProfile.DoesNotExist:
 			return Response(
 				{"error": "Target user not found."},
 				status=status.HTTP_404_NOT_FOUND,
 			)
-
-
-	### Add new check if friend already added ###
-	### Create add blocked friend ###

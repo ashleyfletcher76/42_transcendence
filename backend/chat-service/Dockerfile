@@ -19,10 +19,6 @@ RUN pip install --no-cache-dir -r requirements.txt
 # copy the rest
 COPY . /app/
 
-# # generate a self signed SSL certificate
-# RUN openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
-# 	-keyout /app/server.key -out /app/server.crt -subj "/CN=localhost"
-
 # add entrypoing and copy script
 COPY entrypoint.sh .
 RUN chmod +x /app/entrypoint.sh
@@ -34,4 +30,4 @@ EXPOSE 8000
 ENTRYPOINT ["/app/entrypoint.sh"]
 
 # cmd to run the Django Channels server (uvicorn)
-CMD ["uvicorn", "config.asgi:application", "--host", "0.0.0.0", "--port", "8000", "--workers", "2"]
+CMD ["uvicorn", "config.asgi:application", "--host", "0.0.0.0", "--port", "8000", "--workers", "1"]

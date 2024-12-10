@@ -29,6 +29,8 @@ SECURE_CONTENT_TYPE_NOSNIFF = True
 # Enable the browser XSS protection
 SECURE_BROWSER_XSS_FILTER = True
 
+REDIS_URL = "redis://redis:6379"
+
 # Application definition
 
 INSTALLED_APPS = [
@@ -133,26 +135,6 @@ AUTH_PASSWORD_VALIDATORS = [
         "NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",
     },
 ]
-
-# LOGGING = {
-#     "version": 1,
-#     "disable_existing_loggers": False,
-#     "handlers": {
-#         "console": {
-#             "class": "logging.StreamHandler",
-#         },
-#     },
-#     "loggers": {
-#         "django": {
-#             "handlers": ["console"],
-#             "level": "DEBUG",
-#         },
-#         "chat.auth": {  # Logger for the DebugJWTAuthentication class
-#             "handlers": ["console"],
-#             "level": "DEBUG",
-#         },
-#     },
-# }
 
 # Internationalization
 LANGUAGE_CODE = "en-us"

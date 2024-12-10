@@ -2,7 +2,7 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from datetime import timezone
-import redis, json
+import redis, json, re
 from django.db.models import Q
 from ..models import UserProfile
 from ..redis_client import get_redis_client
@@ -13,52 +13,62 @@ def update_profile(request):
 	user = request.user
 	profile = user.profile
 	data = request.data
-
-	updated_fields = []
-	old_nickname = profile.nickname
-
-	# initialize Redis client
 	redis_client = get_redis_client()
 
-	# update nickname
-	new_nickname = data.get("nickname")
-	if new_nickname:
-		if new_nickname != profile.nickname:
-			# validate nickname uniqueness
-			if UserProfile.objects.filter(Q(nickname=new_nickname)).exists():
-				return Response(
-					{"success": False, "message": "Nickname is already taken."},
-					status=400,
-				)
+	request_old_nickname = data.get("nickname")
+	if request_old_nickname and request_old_nickname != profile.nickname:
+		return Response(
+			{"success": False, "message": "Invalid nickname provided."},
+			status=400,
+		)
 
-			profile.nickname = new_nickname
-			updated_fields.append("nickname")
+	updated_fields = []
+	nickname = profile.nickname
 
-			# publish nickname change event
-			if redis_client:
-				try:
-					redis_client.publish(
-						"nicknames_updates",
-						json.dumps(
-							{
-								"user_id": user.id,
-								"old_nickname": old_nickname,
-								"new_nickname": new_nickname,
-							}
-						),
-					)
-				except redis.ConnectionError as e:
-					print(f"Warning: Redis publishing failed - {str(e)}")
+	## update nickname ##
+	new_nickname = data.get("new_nickname")
+	if new_nickname and new_nickname != profile.nickname:
+		# validate nickname format
+		if not re.match(r'^[a-zA-Z0-9]*$', new_nickname):
+			return Response(
+				{
+					"success": False,
+					"message": "Nickname must contain only letters and numbers."
+				},
+				status=400,
+			)
+		## validate nickname uniqueness ##
+		if UserProfile.objects.filter(Q(nickname=new_nickname)).exists():
+			return Response(
+				{"success": False, "message": "Nickname is already taken."},
+				status=400,
+			)
 
-	# update avatar
+		profile.nickname = new_nickname
+		updated_fields.append("nickname")
+
+		## create nickname event for Redis channel ##
+		nickname_event = {
+			"action": "nickname_change",
+			"old_nickname": nickname,
+			"new_nickname": new_nickname,
+		}
+
+		try:
+			redis_client.publish("user_service_updates", json.dumps(nickname_event))
+			print(f"[INFO] Published nickname change event to Redis: {nickname_event}")
+		except Exception as e:
+			print(f"[ERROR] Failed to publish nickname change to Redis: {e}")
+
+	## update avatar ##
 	new_avatar = data.get("avatar")
 	if new_avatar:
 		if new_avatar != profile.avatar:
 			profile.avatar = new_avatar
 			updated_fields.append("avatar")
 
-	## UPDATE ONLINE STATUS ##
-	new_online_status = data.get("online")
+	## update online status ##
+	new_online_status = data.get("online_status")
 	if new_online_status is not None:
 		if not isinstance(new_online_status, bool):
 			return Response(
@@ -68,20 +78,11 @@ def update_profile(request):
 		profile.online = new_online_status
 		updated_fields.append("online")
 
-		if redis_client:
-			try:
-				redis_client.publish(
-					"online_status_updates",
-					json.dumps({"nickname": profile.nickname, "online": new_online_status}),
-				)
-			except Exception as e:
-				print(f"Warning: Redis publishing failed - {str(e)}")
-
-
+	## save profile info in database and publish event if changes ##
 	if updated_fields:
 		profile.save()
 
-		# generate response
+		## generate response for successful updates ##
 		updated_fields_str = " and ".join(updated_fields)
 		return Response(
 			{
@@ -91,7 +92,9 @@ def update_profile(request):
 			status=200,
 		)
 
+	## no updates detected, no event published ##
 	return Response(
 		{"success": False, "message": "No changes detected in the request."},
 		status=400,
 	)
+

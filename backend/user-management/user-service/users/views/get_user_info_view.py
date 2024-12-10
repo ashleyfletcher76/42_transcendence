@@ -122,7 +122,7 @@ def get_all_profiles(request):
 				"nickname": profile.nickname,
 				"avatar": profile.avatar.url if profile.avatar else None,
 				"trophies": "TBD",
-				"status": "TBD",
+				"status": "online" if profile.online else "offline",
 			}
 			for profile in profiles
 		]

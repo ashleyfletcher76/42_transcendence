@@ -2,12 +2,16 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.views import APIView
+from rest_framework.permissions import IsAuthenticated, AllowAny
 import requests
 import logging
 
 logger = logging.getLogger(__name__)
 
 class LoginView(APIView):
+	authentication_classes = []
+	permission_classes = []
+	
 	def post(self, request):
 		username = request.data.get("username")
 		password = request.data.get("password")
@@ -34,7 +38,7 @@ class LoginView(APIView):
 			update_url = f"http://user-service:8000/users/update-profile/"
 			update_response = requests.put(
 				update_url,
-				json={"nickname": nickname, "online": True},
+				json={"nickname": nickname, "online_status": True}, ## json={"nickname": nickname, "online": True},  ## Check this if login error
 				headers={"Authorization": f"Bearer {access_token}"}
 			)
 
@@ -57,24 +61,46 @@ class LoginView(APIView):
 			return Response({"error": "Invalid credentials"}, status=status.HTTP_401_UNAUTHORIZED)
 
 class LogoutView(APIView):
+	permission_classes = [IsAuthenticated]
+
 	def post(self, request):
 		try:
+			# extrtact rhe refresh token from body
 			refresh_token = request.data["refresh_token"]
+			if not refresh_token:
+				return Response(
+					{"error": "Refresh token is required."},
+					status=status.HTTP_400_BAD_REQUEST,
+				)
+			print(f"Refresh token: {refresh_token}")
+			# decode the refresh token
 			token = RefreshToken(refresh_token)
-			
+			nickname = token.get("nickname")
+
+			auth_header = request.headers.get("Authorization")
+			if not auth_header or not auth_header.startswith("Bearer "):
+				return Response(
+					{"error": "Access token is missing from Authorization header."},
+					status=status.HTTP_401_UNAUTHORIZED,
+				)
+			access_token = auth_header.split(" ")[1]
+
 			# mark as offline
 			update_url = f"http://user-service:8000/users/update-profile/"
 			updated_response = requests.put(
 				update_url,
-				json={"nickname": nickname, "online": False},
-				headers={"Authorization": f"Bearer {token}"}
+				json={"nickname": nickname, "online_status": False},
+				headers={"Authorization": f"Bearer {access_token}"}
 			)
 
-			if updated_response != 200:
+			if updated_response.status_code != 200:
 				print("Failed to update online status:", updated_response.json())
+				return Response(
+					{"error": "Failed to update user status."},
+					status=status.HTTP_500_INTERNAL_SERVER_ERROR,
+				)
 
 			token.blacklist()
-			nickname = token.get("nickname")
 
 			return Response(
 				{"message": "Logged out successfully"},
