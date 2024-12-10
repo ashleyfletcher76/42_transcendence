@@ -4,6 +4,7 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from ..models import UserProfile
+import requests
 
 User = get_user_model()
 
@@ -86,18 +87,33 @@ def get_profile_info(request):
 		friends = list(profile.friends.values_list('nickname', flat=True))
 		blocked = list(profile.blocked_users.values_list('nickname', flat=True))
 
+		# fetch match history details
+		match_history = {}
+		try:
+			token = request.headers.get("Authorization")
+			match_response = requests.get(
+				f"http://match-history-service:8000/match/history/",
+				headers={"Authorization": token}
+			)
+			if match_response.status_code == 200:
+				match_history = match_response.json()
+			else:
+				match_history = {"error": "Could not fetch match history"}
+		except requests.RequestException as e:
+			match_history = {"error": str(e)}
+
 		# response
 		profile_response = {
 			"username": user.username,
 			"nickname": profile.nickname,
 			"avatar": profile.avatar.url if profile.avatar else None,
-			"trophies": "TBD",
-			"games_total": "TBD",
-			"wins": "TBD",
-			"losses": "TBD",
+			"trophies": match_history.get("trophies", "TBD"),
+			"games_total": match_history.get("games_total", "TBD"),
+			"wins": match_history.get("wins", "TBD"),
+			"losses": match_history.get("losses", "TBD"),
 			"blocked": blocked,
 			"friends": friends,
-			"history": "TBD",
+			"history": match_history.get("history", []),
 			"status": "online" if profile.online else "offline",
 			"last_seen": profile.last_seen
 		}

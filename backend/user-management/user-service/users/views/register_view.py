@@ -6,7 +6,6 @@ from ..serializer import UserSerializer
 from django.contrib.auth import get_user_model
 from rest_framework.permissions import AllowAny
 
-# logger = logging.getLogger(__name__)
 User = get_user_model()
 
 class UserRegisterView(APIView):
