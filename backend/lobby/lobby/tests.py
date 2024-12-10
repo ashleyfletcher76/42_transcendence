@@ -75,10 +75,8 @@ class TournamentConsumerTest(TestCase):
                 "nickname": "oyuncu" + str(i),
             }
             await comm.send_json_to(message)
-            for com in communicators:
-                response = await com.receive_json_from()
-                print(response)
-        
+            
+
 
         message = {"action": "start_tournament"}
         await communicators[0].send_json_to(message)

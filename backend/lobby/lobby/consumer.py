@@ -32,7 +32,7 @@ class TournamentConsumer(AsyncWebsocketConsumer):
         print(f"disconnecting user : {self.username}")
         username = self.username
         if username:
-            await self.remove_player_from_tournament()
+            await self.remove_player_from_tournament(username)
 
         response = await self.handle_leave()
         await self.lobby_message(response)
@@ -50,6 +50,7 @@ class TournamentConsumer(AsyncWebsocketConsumer):
         username = data.get("nickname")
         sender = data.get("sender")
         message = data.get("message")
+        winner = data.get("winner")
 
         if action == "create_or_join":
             self.username = username
@@ -62,10 +63,8 @@ class TournamentConsumer(AsyncWebsocketConsumer):
             response = await self.start_tournament()
             await self.lobby_message(response)
         elif action == "winner":
-            winner = data.get("winner")
-            print(f"Winner received: {winner}")
             response = await self.get_winner(winner)
-            await self.send(text_data=json.dumps(response))
+            await self.lobby_message(response)
 
 
     """type funcitons"""
@@ -226,56 +225,47 @@ class TournamentConsumer(AsyncWebsocketConsumer):
     @sync_to_async
     def decide_match(self, tournament, winner):
         players = list(tournament.players.all())
-        for player in players:
-            if player:
-                if player.user.username == winner or player.opponent == winner:
-                    if player.user.username == winner:
-                        player.score += 1
-                        player.room = "No room"
-                        player.opponent = "No opponent"
-                        player.save()
-                    else:
-                        player.score = -1
-                        player.room = "No room"
-                        player.opponent = "No opponent"
-                        player.save()
-        all_finished = all(player.opponent == "No opponent" for player in players)
-        tournament.save()
-        if all_finished:
+        matches = tournament.matches
+    
+        match_to_remove = None
+        loser = None
+    
+        for match in matches:
+            if match["player1"] == winner or match["player2"] == winner:
+                match_to_remove = match
+                loser = match["player1"] if match["player2"] == winner else match["player2"]
+                break
+
+        if match_to_remove:
+            match_to_remove["winner"] = winner
+            matches.remove(match_to_remove)
+            tournament.matches = matches
+            tournament.players.remove(loser)
+            tournament.save()
+
+        if len(players) == 1:
+            final_winner = players[0]
+            tournament.winner = final_winner
+            tournament.save()
+            return {
+                "type": "tournament_winner",
+                "winner": final_winner
+            }
+
+        if not matches:
             response = async_to_sync(self.start_tournament)()
             return response
 
-
-    @sync_to_async
-    def decide_winner(self, tournament, winner):
-        tournament.active = False
-        tournament.ongoing = False
-        tournament.save()
-        response = {
-                "type" : "tournament_winner",
-                "winner" : winner,
-                "connection" : "off"
-            }
-        return(response)
+        return {"type": "message", "winner": winner, "loser": loser}
 
     async def get_winner(self, winner):
-        print(" am i here ? ")
         tournament = await self.get_tournament()
         await database_sync_to_async(tournament.refresh_from_db)()
         players_count = await database_sync_to_async(lambda: tournament.players.count())()
-        response = await self.decide_match(tournament, winner)
-        print(tournament.matches)
-        print(response)
-        if response != None:
-            return response
-        if (players_count == 1):
-            response = await self.decide_winner(tournament, winner)
-            return response
-        return {
-            "type" : "message",
-            "message" : f"The winner is {winner}",
-            "sender" : self.username
-        }
+        responnse = await self.decide_match(tournament, winner)
+        self.gr
+        return (responnse)
+
 
     async def start_tournament(self):
         tournament = await self.get_tournament()
@@ -474,10 +464,10 @@ class TournamentConsumer(AsyncWebsocketConsumer):
                 return None
 
     @database_sync_to_async
-    def remove_player_from_tournament(self):
+    def remove_player_from_tournament(self, username):
         with transaction.atomic():
             try:
-                player = Player.objects.get(user__username=self.username)
+                player = Player.objects.get(user__username=username)
                 tournament = Tournament.objects.filter(players=player).first()
                 if tournament:
                     tournament.players.remove(player)
