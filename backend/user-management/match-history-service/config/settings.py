@@ -58,7 +58,6 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 
     "match_history.middleware.HealthCheckLoggingMiddleware",
-
 ]
 
 ROOT_URLCONF = 'config.urls'

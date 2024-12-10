@@ -59,6 +59,26 @@ def get_profile_token(request):
 	except User.DoesNotExist:
 		return JsonResponse({"error": "User not found."}, status=404)
 
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def get_user_id_by_nickname(request):
+	try:
+		# extract nickname from payload
+		data = request.data
+		nickname = data.get("nickname", "").strip()
+		if not nickname:
+			return Response({"error": "Nickname is required."}, status=400)
+
+		user = User.objects.filter(profile__nickname=nickname).first()
+		if not user:
+			return Response(
+				{"error": "User with given nickname not found."},
+				status=404
+			)
+		return Response({"user_id": user.id}, status=200)
+	except Exception as e:
+		return Response({"error": str(e)}, status=500)
+
 ##################################################
 ### Latest user profile enquiry using nickname ###
 ##################################################
@@ -87,13 +107,16 @@ def get_profile_info(request):
 		friends = list(profile.friends.values_list('nickname', flat=True))
 		blocked = list(profile.blocked_users.values_list('nickname', flat=True))
 
+		print(f"[DEBUG] Sending request to match-history-service with user_id: {user.id}")
+
 		# fetch match history details
 		match_history = {}
 		try:
 			token = request.headers.get("Authorization")
 			match_response = requests.get(
-				f"http://match-history-service:8000/match/history/",
-				headers={"Authorization": token}
+				f"http://match-history-service:8000/match/get-match-history/",
+				headers={"Authorization": token},
+				params={"user_id": user.id},
 			)
 			if match_response.status_code == 200:
 				match_history = match_response.json()

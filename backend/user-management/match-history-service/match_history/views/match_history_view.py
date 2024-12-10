@@ -9,15 +9,19 @@ class MatchHistoryView(APIView):
 	permission_classes = [IsAuthenticated]
 
 	def get(self, request):
-		"""
-		Retrieve match history and statistics for the authenticated user.
-		"""
+		"""Retrieve match history and statistics for the authenticated user."""
+		print(f"[DEBUG] MatchHistory query params: {request.query_params}")
 		try:
-			# Fetch user_id from authenticated user
-			user_data = get_user_data(request)
-			user_id = user_data["user_id"]
+			user_id = request.query_params.get("user_id")
+			if not user_id:
+				return Response(
+					{"error": "User ID is required."},
+					status=status.HTTP_400_BAD_REQUEST,
+				)
 
-			# Retrieve match history and match details
+			print(f"[DEBUG] Requested user ID: {user_id}")
+
+			# retrieve match history and match details
 			match_history = MatchHistory.objects.get(user_id=user_id)
 			history = match_history.history.all().values("opponent", "result", "score", "date")
 

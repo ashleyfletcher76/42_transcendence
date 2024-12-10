@@ -10,7 +10,8 @@ from .views.get_user_info_view import (
 	get_usernames,
 	get_profile_token,
 	get_profile_info,
-	get_all_profiles
+	get_all_profiles,
+	get_user_id_by_nickname
 )
 
 urlpatterns = [
@@ -28,6 +29,7 @@ urlpatterns = [
 
 	path("get-single-user-data/<int:user_id>/", get_single_user_data, name="get-single-user-data"),
 	path("get-usernames/", get_usernames, name="get-usernames"),
+	path("get-user-by-nickname/", get_user_id_by_nickname, name="get-user-by-nickname"),
 
 	path("add-friend/", AddFriendView.as_view(), name="add-friend"),
 	path("block-user/", BlockUserView.as_view(), name="block-user"),
