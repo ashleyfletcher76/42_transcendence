@@ -126,7 +126,8 @@ class TournamentConsumer(AsyncWebsocketConsumer):
         except Tournament.DoesNotExist:
             await self.send(text_data=json.dumps({
                 "type": "error",
-                "message": f"Tournament with name '{self.room_name}' not found."
+                "error": f"Tournament with name '{self.room_name}' not found.",
+                "player" : self.username 
             }))
             return
 
@@ -135,9 +136,10 @@ class TournamentConsumer(AsyncWebsocketConsumer):
         if not player:
             await self.send(text_data=json.dumps({
                 "type": "error",
-                "message": "Player not found in the tournament."
+                "error": "Player not found in the tournament.",
+                "player" : self.username
             }))
-            return 
+            return
         player1 = self.username
         player2 = player.opponent
         roomname = player.room
@@ -226,10 +228,10 @@ class TournamentConsumer(AsyncWebsocketConsumer):
     def decide_match(self, tournament, winner):
         players = list(tournament.players.all())
         matches = tournament.matches
-    
+
         match_to_remove = None
         loser = None
-    
+
         for match in matches:
             if match["player1"] == winner or match["player2"] == winner:
                 match_to_remove = match
@@ -240,9 +242,13 @@ class TournamentConsumer(AsyncWebsocketConsumer):
             match_to_remove["winner"] = winner
             matches.remove(match_to_remove)
             tournament.matches = matches
-            tournament.players.remove(loser)
+            try:
+                loser_instance = Player.objects.get(user__username=loser)
+                tournament.players.remove(loser_instance)
+            except Player.DoesNotExist:
+                raise ValueError(f"Player with username '{loser}' does not exist.")
             tournament.save()
-
+        players = list(tournament.players.all())
         if len(players) == 1:
             final_winner = players[0]
             tournament.winner = final_winner
@@ -256,14 +262,12 @@ class TournamentConsumer(AsyncWebsocketConsumer):
             response = async_to_sync(self.start_tournament)()
             return response
 
-        return {"type": "message", "winner": winner, "loser": loser}
+        return {"type": "message", "sender" : self.username, "winner": winner, "loser": loser, "message" : f"{winner} won against {loser}"}
 
     async def get_winner(self, winner):
         tournament = await self.get_tournament()
         await database_sync_to_async(tournament.refresh_from_db)()
-        players_count = await database_sync_to_async(lambda: tournament.players.count())()
         responnse = await self.decide_match(tournament, winner)
-        self.gr
         return (responnse)
 
 
@@ -281,7 +285,8 @@ class TournamentConsumer(AsyncWebsocketConsumer):
         matches = await self.match_players(players)
         await self.assign_matches(tournament, matches)
 
-        await self.lobby_message( {
+        await self.lobby_message({
+
             "type" : "match",
             "message" : "Match created.",
             })
@@ -317,6 +322,7 @@ class TournamentConsumer(AsyncWebsocketConsumer):
                     "room": room_name,
                     "winner" : ""
                 })
+        print(matches)
         return matches
 
     async def get_game_room(self, player1, player2):
@@ -424,7 +430,7 @@ class TournamentConsumer(AsyncWebsocketConsumer):
     @database_sync_to_async
     def add_player_to_tournament(self, tournament, player):
         with transaction.atomic():
-            if not tournament.players.filter(id=player.id).exists():
+            if not tournament.players.filter(user__username=player.user.username).exists():
                 tournament.players.add(player)
                 tournament.num_players = tournament.players.count()
                 tournament.save()
@@ -472,7 +478,7 @@ class TournamentConsumer(AsyncWebsocketConsumer):
                 if tournament:
                     tournament.players.remove(player)
                     if player.admin:
-                        other_players = tournament.players.exclude(id=player.id)
+                        other_players = tournament.players.exclude(user__username=player.user.username)
                         if other_players.exists():
                             new_admin = other_players.first()
                             new_admin.admin = True
@@ -487,28 +493,4 @@ class TournamentConsumer(AsyncWebsocketConsumer):
             except Player.DoesNotExist:
                 pass
     
-    @database_sync_to_async
-    def remove_loser_from(self, username):
-        with transaction.atomic():
-            try:
-                player = Player.objects.get(user__username=username)
-                tournament = Tournament.objects.filter(players=player).first()
-                if tournament:
-                    tournament.players.remove(player)
-                    if player.admin:
-                        other_players = tournament.players.exclude(id=player.id)
-                        if other_players.exists():
-                            new_admin = other_players.first()
-                            new_admin.admin = True
-                            new_admin.save()
-                        else:
-                            for player in tournament.players.all():
-                                player.delete()
-                            tournament.delete()
-                            return
-                    tournament.num_players = tournament.players.count()
-                    tournament.save()
-            except Player.DoesNotExist:
-                pass
-
 

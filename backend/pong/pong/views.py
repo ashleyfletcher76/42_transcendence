@@ -151,7 +151,6 @@ def create_room(request):
     try:
         # Log the received data for debugging
         logging.info("Received request data: %s", request.body)
-        
         data = json.loads(request.body)
         print(data)
         player_1 = data.get("player", "default")
