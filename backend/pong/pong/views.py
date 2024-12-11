@@ -18,7 +18,8 @@ SCREEN_HEIGHT = 400
 BALL_RADIUS = 10
 PADDLE_WIDTH = 10
 PADDLE_HEIGHT = 100
-END_SCORE = 1
+END_SCORE = 5
+SPEED_PADDLE = 0.05
 
 def health_check(request):
     try:
@@ -124,11 +125,11 @@ def update_ai(game):
         move_right_paddle(game, 1)
 
 def move_right_paddle(game, direction):
-    game.right_paddle_y += direction * 0.015
+    game.right_paddle_y += direction * SPEED_PADDLE
     game.right_paddle_y = max(-1, min(1, game.right_paddle_y))
 
 def move_left_paddle(game, direction):
-    game.left_paddle_y += direction * 0.015
+    game.left_paddle_y += direction * SPEED_PADDLE
     game.left_paddle_y = max(-1, min(1, game.left_paddle_y))
 
 def handle_paddle_hit(game, side):
