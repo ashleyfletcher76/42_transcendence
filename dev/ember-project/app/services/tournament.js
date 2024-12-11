@@ -8,6 +8,8 @@ export default class TournamentService extends Service {
 	@service user;
 	@service session;
 	@service chat;
+	@service gameData;
+	@service router;
 
 	@tracked currentLobby = null; // Current lobby details
 	@tracked currentPlayers = [];
@@ -178,7 +180,8 @@ export default class TournamentService extends Service {
 	}
 
 	handleMatch(parsedMessage) {
-		const opponent = parsedMessage.player1;
+		console.log(parsedMessage);
+		let opponent = parsedMessage.player1;
 		if (parsedMessage.player1 === this.user.profile.nickname)
 			opponent = parsedMessage.player2;
 		const data = {
@@ -188,7 +191,7 @@ export default class TournamentService extends Service {
 		};
 		this.chat.messages = [...this.chat.messages, data];
 		const roomdata = {
-			roomname: parsedMessage.room,
+			room_name: parsedMessage.room,
 			player1: parsedMessage.player1,
 			player2: parsedMessage.player2
 		};

@@ -8,6 +8,8 @@ export default class PongGameComponent extends Component {
   @tracked ballPositionX = 0.5; // Ball position
   @tracked ballPositionY = 0.5; // Ball position
   @tracked winner;
+  @tracked status;
+
   @service gameData;
   @service session;
   @service tournament;
@@ -147,6 +149,7 @@ export default class PongGameComponent extends Component {
 
   updateGameState(data) {
     console.log(data);
+    this.status = data.status;
     this.ballPositionX =
       data.ball_x * (25 - visualViewport.height / visualViewport.width);
     this.ballPositionY = data.ball_y * 24;

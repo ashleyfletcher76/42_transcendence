@@ -109,6 +109,7 @@ export default class ChatService extends Service {
       this.tournament.sendMessage(data)
     }
     else if (messageContent && (this.to_user !== this.user.profile.nickname)) {
+      console.log(messageContent);
       this.socketRef.send(
         JSON.stringify({
           type: this.type,
@@ -118,6 +119,7 @@ export default class ChatService extends Service {
           timestamp: new Date().toISOString(),
         }),
       );
+      console.log(messageContent);
     }
     if (this.type === "all")
       this.messageInput = '';

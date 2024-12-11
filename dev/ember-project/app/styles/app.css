@@ -59,6 +59,23 @@ h4 {
   color: #fff;
 }
 
+.score {
+  color: #fff;
+  font-size: 5rem;
+}
+
+.history {
+  color: #fff;
+  font-size: 2rem;
+  margin: 0;
+  padding: 0;
+}
+
+.date {
+  color: #8adb54;
+  font-size: 1rem;
+}
+
 /* Label styling */
 label {
   display: block; /* Block-level for full width */
@@ -201,8 +218,8 @@ label {
   height: 80%;
 }
 
-.footer-scroll {
-  height: 25vh;
+.history-scroll {
+  height: 100%;
 }
 
 .overlay {
@@ -601,4 +618,9 @@ label {
 
 .custom-bg-black {
   background-color: black;
+}
+
+.history-item {
+  background-color: rgb(34, 32, 32);
+  border-radius: 0.7rem;
 }
