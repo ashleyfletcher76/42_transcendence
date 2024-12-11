@@ -1,11 +1,14 @@
 import json, requests, threading, redis
 from channels.generic.websocket import AsyncWebsocketConsumer
 from threading import Lock, Thread
-from chat.redis_client import get_redis_client
+from chat.redis_client import get_redis_client, should_stop, cleanup_redis
+import signal, threading
 
 user_channels = {}
 channels_lock = Lock()
 stop_signal = threading.Event()
+should_stop = threading.Event()
+_pubsub = None
 
 class ChatConsumer(AsyncWebsocketConsumer):
 	def __init__(self, *args, **kwargs):
@@ -165,32 +168,52 @@ class ChatConsumer(AsyncWebsocketConsumer):
 				return header[1].decode("utf-8").split("Bearer ")[-1]
 		return None
 
-
 ## REDIS LISTENER FOR UPDATING NICKNAME
 def redis_listener():
 	"""Listen for Redis events and update user_channels."""
+	global _pubsub
+
+	if should_stop.is_set():
+		return
+
 	try:
 		redis_client = get_redis_client()
-		pubsub = redis_client.pubsub()
-		pubsub.subscribe("user_service_updates")
+		_pubsub = redis_client.pubsub()
+		_pubsub.subscribe("user_service_updates")
 		print("[INFO] Redis listener started for chat-service.")
-	except redis.ConnectionError as e:
-		print(f"[ERROR] Failed to connect to Redis: {e}")
-		return  # Exit the thread gracefully
 
-	for message in pubsub.listen():
-		# print(f"[DEBUG] Received message: {message}")
-		if stop_signal.is_set():
-			print("[INFO] Redis listener stopping gracefully.")
-			break
-		if message["type"] == "message":
+		while not should_stop.is_set():
 			try:
-				event_data = json.loads(message["data"])
-				# print(f"[DEBUG] Event data: {event_data}")
-				handle_user_service_event(event_data)
-			except json.JSONDecodeError as e:
-				print(f"[ERROR] Failed to decode Redis message: {e}. Message ignored.")
+				message = _pubsub.get_message(timeout=1.0)
+				if message and message["type"] == "message":
+					try:
+						event_data = json.loads(message["data"])
+						handle_user_service_event(event_data)
+					except json.JSONDecodeError as e:
+						print(f"[ERROR] Failed to decode Redis message: {e}")
+			except redis.ConnectionError:
+				if not should_stop.is_set():
+					print("[ERROR] Redis connection error")
+				break
+			except ValueError:
+				if not should_stop.is_set():
+					print("[ERROR] Connection already closed")
+				break
+			except Exception as e:
+				if not should_stop.is_set():
+					print(f"[ERROR] Unexpected error in Redis listener: {e}")
+				break
 
+	except Exception as e:
+		if not should_stop.is_set():
+			print(f"[ERROR] Failed to initialize Redis connection: {e}")
+	finally:
+		if _pubsub:
+			try:
+				_pubsub.close()
+			except Exception:
+				pass
+		print("[INFO] Redis listener stopped")
 
 def handle_user_service_event(event_data):
 	"""Handle events from user-service"""
@@ -215,7 +238,16 @@ def handle_user_service_event(event_data):
 	else:
 		print(f"[WARNING] Unhandled event: {event_data}")
 
-## Start the thread inside here to avoid circular imports that could happen in apps.py ##
+## start the thread inside here to avoid circular imports##
 listener_thread = Thread(target=redis_listener, daemon=True)
 listener_thread.start()
 print("[INFO] Redis listener thread started in chat-service.")
+
+def handle_shutdown(signum, frame):
+	"""Handle shutdown signals"""
+	print("[INFO] Received shutdown signal, cleaning up...")
+	cleanup_redis()
+
+# register signal handlers
+signal.signal(signal.SIGTERM, handle_shutdown)
+signal.signal(signal.SIGINT, handle_shutdown)
