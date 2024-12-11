@@ -101,6 +101,26 @@ services:
     ports:
       - "5437:5432"
 
+  match-history-db:
+    container_name: match-history-db
+    build: ./../backend/lobby/postgres
+    environment:
+      POSTGRES_USER: ${MATCH_SERVICE_USER}
+      POSTGRES_PASSWORD: ${MATCH_SERVICE_PASSWORD}
+      POSTGRES_DB: ${MATCH_SERVICE_DB}
+    volumes:
+      - match_history_data:/var/lib/postgresql/data
+    networks:
+      my_network:
+    healthcheck:
+      test: [ "CMD-SHELL", "[ -f /var/lib/postgresql/data/.db_ready ] || exit 1" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: always
+    ports:
+      - "5434:5432"
+
   auth-service:
     build: ./../backend/user-management/auth-service
     container_name: auth-service
@@ -180,6 +200,34 @@ services:
     restart: always
     ports:
       - "8003:8000"
+
+  match-history-service:
+    build: ./../backend/user-management/match-history-service
+    container_name: match-history-service
+    environment:
+      DJANGO_SETTINGS_MODULE: config.settings
+      DJANGO_SECRET_KEY: ${DJANGO_SECRET_KEY}
+      DJANGO_DEBUG: ${DJANGO_DEBUG}
+      MATCH_SERVICE_DB: ${MATCH_SERVICE_DB}
+      MATCH_SERVICE_USER: ${MATCH_SERVICE_USER}
+      MATCH_SERVICE_PASSWORD: ${MATCH_SERVICE_PASSWORD}
+      DJANGO_SUPERUSER_USERNAME: ${DJANGO_SUPERUSER_USERNAME}
+      DJANGO_SUPERUSER_EMAIL: ${DJANGO_SUPERUSER_EMAIL}
+      DJANGO_SUPERUSER_PASSWORD: ${DJANGO_SUPERUSER_PASSWORD}
+      REDIS_URL: "redis://redis:6379"
+    networks:
+      my_network:
+    healthcheck:
+      test: [ "CMD-SHELL", "curl -k -f http://localhost:8000/match/health/ || exit 1" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    depends_on:
+      match-history-db:
+        condition: service_healthy
+    restart: always
+    ports:
+      - "8005:8000"
 
   pong-game:
     build: ./../backend/pong
@@ -270,6 +318,8 @@ services:
         condition: service_healthy
       lobby:
         condition: service_healthy
+      match-history-service:
+        condition: service_healthy
     networks:
       my_network:
     ports:
@@ -289,3 +339,4 @@ volumes:
   pong_data:
   lobby_data:
   redis_data:
+  match_history_data:

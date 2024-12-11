@@ -1,0 +1,4 @@
+from match_history.views.health_check_view import health_check
+from match_history.views.match_history_view import MatchHistoryView
+from match_history.views.match_detail_view import MatchDetailView
+from match_history.views.batch_trophy_view import BatchTrophiesView

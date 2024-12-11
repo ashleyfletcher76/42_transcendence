@@ -117,16 +117,16 @@ class ChatConsumer(AsyncWebsocketConsumer):
 
 		target_channels = user_channels.get(target_nickname)
 		if target_channels:
-			# Send the message to the target user
-			for channel in target_channels:
+			# send the message to the target user
+			for consumer in target_channels:
 				await self.channel_layer.send(
-					channel,
+					consumer.channel_name,
 					{"type": "chat_message", "data": data}
 				)
-			# Echo the whisper back to the sender
-			for channel in user_channels.get(self.nickname, []):
+			# echo the whisper back to the sender
+			for consumer in user_channels.get(self.nickname, []):
 				await self.channel_layer.send(
-					channel,
+					consumer.channel_name,
 					{"type": "chat_message", "data": data}
 				)
 		else:

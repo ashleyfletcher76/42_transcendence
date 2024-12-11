@@ -32,14 +32,14 @@ class UserSerializer(serializers.ModelSerializer):
 
 	def create(self, validated_data):
 		profile_data = validated_data.pop("profile", {})
-		# Create the User instance
+		# create the User instance
 		user = User(
 			username=validated_data["username"],
 			password=make_password(validated_data["password"]),
 		)
 		user.save()
 
-		# If profile data is provided, create the UserProfile
+		# ff profile data is provided, create the UserProfile
 		if profile_data:
 			UserProfile.objects.create(user=user, **profile_data)
 

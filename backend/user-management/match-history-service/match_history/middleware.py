@@ -5,13 +5,10 @@ class HealthCheckLoggingMiddleware:
 		self.get_response = get_response
 
 	def __call__(self, request):
-		if request.path == "/users/health/":
+		if request.path == "/match/health/":
 			logging.getLogger("django.server").setLevel(logging.WARNING)
 		else:
 			logging.getLogger("django.server").setLevel(logging.INFO)
 
 		response = self.get_response(request)
 		return response
-
-
-###### CHECK THIIS FOR CORRECT URL

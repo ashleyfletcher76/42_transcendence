@@ -10,7 +10,8 @@ from .views.get_user_info_view import (
 	get_usernames,
 	get_profile_token,
 	get_profile_info,
-	get_all_profiles
+	get_all_profiles,
+	get_user_id_by_nickname
 )
 
 urlpatterns = [
@@ -21,7 +22,6 @@ urlpatterns = [
 	path("verify/", verify_user, name="verify-user"),
 	path("exists/<int:user_id>/", UserExistsView.as_view(), name="user-exists"),
 
-	# path("profile/", UserProfileView.as_view(), name="user-profile"),
 	path("profile-info-token/", get_profile_token, name="get-user-profile"),
 	path("profile-info/", get_profile_info, name="get-profile-info"),
 	path("profile-list/", get_all_profiles, name="get-all-profiles"),
@@ -29,6 +29,7 @@ urlpatterns = [
 
 	path("get-single-user-data/<int:user_id>/", get_single_user_data, name="get-single-user-data"),
 	path("get-usernames/", get_usernames, name="get-usernames"),
+	path("get-user-by-nickname/", get_user_id_by_nickname, name="get-user-by-nickname"),
 
 	path("add-friend/", AddFriendView.as_view(), name="add-friend"),
 	path("block-user/", BlockUserView.as_view(), name="block-user"),
