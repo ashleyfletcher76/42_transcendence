@@ -9,6 +9,20 @@ from ..utils import get_user_data
 class MatchDetailView(APIView):
 	permission_classes = [IsAuthenticated]
 
+	@staticmethod
+	def validate_score(score):
+		"""Validate the score format (e.g. '10-8')"""
+		if not isinstance(score, str):
+			return False
+		try:
+			parts = score.split("-")
+			if len(parts) != 2:
+				return False
+			int(parts[0]), int(parts[1])
+			return True
+		except ValueError:
+			return False
+
 	def post(self, request):
 		"""Add a match detail and update aggregate match statistics."""
 		try:
@@ -19,7 +33,7 @@ class MatchDetailView(APIView):
 			else:
 				raise ValueError("User is not authenticated.")
 
-			# Extract payload
+			# extract payload
 			data = request.data
 			print(f"[DEBUG] Payload received: {data}")
 			opponent = data.get("opponent")
@@ -27,7 +41,7 @@ class MatchDetailView(APIView):
 			score = data.get("score")
 			tournament = data.get("tournament", False)
 
-			# Validate payload
+			# validate payload
 			if not all([opponent, result, score]):
 				print("[DEBUG] Missing required fields")
 				return Response(
@@ -35,12 +49,28 @@ class MatchDetailView(APIView):
 					status=status.HTTP_400_BAD_REQUEST,
 				)
 
-			# Get or create the user's match history
+			# check for result validation
+			if result.lower() not in ["win", "loss"]:
+				print("[DEBUG] Invalid result value")
+				return Response(
+					{"error": "Invalid value for 'result'. Must be 'win' or 'loss'."},
+					status=status.HTTP_400_BAD_REQUEST,
+				)
+
+			# check if a valid score
+			if not self.validate_score(score):
+				print("[DEBUG] Invalid score format")
+				return Response(
+					{"error": "Invalid score format. Must be in the format 'X-Y' where X and Y are integers."},
+					status=status.HTTP_400_BAD_REQUEST,
+				)
+
+			# get or create the user's match history
 			print("[DEBUG] Fetching or creating MatchHistory")
 			match_history, created = MatchHistory.objects.get_or_create(user_id=user_id)
 			print(f"[DEBUG] MatchHistory fetched or created: {match_history}, created: {created}")
 
-			# Create MatchDetail
+			# create Match Detail
 			print("[DEBUG] Creating MatchDetail")
 			MatchDetail.objects.create(
 				match_history=match_history,
@@ -50,7 +80,7 @@ class MatchDetailView(APIView):
 			)
 			print("[DEBUG] MatchDetail created successfully")
 
-			# Update aggregate statistics
+			# update aggregate statistics
 			print("[DEBUG] Updating aggregate statistics")
 			match_history.games_total += 1
 			if result.lower() == "win":
