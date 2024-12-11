@@ -1137,6 +1137,54 @@
   }), _applyDecoratedDescriptor(_class.prototype, "updateInputValue", [_object.action], Object.getOwnPropertyDescriptor(_class.prototype, "updateInputValue"), _class.prototype), _applyDecoratedDescriptor(_class.prototype, "sendMessage", [_object.action], Object.getOwnPropertyDescriptor(_class.prototype, "sendMessage"), _class.prototype), _applyDecoratedDescriptor(_class.prototype, "handleKeyDown", [_object.action], Object.getOwnPropertyDescriptor(_class.prototype, "handleKeyDown"), _class.prototype), _applyDecoratedDescriptor(_class.prototype, "setInputRef", [_object.action], Object.getOwnPropertyDescriptor(_class.prototype, "setInputRef"), _class.prototype), _class);
   (0, _component.setComponentTemplate)(__COLOCATED_TEMPLATE__, ChatComponent);
 });
+;define("myapp/components/history-item", ["exports", "@ember/component", "@ember/component/template-only", "@ember/template-factory"], function (_exports, _component, _templateOnly, _templateFactory) {
+  "use strict";
+
+  Object.defineProperty(_exports, "__esModule", {
+    value: true
+  });
+  _exports.default = void 0;
+  0; //eaimeta@70e063a35619d71f0,"@ember/component/template-only",0,"@ember/template-factory",0,"@ember/component"eaimeta@70e063a35619d71f
+  const __COLOCATED_TEMPLATE__ = (0, _templateFactory.createTemplateFactory)(
+  /*
+    <div class="history-item row m-1">
+  
+    <div class="col-12 mb-0 mt-1 pb-0">
+      <div class="date">2024.09.20 1:49pm</div>
+    </div>
+    {{!-- Profile picture column (1 part) --}}
+    <div class="col-5">
+      <div class="user-card m-0 mb-1" role="button" onclick={{this.select}}>
+        <div class="profile-details">
+          <h2 class="info">Nickname</h2>
+        </div>
+      </div>
+    </div>
+  
+    {{!-- Profile details column (3 parts) --}}
+    <div class="col-2">
+      <div class="score history center">3:1</div>
+    </div>
+  
+    <div class="col-5">
+      <div class="user-card m-0 mb-1" role="button" onclick={{this.select}}>
+        <div class="profile-details">
+          <h2 class="info">Nickname2</h2>
+        </div>
+      </div>
+    </div>
+  
+  </div>
+  
+  */
+  {
+    "id": "F5VyigJy",
+    "block": "[[[10,0],[14,0,\"history-item row m-1\"],[12],[1,\"\\n\\n  \"],[10,0],[14,0,\"col-12 mb-0 mt-1 pb-0\"],[12],[1,\"\\n    \"],[10,0],[14,0,\"date\"],[12],[1,\"2024.09.20 1:49pm\"],[13],[1,\"\\n  \"],[13],[1,\"\\n\"],[1,\"  \"],[10,0],[14,0,\"col-5\"],[12],[1,\"\\n    \"],[10,0],[14,0,\"user-card m-0 mb-1\"],[14,\"role\",\"button\"],[15,\"onclick\",[30,0,[\"select\"]]],[12],[1,\"\\n      \"],[10,0],[14,0,\"profile-details\"],[12],[1,\"\\n        \"],[10,\"h2\"],[14,0,\"info\"],[12],[1,\"Nickname\"],[13],[1,\"\\n      \"],[13],[1,\"\\n    \"],[13],[1,\"\\n  \"],[13],[1,\"\\n\\n\"],[1,\"  \"],[10,0],[14,0,\"col-2\"],[12],[1,\"\\n    \"],[10,0],[14,0,\"score history center\"],[12],[1,\"3:1\"],[13],[1,\"\\n  \"],[13],[1,\"\\n\\n  \"],[10,0],[14,0,\"col-5\"],[12],[1,\"\\n    \"],[10,0],[14,0,\"user-card m-0 mb-1\"],[14,\"role\",\"button\"],[15,\"onclick\",[30,0,[\"select\"]]],[12],[1,\"\\n      \"],[10,0],[14,0,\"profile-details\"],[12],[1,\"\\n        \"],[10,\"h2\"],[14,0,\"info\"],[12],[1,\"Nickname2\"],[13],[1,\"\\n      \"],[13],[1,\"\\n    \"],[13],[1,\"\\n  \"],[13],[1,\"\\n\\n\"],[13],[1,\"\\n\"]],[],false,[\"div\",\"h2\"]]",
+    "moduleName": "myapp/components/history-item.hbs",
+    "isStrictMode": false
+  });
+  var _default = _exports.default = (0, _component.setComponentTemplate)(__COLOCATED_TEMPLATE__, (0, _templateOnly.default)());
+});
 ;define("myapp/components/message", ["exports", "@ember/component", "@glimmer/component", "@ember/object", "@ember/service", "@ember/template-factory"], function (_exports, _component, _component2, _object, _service, _templateFactory) {
   "use strict";
 
@@ -1310,12 +1358,30 @@
       </h4>
     </modal.header>
   
+    <modal.body>
+      <div class="container-fluid row" style="height: 50vh; overflow-y: auto; margin: 0; padding: 0;">
+          <div class="scrollable-list history-scroll">
+      
+            <HistoryItem />
+            <HistoryItem />
+            <HistoryItem />
+            <HistoryItem />
+            <HistoryItem />
+            <HistoryItem />
+            <HistoryItem />
+  
+          </div>
+      </div>
+      
+      
+    </modal.body>
+  
   </BsModal>
   
   */
   {
-    "id": "cpTVf5M2",
-    "block": "[[[11,\"button\"],[24,0,\"btn btn-success p-1 mb-1\"],[24,4,\"button\"],[4,[38,1],[\"click\",[30,0,[\"openModal\"]]],null],[12],[1,\"\\n          Games: \"],[1,[30,0,[\"user\",\"profile\",\"games_total\"]]],[1,\"\\n\"],[13],[1,\"\\n\\n\"],[8,[39,2],null,[[\"@open\"],[[30,0,[\"isModalOpen\"]]]],[[\"default\"],[[[[1,\"\\n  \"],[8,[30,1,[\"header\"]],null,null,[[\"default\"],[[[[1,\"\\n    \"],[10,\"h4\"],[14,0,\"modal-title\"],[12],[1,\"\\n      Match History\\n    \"],[13],[1,\"\\n  \"]],[]]]]],[1,\"\\n\\n\"]],[1]]]]],[1,\"\\n\"]],[\"modal\"],false,[\"button\",\"on\",\"bs-modal\",\"h4\"]]",
+    "id": "RBBlsKsg",
+    "block": "[[[11,\"button\"],[24,0,\"btn btn-success p-1 mb-1\"],[24,4,\"button\"],[4,[38,1],[\"click\",[30,0,[\"openModal\"]]],null],[12],[1,\"\\n          Games: \"],[1,[30,0,[\"user\",\"profile\",\"games_total\"]]],[1,\"\\n\"],[13],[1,\"\\n\\n\"],[8,[39,2],null,[[\"@open\"],[[30,0,[\"isModalOpen\"]]]],[[\"default\"],[[[[1,\"\\n  \"],[8,[30,1,[\"header\"]],null,null,[[\"default\"],[[[[1,\"\\n    \"],[10,\"h4\"],[14,0,\"modal-title\"],[12],[1,\"\\n      Match History\\n    \"],[13],[1,\"\\n  \"]],[]]]]],[1,\"\\n\\n  \"],[8,[30,1,[\"body\"]],null,null,[[\"default\"],[[[[1,\"\\n    \"],[10,0],[14,0,\"container-fluid row\"],[14,5,\"height: 50vh; overflow-y: auto; margin: 0; padding: 0;\"],[12],[1,\"\\n        \"],[10,0],[14,0,\"scrollable-list history-scroll\"],[12],[1,\"\\n    \\n          \"],[8,[39,5],null,null,null],[1,\"\\n          \"],[8,[39,5],null,null,null],[1,\"\\n          \"],[8,[39,5],null,null,null],[1,\"\\n          \"],[8,[39,5],null,null,null],[1,\"\\n          \"],[8,[39,5],null,null,null],[1,\"\\n          \"],[8,[39,5],null,null,null],[1,\"\\n          \"],[8,[39,5],null,null,null],[1,\"\\n\\n        \"],[13],[1,\"\\n    \"],[13],[1,\"\\n    \\n    \\n  \"]],[]]]]],[1,\"\\n\\n\"]],[1]]]]],[1,\"\\n\"]],[\"modal\"],false,[\"button\",\"on\",\"bs-modal\",\"h4\",\"div\",\"history-item\"]]",
     "moduleName": "myapp/components/modal-game-history.hbs",
     "isStrictMode": false
   });
@@ -1574,7 +1640,7 @@
     value: true
   });
   _exports.default = void 0;
-  var _class, _descriptor, _descriptor2, _descriptor3, _descriptor4, _descriptor5, _descriptor6, _descriptor7, _descriptor8;
+  var _class, _descriptor, _descriptor2, _descriptor3, _descriptor4, _descriptor5, _descriptor6, _descriptor7, _descriptor8, _descriptor9;
   0; //eaimeta@70e063a35619d71f0,"@glimmer/component",0,"@glimmer/tracking",0,"@ember/service",0,"@ember/template-factory",0,"@ember/component"eaimeta@70e063a35619d71f
   function _initializerDefineProperty(e, i, r, l) { r && Object.defineProperty(e, i, { enumerable: r.enumerable, configurable: r.configurable, writable: r.writable, value: r.initializer ? r.initializer.call(l) : void 0 }); }
   function _defineProperty(e, r, t) { return (r = _toPropertyKey(r)) in e ? Object.defineProperty(e, r, { value: t, enumerable: !0, configurable: !0, writable: !0 }) : e[r] = t, e; }
@@ -1588,16 +1654,20 @@
     {{#if this.winner}}
       <h1 class="white">Winner: {{this.winner}}</h1>
     {{else}}
+      {{#if (not (eq this.status 0))}}
+        <h1 class="white">{{this.status}}</h1>
+      {{else}}
+        <Ball @positionX={{this.ballPositionX}} @positionY={{this.ballPositionY}} />
+      {{/if}}
       <Paddle @position={{this.leftPaddlePosition}} @side="paddle-left" />
-      <Ball @positionX={{this.ballPositionX}} @positionY={{this.ballPositionY}} />
       <Paddle @position={{this.rightPaddlePosition}} @side="paddle-right" />
     {{/if}}
   </div>
   
   */
   {
-    "id": "+OmYV74j",
-    "block": "[[[10,0],[14,0,\"pong-game\"],[12],[1,\"\\n\"],[41,[30,0,[\"winner\"]],[[[1,\"    \"],[10,\"h1\"],[14,0,\"white\"],[12],[1,\"Winner: \"],[1,[30,0,[\"winner\"]]],[13],[1,\"\\n\"]],[]],[[[1,\"    \"],[8,[39,3],null,[[\"@position\",\"@side\"],[[30,0,[\"leftPaddlePosition\"]],\"paddle-left\"]],null],[1,\"\\n    \"],[8,[39,4],null,[[\"@positionX\",\"@positionY\"],[[30,0,[\"ballPositionX\"]],[30,0,[\"ballPositionY\"]]]],null],[1,\"\\n    \"],[8,[39,3],null,[[\"@position\",\"@side\"],[[30,0,[\"rightPaddlePosition\"]],\"paddle-right\"]],null],[1,\"\\n\"]],[]]],[13],[1,\"\\n\"]],[],false,[\"div\",\"if\",\"h1\",\"paddle\",\"ball\"]]",
+    "id": "f3TDaoGl",
+    "block": "[[[10,0],[14,0,\"pong-game\"],[12],[1,\"\\n\"],[41,[30,0,[\"winner\"]],[[[1,\"    \"],[10,\"h1\"],[14,0,\"white\"],[12],[1,\"Winner: \"],[1,[30,0,[\"winner\"]]],[13],[1,\"\\n\"]],[]],[[[41,[28,[37,3],[[28,[37,4],[[30,0,[\"status\"]],0],null]],null],[[[1,\"      \"],[10,\"h1\"],[14,0,\"white\"],[12],[1,[30,0,[\"status\"]]],[13],[1,\"\\n\"]],[]],[[[1,\"      \"],[8,[39,5],null,[[\"@positionX\",\"@positionY\"],[[30,0,[\"ballPositionX\"]],[30,0,[\"ballPositionY\"]]]],null],[1,\"\\n\"]],[]]],[1,\"    \"],[8,[39,6],null,[[\"@position\",\"@side\"],[[30,0,[\"leftPaddlePosition\"]],\"paddle-left\"]],null],[1,\"\\n    \"],[8,[39,6],null,[[\"@position\",\"@side\"],[[30,0,[\"rightPaddlePosition\"]],\"paddle-right\"]],null],[1,\"\\n\"]],[]]],[13],[1,\"\\n\"]],[],false,[\"div\",\"if\",\"h1\",\"not\",\"eq\",\"ball\",\"paddle\"]]",
     "moduleName": "myapp/components/pong-game.hbs",
     "isStrictMode": false
   });
@@ -1613,9 +1683,10 @@
       _initializerDefineProperty(this, "ballPositionY", _descriptor4, this);
       // Ball position
       _initializerDefineProperty(this, "winner", _descriptor5, this);
-      _initializerDefineProperty(this, "gameData", _descriptor6, this);
-      _initializerDefineProperty(this, "session", _descriptor7, this);
-      _initializerDefineProperty(this, "tournament", _descriptor8, this);
+      _initializerDefineProperty(this, "status", _descriptor6, this);
+      _initializerDefineProperty(this, "gameData", _descriptor7, this);
+      _initializerDefineProperty(this, "session", _descriptor8, this);
+      _initializerDefineProperty(this, "tournament", _descriptor9, this);
       // Track the state of key presses
       _defineProperty(this, "p1UpKeyPressed", false);
       _defineProperty(this, "p1DownKeyPressed", false);
@@ -1735,6 +1806,7 @@
     }
     updateGameState(data) {
       console.log(data);
+      this.status = data.status;
       this.ballPositionX = data.ball_x * (25 - visualViewport.height / visualViewport.width);
       this.ballPositionY = data.ball_y * 24;
       this.leftPaddlePosition = data.left_paddle_y * 10;
@@ -1788,17 +1860,22 @@
     enumerable: true,
     writable: true,
     initializer: null
-  }), _descriptor6 = _applyDecoratedDescriptor(_class.prototype, "gameData", [_service.inject], {
+  }), _descriptor6 = _applyDecoratedDescriptor(_class.prototype, "status", [_tracking.tracked], {
     configurable: true,
     enumerable: true,
     writable: true,
     initializer: null
-  }), _descriptor7 = _applyDecoratedDescriptor(_class.prototype, "session", [_service.inject], {
+  }), _descriptor7 = _applyDecoratedDescriptor(_class.prototype, "gameData", [_service.inject], {
     configurable: true,
     enumerable: true,
     writable: true,
     initializer: null
-  }), _descriptor8 = _applyDecoratedDescriptor(_class.prototype, "tournament", [_service.inject], {
+  }), _descriptor8 = _applyDecoratedDescriptor(_class.prototype, "session", [_service.inject], {
+    configurable: true,
+    enumerable: true,
+    writable: true,
+    initializer: null
+  }), _descriptor9 = _applyDecoratedDescriptor(_class.prototype, "tournament", [_service.inject], {
     configurable: true,
     enumerable: true,
     writable: true,
@@ -2066,7 +2143,7 @@
   
     {{!-- Profile details column (3 parts) --}}
     <div class="col-2">
-      <div class="waviy center"><span style="--i:1">{{this.gameData.left_score}}:{{this.gameData.right_score}}</span></div>
+      <div class="score center">{{this.gameData.left_score}}:{{this.gameData.right_score}}</div>
     </div>
   
     <div class="col-5">
@@ -2076,8 +2153,8 @@
   
   */
   {
-    "id": "ZUTsvi0i",
-    "block": "[[[10,0],[14,0,\"container-fluid row border\"],[12],[1,\"\\n\"],[1,\"  \"],[10,0],[14,0,\"col-5\"],[12],[1,\"\\n    \\n    \"],[8,[39,1],null,[[\"@user\",\"@selectUser\"],[[30,0,[\"gameData\",\"player_1\"]],[30,0,[\"args\",\"selectUser\"]]]],null],[1,\"\\n  \"],[13],[1,\"\\n\\n\"],[1,\"  \"],[10,0],[14,0,\"col-2\"],[12],[1,\"\\n    \"],[10,0],[14,0,\"waviy center\"],[12],[10,1],[14,5,\"--i:1\"],[12],[1,[30,0,[\"gameData\",\"left_score\"]]],[1,\":\"],[1,[30,0,[\"gameData\",\"right_score\"]]],[13],[13],[1,\"\\n  \"],[13],[1,\"\\n\\n  \"],[10,0],[14,0,\"col-5\"],[12],[1,\"\\n    \"],[8,[39,1],null,[[\"@user\",\"@selectUser\"],[[30,0,[\"gameData\",\"player_2\"]],[30,0,[\"args\",\"selectUser\"]]]],null],[1,\"\\n  \"],[13],[1,\"\\n\"],[13],[1,\"\\n\"]],[],false,[\"div\",\"user\",\"span\"]]",
+    "id": "Iptq3Nrf",
+    "block": "[[[10,0],[14,0,\"container-fluid row border\"],[12],[1,\"\\n\"],[1,\"  \"],[10,0],[14,0,\"col-5\"],[12],[1,\"\\n    \\n    \"],[8,[39,1],null,[[\"@user\",\"@selectUser\"],[[30,0,[\"gameData\",\"player_1\"]],[30,0,[\"args\",\"selectUser\"]]]],null],[1,\"\\n  \"],[13],[1,\"\\n\\n\"],[1,\"  \"],[10,0],[14,0,\"col-2\"],[12],[1,\"\\n    \"],[10,0],[14,0,\"score center\"],[12],[1,[30,0,[\"gameData\",\"left_score\"]]],[1,\":\"],[1,[30,0,[\"gameData\",\"right_score\"]]],[13],[1,\"\\n  \"],[13],[1,\"\\n\\n  \"],[10,0],[14,0,\"col-5\"],[12],[1,\"\\n    \"],[8,[39,1],null,[[\"@user\",\"@selectUser\"],[[30,0,[\"gameData\",\"player_2\"]],[30,0,[\"args\",\"selectUser\"]]]],null],[1,\"\\n  \"],[13],[1,\"\\n\"],[13],[1,\"\\n\"]],[],false,[\"div\",\"user\"]]",
     "moduleName": "myapp/components/scoreboard.hbs",
     "isStrictMode": false
   });
