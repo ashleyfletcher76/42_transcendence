@@ -18,4 +18,5 @@ class Tournament(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     matches = models.JSONField(default=list, blank=True)
     active = models.BooleanField(default=True)
+    winner = models.CharField(max_length=255, default="No winner")
     ongoing = models.BooleanField(default=False)

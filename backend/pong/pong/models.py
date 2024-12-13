@@ -15,6 +15,8 @@ class GameState(models.Model):
     right_paddle_y = models.FloatField(default=0.5)
     left_score = models.IntegerField(default=0)
     right_score = models.IntegerField(default=0)
+    winner = models.CharField(max_length=255, null=True, blank=True)
+    finished = models.BooleanField(default=False)
     paused = models.BooleanField(default=True)
     game_type = models.CharField(max_length=255, default="None")
 

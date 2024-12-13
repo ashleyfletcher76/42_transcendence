@@ -71,15 +71,16 @@ def game_state_view(request, room_name):
 
             if game.right_score >= END_SCORE or game.left_score >= END_SCORE:
                 if game.right_score >= END_SCORE:
-                    winner = game.player1
+                    game.winner = game.player1
                 else:
-                    winner = game.player2
+                    game.winner = game.player2
                 game.paused = True
+                game.finished = True
                 game.save()
                 serializer = GameStateSerializer(game)
                 response_data = {
                     "game_state": serializer.data,
-                    "winner": winner,
+                    "winner": game.winner,
                 }
                 return Response(response_data, status=200)
             game.save()

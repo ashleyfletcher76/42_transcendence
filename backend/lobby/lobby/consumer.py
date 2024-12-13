@@ -139,10 +139,12 @@ class TournamentConsumer(AsyncWebsocketConsumer):
                 "error": "Player not found in the tournament.",
                 "player" : self.username
             }))
+            self.disconnect()
             return
         player1 = self.username
         player2 = player.opponent
         roomname = player.room
+        print(roomname)
         await self.send(text_data=json.dumps({
             "type": "match",
             "player1" : player1,
@@ -234,9 +236,12 @@ class TournamentConsumer(AsyncWebsocketConsumer):
 
         for match in matches:
             if match["player1"] == winner or match["player2"] == winner:
-                match_to_remove = match
-                loser = match["player1"] if match["player2"] == winner else match["player2"]
-                break
+                info_check = self.get_game_info(match["player1"], match["room"])
+                if info_check:
+                    match_to_remove = match
+                    loser = match["player1"] if match["player2"] == winner else match["player2"]
+                else:
+                    break
 
         if match_to_remove:
             match_to_remove["winner"] = winner
@@ -250,7 +255,7 @@ class TournamentConsumer(AsyncWebsocketConsumer):
             tournament.save()
         players = list(tournament.players.all())
         if len(players) == 1:
-            final_winner = players[0]
+            final_winner = players[0].user.username
             tournament.winner = final_winner
             tournament.save()
             return {
@@ -258,27 +263,36 @@ class TournamentConsumer(AsyncWebsocketConsumer):
                 "winner": final_winner
             }
 
-        if not matches:
-            response = async_to_sync(self.start_tournament)()
-            return response
-
         return {"type": "message", "sender" : self.username, "winner": winner, "loser": loser, "message" : f"{winner} won against {loser}"}
 
     async def get_winner(self, winner):
         tournament = await self.get_tournament()
         await database_sync_to_async(tournament.refresh_from_db)()
-        responnse = await self.decide_match(tournament, winner)
-        return (responnse)
+
+        response = await self.decide_match(tournament, winner)
+
+        tournament = await self.get_tournament()
+        await database_sync_to_async(tournament.refresh_from_db)()
+        print("tournament matches : ")
+        print(tournament.matches)
+        if not tournament.matches:
+            response = await self.start_tournament()
+            print (response)
+        return (response)
 
 
     async def start_tournament(self):
         tournament = await self.get_tournament()
         await database_sync_to_async(tournament.refresh_from_db)()
         players_count = await database_sync_to_async(lambda: tournament.players.count())()
-        if (players_count <= 1):
+        matches = await database_sync_to_async(lambda: tournament.matches)()
+        matches_count = len(matches)
+        print("match cound : ", matches_count)
+        if (players_count <= 1 or matches_count != 0):
             return {
                 "type" : "error",
-                "message" : "Not enough players in the lobby."
+                "error" : "Not enough players in the lobby.",
+                "player" : self.username
             }
 
         players = await self.get_players(tournament)
@@ -286,7 +300,6 @@ class TournamentConsumer(AsyncWebsocketConsumer):
         await self.assign_matches(tournament, matches)
 
         await self.lobby_message({
-
             "type" : "match",
             "message" : "Match created.",
             })
@@ -352,6 +365,31 @@ class TournamentConsumer(AsyncWebsocketConsumer):
         except requests.exceptions.RequestException as e:
             print(f"Error calling game API: {e}")
             return None
+
+    def get_game_info(self, player1, room):
+        game_service_url = f"http://pong-game:8000/pong/pong/game_state/{room}"
+
+
+        try:
+            response = requests.get(game_service_url)
+
+            if response.status_code == 200:
+                response_data = response.json()
+                #print(response_data)
+            if (
+                response_data.get("room_name") == room and
+                response_data.get("finished") is True and
+                (response_data.get("player1") == player1 or response_data.get("player2") == player1)
+            ):
+                return True
+            else:
+                print("Validation failed: room name, players, or 'finished' flag does not match.")
+                return False
+            
+
+        except requests.exceptions.RequestException as e:
+            print(f"Error calling game API: {e}")
+            return False
 
 
     #handle for joining with database changes to tournament models
