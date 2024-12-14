@@ -1640,7 +1640,7 @@
     value: true
   });
   _exports.default = void 0;
-  var _class, _descriptor, _descriptor2, _descriptor3, _descriptor4, _descriptor5, _descriptor6, _descriptor7, _descriptor8, _descriptor9;
+  var _class, _descriptor, _descriptor2, _descriptor3, _descriptor4, _descriptor5, _descriptor6, _descriptor7, _descriptor8, _descriptor9, _descriptor10, _descriptor11;
   0; //eaimeta@70e063a35619d71f0,"@glimmer/component",0,"@glimmer/tracking",0,"@ember/service",0,"@ember/template-factory",0,"@ember/component"eaimeta@70e063a35619d71f
   function _initializerDefineProperty(e, i, r, l) { r && Object.defineProperty(e, i, { enumerable: r.enumerable, configurable: r.configurable, writable: r.writable, value: r.initializer ? r.initializer.call(l) : void 0 }); }
   function _defineProperty(e, r, t) { return (r = _toPropertyKey(r)) in e ? Object.defineProperty(e, r, { value: t, enumerable: !0, configurable: !0, writable: !0 }) : e[r] = t, e; }
@@ -1687,6 +1687,8 @@
       _initializerDefineProperty(this, "gameData", _descriptor7, this);
       _initializerDefineProperty(this, "session", _descriptor8, this);
       _initializerDefineProperty(this, "tournament", _descriptor9, this);
+      _initializerDefineProperty(this, "user", _descriptor10, this);
+      _initializerDefineProperty(this, "router", _descriptor11, this);
       // Track the state of key presses
       _defineProperty(this, "p1UpKeyPressed", false);
       _defineProperty(this, "p1DownKeyPressed", false);
@@ -1697,9 +1699,6 @@
     }
     get roomData() {
       return this.gameData.roomData; // Access shared room data
-    }
-    get username() {
-      return this.gameData.username; // Access shared room data
     }
     setupKeyListeners() {
       window.addEventListener('keydown', this.handleKeyDown.bind(this));
@@ -1720,9 +1719,8 @@
           keypress_p1: keyPressP1,
           keypress_p2: keyPressP2,
           room_name: this.roomData.room_name,
-          user: this.username
+          user: this.user.profile.nickname
         });
-        console.log('Request body sent to API:', requestBody);
 
         //const response = await fetch(`/api/gamestate.json`, {
         const response = await fetch(`/pong/pong/game_state/${this.roomData.room_name}`, {
@@ -1805,8 +1803,7 @@
       }
     }
     updateGameState(data) {
-      console.log(data);
-      this.status = data.status;
+      this.status = data.game_start_timer;
       this.ballPositionX = data.ball_x * (25 - visualViewport.height / visualViewport.width);
       this.ballPositionY = data.ball_y * 24;
       this.leftPaddlePosition = data.left_paddle_y * 10;
@@ -1826,6 +1823,7 @@
       window.removeEventListener('keyup', this.handleKeyUp.bind(this));
       clearInterval(this.pollingInterval);
       super.willDestroy();
+      this.router.transitionTo('tournament');
     }
   }, _descriptor = _applyDecoratedDescriptor(_class.prototype, "leftPaddlePosition", [_tracking.tracked], {
     configurable: true,
@@ -1876,6 +1874,16 @@
     writable: true,
     initializer: null
   }), _descriptor9 = _applyDecoratedDescriptor(_class.prototype, "tournament", [_service.inject], {
+    configurable: true,
+    enumerable: true,
+    writable: true,
+    initializer: null
+  }), _descriptor10 = _applyDecoratedDescriptor(_class.prototype, "user", [_service.inject], {
+    configurable: true,
+    enumerable: true,
+    writable: true,
+    initializer: null
+  }), _descriptor11 = _applyDecoratedDescriptor(_class.prototype, "router", [_service.inject], {
     configurable: true,
     enumerable: true,
     writable: true,
@@ -4473,7 +4481,6 @@
       this.chat.messages = [...this.chat.messages, data];
     }
     handleMatch(parsedMessage) {
-      console.log(parsedMessage);
       let opponent = parsedMessage.player1;
       if (parsedMessage.player1 === this.user.profile.nickname) opponent = parsedMessage.player2;
       const data = {
