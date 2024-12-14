@@ -198,6 +198,8 @@ def create_room(request):
             player_2 = "remote"
         elif game_type == "tournament":
             player_2 = p2
+        elif game_type == "private":
+            player_2 = p2
 
         # Create a new game state instance
         game_state = GameState.objects.create(
@@ -218,8 +220,6 @@ def create_room(request):
             player1_timer=time.time(),
         )
         game_state.save()
-        print(game_state.player1)
-        print(game_state.player2)
 
         serializer = GameStateSerializer(game_state)
 
