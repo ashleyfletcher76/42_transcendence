@@ -10,6 +10,8 @@ from rest_framework.decorators import api_view
 from rest_framework import status
 import json
 import logging
+from django.utils import timezone
+import time
 
 logger = logging.getLogger(__name__)
 
@@ -18,7 +20,8 @@ SCREEN_HEIGHT = 400
 BALL_RADIUS = 10
 PADDLE_WIDTH = 10
 PADDLE_HEIGHT = 100
-END_SCORE = 1
+END_SCORE = 5
+SPEED_PADDLE = 0.05
 
 def health_check(request):
     try:
@@ -45,6 +48,20 @@ def game_state_view(request, room_name):
             player = request.data.get("player", {})
             keypress_p1 = request.data.get('keypress_p1', {})
             keypress_p2 = request.data.get('keypress_p2', {})
+            
+            if game.paused:
+                if game.game_start_timer > 0:
+                    time_diff = time.time() - game.creation_time
+                    print(time_diff)
+                    print(game.game_start_timer)
+                    game.game_start_timer = 3 - time_diff
+                    game.save()
+                    serializer = GameStateSerializer(game)
+                    return Response(serializer.data)
+
+
+                game.paused = False
+                game.save()
 
             if game.paused == False:
                 game_logic(game)
@@ -70,15 +87,16 @@ def game_state_view(request, room_name):
 
             if game.right_score >= END_SCORE or game.left_score >= END_SCORE:
                 if game.right_score >= END_SCORE:
-                    winner = game.player1
+                    game.winner = game.player1
                 else:
-                    winner = game.player2
+                    game.winner = game.player2
                 game.paused = True
+                game.finished = True
                 game.save()
                 serializer = GameStateSerializer(game)
                 response_data = {
                     "game_state": serializer.data,
-                    "winner": winner,
+                    "winner": game.winner,
                 }
                 return Response(response_data, status=200)
             game.save()
@@ -124,11 +142,11 @@ def update_ai(game):
         move_right_paddle(game, 1)
 
 def move_right_paddle(game, direction):
-    game.right_paddle_y += direction * 0.015
+    game.right_paddle_y += direction * SPEED_PADDLE
     game.right_paddle_y = max(-1, min(1, game.right_paddle_y))
 
 def move_left_paddle(game, direction):
-    game.left_paddle_y += direction * 0.015
+    game.left_paddle_y += direction * SPEED_PADDLE
     game.left_paddle_y = max(-1, min(1, game.left_paddle_y))
 
 def handle_paddle_hit(game, side):
@@ -150,20 +168,18 @@ def create_room(request):
     try:
         # Log the received data for debugging
         logging.info("Received request data: %s", request.body)
-        
         data = json.loads(request.body)
         print(data)
         player_1 = data.get("player", "default")
         p2 = data.get("player_2", "default")
         game_type = data.get("gameType", "default")
-        print(player_1)
-        print(game_type)
 
         if game_type == "remote":
             waiting_room = GameState.objects.filter(player2="remote").first()
             if waiting_room:
+
                 waiting_room.player2 = player_1
-                waiting_room.paused = False
+                waiting_room.player2_timer = time.time()
                 waiting_room.save()
 
                 return JsonResponse({
@@ -182,6 +198,8 @@ def create_room(request):
             player_2 = "remote"
         elif game_type == "tournament":
             player_2 = p2
+        elif game_type == "private":
+            player_2 = p2
 
         # Create a new game state instance
         game_state = GameState.objects.create(
@@ -196,12 +214,12 @@ def create_room(request):
             right_score=0,
             player1=player_1,
             player2=player_2,
-            paused=False,
-            game_type=game_type
+            paused=True,
+            game_type=game_type,
+            creation_time=time.time(),
+            player1_timer=time.time(),
         )
         game_state.save()
-        print(game_state.player1)
-        print(game_state.player2)
 
         serializer = GameStateSerializer(game_state)
 
@@ -233,3 +251,4 @@ def health_check(request):
         health_check_logged = True
         logger.info("Health check passed: Service is up and running.")
     return HttpResponse("ok", content_type="text/plain", status=200)
+
