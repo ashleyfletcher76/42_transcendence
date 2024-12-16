@@ -13,11 +13,11 @@ class UserSerializer(serializers.ModelSerializer):
 
 	# add password field with validators
 	password = serializers.CharField(
-		write_only=True,
+		write_only=True, # not visible in logs
 		validators=[
-			MinLengthValidator(8, message="Password must be at least 8 characters long"),
+			MinLengthValidator(2, message="Password must be at least 2 characters long"),
 			RegexValidator(
-				regex=r'^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d@$!%*?&]{8,}$',
+				regex=r'^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d@$!%*?&]{2,}$',
 				message="Password must contain both letters and numbers."
 			),
 		]
