@@ -15,18 +15,18 @@ def update_profile(request):
 	data = request.data
 	redis_client = get_redis_client()
 
-	request_old_nickname = data.get("nickname")
-	if request_old_nickname and request_old_nickname != profile.nickname:
-		return Response(
-			{"success": False, "message": "Invalid nickname provided."},
-			status=400,
-		)
+	# request_old_nickname = data.get("nickname")
+	# if request_old_nickname and request_old_nickname != profile.nickname:
+	# 	return Response(
+	# 		{"success": False, "message": "Invalid nickname provided."},
+	# 		status=400,
+	# 	)
 
 	updated_fields = []
-	nickname = profile.nickname
+	old_nickname = profile.nickname
 
 	## update nickname ##
-	new_nickname = data.get("new_nickname")
+	new_nickname = data.get("nickname")
 	if new_nickname and new_nickname != profile.nickname:
 		# validate nickname format
 		if not re.match(r'^[a-zA-Z0-9]*$', new_nickname):
@@ -50,7 +50,7 @@ def update_profile(request):
 		## create nickname event for Redis channel ##
 		nickname_event = {
 			"action": "nickname_change",
-			"old_nickname": nickname,
+			"old_nickname": old_nickname,
 			"new_nickname": new_nickname,
 		}
 

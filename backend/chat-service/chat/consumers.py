@@ -48,7 +48,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
 				redis_client = get_redis_client()
 				status_event = {
 					"action": "online_status_update",
-					"old_nickname": self.nickname,
+					"nickname": self.nickname,
 					"online_status": True
 				}
 				redis_client.publish("chat_service_updates", json.dumps(status_event))
@@ -79,7 +79,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
 						redis_client = get_redis_client()
 						status_event = {
 							"action": "online_status_update",
-							"old_nickname": self.nickname,
+							"nickname": self.nickname,
 							"online_status": False
 						}
 						redis_client.publish("chat_service_updates", json.dumps(status_event))

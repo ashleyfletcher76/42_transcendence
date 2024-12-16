@@ -9,17 +9,17 @@ import json
 class UserServiceTests(TestCase):
 	def setUp(self):
 		"""Set up test environment, including test users and authentication."""
-		# Create test users
+		# create test users
 		self.user1 = User.objects.create_user(username="user1", password="password")
 		self.user2 = User.objects.create_user(username="user2", password="password")
 		self.user3 = User.objects.create_user(username="user3", password="password")
 
-		# Create profiles for test users
+		# create profiles for test users
 		self.user1_profile = self.user1.profile
 		self.user2_profile = self.user2.profile
 		self.user3_profile = self.user3.profile
 
-		# Authenticate as user1
+		# authenticate as user1
 		self.client = APIClient()
 		self.client.login(username="user1", password="password")
 		refresh = RefreshToken.for_user(self.user1)
@@ -30,7 +30,7 @@ class UserServiceTests(TestCase):
 		UserProfile.objects.all().delete()
 		User.objects.all().delete()
 
-	# Tests for add-friend endpoint
+	# tests for add-friend endpoint
 	def test_add_friend(self):
 		url = "/users/add-friend/"
 		payload = {"nickname": "user2", "type": "add"}
@@ -89,7 +89,7 @@ class UserServiceTests(TestCase):
 		self.assertEqual(response.status_code, 404)
 		self.assertEqual(response.data["error"], "Target user not found.")
 
-	# Tests for block-user endpoint
+	# tests for block-user endpoint
 	def test_block_user(self):
 		url = "/users/block-user/"
 		payload = {"nickname": "user3", "type": "add"}
@@ -154,7 +154,7 @@ class UserServiceTests(TestCase):
 	def test_update_nickname(self):
 		"""Test updating the nickname successfully."""
 		url = "/users/update-profile/"
-		payload = {"new_nickname": "newNickname"}
+		payload = {"nickname": "newNickname"}
 		response = self.client.put(url, payload)
 
 		self.assertEqual(response.status_code, 200)
@@ -169,7 +169,7 @@ class UserServiceTests(TestCase):
 		self.user2_profile.save()
 
 		url = "/users/update-profile/"
-		payload = {"new_nickname": "existingNickname"}
+		payload = {"nickname": "existingNickname"}
 		response = self.client.put(url, payload)
 
 		self.assertEqual(response.status_code, 400)
@@ -177,16 +177,6 @@ class UserServiceTests(TestCase):
 		self.assertEqual(response.json()["message"], "Nickname is already taken.")
 		self.user1_profile.refresh_from_db()
 		self.assertNotEqual(self.user1_profile.nickname, "existingNickname")
-
-	def test_update_nickname_invalid(self):
-		"""Test updating nickname with the wrong current nickname."""
-		url = "/users/update-profile/"
-		payload = {"nickname": "invalidNickname", "new_nickname": "anotherNickname"}
-		response = self.client.put(url, payload)
-
-		self.assertEqual(response.status_code, 400)
-		self.assertEqual(response.json()["success"], False)
-		self.assertEqual(response.json()["message"], "Invalid nickname provided.")
 
 	def test_update_online_status_to_true(self):
 		"""Test updating online status to True."""
@@ -239,7 +229,7 @@ class UserServiceTests(TestCase):
 
 	def test_invalid_nickname_update(self):
 		url = "/users/update-profile/"
-		payload = {"new_nickname": "Invalid!Name"}
+		payload = {"nickname": "Invalid!Name"}
 		response = self.client.put(url, payload)
 
 		self.assertEqual(response.status_code, 400)

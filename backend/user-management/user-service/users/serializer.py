@@ -1,24 +1,9 @@
 from rest_framework import serializers
 from django.contrib.auth.models import User
 from django.contrib.auth.hashers import make_password
-from .models import UserProfile
-
-
-class UserProfileSerializer(serializers.ModelSerializer):
-	nickname = serializers.RegexField(
-		regex=r'^[a-zA-Z0-9]*$',
-		error_messages={
-			"invalid": "Nickname must contain only letters and numbers.",
-		}
-	)
-
-	class Meta:
-		model = UserProfile
-		fields = ["nickname", "avatar", "bio"]
-
+from django.core.validators import RegexValidator, MinLengthValidator
 
 class UserSerializer(serializers.ModelSerializer):
-	profile = UserProfileSerializer(required=False)
 	username = serializers.RegexField(
 		regex=r'^[a-zA-Z0-9]*$',
 		error_messages={
@@ -26,21 +11,27 @@ class UserSerializer(serializers.ModelSerializer):
 		}
 	)
 
+	# add password field with validators
+	password = serializers.CharField(
+		write_only=True,
+		validators=[
+			MinLengthValidator(8, message="Password must be at least 8 characters long"),
+			RegexValidator(
+				regex=r'^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d@$!%*?&]{8,}$',
+				message="Password must contain both letters and numbers."
+			),
+		]
+	)
+
 	class Meta:
 		model = User
-		fields = ["username", "password", "profile"]
+		fields = ["username", "password"]
 
 	def create(self, validated_data):
-		profile_data = validated_data.pop("profile", {})
 		# create the User instance
-		user = User(
+		user = User.objects.create(
 			username=validated_data["username"],
 			password=make_password(validated_data["password"]),
 		)
-		user.save()
-
-		# ff profile data is provided, create the UserProfile
-		if profile_data:
-			UserProfile.objects.create(user=user, **profile_data)
 
 		return user

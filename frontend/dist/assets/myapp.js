@@ -82,7 +82,7 @@
   const __COLOCATED_TEMPLATE__ = (0, _templateFactory.createTemplateFactory)(
   /*
     <div class="ball" style={{this.ballStyle}}></div>
-  
+
   */
   {
     "id": "ftKo66ND",
@@ -1002,23 +1002,23 @@
   <div class="btn-group" role="group" aria-label="Basic checkbox toggle button group">
     <input type="checkbox" class="btn-check" id="btncheck1" autocomplete="off" checked={{this.showGeneral}} {{on "change" (fn this.toggleCheckbox "all")}}>
     <label class="btn btn-outline-secondary btn-sm" for="btncheck1">General</label>
-  
+
     <input type="checkbox" class="btn-check" id="btncheck2" autocomplete="off" checked={{this.showWhisper}} {{on "change" (fn this.toggleCheckbox "whisper")}}>
     <label class="btn btn-outline-secondary btn-sm" for="btncheck2">Whisper</label>
-  
+
     <input type="checkbox" class="btn-check" id="btncheck3" autocomplete="off" checked={{this.showTournament}} {{on "change" (fn this.toggleCheckbox "tournament")}}>
     <label class="btn btn-outline-secondary btn-sm" for="btncheck3">Tournament</label>
-  
+
     <input type="checkbox" class="btn-check" id="btncheck4" autocomplete="off" checked={{this.showSystem}} {{on "change" (fn this.toggleCheckbox "system")}}>
     <label class="btn btn-outline-secondary btn-sm" for="btncheck4">System</label>
   </div>
-  
+
   <div class="scrollable-list chat" >
     {{#each this.filteredMessages as |message|}}
       <Message @message={{message}} @ownNickname={{this.chat.user.profile.nickname}}/>
     {{/each}}
   </div>
-  
+
   {{!-- Corrected template --}}
   <div class="input-group">
     <input
@@ -1148,7 +1148,7 @@
   const __COLOCATED_TEMPLATE__ = (0, _templateFactory.createTemplateFactory)(
   /*
     <div class="history-item row m-1">
-  
+
     <div class="col-12 mb-0 mt-1 pb-0">
       <div class="date">2024.09.20 1:49pm</div>
     </div>
@@ -1160,12 +1160,12 @@
         </div>
       </div>
     </div>
-  
+
     {{!-- Profile details column (3 parts) --}}
     <div class="col-2">
       <div class="score history center">3:1</div>
     </div>
-  
+
     <div class="col-5">
       <div class="user-card m-0 mb-1" role="button" onclick={{this.select}}>
         <div class="profile-details">
@@ -1173,9 +1173,9 @@
         </div>
       </div>
     </div>
-  
+
   </div>
-  
+
   */
   {
     "id": "F5VyigJy",
@@ -1213,7 +1213,7 @@
       </div>
     {{else}}
       <div class="alert alert-success p-2 mt-1 mb-1" role="alert">
-        {{@message.from}} wants to add you as a friend 
+        {{@message.from}} wants to add you as a friend
         <a href="#" class="alert-link" {{on "click" this.acceptFriend}}>ACCEPT</a>
       </div>
     {{/if}}
@@ -1231,7 +1231,7 @@
   {{else}}
     <div class="message-item message-default">[{{@message.from}}] {{@message.content}}</div>
   {{/if}}
-  
+
   */
   {
     "id": "qxcghq3o",
@@ -1347,7 +1347,7 @@
     <button class="btn btn-success p-1 mb-1" type="button" {{on "click" this.openModal}}>
             Games: {{this.user.profile.games_total}}
   </button>
-  
+
   <BsModal
     @open={{this.isModalOpen}}
     as |modal|
@@ -1357,11 +1357,11 @@
         Match History
       </h4>
     </modal.header>
-  
+
     <modal.body>
       <div class="container-fluid row" style="height: 50vh; overflow-y: auto; margin: 0; padding: 0;">
           <div class="scrollable-list history-scroll">
-      
+
             <HistoryItem />
             <HistoryItem />
             <HistoryItem />
@@ -1369,15 +1369,15 @@
             <HistoryItem />
             <HistoryItem />
             <HistoryItem />
-  
+
           </div>
       </div>
-      
-      
+
+
     </modal.body>
-  
+
   </BsModal>
-  
+
   */
   {
     "id": "RBBlsKsg",
@@ -1453,7 +1453,7 @@
     <button class="btn btn-primary" type="button" {{on "click" this.openModal}}>
             Edit Profile
   </button>
-  
+
   <BsModal
     @open={{this.isModalOpen}}
     as |modal|
@@ -1464,31 +1464,31 @@
       </h4>
     </modal.header>
     <modal.body>
-      
+
         <div class="form-group">
           <label>Choose Avatar:</label>
           <input type="file" class="form-control" placeholder="Choose Avatar">
           <small>This is the visible Avatar on this Site</small>
         </div>
-  
+
         <div class="form-group mt-3">
           <label>Nickname:</label>
-          <input 
-            type="name" 
-            class="form-control" 
+          <input
+            type="name"
+            class="form-control"
             value={{this.newNickname}}
             {{on "input" this.updateNewNickname}}
           >
           <small>This is the visible Name on this Site</small>
         </div>
-      
+
     </modal.body>
     <modal.footer>
       <BsButton @onClick={{modal.close}}>Cancel</BsButton>
       <BsButton @type="success" @onClick={{this.submit}}>Save</BsButton>
     </modal.footer>
   </BsModal>
-  
+
   */
   {
     "id": "11bFgGzg",
@@ -1529,7 +1529,7 @@
     }
     async changeNickname(newNickname) {
       try {
-        const response = await fetch('/api/user/nickname', {
+        const response = await fetch('users/users/update-profile/', {
           method: 'PUT',
           headers: {
             'Content-Type': 'application/json',
@@ -1590,7 +1590,7 @@
       <button class="nav-button" type="button">All</button>
       <button class="nav-button" type="button">Last</button>
   </nav>
-  
+
   */
   {
     "id": "tLPJ+48H",
@@ -1611,7 +1611,7 @@
   const __COLOCATED_TEMPLATE__ = (0, _templateFactory.createTemplateFactory)(
   /*
     <div class="paddle {{this.args.side}}" style={{this.paddleStyle}}></div>
-  
+
   */
   {
     "id": "S8zvLVaU",
@@ -1663,7 +1663,7 @@
       <Paddle @position={{this.rightPaddlePosition}} @side="paddle-right" />
     {{/if}}
   </div>
-  
+
   */
   {
     "id": "f3TDaoGl",
@@ -1914,7 +1914,7 @@
       <button type="button" class="btn-close top-left" onclick={{this.onCloseClick}}></button>
       <img src={{@selectedUser.avatar}} alt="Profile Picture" class="profile-pic" />
     </div>
-  
+
     {{!-- Profile details column (3 parts) --}}
     <div class="col-10">
       {{!-- First row of profile details --}}
@@ -1940,13 +1940,13 @@
         </div>
         <h2 class="points">{{@selectedUser.trophies}}🏆</h2>
       </div>
-  
+
       {{!-- Second row of profile details --}}
       <div class="profile-details">
         <ModalGameHistory />
         <h2 class="info">Wins: {{@selectedUser.wins}}</h2>
       </div>
-  
+
       <div class="profile-details">
         {{#if this.isOnline}}
         <h2 class="info">🟢 online</h2>
@@ -1955,7 +1955,7 @@
         {{/if}}
         <h2 class="info">Losses: {{@selectedUser.losses}}</h2>
       </div>
-  
+
     </div>
   </div>
   */
@@ -2049,7 +2049,7 @@
     <div class="col center">
       <img src={{this.user.profile.avatar}} alt="Profile Picture" class="profile-pic" />
     </div>
-  
+
     <!-- Profile details column (3 parts) -->
     <div class="col-10">
       <!-- First row of profile details -->
@@ -2065,15 +2065,15 @@
         {{/if}}
         <h2 class="points info">{{this.user.profile.trophies}} 🏆</h2>
       </div>
-  
+
       <!-- Second row of profile details -->
       <div class="profile-details">
         <ModalGameHistory />
         <h2 class="info">Wins: {{this.user.profile.wins}}</h2>
       </div>
-  
+
       <div class="profile-details">
-        {{#if this.isOnline}} 
+        {{#if this.isOnline}}
           <h2 class="info">🟢 online</h2>
         {{else}}
           <h2 class="info">🔴 offline</h2>
@@ -2082,8 +2082,8 @@
       </div>
     </div>
   </div>
-  
-  
+
+
   */
   {
     "id": "gQKzSoKE",
@@ -2145,20 +2145,20 @@
     <div class="container-fluid row border">
     {{!-- Profile picture column (1 part) --}}
     <div class="col-5">
-      
+
       <User @user={{this.gameData.player_1}} @selectUser={{this.args.selectUser}}/>
     </div>
-  
+
     {{!-- Profile details column (3 parts) --}}
     <div class="col-2">
       <div class="score center">{{this.gameData.left_score}}:{{this.gameData.right_score}}</div>
     </div>
-  
+
     <div class="col-5">
       <User @user={{this.gameData.player_2}} @selectUser={{this.args.selectUser}}/>
     </div>
   </div>
-  
+
   */
   {
     "id": "Iptq3Nrf",
@@ -2202,7 +2202,7 @@
      <span style="--i:8">nc</span>
      <span style="--i:8">e</span>
   </div>
-  
+
   */
   {
     "id": "l+mNLrgS",
@@ -2238,7 +2238,7 @@
           </div>
           <h2 class="points info">👥 {{@current_players}}/{{@max_players}}</h2>
   </div>
-  
+
   */
   {
     "id": "l+X2ycFG",
@@ -2299,7 +2299,7 @@
           <TournamentItem @creator={{tournament.name}} @current_players={{tournament.num_players}} @max_players="10"/>
       {{/each}}
   </div>
-  
+
   */
   {
     "id": "169tmhqw",
@@ -2523,15 +2523,15 @@
     <div class="user-card" role="button" onclick={{this.select}}>
       <img src={{@user.avatar}} alt="Profile Picture" class="user-pic user" />
       <div class="profile-details">
-          {{#if this.isOnline}} 
+          {{#if this.isOnline}}
           <h2 class="info">{{@user.nickname}} 🟢</h2>
           {{else}}
           <h2 class="info">{{@user.nickname}} 🔴</h2>
           {{/if}}
-          <h2 class="points info">{{@user.trophies}} 🏆</h2>        
+          <h2 class="points info">{{@user.trophies}} 🏆</h2>
       </div>
   </div>
-  
+
   */
   {
     "id": "KFUQYBB5",
@@ -4659,7 +4659,7 @@
     <div class="container-fluid row">
       <div class="container-fluid col-3 footer">
               <LinkTo @route="choose-game" class="nav-button">Game</LinkTo>
-              <LinkTo @route="chat" class="nav-button">Chat</LinkTo>            
+              <LinkTo @route="chat" class="nav-button">Chat</LinkTo>
               <LinkTo @route="tournament" class="nav-button">Tournament</LinkTo>
       </div>
       <div class="container-fluid col-6 footer">
@@ -4672,11 +4672,11 @@
           {{/unless}}
         {{/if}}
       </div>
-    </div>    
+    </div>
   </div>
-  
+
   </main>
-  
+
   */
   {
     "id": "00o/NGBf",
@@ -4696,7 +4696,7 @@
   var _default = _exports.default = (0, _templateFactory.createTemplateFactory)(
   /*
     <Chat/>
-  
+
   */
   {
     "id": "X/fO1PyJ",
@@ -4730,7 +4730,7 @@
         <span style="--i:4">PO</span>
         <span style="--i:5">NG</span>
       </div>
-  
+
       <div class="game-buttons">
         <button type="button" {{on "click" (fn this.chooseGame "computer")}}>Single Player</button>
         <button type="button" {{on "click" (fn this.chooseGame "local")}}>Local Multiplayer</button>
@@ -4739,7 +4739,7 @@
     </div>
     {{/if}}
   </div>
-  
+
   */
   {
     "id": "wfVEWvGZ",
@@ -4758,7 +4758,7 @@
   0; //eaimeta@70e063a35619d71f0,"@ember/template-factory"eaimeta@70e063a35619d71f
   var _default = _exports.default = (0, _templateFactory.createTemplateFactory)(
   /*
-    
+
   */
   {
     "id": "WC9lYDjz",
@@ -4782,14 +4782,14 @@
       <form {{on "submit" this.login}}>
         <label>Username:</label>
         <input type="text" name="username" {{on "change" (fn this.update "username")}} />
-  
+
         <label>Password:</label>
         <input type="password" name="password" {{on "change" (fn this.update "password")}} />
-  
+
         <button class="login" type="submit">Login</button>
         <button type="button" class="register-button" {{on "click" this.register}}>Register</button>
       </form>
-  
+
       {{#if this.error}}
         <p><strong>{{this.error}}</strong></p>
       {{/if}}
@@ -4842,13 +4842,13 @@
   			{{#if (eq this.tournament.admin this.user.profile.nickname)}}
   				<button class="nav-button start" type="button" {{on "click" (fn this.tournament.startTournament)}}>Start Tournament</button>
   			{{/if}}
-  		<button class="nav-button cancel" type="button" {{on "click" (fn this.tournament.disconnectFromLobby this.tournament.currentLobby)}}>Leave</button> 
+  		<button class="nav-button cancel" type="button" {{on "click" (fn this.tournament.disconnectFromLobby this.tournament.currentLobby)}}>Leave</button>
   		</div>
   	{{else}}
   		<div class="d-flex justify-content-center align-items-center">
-  			<button 
-  				class="nav-button mt-5" 
-  				type="button" 
+  			<button
+  				class="nav-button mt-5"
+  				type="button"
   				{{on "click" (fn this.tournament.connectToLobby this.user.profile.nickname)}}
   			>
   			Create Tournament
@@ -5037,5 +5037,5 @@ catch(err) {
           if (!runningTests) {
             require("myapp/app")["default"].create({"name":"myapp","version":"0.0.0"});
           }
-        
+
 //# sourceMappingURL=myapp.map

@@ -61,17 +61,17 @@ def handle_status_update(event_data):
 		return
 
 	action = event_data.get("action")
-	old_nickname = event_data.get("old_nickname")
+	nickname = event_data.get("nickname")
 	online_status = event_data.get("online_status")
 
-	if action == "online_status_update" and old_nickname:
+	if action == "online_status_update" and nickname:
 		try:
-			profile = UserProfile.objects.get(nickname=old_nickname)
+			profile = UserProfile.objects.get(nickname=nickname)
 			profile.online = online_status
 			profile.save()
 			print(f"[INFO] Updated online status for {profile.nickname} to {online_status}")
 		except UserProfile.DoesNotExist:
-			print(f"[WARNING] User with nickname {old_nickname} does not exist.")
+			print(f"[WARNING] User with nickname {nickname} does not exist.")
 	else:
 		print(f"[WARNING] Unhandled Redis action: {event_data}")
 
