@@ -23,6 +23,7 @@ def index(request):
 def listLobby(request):
     if request.method == 'GET':
         if Tournament.objects.exists():
+            #Tournament.objects.all().delete()
             inactive_tournaments = Tournament.objects.filter(active=False)
             for inactive in inactive_tournaments:
                 inactive.delete()
@@ -35,6 +36,7 @@ def listLobby(request):
             tournaments_list = list(tournaments)
             response = {"tournaments": tournaments_list}
         else:
+            print("No tournamnet Found!")
             response = {"message": "No active tournaments found"}
         return JsonResponse(response)
     else:
