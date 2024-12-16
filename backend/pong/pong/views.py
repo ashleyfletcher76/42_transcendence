@@ -11,17 +11,10 @@ from rest_framework import status
 import json
 import logging
 from django.utils import timezone
+from pong.logic.game_logic import handle_local_input, handle_remote_input
 import time
 
 logger = logging.getLogger(__name__)
-
-SCREEN_WIDTH = 800
-SCREEN_HEIGHT = 400
-BALL_RADIUS = 10
-PADDLE_WIDTH = 10
-PADDLE_HEIGHT = 100
-END_SCORE = 5
-SPEED_PADDLE = 0.05
 
 def health_check(request):
     try:
@@ -30,8 +23,6 @@ def health_check(request):
         return JsonResponse({"status": "error", "message": str(e)}, status=500)
     return JsonResponse({"status": "ok"}, status=200)
 
-def game_view(request):
-    return render(request, 'index.html')
 
 @api_view(['GET', 'POST'])
 def game_state_view(request, room_name):
@@ -45,61 +36,33 @@ def game_state_view(request, room_name):
                 serializer = GameStateSerializer(game)
                 return Response(serializer.data)
 
-            player = request.data.get("player", {})
-            keypress_p1 = request.data.get('keypress_p1', {})
-            keypress_p2 = request.data.get('keypress_p2', {})
-            
-            if game.paused:
-                if game.game_start_timer > 0:
-                    time_diff = time.time() - game.creation_time
-                    print(time_diff)
-                    print(game.game_start_timer)
-                    game.game_start_timer = 3 - time_diff
-                    game.save()
-                    serializer = GameStateSerializer(game)
-                    return Response(serializer.data)
-
-
-                game.paused = False
-                game.save()
-
-            if game.paused == False:
-                game_logic(game)
-                if not player:
-                    if keypress_p1 == 'up':
-                        move_left_paddle(game, -1)
-                    if keypress_p1 == 'down' :
-                        move_left_paddle(game, 1)
-                    if game.player2 == "local":
-                        if keypress_p2 == 'up':
-                            move_right_paddle(game, -1)
-                        if keypress_p2 == 'down':
-                            move_right_paddle(game, 1)
-                else:
-                    if keypress_p1 == 'up' and player == game.player1:
-                        move_left_paddle(game, -1)
-                    if keypress_p1 == 'down' and player == game.player1:
-                        move_left_paddle(game, 1)
-                    if keypress_p1 == 'up' and player == game.player2:
-                        move_right_paddle(game, -1)
-                    if keypress_p1 == 'down' and player == game.player2:
-                        move_right_paddle(game, 1)
-
-            if game.right_score >= END_SCORE or game.left_score >= END_SCORE:
-                if game.right_score >= END_SCORE:
-                    game.winner = game.player1
-                else:
-                    game.winner = game.player2
-                game.paused = True
-                game.finished = True
-                game.save()
+            if game.finished:
                 serializer = GameStateSerializer(game)
                 response_data = {
                     "game_state": serializer.data,
                     "winner": game.winner,
                 }
                 return Response(response_data, status=200)
-            game.save()
+
+            if game.paused:
+                if game.game_start_timer > 0:
+                    time_diff = time.time() - game.creation_time
+                    game.game_start_timer = 3 - time_diff
+                    game.save()
+                    serializer = GameStateSerializer(game)
+                    return Response(serializer.data)
+                game.paused = False
+                game.save()
+
+            if not game.paused:
+                player = request.data.get("player", {})
+                keypress_p1 = request.data.get('keypress_p1', {})
+                keypress_p2 = request.data.get('keypress_p2', {})
+                if not player:
+                    handle_local_input(game, keypress_p1, keypress_p2)
+                else:
+                    handle_remote_input(game, keypress_p1, player)
+
 
             serializer = GameStateSerializer(game)
             return Response(serializer.data)
@@ -110,56 +73,6 @@ def game_state_view(request, room_name):
 
     except GameState.DoesNotExist:
         return Response({'error': 'Game not found'}, status=status.HTTP_404_NOT_FOUND)
-
-def game_logic(game):
-    game.ball_x += game.ball_speed_x
-    game.ball_y += game.ball_speed_y
-
-    if game.ball_y <= -1 or game.ball_y >= 1:
-        game.ball_speed_y = -game.ball_speed_y
-
-    if game.ball_x <= -0.95:
-        if is_paddle_hit(game.left_paddle_y, game.ball_y):
-            handle_paddle_hit(game, "left")
-        else:
-            game.right_score += 1
-            reset_ball(game)
-
-    elif game.ball_x >= 0.95:
-        if is_paddle_hit(game.right_paddle_y, game.ball_y):
-            handle_paddle_hit(game, "right")
-        else:
-            game.left_score += 1
-            reset_ball(game)
-
-    if game.player2 == "AI":
-        update_ai(game)
-
-def update_ai(game):
-    if game.ball_y < game.right_paddle_y:
-        move_right_paddle(game, -1)
-    elif game.ball_y > game.right_paddle_y:
-        move_right_paddle(game, 1)
-
-def move_right_paddle(game, direction):
-    game.right_paddle_y += direction * SPEED_PADDLE
-    game.right_paddle_y = max(-1, min(1, game.right_paddle_y))
-
-def move_left_paddle(game, direction):
-    game.left_paddle_y += direction * SPEED_PADDLE
-    game.left_paddle_y = max(-1, min(1, game.left_paddle_y))
-
-def handle_paddle_hit(game, side):
-    game.ball_speed_x = -game.ball_speed_x
-
-def reset_ball(game):
-    game.ball_x, game.ball_y = 0, 0
-    game.ball_speed_x *= -1
-
-def is_paddle_hit(paddle_y, ball_y, paddle_height=0.2):
-    paddle_top = paddle_y - paddle_height / 2
-    paddle_bottom = paddle_y + paddle_height / 2
-    return paddle_top <= ball_y <= paddle_bottom
 
 
 
@@ -180,6 +93,8 @@ def create_room(request):
 
                 waiting_room.player2 = player_1
                 waiting_room.player2_timer = time.time()
+                waiting_room.player1_timer = time.time()
+                waiting_room.creation_time = time.time()
                 waiting_room.save()
 
                 return JsonResponse({
@@ -237,18 +152,4 @@ def create_room(request):
         logging.error("Error handling room: %s", str(e))
         return JsonResponse({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
-health_check_logged = False
-
-def health_check(request):
-    global health_check_logged
-    try:
-        connection.ensure_connection()
-    except Exception as e:
-        logger.error(f"Health check failed: {e}")
-        return JsonResponse({"status": "error", "message": str(e)}, status=500)
-
-    if not health_check_logged:
-        health_check_logged = True
-        logger.info("Health check passed: Service is up and running.")
-    return HttpResponse("ok", content_type="text/plain", status=200)
 
