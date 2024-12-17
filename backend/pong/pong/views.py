@@ -30,7 +30,6 @@ def game_state_view(request, room_name):
         game = GameState.objects.get(room_name=room_name)
 
         if request.method == 'POST':
-
             if game.player2 == "remote":
                 game.save()
                 serializer = GameStateSerializer(game)
