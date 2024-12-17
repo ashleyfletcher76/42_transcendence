@@ -36,7 +36,6 @@ def listLobby(request):
             tournaments_list = list(tournaments)
             response = {"tournaments": tournaments_list}
         else:
-            print("No tournamnet Found!")
             response = {"message": "No active tournaments found"}
         return JsonResponse(response)
     else:

@@ -141,16 +141,23 @@ class TournamentConsumer(WebsocketConsumer):
     def start_tournament(self, message):
         try:
             tournament = Tournament.objects.get(name=self.room_name)
-            if tournament.players.count() < 2:
+            if tournament.players.count() < 2 and tournament.ongoing == False:
                 return {
                     "type": "error",
                     "error": "Not enough players to start the tournament.",
+                    "player" : self.username
+                }
+            if tournament.players.count() < 2 and tournament.ongoing == True:
+                return {
+                    "type": "tournament_winner",
+                    "winner": tournament.players.all().first().user.username,
                     "player" : self.username
                 }
             players = list(tournament.players.all())
             random.shuffle(players)
             matches = self.create_matches(players)
             tournament.matches = matches
+            tournament.ongoing = True
             tournament.save()
             self.lobby_message({"type": "start", "message": message})
             return {"type" : "match"}
@@ -162,20 +169,21 @@ class TournamentConsumer(WebsocketConsumer):
         for i in range(0, len(players), 2):
             player1 = players[i]
             player2 = players[i + 1] if i + 1 < len(players) else None
-            room_name = self.get_game_room(player1, player2)
-            self.assign_match(player1, player2, room_name)
-            matches.append({"player1": player1.user.username, "player2": player2.user.username, "room": room_name})
+            if player2:
+                room_name = self.get_game_room(player1, player2)
+                self.assign_match(player1, player2, room_name)
+                matches.append({"player1": player1.user.username, "player2": player2.user.username, "room": room_name})
         print(matches)
         return matches
 
     def get_game_room(self, player1, player2):
-        data = {"player1": player1.user.username, "player2": player2.user.username, "gameType": "tournament"}
+        data = {"player": player1.user.username, "player_2": player2.user.username, "gameType": "tournament"}
         game_service_url = "http://pong-game:8000/pong/pong/create-room"
         response = requests.post(game_service_url, json=data)
         if response.status_code == 201:
             response_data = response.json()
             room_name = response_data.get("room_name")
-            print(room_name)
+            print(response_data)
             return room_name
         return None
 
@@ -205,7 +213,7 @@ class TournamentConsumer(WebsocketConsumer):
             return {
                 "type" : "error",
                 "error" : "Tournament not found.",
-                "plyer" : self.username
+                "player" : self.username
             }
         response = self.decide_match(tournament, winner)
         self.lobby_message(response)
@@ -213,14 +221,14 @@ class TournamentConsumer(WebsocketConsumer):
 
 
     def decide_match(self, tournament, winner):
-        players = list(tournament.players.all())
         matches = tournament.matches
         match_to_remove = None
         loser = None
 
         for match in matches:
             if match["player1"] == winner or match["player2"] == winner:
-                info_check = self.get_game_info(match["player1"], match["room"])
+                info_check, server_winner = self.get_game_info(match["player1"], match["room"])
+                print(f"server side check : {server_winner}")
                 if info_check:
                     match_to_remove = match
                     loser = match["player1"] if match["player2"] == winner else match["player2"]
@@ -238,7 +246,7 @@ class TournamentConsumer(WebsocketConsumer):
                 raise ValueError(f"Player with username '{loser}' does not exist.")
             tournament.save()
 
-        return {"type" : "message", "message" : f"{winner} won against {loser}"}
+        return {"type" : "message", "message" : f"{winner} won against {loser}", "sender" : self.username}
 
 
     def get_game_info(self, player1, room):
@@ -248,20 +256,21 @@ class TournamentConsumer(WebsocketConsumer):
 
             if response.status_code == 200:
                 response_data = response.json()
+                print(response_data)
             if (
                 response_data.get("room_name") == room and
                 response_data.get("finished") is True and
                 (response_data.get("player1") == player1 or response_data.get("player2") == player1)
             ):
-                return True
+                return True, response_data.get("winner")
             else:
                 print("Validation failed: room name, players, or 'finished' flag does not match.")
-                return False
+                return False, None
             
 
         except requests.exceptions.RequestException as e:
             print(f"Error calling game API: {e}")
-            return False
+            return False, None
 
 
 
@@ -339,6 +348,7 @@ class TournamentConsumer(WebsocketConsumer):
 
 
     def finished(self, event):
+        print("tournament is finished!")
         self.disconnect(1005)
 
     def handle_leave(self):
@@ -392,8 +402,6 @@ class TournamentConsumer(WebsocketConsumer):
         }))
 
     def leave(self, event):
-        if self.check_disconnect():
-            return
         players = event["players"]
         player = event["player"]
         message = event["message"]
@@ -405,10 +413,10 @@ class TournamentConsumer(WebsocketConsumer):
             "admin" : admin,
             "message" : message
         }))
-
-    def message(self, event):
         if self.check_disconnect():
             return
+
+    def message(self, event):
 
         message = event["message"]
         sender = event["sender"]
@@ -417,10 +425,10 @@ class TournamentConsumer(WebsocketConsumer):
             "sender": sender,
             "message": message
         }))
-
-    def error(self, event):
         if self.check_disconnect():
             return
+
+    def error(self, event):
         error = event["error"]
         player = event["player"]
         if player == self.username:
@@ -429,18 +437,20 @@ class TournamentConsumer(WebsocketConsumer):
                 "error": error,
                 "player": player
             }))
+        if self.check_disconnect():
+            return
     
     def tournament_winner(self, event):
         if self.check_disconnect():
             return
         winner = event["winner"]
-        self.lobby_message({
-            "type" : "finished"
-        })
         self.send(text_data=json.dumps({
             "type": "tournament_winner",
             "winner": winner
         }))
+        self.lobby_message({
+            "type" : "finished"
+        })
 
 
     def match(self, event):
@@ -486,15 +496,15 @@ class TournamentConsumer(WebsocketConsumer):
 
     def check_disconnect(self):
         if not self.joined:
-            self.disconnect()
+            self.disconnect(1005)
             return True
 
         tournament = Tournament.objects.filter(name=self.room_name).first()
         if not tournament:
-            self.disconnect()
+            self.disconnect(1005)
             return True
 
         player = tournament.players.filter(user__username=self.username)
         if not player.exists():
-            self.disconnect()
+            self.disconnect(1005)
             return True

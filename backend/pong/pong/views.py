@@ -137,7 +137,8 @@ def create_room(request):
         game_state.save()
 
         serializer = GameStateSerializer(game_state)
-
+        print(game_state.player1)
+        print(game_state.player2)
         response_data = {
             "message": "Room created successfully",
             "room_name": room_name,
