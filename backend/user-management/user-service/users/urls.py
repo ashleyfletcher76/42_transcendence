@@ -1,4 +1,6 @@
 from django.urls import path
+from django.conf import settings
+from django.conf.urls.static import static
 from .views.register_view import UserRegisterView
 from .views.health_check_view import health_check
 from .views.add_friend_view import AddFriendView
@@ -34,3 +36,7 @@ urlpatterns = [
 	path("add-friend/", AddFriendView.as_view(), name="add-friend"),
 	path("block-user/", BlockUserView.as_view(), name="block-user"),
 ]
+
+# serve media files during development
+if settings.DEBUG:
+	urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
