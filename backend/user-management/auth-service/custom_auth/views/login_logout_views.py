@@ -11,7 +11,7 @@ logger = logging.getLogger(__name__)
 class LoginView(APIView):
 	authentication_classes = []
 	permission_classes = []
-	
+
 	def post(self, request):
 		username = request.data.get("username")
 		password = request.data.get("password")
@@ -38,12 +38,12 @@ class LoginView(APIView):
 			update_url = f"http://user-service:8000/users/update-profile/"
 			update_response = requests.put(
 				update_url,
-				json={"nickname": nickname, "online_status": True}, ## json={"nickname": nickname, "online": True},  ## Check this if login error
+				json={"nickname": nickname, "online_status": True},
 				headers={"Authorization": f"Bearer {access_token}"}
 			)
 
 			if update_response.status_code != 200:
-				print("Faield to update online status:", update_response.json())
+				print("Failed to update online status:", update_response.json())
 
 			print("Tokens created for user_id:", user_id)
 			return Response(
