@@ -41,25 +41,25 @@ services:
     ports:
       - "5433:5432"
 
-  chat-db:
-    container_name: chat-db
-    build: ./../backend/chat-service/postgres
-    environment:
-      POSTGRES_USER: ${CHAT_SERVICE_USER}
-      POSTGRES_PASSWORD: ${CHAT_SERVICE_PASSWORD}
-      POSTGRES_DB: ${CHAT_SERVICE_DB}
-    volumes:
-      - chat_data:/var/lib/postgresql/data
-    networks:
-      my_network:
-    healthcheck:
-      test: [ "CMD-SHELL", "[ -f /var/lib/postgresql/data/.db_ready ] || exit 1" ]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-    restart: always
-    ports:
-      - "5436:5432"
+  # chat-db:
+  #   container_name: chat-db
+  #   build: ./../backend/chat-service/postgres
+  #   environment:
+  #     POSTGRES_USER: ${CHAT_SERVICE_USER}
+  #     POSTGRES_PASSWORD: ${CHAT_SERVICE_PASSWORD}
+  #     POSTGRES_DB: ${CHAT_SERVICE_DB}
+  #   volumes:
+  #     - chat_data:/var/lib/postgresql/data
+  #   networks:
+  #     my_network:
+  #   healthcheck:
+  #     test: [ "CMD-SHELL", "[ -f /var/lib/postgresql/data/.db_ready ] || exit 1" ]
+  #     interval: 10s
+  #     timeout: 5s
+  #     retries: 5
+  #   restart: always
+  #   ports:
+  #     - "5436:5432"
 
   pong-db:
     container_name: pong-db
@@ -195,7 +195,7 @@ services:
       timeout: 5s
       retries: 5
     depends_on:
-      pong-db:
+      redis:
         condition: service_healthy
     restart: always
     ports:
@@ -335,7 +335,7 @@ volumes:
   user_data:
   auth_data:
   db_data:
-  chat_data:
+  # chat_data:
   pong_data:
   lobby_data:
   redis_data:

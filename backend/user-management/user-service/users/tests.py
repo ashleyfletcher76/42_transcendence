@@ -30,7 +30,10 @@ class UserServiceTests(TestCase):
 		UserProfile.objects.all().delete()
 		User.objects.all().delete()
 
-	# tests for add-friend endpoint
+	##############################
+	## TEST ADD FRIEND ENDPOINT ##
+	##############################
+
 	def test_add_friend(self):
 		url = "/users/add-friend/"
 		payload = {"nickname": "user2", "type": "add"}
@@ -89,7 +92,10 @@ class UserServiceTests(TestCase):
 		self.assertEqual(response.status_code, 404)
 		self.assertEqual(response.data["error"], "Target user not found.")
 
-	# tests for block-user endpoint
+	##############################
+	## TEST BLOCK USER ENDPOINT ##
+	##############################
+
 	def test_block_user(self):
 		url = "/users/block-user/"
 		payload = {"nickname": "user3", "type": "add"}
@@ -151,6 +157,10 @@ class UserServiceTests(TestCase):
 		self.assertEqual(response.status_code, 404)
 		self.assertEqual(response.data["error"], "Target user not found.")
 
+	###########################
+	## TEST NICKNAME UPDATE ##
+	###########################
+
 	def test_update_nickname(self):
 		"""Test updating the nickname successfully."""
 		url = "/users/update-profile/"
@@ -177,6 +187,18 @@ class UserServiceTests(TestCase):
 		self.assertEqual(response.json()["message"], "Nickname is already taken.")
 		self.user1_profile.refresh_from_db()
 		self.assertNotEqual(self.user1_profile.nickname, "existingNickname")
+
+	def test_invalid_nickname_update(self):
+		url = "/users/update-profile/"
+		payload = {"nickname": "Invalid!Name"}
+		response = self.client.put(url, payload)
+
+		self.assertEqual(response.status_code, 400)
+		self.assertIn("Nickname must contain only letters and numbers.", response.data["message"])
+
+	#########################
+	## ONLINE STATUS TESTS ##
+	#########################
 
 	def test_update_online_status_to_true(self):
 		"""Test updating online status to True."""
@@ -227,13 +249,9 @@ class UserServiceTests(TestCase):
 		self.assertEqual(response.json()["success"], False)
 		self.assertEqual(response.json()["message"], "No changes detected in the request.")
 
-	def test_invalid_nickname_update(self):
-		url = "/users/update-profile/"
-		payload = {"nickname": "Invalid!Name"}
-		response = self.client.put(url, payload)
-
-		self.assertEqual(response.status_code, 400)
-		self.assertIn("Nickname must contain only letters and numbers.", response.data["message"])
+	################################
+	## TEST REGISTRATION ENDPOINT ##
+	################################
 
 	def test_invalid_username_registration(self):
 		url = "/users/register/"
@@ -242,3 +260,123 @@ class UserServiceTests(TestCase):
 
 		self.assertEqual(response.status_code, 400)
 		self.assertIn("Username must contain only letters and numbers.", response.data["error"])
+
+	#####################################
+	## TEST SQL INJECTION REGISTRATION ##
+	#####################################
+
+	def test_sql_injection_username_attempts(self):
+		"""Test SQL injection attempts in username field."""
+		username_injection_payloads = [
+			{
+				"username": "user' OR '1'='1",
+				"password": "password123"
+			},
+			{
+				"username": "admin'--",
+				"password": "password123"
+			},
+			{
+				"username": "'; DROP TABLE users; --",
+				"password": "password123"
+			},
+			{
+				"username": "' UNION SELECT * FROM users; --",
+				"password": "password123"
+			}
+		]
+
+		url = "/users/register/"
+		initial_user_count = User.objects.count()
+
+		print("\n=== Username SQL Injection Test Results ===")
+		for payload in username_injection_payloads:
+			print(f"\nTesting username payload: {payload['username']}")
+			response = self.client.post(url, payload)
+			self.assertEqual(response.status_code, 400)
+			self.assertIn(
+				"Username must contain only letters and numbers.",
+				response.data["error"]
+			)
+
+		final_user_count = User.objects.count()
+		print(f"\nInitial user count: {initial_user_count}")
+		print(f"Final user count: {final_user_count}")
+		print("================================\n")
+		self.assertEqual(initial_user_count, final_user_count)
+
+	def test_sql_injection_password_attempts(self):
+		"""Test SQL injection attempts in password field."""
+		password_injection_payloads = [
+			{
+				"username": "normaluser1",
+				"password": "' OR '1'='1"
+			},
+			{
+				"username": "normaluser2",
+				"password": "admin'--"
+			},
+			{
+				"username": "normaluser3",
+				"password": "'; DROP TABLE users; --"
+			},
+			{
+				"username": "normaluser4",
+				"password": "pass' UNION SELECT * FROM users --"
+			}
+		]
+
+		url = "/users/register/"
+		initial_user_count = User.objects.count()
+
+		print("\n=== Password SQL Injection Test Results ===")
+		for payload in password_injection_payloads:
+			print(f"\nTesting password payload: {payload['password']}")
+			response = self.client.post(url, payload)
+			self.assertEqual(response.status_code, 400)
+			# Add your password validation error check here
+			# self.assertIn("Invalid password format", response.data["error"])
+
+		final_user_count = User.objects.count()
+		print(f"\nInitial user count: {initial_user_count}")
+		print(f"Final user count: {final_user_count}")
+		print("================================\n")
+		self.assertEqual(initial_user_count, final_user_count)
+
+	def test_sql_injection_combined_attempts(self):
+		"""Test SQL injection attempts in both username and password fields."""
+		combined_injection_payloads = [
+			{
+				"username": "'; SELECT * FROM users; --",
+				"password": "'; DELETE FROM users; --"
+			},
+			{
+				"username": "robert'; INSERT INTO users VALUES ('hacked','pwned'); --",
+				"password": "pass' UNION SELECT * FROM users --"
+			},
+			{
+				"username": "admin'--",
+				"password": "' OR '1'='1"
+			}
+		]
+
+		url = "/users/register/"
+		initial_user_count = User.objects.count()
+
+		print("\n=== Combined SQL Injection Test Results ===")
+		for payload in combined_injection_payloads:
+			print(f"\nTesting combined payload:")
+			print(f"Username: {payload['username']}")
+			print(f"Password: {payload['password']}")
+			response = self.client.post(url, payload)
+			self.assertEqual(response.status_code, 400)
+			self.assertIn(
+				"Username must contain only letters and numbers.",
+				response.data["error"]
+			)
+
+		final_user_count = User.objects.count()
+		print(f"\nInitial user count: {initial_user_count}")
+		print(f"Final user count: {final_user_count}")
+		print("================================\n")
+		self.assertEqual(initial_user_count, final_user_count)
