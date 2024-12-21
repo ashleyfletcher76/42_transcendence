@@ -255,11 +255,14 @@ class UserServiceTests(TestCase):
 
 	def test_invalid_username_registration(self):
 		url = "/users/register/"
-		payload = {"username": "Invalid!User", "password": "password"}
+		payload = {"username": "Invalid!User", "password": "password123"}
 		response = self.client.post(url, payload)
 
 		self.assertEqual(response.status_code, 400)
-		self.assertIn("Username must contain only letters and numbers.", response.data["error"])
+		self.assertIn(
+			"Username must contain only letters and numbers.",
+			str(response.data['username'][0])
+		)
 
 	#####################################
 	## TEST SQL INJECTION REGISTRATION ##
@@ -296,7 +299,7 @@ class UserServiceTests(TestCase):
 			self.assertEqual(response.status_code, 400)
 			self.assertIn(
 				"Username must contain only letters and numbers.",
-				response.data["error"]
+				str(response.data['username'][0])
 			)
 
 		final_user_count = User.objects.count()
@@ -372,7 +375,7 @@ class UserServiceTests(TestCase):
 			self.assertEqual(response.status_code, 400)
 			self.assertIn(
 				"Username must contain only letters and numbers.",
-				response.data["error"]
+				str(response.data['username'][0])
 			)
 
 		final_user_count = User.objects.count()
