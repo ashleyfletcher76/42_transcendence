@@ -28,4 +28,4 @@ EXPOSE 8000
 ENTRYPOINT [ "/app/entrypoint.sh" ]
 
 # Run the dev server
-CMD ["sh", "-c", "python manage.py makemigrations && python manage.py migrate && python manage.py runserver 0.0.0.0:8000"]
+CMD ["uvicorn", "config.asgi:application", "--host", "0.0.0.0", "--port", "8000", "--workers", "2"]

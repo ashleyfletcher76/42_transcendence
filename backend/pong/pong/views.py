@@ -13,6 +13,10 @@ import logging
 from django.utils import timezone
 from pong.logic.game_logic import handle_local_input, handle_remote_input
 import time
+from .utils.redis_helper import get_game_state, set_game_state, delete_game_state
+from .logic.game_logic import game_logic
+
+
 
 logger = logging.getLogger(__name__)
 
@@ -27,33 +31,26 @@ def health_check(request):
 @api_view(['GET', 'POST'])
 def game_state_view(request, room_name):
     try:
-        game = GameState.objects.get(room_name=room_name)
+        game = get_game_state(room_name)
 
         if request.method == 'POST':
-            if game.player2 == "remote":
-                game.save()
-                serializer = GameStateSerializer(game)
-                return Response(serializer.data)
-
-            if game.finished:
-                serializer = GameStateSerializer(game)
+            if game["player2"] == "remote":
+                return Response(game)
+            if game["finished"]:
                 response_data = {
-                    "game_state": serializer.data,
-                    "winner": game.winner,
+                    "game_state": game,
+                    "winner": game["winner"],
                 }
                 return Response(response_data, status=200)
 
-            if game.paused:
-                if game.game_start_timer > 0:
-                    time_diff = time.time() - game.creation_time
-                    game.game_start_timer = 3 - time_diff
-                    game.save()
-                    serializer = GameStateSerializer(game)
-                    return Response(serializer.data)
-                game.paused = False
-                game.save()
-
-            if not game.paused:
+            if game["paused"]:
+                if game["game_start_timer"] > 0:
+                    time_diff = time.time() - game["creation_time"]
+                    game["game_start_timer"] = int(max(0, 3 - time_diff))
+                    set_game_state(room_name, game)
+                    return Response(game)
+                game["paused"] = False
+            else:
                 player = request.data.get("player", {})
                 keypress_p1 = request.data.get('keypress_p1', {})
                 keypress_p2 = request.data.get('keypress_p2', {})
@@ -61,14 +58,12 @@ def game_state_view(request, room_name):
                     handle_local_input(game, keypress_p1, keypress_p2)
                 else:
                     handle_remote_input(game, keypress_p1, player)
-
-
-            serializer = GameStateSerializer(game)
-            return Response(serializer.data)
+                game_logic(game)
+            set_game_state(room_name, game)
+            return Response(game)
 
         elif request.method == 'GET':
-            serializer = GameStateSerializer(game)
-            return Response(serializer.data)
+            return Response(game)
 
     except GameState.DoesNotExist:
         return Response({'error': 'Game not found'}, status=status.HTTP_404_NOT_FOUND)
@@ -87,19 +82,18 @@ def create_room(request):
         game_type = data.get("gameType", "default")
 
         if game_type == "remote":
-            waiting_room = GameState.objects.filter(player2="remote").first()
+            waiting_room = get_game_state(room_name)
             if waiting_room:
 
-                waiting_room.player2 = player_1
-                waiting_room.player2_timer = time.time()
-                waiting_room.player1_timer = time.time()
-                waiting_room.creation_time = time.time()
-                waiting_room.save()
+                waiting_room["player2"] = player_1
+                waiting_room["player2_timer"] = time.time()
+                waiting_room["player1_timer"] = time.time()
+                waiting_room["creation_time"] = time.time()
 
                 return JsonResponse({
                     "message": "Joined an existing room",
-                    "room_name": waiting_room.room_name,
-                    "game_state": GameStateSerializer(waiting_room).data
+                    "room_name": waiting_room["room_name"],
+                    "game_state": waiting_room
                 }, status=status.HTTP_200_OK)
 
         room_name = 'room-' + str(random.randint(1000, 9999))
@@ -115,35 +109,34 @@ def create_room(request):
         elif game_type == "private":
             player_2 = p2
 
-        # Create a new game state instance
-        game_state = GameState.objects.create(
-            room_name=room_name,
-            ball_x=0,
-            ball_y=0,
-            ball_speed_x=random.choice([0.02, -0.02]),
-            ball_speed_y=random.choice([0.02, -0.02]),
-            left_paddle_y=0,
-            right_paddle_y=0,
-            left_score=0,
-            right_score=0,
-            player1=player_1,
-            player2=player_2,
-            paused=True,
-            game_type=game_type,
-            creation_time=time.time(),
-            player1_timer=time.time(),
-        )
-        game_state.save()
+        game_state = {
+            "room_name" : room_name,
+            "ball_x" : 0,
+            "ball_y" : 0,
+            "ball_speed_x" : random.choice([0.02, -0.02]),
+            "ball_speed_y" : random.choice([0.02, -0.02]),
+            "left_paddle_y" : 0,
+            "right_paddle_y" : 0,
+            "left_score" : 0,
+            "right_score" : 0,
+            "player1" : player_1,
+            "player2" : player_2,
+            "paused" : True,
+            "game_type" : game_type,
+            "game_start_timer" : 3,
+            "creation_time" : time.time(),
+            "player1_timer" : time.time(),
+            "finished" : False,
+        }
 
-        serializer = GameStateSerializer(game_state)
-        print(game_state.player1)
-        print(game_state.player2)
+        set_game_state(room_name, game_state)
+
         response_data = {
             "message": "Room created successfully",
             "room_name": room_name,
-            "game_state": serializer.data,
-            "player1": serializer.data["player1"],
-            "player2": serializer.data["player2"],
+            "game_state": game_state,
+            "player1": game_state["player1"],
+            "player2": game_state["player2"],
         }
 
         return JsonResponse(response_data, status=status.HTTP_201_CREATED)
