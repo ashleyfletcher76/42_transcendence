@@ -1,1 +1,4 @@
 docker/.env
+
+sqlmap/
+.DS_Store

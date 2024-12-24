@@ -54,7 +54,7 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 
-	# "custom_auth.middleware.HealthCheckLoggingMiddleware",
+	"custom_auth.middleware.HealthCheckLoggingMiddleware",
 ]
 
 ROOT_URLCONF = "config.urls"
@@ -96,13 +96,13 @@ DATABASES = {
 if "test" in sys.argv:
     DATABASES["default"] = {
         "ENGINE": "django.db.backends.postgresql",
-        "NAME": "test_" + os.environ.get("POSTGRES_DB"),
+        "NAME": "test_" + os.environ.get("AUTH_SERVICE_DB"),
         "USER": os.environ.get("AUTH_SERVICE_USER"),
         "PASSWORD": os.environ.get("AUTH_SERVICE_PASSWORD"),
         "HOST": "auth-db",
         "PORT": "5432",
         "OPTIONS": {
-            "sslmode": "require",  # we use this to enforce ssl on the database also
+            "sslmode": "disable",  # we use this to enforce ssl on the database also
         },
     }
 
@@ -117,7 +117,7 @@ REST_FRAMEWORK = {
 
 # JWT settings for user authentication
 SIMPLE_JWT = {
-    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=5),
+    "ACCESS_TOKEN_LIFETIME": timedelta(hours=6),
     "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
     "ROTATE_REFRESH_TOKENS": True,
     "BLACKLIST_AFTER_ROTATION": True,

@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     "match_history",
     "rest_framework",
     "django_extensions",
+    "rest_framework_simplejwt",
 ]
 
 MIDDLEWARE = [
@@ -136,6 +137,23 @@ REST_FRAMEWORK = {
         "rest_framework.permissions.IsAuthenticated",
     ],
 }
+
+# For testing purposes, you might want to add these JWT settings
+from datetime import timedelta
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(days=1),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
+    'ROTATE_REFRESH_TOKENS': False,
+    'ALGORITHM': 'HS256',
+    'SIGNING_KEY': SECRET_KEY, 
+    'AUTH_HEADER_TYPES': ('Bearer',),
+}
+
+# Override settings during testing
+if "test" in sys.argv:
+    REST_FRAMEWORK["DEFAULT_AUTHENTICATION_CLASSES"] = (
+        "rest_framework.authentication.SessionAuthentication",
+    )
 
 # Internationalization
 # https://docs.djangoproject.com/en/5.1/topics/i18n/
