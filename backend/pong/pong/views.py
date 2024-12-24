@@ -69,7 +69,6 @@ def game_state_view(request, room_name):
         return Response({'error': 'Game not found'}, status=status.HTTP_404_NOT_FOUND)
 
 
-
 @api_view(['POST'])
 def create_room(request):
     try:

@@ -31,7 +31,8 @@ SECRET_KEY = "django-insecure-6+l61&!syw0@8c2$b$%%^s$1w3xr&830=^h75ihtj=2msha0tc
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ["*"]
+ALLOWED_HOSTS = ["*",
+                 "https://localhost"]
 APPEND_SLASH = False
 
 CACHES = {
@@ -64,12 +65,12 @@ MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
+    "corsheaders.middleware.CorsMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
-
-	"pong.middleware.HealthCheckLoggingMiddleware",
+    "pong.middleware.HealthCheckLoggingMiddleware",
 ]
 
 CORS_ALLOW_ALL_ORIGINS = True
@@ -93,6 +94,8 @@ TEMPLATES = [
         },
     },
 ]
+
+# ASGI_APPLICATION = 'config.asgi.application'
 
 WSGI_APPLICATION = "config.wsgi.application"
 
