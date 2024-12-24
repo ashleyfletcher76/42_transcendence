@@ -130,10 +130,10 @@ def get_profile_info(request):
 			"username": user.username,
 			"nickname": profile.nickname,
 			"avatar": profile.avatar.url if profile.avatar else None,
-			"trophies": match_history.get("trophies", "TBD"),
-			"games_total": match_history.get("games_total", "TBD"),
-			"wins": match_history.get("wins", "TBD"),
-			"losses": match_history.get("losses", "TBD"),
+			"trophies": match_history.get("trophies", 0),
+			"games_total": match_history.get("games_total", 0),
+			"wins": match_history.get("wins", 0),
+			"losses": match_history.get("losses", 0),
 			"blocked": blocked,
 			"friends": friends,
 			"history": match_history.get("history", []),
@@ -182,7 +182,7 @@ def get_all_profiles(request):
 				"username": profile.user.username,
 				"nickname": profile.nickname,
 				"avatar": profile.avatar.url if profile.avatar else None,
-				"trophies": trophies_map.get(str(profile.user.id), "TBD"),
+				"trophies": trophies_map.get(str(profile.user.id), 0),
 				"status": "online" if profile.online else "offline",
 			})
 
