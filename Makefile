@@ -22,18 +22,31 @@ re-new: fclean new
 # full clean of all the volumes etc
 fclean:
 	@read -p "Are you sure you want to clean everything? (y/n): " confirm && if [ "$$confirm" = "y" ]; then \
+		echo "Stopping chat-service first..."; \
+		docker stop chat-service || echo "chat-service is not running."; \
+		echo "Shutting down all services..."; \
 		$(DOCKER_COMPOSE) down -v --rmi all; \
+		echo "Cleaning up unused Docker resources..."; \
 		docker system prune -f --volumes; \
 	else \
 		echo "Aborted fclean."; \
 	fi
+
 
 logs-%:
 	$(DOCKER_COMPOSE) logs -f $*
 
 # stop the running services but leave volumes intact
 down:
+	@echo "Stopping containers in order..."
+	@docker stop chat-service || echo "chat-service is not running."
+	@docker stop auth-service || echo "auth-service is not running."
+	@docker stop user-service || echo "user-service is not running."
+	@docker stop pong || echo "pong is not running."
+	@docker stop redis || echo "redis is not running."
+	@docker stop nginx || echo "nginx is not running."
 	$(DOCKER_COMPOSE) down
+
 
 # remove only the volumes
 clean-volumes:
@@ -115,6 +128,6 @@ exec-%:
 
 # to run unit testing for all
 test:
-	$(DOCKER_COMPOSE) exec user-service python manage.py test
+	$(DOCKER_COMPOSE) exec auth-service python manage.py test
 
 .PHONY: up build-nocache re fclean logs down clean-volumes clean-images clean-all superuser rebuild

@@ -18,7 +18,12 @@ class UserProfile(models.Model):
 			)
 		],
 	)
-	avatar = models.ImageField(upload_to="avatars/", blank=True, null=True)
+	avatar = models.ImageField(
+		upload_to="avatars/",
+		blank=False,
+		null=False,
+		default="default_photo/default_photo.png",
+	)
 	bio = models.TextField(blank=True)
 
 	friends = models.ManyToManyField('self', symmetrical=True, blank=True, related_name='friend_profile')

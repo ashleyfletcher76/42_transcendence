@@ -1,19 +1,37 @@
 import json, requests, threading, redis
 from channels.generic.websocket import AsyncWebsocketConsumer
 from threading import Lock, Thread
-from chat.redis_client import get_redis_client
+from chat.redis_client import get_redis_client, should_stop, cleanup_redis
+import signal, threading
+from datetime import datetime, timedelta
 
 user_channels = {}
+MAX_TOTAL_CONNECTIONS = 1000
+MAX_CONNECTIONS_PER_USER = 2
+current_total_connections = 0
 channels_lock = Lock()
 stop_signal = threading.Event()
+should_stop = threading.Event()
+_pubsub = None
+MAX_MESSAGES_PER_MINUTE = 60
 
 class ChatConsumer(AsyncWebsocketConsumer):
 	def __init__(self, *args, **kwargs):
 		super().__init__(*args, **kwargs)
 		self.nickname = None
+		self.message_count = 0
+		self.last_reset = datetime.now()
 
 	async def connect(self):
 		"""Handle WebSocket connection."""
+		global current_total_connections
+
+		# check connection limits
+		with channels_lock:
+			if current_total_connections >= MAX_TOTAL_CONNECTIONS:
+				print("[ERROR] Maximum total connections reached")
+				await self.close(code=1013)
+				return
 
 		# extract JWT token from headers
 		token = self.get_jwt_from_headers(self.scope["headers"])
@@ -33,6 +51,14 @@ class ChatConsumer(AsyncWebsocketConsumer):
 			await self.close(code=4001)
 			return
 
+		# check per-user connection limits
+		with channels_lock:
+			if self.nickname in user_channels:
+				if len(user_channels[self.nickname]) >= MAX_CONNECTIONS_PER_USER:
+					print(f"[ERROR] Maximum connections per user reached for {self.nickname}")
+					await self.close(code=1013)
+					return
+
 		# add user to "chat_all" group
 		await self.channel_layer.group_add("chat_all", self.channel_name)
 
@@ -41,11 +67,12 @@ class ChatConsumer(AsyncWebsocketConsumer):
 			if self.nickname not in user_channels:
 				user_channels[self.nickname] = []
 			user_channels[self.nickname].append(self)
+			current_total_connections += 1
 			try:
 				redis_client = get_redis_client()
 				status_event = {
 					"action": "online_status_update",
-					"old_nickname": self.nickname,
+					"nickname": self.nickname,
 					"online_status": True
 				}
 				redis_client.publish("chat_service_updates", json.dumps(status_event))
@@ -57,6 +84,8 @@ class ChatConsumer(AsyncWebsocketConsumer):
 
 	async def disconnect(self, close_code):
 		"""Handle WebSocket disconnect."""
+		global current_total_connections
+
 		if not self.nickname:
 			print("[DEBUG] No nickname set for this consumer, skipping cleanup.")
 			return
@@ -69,6 +98,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
 			print(f"[DEBUG] Disconnecting {self.nickname} from channels.")
 			if self.nickname in user_channels:
 				user_channels[self.nickname].remove(self)
+				current_total_connections -= 1
 				if not user_channels[self.nickname]:
 					del user_channels[self.nickname]
 					print(f"[DEBUG] No channels left for {self.nickname}, publishing offline status.")
@@ -76,7 +106,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
 						redis_client = get_redis_client()
 						status_event = {
 							"action": "online_status_update",
-							"old_nickname": self.nickname,
+							"nickname": self.nickname,
 							"online_status": False
 						}
 						redis_client.publish("chat_service_updates", json.dumps(status_event))
@@ -90,8 +120,24 @@ class ChatConsumer(AsyncWebsocketConsumer):
 
 
 	async def receive(self, text_data):
+		# Size limit
+		if len(text_data) > 1024 * 10:
+			await self.send(text_data=json.dumps({"error": "Message too large"}))
+			return
+
+		# Rate limit
+		now = datetime.now()
+		if now - self.last_reset > timedelta(minutes=1):
+			self.message_count = 0
+			self.last_reset = now
+
+		self.message_count += 1
+		if self.message_count > MAX_MESSAGES_PER_MINUTE:
+			await self.send(text_data=json.dumps({"error": "Rate limit exceeded"}))
+			return
+
 		try:
-			# Parse incoming JSON data
+			# parse incoming JSON data
 			data = json.loads(text_data)
 			message_type = data.get("type")
 
@@ -165,32 +211,52 @@ class ChatConsumer(AsyncWebsocketConsumer):
 				return header[1].decode("utf-8").split("Bearer ")[-1]
 		return None
 
-
 ## REDIS LISTENER FOR UPDATING NICKNAME
 def redis_listener():
 	"""Listen for Redis events and update user_channels."""
+	global _pubsub
+
+	if should_stop.is_set():
+		return
+
 	try:
 		redis_client = get_redis_client()
-		pubsub = redis_client.pubsub()
-		pubsub.subscribe("user_service_updates")
+		_pubsub = redis_client.pubsub()
+		_pubsub.subscribe("user_service_updates")
 		print("[INFO] Redis listener started for chat-service.")
-	except redis.ConnectionError as e:
-		print(f"[ERROR] Failed to connect to Redis: {e}")
-		return  # Exit the thread gracefully
 
-	for message in pubsub.listen():
-		# print(f"[DEBUG] Received message: {message}")
-		if stop_signal.is_set():
-			print("[INFO] Redis listener stopping gracefully.")
-			break
-		if message["type"] == "message":
+		while not should_stop.is_set():
 			try:
-				event_data = json.loads(message["data"])
-				# print(f"[DEBUG] Event data: {event_data}")
-				handle_user_service_event(event_data)
-			except json.JSONDecodeError as e:
-				print(f"[ERROR] Failed to decode Redis message: {e}. Message ignored.")
+				message = _pubsub.get_message(timeout=1.0)
+				if message and message["type"] == "message":
+					try:
+						event_data = json.loads(message["data"])
+						handle_user_service_event(event_data)
+					except json.JSONDecodeError as e:
+						print(f"[ERROR] Failed to decode Redis message: {e}")
+			except redis.ConnectionError:
+				if not should_stop.is_set():
+					print("[ERROR] Redis connection error")
+				break
+			except ValueError:
+				if not should_stop.is_set():
+					print("[ERROR] Connection already closed")
+				break
+			except Exception as e:
+				if not should_stop.is_set():
+					print(f"[ERROR] Unexpected error in Redis listener: {e}")
+				break
 
+	except Exception as e:
+		if not should_stop.is_set():
+			print(f"[ERROR] Failed to initialize Redis connection: {e}")
+	finally:
+		if _pubsub:
+			try:
+				_pubsub.close()
+			except Exception:
+				pass
+		print("[INFO] Redis listener stopped")
 
 def handle_user_service_event(event_data):
 	"""Handle events from user-service"""
@@ -215,7 +281,16 @@ def handle_user_service_event(event_data):
 	else:
 		print(f"[WARNING] Unhandled event: {event_data}")
 
-## Start the thread inside here to avoid circular imports that could happen in apps.py ##
+## start the thread inside here to avoid circular imports##
 listener_thread = Thread(target=redis_listener, daemon=True)
 listener_thread.start()
 print("[INFO] Redis listener thread started in chat-service.")
+
+def handle_shutdown(signum, frame):
+	"""Handle shutdown signals"""
+	print("[INFO] Received shutdown signal, cleaning up...")
+	cleanup_redis()
+
+# register signal handlers
+signal.signal(signal.SIGTERM, handle_shutdown)
+signal.signal(signal.SIGINT, handle_shutdown)
