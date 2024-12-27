@@ -1,0 +1,165 @@
+<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:133.0) Gecko/20100101 Firefox/133.0" version="24.8.6">
+  <diagram name="Page-1" id="DvOJFajsWsDJkNUpYscc">
+    <mxGraphModel dx="1376" dy="795" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="2lE5Eo7Lk-MTYAhb3dyY-4" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="2lE5Eo7Lk-MTYAhb3dyY-1" target="2lE5Eo7Lk-MTYAhb3dyY-3" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="2lE5Eo7Lk-MTYAhb3dyY-1" value="&lt;div align=&quot;center&quot;&gt;&lt;font style=&quot;font-size: 20px;&quot;&gt;Client&lt;/font&gt;&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;align=center;fillColor=#ffe6cc;strokeColor=#d79b00;" parent="1" vertex="1">
+          <mxGeometry x="110" y="40" width="120" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="2lE5Eo7Lk-MTYAhb3dyY-6" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="2lE5Eo7Lk-MTYAhb3dyY-2" target="2lE5Eo7Lk-MTYAhb3dyY-5" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="2lE5Eo7Lk-MTYAhb3dyY-2" value="&lt;div style=&quot;font-size: 20px;&quot; align=&quot;center&quot;&gt;&lt;font style=&quot;font-size: 20px;&quot;&gt;Server&lt;/font&gt;&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;align=center;fillColor=#dae8fc;strokeColor=#6c8ebf;" parent="1" vertex="1">
+          <mxGeometry x="652.5" y="40" width="120" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="2lE5Eo7Lk-MTYAhb3dyY-7" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.25;entryDx=0;entryDy=0;" parent="1" source="2lE5Eo7Lk-MTYAhb3dyY-3" target="2lE5Eo7Lk-MTYAhb3dyY-5" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="350" y="180" />
+              <mxPoint x="350" y="180" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="wUmW1Fx09mTGbAiuR99M-2" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="2lE5Eo7Lk-MTYAhb3dyY-3" target="wUmW1Fx09mTGbAiuR99M-1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="2lE5Eo7Lk-MTYAhb3dyY-3" value="&lt;div&gt;&lt;font style=&quot;font-size: 13px;&quot;&gt;&lt;b&gt;Choose Game (gameTypes):&lt;/b&gt;&lt;/font&gt;&lt;/div&gt;&lt;div align=&quot;center&quot;&gt;-Single Player (&quot;computer&quot;)&lt;br&gt;&lt;/div&gt;&lt;div align=&quot;center&quot;&gt;-Local Multiplayer (&quot;local&quot;)&lt;/div&gt;&lt;div align=&quot;center&quot;&gt;-Remote Multiplayer (&quot;remote&quot;)&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;align=left;fillColor=#ffe6cc;strokeColor=#d79b00;" parent="1" vertex="1">
+          <mxGeometry x="75" y="150" width="190" height="120" as="geometry" />
+        </mxCell>
+        <mxCell id="2lE5Eo7Lk-MTYAhb3dyY-14" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.75;exitDx=0;exitDy=0;entryX=1;entryY=0.75;entryDx=0;entryDy=0;" parent="1" source="2lE5Eo7Lk-MTYAhb3dyY-5" target="2lE5Eo7Lk-MTYAhb3dyY-3" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="wUmW1Fx09mTGbAiuR99M-5" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="2lE5Eo7Lk-MTYAhb3dyY-5" target="wUmW1Fx09mTGbAiuR99M-4">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="2lE5Eo7Lk-MTYAhb3dyY-5" value="&lt;div&gt;&lt;b&gt;create or search room depending on the gameType&lt;/b&gt;&lt;/div&gt;&lt;div&gt;&lt;b&gt;response depending on gameType&lt;/b&gt;&lt;/div&gt;&lt;div&gt;&lt;b&gt;&lt;br&gt;&lt;/b&gt;&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;b&gt;&lt;font color=&quot;#e01b24&quot;&gt;Create websocket for the room&lt;/font&gt;&lt;/b&gt;&lt;br&gt;&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;align=left;fillColor=#dae8fc;strokeColor=#6c8ebf;" parent="1" vertex="1">
+          <mxGeometry x="565" y="150" width="295" height="120" as="geometry" />
+        </mxCell>
+        <mxCell id="2lE5Eo7Lk-MTYAhb3dyY-9" value="&lt;div&gt;&lt;span class=&quot;hljs-punctuation&quot;&gt;&lt;b&gt;api call /pong/create-room&lt;br&gt;&lt;/b&gt;&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;span class=&quot;hljs-punctuation&quot;&gt;{&lt;/span&gt;&lt;/div&gt;&amp;nbsp;&amp;nbsp; &lt;span class=&quot;hljs-attr&quot;&gt;&quot;player&quot;&lt;/span&gt;&lt;span class=&quot;hljs-punctuation&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;hljs-string&quot;&gt;&quot;JohnDoe&quot;&lt;/span&gt;&lt;span class=&quot;hljs-punctuation&quot;&gt;,&lt;/span&gt;&lt;br&gt;&amp;nbsp;&amp;nbsp; &lt;span class=&quot;hljs-attr&quot;&gt;&quot;gameType&quot;&lt;/span&gt;&lt;span class=&quot;hljs-punctuation&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;hljs-string&quot;&gt;&quot;computer&quot;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;hljs-punctuation&quot;&gt;}&lt;/span&gt;" style="text;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;" parent="1" vertex="1">
+          <mxGeometry x="315" y="120" width="190" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="2lE5Eo7Lk-MTYAhb3dyY-11" value="&lt;div&gt;&lt;span class=&quot;hljs-punctuation&quot;&gt;&lt;b&gt;response&lt;/b&gt; {&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;span class=&quot;hljs-punctuation&quot;&gt;&amp;nbsp;&amp;nbsp; &quot;room_name&quot;: &quot;someName&quot;&lt;br&gt;&lt;/span&gt;&lt;/div&gt;&amp;nbsp;&amp;nbsp; &lt;span class=&quot;hljs-attr&quot;&gt;&quot;player1&quot;&lt;/span&gt;&lt;span class=&quot;hljs-punctuation&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;hljs-string&quot;&gt;&quot;JohnDoe&quot;&lt;/span&gt;&lt;span class=&quot;hljs-punctuation&quot;&gt;,&lt;/span&gt;&lt;br&gt;&amp;nbsp;&amp;nbsp; &lt;span class=&quot;hljs-attr&quot;&gt;&quot;player2&quot;&lt;/span&gt;&lt;span class=&quot;hljs-punctuation&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;hljs-string&quot;&gt;&quot;computer&quot;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;hljs-punctuation&quot;&gt;}&lt;/span&gt;" style="text;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" parent="1" vertex="1">
+          <mxGeometry x="320" y="220" width="180" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="2lE5Eo7Lk-MTYAhb3dyY-21" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.25;exitDx=0;exitDy=0;entryX=0;entryY=0.25;entryDx=0;entryDy=0;" parent="1" source="2lE5Eo7Lk-MTYAhb3dyY-17" target="2lE5Eo7Lk-MTYAhb3dyY-18" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="2lE5Eo7Lk-MTYAhb3dyY-30" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="2lE5Eo7Lk-MTYAhb3dyY-17" target="2lE5Eo7Lk-MTYAhb3dyY-29" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="2lE5Eo7Lk-MTYAhb3dyY-17" value="&lt;div&gt;&lt;b&gt;Start Game:&lt;/b&gt;&lt;/div&gt;&lt;div&gt;keypress &quot;&quot; &quot;up&quot; or &quot;down&quot;&lt;/div&gt;&lt;div&gt;keypress_p2 is &quot;&quot;(empty) if it&#39;s not a local multiplayer game&lt;br&gt;&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;align=left;fillColor=#ffe6cc;strokeColor=#d79b00;" parent="1" vertex="1">
+          <mxGeometry x="75" y="705" width="190" height="120" as="geometry" />
+        </mxCell>
+        <mxCell id="2lE5Eo7Lk-MTYAhb3dyY-23" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.75;exitDx=0;exitDy=0;entryX=1;entryY=0.75;entryDx=0;entryDy=0;" parent="1" source="2lE5Eo7Lk-MTYAhb3dyY-18" target="2lE5Eo7Lk-MTYAhb3dyY-17" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="2lE5Eo7Lk-MTYAhb3dyY-18" value="&lt;div align=&quot;center&quot;&gt;&lt;b&gt;calculate next frame&lt;/b&gt;:&lt;/div&gt;&lt;div align=&quot;center&quot;&gt;&lt;br&gt;&lt;/div&gt;&lt;div align=&quot;center&quot;&gt;set winner only after finishing the game&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;font color=&quot;#ff0000&quot;&gt;choose a framerate and send in this interval the game state messages&lt;/font&gt;&lt;br&gt;&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;align=center;fillColor=#dae8fc;strokeColor=#6c8ebf;" parent="1" vertex="1">
+          <mxGeometry x="565" y="705" width="295" height="120" as="geometry" />
+        </mxCell>
+        <mxCell id="2lE5Eo7Lk-MTYAhb3dyY-22" value="&lt;div&gt;&lt;span class=&quot;hljs-punctuation&quot;&gt;&lt;b&gt;websocket message&lt;br&gt;&lt;/b&gt;&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;span class=&quot;hljs-punctuation&quot;&gt;{&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;span class=&quot;hljs-punctuation&quot;&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;type_p1: &quot;start_move&quot;,&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;span class=&quot;hljs-punctuation&quot;&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;direction_p1: &quot;up&quot;,&lt;br&gt;&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;span class=&quot;hljs-punctuation&quot;&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;type_p2: &quot;stop_move&quot;,&lt;/span&gt;&lt;div&gt;&lt;span class=&quot;hljs-punctuation&quot;&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;direction_p2: &quot;&quot;&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;span class=&quot;hljs-punctuation&quot;&gt;}&lt;/span&gt;" style="text;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;" parent="1" vertex="1">
+          <mxGeometry x="290" y="645" width="240" height="110" as="geometry" />
+        </mxCell>
+        <mxCell id="2lE5Eo7Lk-MTYAhb3dyY-24" value="&lt;div&gt;&lt;span class=&quot;hljs-punctuation&quot;&gt;&lt;b&gt;websocket message&lt;/b&gt;&lt;br&gt;&lt;/span&gt;&lt;/div&gt;&amp;nbsp;{&lt;br&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp; &quot;ball_x&quot;: 0,&lt;br&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp; &quot;ball_y&quot;: 0,&lt;br&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp; &quot;left_paddle_y&quot;: -1,&lt;br&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp; &quot;right_paddle_y&quot;: 1,&lt;br&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp; &quot;left_score&quot;: 3,&lt;br&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp; &quot;right_score&quot;: 1,&lt;br&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp; &quot;winner&quot;: &quot;Josh&quot;&lt;br&gt;}" style="text;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" parent="1" vertex="1">
+          <mxGeometry x="350" y="775" width="120" height="150" as="geometry" />
+        </mxCell>
+        <mxCell id="2lE5Eo7Lk-MTYAhb3dyY-25" value="&lt;div&gt;if (room_name)&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&lt;/span&gt;&lt;/span&gt;start_game&lt;/div&gt;" style="text;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="80" y="320" width="110" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="2lE5Eo7Lk-MTYAhb3dyY-29" value="&lt;div align=&quot;center&quot;&gt;&lt;b&gt;Display Winner&lt;/b&gt;&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;align=center;fillColor=#ffe6cc;strokeColor=#d79b00;" parent="1" vertex="1">
+          <mxGeometry x="75" y="935" width="190" height="120" as="geometry" />
+        </mxCell>
+        <mxCell id="2lE5Eo7Lk-MTYAhb3dyY-31" value="&lt;div&gt;if (winner)&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;end_game()&lt;/span&gt;&lt;/span&gt;&lt;/div&gt;" style="text;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="70" y="865" width="110" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="2lE5Eo7Lk-MTYAhb3dyY-32" value="" style="endArrow=classic;startArrow=none;html=1;rounded=0;endFill=1;startFill=0;" parent="1" source="2lE5Eo7Lk-MTYAhb3dyY-39" edge="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="730" y="1325" as="sourcePoint" />
+            <mxPoint x="730" y="965" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="2lE5Eo7Lk-MTYAhb3dyY-33" value="" style="endArrow=classic;startArrow=classic;html=1;rounded=0;" parent="1" edge="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="540" y="1145" as="sourcePoint" />
+            <mxPoint x="920" y="1145" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="2lE5Eo7Lk-MTYAhb3dyY-34" value="y" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" parent="1" vertex="1">
+          <mxGeometry x="697.5" y="953" width="30" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="2lE5Eo7Lk-MTYAhb3dyY-35" value="x" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" parent="1" vertex="1">
+          <mxGeometry x="900" y="1145" width="30" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="2lE5Eo7Lk-MTYAhb3dyY-36" value="Coordinates Pong Game" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" parent="1" vertex="1">
+          <mxGeometry x="565" y="1005" width="150" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="2lE5Eo7Lk-MTYAhb3dyY-37" value="" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="550" y="1245" width="15" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="2lE5Eo7Lk-MTYAhb3dyY-38" value="" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="890" y="965" width="15" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="2lE5Eo7Lk-MTYAhb3dyY-42" value="" style="endArrow=none;startArrow=classic;html=1;rounded=0;endFill=0;" parent="1" target="2lE5Eo7Lk-MTYAhb3dyY-39" edge="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="730" y="1325" as="sourcePoint" />
+            <mxPoint x="730" y="965" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="2lE5Eo7Lk-MTYAhb3dyY-39" value="" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;" parent="1" vertex="1">
+          <mxGeometry x="720" y="1135" width="20" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="2lE5Eo7Lk-MTYAhb3dyY-43" value="Ball (0/0)" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" parent="1" vertex="1">
+          <mxGeometry x="650" y="1105" width="70" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="2lE5Eo7Lk-MTYAhb3dyY-44" value="left_paddle_y (-1)" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" parent="1" vertex="1">
+          <mxGeometry x="497.5" y="1215" width="120" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="2lE5Eo7Lk-MTYAhb3dyY-45" value="right_paddle_y (1)" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" parent="1" vertex="1">
+          <mxGeometry x="810" y="1045" width="120" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="wUmW1Fx09mTGbAiuR99M-6" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.25;exitDx=0;exitDy=0;entryX=0;entryY=0.25;entryDx=0;entryDy=0;" edge="1" parent="1" source="wUmW1Fx09mTGbAiuR99M-1" target="wUmW1Fx09mTGbAiuR99M-4">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="wUmW1Fx09mTGbAiuR99M-9" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="wUmW1Fx09mTGbAiuR99M-1" target="2lE5Eo7Lk-MTYAhb3dyY-17">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="wUmW1Fx09mTGbAiuR99M-1" value="&lt;div&gt;&lt;b&gt;&lt;font style=&quot;font-size: 14px;&quot;&gt;connect to websocket-url:&lt;/font&gt;&lt;/b&gt;&lt;/div&gt;&lt;div&gt;&lt;div style=&quot;color: #cccccc;background-color: #1f1f1f;font-family: &#39;Droid Sans Mono&#39;, &#39;monospace&#39;, monospace;font-weight: normal;font-size: 14px;line-height: 19px;white-space: pre;&quot;&gt;&lt;div&gt;&lt;span style=&quot;color: #ce9178;&quot;&gt;pong-game/&lt;/span&gt;&lt;span style=&quot;color: #569cd6;&quot;&gt;${&lt;/span&gt;&lt;span style=&quot;color: #9cdcfe;&quot;&gt;roomName&lt;/span&gt;&lt;span style=&quot;color: #569cd6;&quot;&gt;}&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;color: #569cd6;&quot;&gt;&lt;br&gt;&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;color: #569cd6;&quot;&gt;same logic like &lt;br&gt;&lt;/span&gt;&lt;div style=&quot;color: #cccccc;background-color: #1f1f1f;font-family: &#39;Droid Sans Mono&#39;, &#39;monospace&#39;, monospace;font-weight: normal;font-size: 14px;line-height: 19px;white-space: pre;&quot;&gt;&lt;div&gt;&lt;span style=&quot;color: #ce9178;&quot;&gt;tournament/&lt;/span&gt;&lt;span style=&quot;color: #569cd6;&quot;&gt;${&lt;/span&gt;&lt;span style=&quot;color: #9cdcfe;&quot;&gt;tournamentName&lt;/span&gt;&lt;span style=&quot;color: #569cd6;&quot;&gt;}&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;align=left;fillColor=#ffe6cc;strokeColor=#d79b00;" vertex="1" parent="1">
+          <mxGeometry x="37.5" y="370" width="265" height="120" as="geometry" />
+        </mxCell>
+        <mxCell id="wUmW1Fx09mTGbAiuR99M-10" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="wUmW1Fx09mTGbAiuR99M-4" target="2lE5Eo7Lk-MTYAhb3dyY-18">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="wUmW1Fx09mTGbAiuR99M-4" value="&lt;div&gt;&lt;b&gt;create or search room depending on the gameType&lt;/b&gt;&lt;/div&gt;&lt;div&gt;&lt;b&gt;response depending on gameType&lt;/b&gt;&lt;/div&gt;&lt;div&gt;&lt;b&gt;&lt;br&gt;&lt;/b&gt;&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;b&gt;&lt;font color=&quot;#e01b24&quot;&gt;Create websocket for the room&lt;/font&gt;&lt;/b&gt;&lt;br&gt;&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;align=left;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="565" y="370" width="295" height="120" as="geometry" />
+        </mxCell>
+        <mxCell id="wUmW1Fx09mTGbAiuR99M-7" value="connect event" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="350" y="368" width="100" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="wUmW1Fx09mTGbAiuR99M-8" value="&lt;div&gt;&lt;font color=&quot;#e01b24&quot;&gt;Message get send only after change in keypress for reducing connection load&lt;br&gt;&lt;/font&gt;&lt;/div&gt;&lt;div&gt;&lt;font color=&quot;#e01b24&quot;&gt;therefore only the start and end of a keypress is send (press and release event)&lt;br&gt;&lt;/font&gt;&lt;/div&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="215" y="610" width="440" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="wUmW1Fx09mTGbAiuR99M-11" value="&lt;div&gt;&lt;span class=&quot;hljs-punctuation&quot;&gt;&lt;b&gt;websocket message&lt;br&gt;&lt;/b&gt;&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;span class=&quot;hljs-punctuation&quot;&gt;{&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;span class=&quot;hljs-punctuation&quot;&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;type_p1: &quot;start_move&quot;,&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;span class=&quot;hljs-punctuation&quot;&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;direction_p1: &quot;up&quot;,&lt;br&gt;&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;span class=&quot;hljs-punctuation&quot;&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;type_p2: &quot;&quot;,&lt;/span&gt;&lt;div&gt;&lt;span class=&quot;hljs-punctuation&quot;&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;direction_p2: &quot;&quot;&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;span class=&quot;hljs-punctuation&quot;&gt;}&lt;/span&gt;" style="text;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;" vertex="1" parent="1">
+          <mxGeometry x="940" y="550" width="240" height="110" as="geometry" />
+        </mxCell>
+        <mxCell id="wUmW1Fx09mTGbAiuR99M-12" value="&lt;div&gt;&lt;span class=&quot;hljs-punctuation&quot;&gt;&lt;b&gt;websocket message&lt;br&gt;&lt;/b&gt;&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;span class=&quot;hljs-punctuation&quot;&gt;{&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;span class=&quot;hljs-punctuation&quot;&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;type_p1: &quot;stop_move&quot;,&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;span class=&quot;hljs-punctuation&quot;&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;direction_p1: &quot;&quot;,&lt;br&gt;&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;span class=&quot;hljs-punctuation&quot;&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;type_p2: &quot;&quot;,&lt;/span&gt;&lt;div&gt;&lt;span class=&quot;hljs-punctuation&quot;&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;direction_p2: &quot;&quot;&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;span class=&quot;hljs-punctuation&quot;&gt;}&lt;/span&gt;" style="text;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;" vertex="1" parent="1">
+          <mxGeometry x="940" y="680" width="240" height="110" as="geometry" />
+        </mxCell>
+        <mxCell id="wUmW1Fx09mTGbAiuR99M-13" value="Starts the paddle move in direction up" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="1200" y="558" width="220" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="wUmW1Fx09mTGbAiuR99M-14" value="Stops the paddle movement" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="1225" y="680" width="170" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="wUmW1Fx09mTGbAiuR99M-15" value="&lt;div&gt;&lt;span class=&quot;hljs-punctuation&quot;&gt;&lt;b&gt;websocket message&lt;br&gt;&lt;/b&gt;&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;span class=&quot;hljs-punctuation&quot;&gt;{&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;span class=&quot;hljs-punctuation&quot;&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;type_p1: &quot;start_move&quot;,&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;span class=&quot;hljs-punctuation&quot;&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;direction_p1: &quot;down&quot;,&lt;br&gt;&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;span class=&quot;hljs-punctuation&quot;&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;type_p2: &quot;&quot;,&lt;/span&gt;&lt;div&gt;&lt;span class=&quot;hljs-punctuation&quot;&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;direction_p2: &quot;&quot;&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;span class=&quot;hljs-punctuation&quot;&gt;}&lt;/span&gt;" style="text;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;" vertex="1" parent="1">
+          <mxGeometry x="940" y="810" width="240" height="110" as="geometry" />
+        </mxCell>
+        <mxCell id="wUmW1Fx09mTGbAiuR99M-16" value="Starts the paddle move in direction down" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="1190" y="830" width="240" height="30" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
