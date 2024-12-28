@@ -1,20 +1,14 @@
 from rest_framework.response import Response
 from rest_framework import status
-from .models import GameState
-from .serializers import GameStateSerializer
 import random
-from django.http import JsonResponse, HttpResponse
+from django.http import JsonResponse
 from django.db import connection
-from django.shortcuts import render
 from rest_framework.decorators import api_view
 from rest_framework import status
 import json
 import logging
-from django.utils import timezone
-from pong.logic.game_logic import handle_local_input, handle_remote_input
 import time
-from .utils.redis_helper import get_game_state, set_game_state, delete_game_state
-from .logic.game_logic import game_logic
+from .utils.redis_helper import get_game_state, set_game_state, find_remote_game_states
 
 
 
@@ -84,14 +78,16 @@ def create_room(request):
         game_type = data.get("gameType", "default")
 
         if game_type == "remote":
-            waiting_room = get_game_state(room_name)
+            waiting_room = find_remote_game_states()
             if waiting_room:
 
                 waiting_room["player2"] = player_1
                 waiting_room["player2_timer"] = time.time()
                 waiting_room["player1_timer"] = time.time()
                 waiting_room["creation_time"] = time.time()
-
+                set_game_state(room_name, waiting_room)
+                print(waiting_room["player1"])
+                print(waiting_room["player2"])
                 return JsonResponse({
                     "message": "Joined an existing room",
                     "room_name": waiting_room["room_name"],

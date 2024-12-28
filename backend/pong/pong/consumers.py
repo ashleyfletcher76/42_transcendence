@@ -154,7 +154,6 @@ class GameConsumer(AsyncWebsocketConsumer):
     async def get_user_from_auth_service(self, token):
         if isinstance(token, bytes):
             token = token.decode("utf-8")
-
         try:
             response = requests.post(
                 "http://auth-service:8000/auth/get-user-token/",
