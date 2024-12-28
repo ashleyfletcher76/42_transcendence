@@ -9,7 +9,7 @@ from .logic.game_logic import game_logic, move_right_paddle, move_left_paddle
 
 class GameConsumer(AsyncWebsocketConsumer):
     async def connect(self):
-        print("websocket connection is coming!")
+        
         self.room_name = self.scope['url_route']['kwargs']['room_name']
         self.room_group_name = f'game_{self.room_name}'
 
@@ -28,7 +28,6 @@ class GameConsumer(AsyncWebsocketConsumer):
             print(f"Error authenticating user: {e}")
             await self.close(code=4001)
             return
-
         await self.channel_layer.group_add(
             self.room_group_name,
             self.channel_name
@@ -44,15 +43,15 @@ class GameConsumer(AsyncWebsocketConsumer):
 
         if game["connections"] == 2 or game["game_type"] == "local" or game["game_type"] == "AI":
             await self.start_game_loop()
+        print("websocket connection is coming!")
+
 
     async def disconnect(self, close_code):
-        # Leave room group
         await self.channel_layer.group_discard(
             self.room_group_name,
             self.channel_name
         )
 
-        # Update game state to handle disconnections
         game = get_game_state(self.room_name)
         game["connections"] -= 1
         set_game_state(self.room_name, game)

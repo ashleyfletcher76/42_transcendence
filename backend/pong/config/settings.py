@@ -13,27 +13,41 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 from pathlib import Path
 import os
 
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve().parent.parent
-
-CELERY_BROKER_URL = 'redis://redis:6379/0'
-CELERY_ACCEPT_CONTENT = ['json']
-CELERY_TASK_SERIALIZER = 'json'
-
-
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-6+l61&!syw0@8c2$b$%%^s$1w3xr&830=^h75ihtj=2msha0tc"
+SECRET_KEY = "django-insecure-6btvk)iynnls5dn(b&w6wb@7epz9pms-##=ahsbewtxw8t+#t9"
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
-ALLOWED_HOSTS = ["*",
-                 "https://localhost"]
-APPEND_SLASH = False
+BASE_DIR = Path(__file__).resolve().parent.parent
+
+# SECURITY settings
+SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY")
+DEBUG = os.environ.get("DJANGO_DEBUG") == "True"
+ALLOWED_HOSTS = ["*"]
+ASGI_APPLICATION = "config.asgi.application"
+
+# Set to True to ensure all connections are HTTPS
+SECURE_SSL_REDIRECT = False
+
+# Prevent man in the middle attacks
+SECURE_HSTS_SECONDS = 0  # 1 year
+SECURE_HSTS_INCLUDE_SUBDOMAINS = False
+SECURE_HSTS_PRELOAD = False
+
+# Only allow cookies to be sent over HTTPS
+SESSION_COOKIE_SECURE = False
+CSRF_COOKIE_SECURE = False
+
+# Prevent the browser from guessing the content type
+SECURE_CONTENT_TYPE_NOSNIFF = True
+
+# Enable the browser XSS protection
+SECURE_BROWSER_XSS_FILTER = True
 
 CACHES = {
     "default": {
@@ -103,7 +117,7 @@ CHANNEL_LAYERS = {
     "default": {
         "BACKEND": "channels_redis.core.RedisChannelLayer",
         "CONFIG": {
-            "hosts": [("127.0.0.1", 6379)],
+            "hosts": [os.environ.get("REDIS_URL", "redis://localhost:6379")],
         },
     },
 }
