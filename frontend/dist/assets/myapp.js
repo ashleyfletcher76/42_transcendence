@@ -82,7 +82,7 @@
   const __COLOCATED_TEMPLATE__ = (0, _templateFactory.createTemplateFactory)(
   /*
     <div class="ball" style={{this.ballStyle}}></div>
-
+  
   */
   {
     "id": "ftKo66ND",
@@ -1002,23 +1002,23 @@
   <div class="btn-group" role="group" aria-label="Basic checkbox toggle button group">
     <input type="checkbox" class="btn-check" id="btncheck1" autocomplete="off" checked={{this.showGeneral}} {{on "change" (fn this.toggleCheckbox "all")}}>
     <label class="btn btn-outline-secondary btn-sm" for="btncheck1">General</label>
-
+  
     <input type="checkbox" class="btn-check" id="btncheck2" autocomplete="off" checked={{this.showWhisper}} {{on "change" (fn this.toggleCheckbox "whisper")}}>
     <label class="btn btn-outline-secondary btn-sm" for="btncheck2">Whisper</label>
-
+  
     <input type="checkbox" class="btn-check" id="btncheck3" autocomplete="off" checked={{this.showTournament}} {{on "change" (fn this.toggleCheckbox "tournament")}}>
     <label class="btn btn-outline-secondary btn-sm" for="btncheck3">Tournament</label>
-
+  
     <input type="checkbox" class="btn-check" id="btncheck4" autocomplete="off" checked={{this.showSystem}} {{on "change" (fn this.toggleCheckbox "system")}}>
     <label class="btn btn-outline-secondary btn-sm" for="btncheck4">System</label>
   </div>
-
+  
   <div class="scrollable-list chat" >
     {{#each this.filteredMessages as |message|}}
       <Message @message={{message}} @ownNickname={{this.chat.user.profile.nickname}}/>
     {{/each}}
   </div>
-
+  
   {{!-- Corrected template --}}
   <div class="input-group">
     <input
@@ -1148,7 +1148,7 @@
   const __COLOCATED_TEMPLATE__ = (0, _templateFactory.createTemplateFactory)(
   /*
     <div class="history-item row m-1">
-
+  
     <div class="col-12 mb-0 mt-1 pb-0">
       <div class="date">2024.09.20 1:49pm</div>
     </div>
@@ -1160,12 +1160,12 @@
         </div>
       </div>
     </div>
-
+  
     {{!-- Profile details column (3 parts) --}}
     <div class="col-2">
       <div class="score history center">3:1</div>
     </div>
-
+  
     <div class="col-5">
       <div class="user-card m-0 mb-1" role="button" onclick={{this.select}}>
         <div class="profile-details">
@@ -1173,9 +1173,9 @@
         </div>
       </div>
     </div>
-
+  
   </div>
-
+  
   */
   {
     "id": "F5VyigJy",
@@ -1213,7 +1213,7 @@
       </div>
     {{else}}
       <div class="alert alert-success p-2 mt-1 mb-1" role="alert">
-        {{@message.from}} wants to add you as a friend
+        {{@message.from}} wants to add you as a friend 
         <a href="#" class="alert-link" {{on "click" this.acceptFriend}}>ACCEPT</a>
       </div>
     {{/if}}
@@ -1231,7 +1231,7 @@
   {{else}}
     <div class="message-item message-default">[{{@message.from}}] {{@message.content}}</div>
   {{/if}}
-
+  
   */
   {
     "id": "qxcghq3o",
@@ -1347,7 +1347,7 @@
     <button class="btn btn-success p-1 mb-1" type="button" {{on "click" this.openModal}}>
             Games: {{this.user.profile.games_total}}
   </button>
-
+  
   <BsModal
     @open={{this.isModalOpen}}
     as |modal|
@@ -1357,11 +1357,11 @@
         Match History
       </h4>
     </modal.header>
-
+  
     <modal.body>
       <div class="container-fluid row" style="height: 50vh; overflow-y: auto; margin: 0; padding: 0;">
           <div class="scrollable-list history-scroll">
-
+      
             <HistoryItem />
             <HistoryItem />
             <HistoryItem />
@@ -1369,15 +1369,15 @@
             <HistoryItem />
             <HistoryItem />
             <HistoryItem />
-
+  
           </div>
       </div>
-
-
+      
+      
     </modal.body>
-
+  
   </BsModal>
-
+  
   */
   {
     "id": "RBBlsKsg",
@@ -1440,7 +1440,7 @@
     value: true
   });
   _exports.default = void 0;
-  var _class, _descriptor, _descriptor2, _descriptor3, _descriptor4;
+  var _class, _descriptor, _descriptor2, _descriptor3, _descriptor4, _descriptor5;
   0; //eaimeta@70e063a35619d71f0,"@glimmer/component",0,"@ember/object",0,"@glimmer/tracking",0,"@ember/service",0,"@ember/template-factory",0,"@ember/component"eaimeta@70e063a35619d71f
   function _initializerDefineProperty(e, i, r, l) { r && Object.defineProperty(e, i, { enumerable: r.enumerable, configurable: r.configurable, writable: r.writable, value: r.initializer ? r.initializer.call(l) : void 0 }); }
   function _defineProperty(e, r, t) { return (r = _toPropertyKey(r)) in e ? Object.defineProperty(e, r, { value: t, enumerable: !0, configurable: !0, writable: !0 }) : e[r] = t, e; }
@@ -1451,9 +1451,9 @@
   const __COLOCATED_TEMPLATE__ = (0, _templateFactory.createTemplateFactory)(
   /*
     <button class="btn btn-primary" type="button" {{on "click" this.openModal}}>
-            Edit Profile
+    Edit Profile
   </button>
-
+  
   <BsModal
     @open={{this.isModalOpen}}
     as |modal|
@@ -1464,49 +1464,53 @@
       </h4>
     </modal.header>
     <modal.body>
-
-        <div class="form-group">
-          <label>Choose Avatar:</label>
-          <input type="file" class="form-control" placeholder="Choose Avatar">
-          <small>This is the visible Avatar on this Site</small>
-        </div>
-
-        <div class="form-group mt-3">
-          <label>Nickname:</label>
-          <input
-            type="name"
-            class="form-control"
-            value={{this.newNickname}}
-            {{on "input" this.updateNewNickname}}
-          >
-          <small>This is the visible Name on this Site</small>
-        </div>
-
+      <div class="form-group">
+        <label>Choose Avatar:</label>
+        <input 
+          type="file" 
+          class="form-control" 
+          placeholder="Choose Avatar" 
+          {{on "change" this.updateAvatar}}
+        >
+        <small>This is the visible Avatar on this Site</small>
+      </div>
+  
+      <div class="form-group mt-3">
+        <label>Nickname:</label>
+        <input 
+          type="name" 
+          class="form-control" 
+          value={{this.newNickname}}
+          {{on "input" this.updateNewNickname}}
+        >
+        <small>This is the visible Name on this Site</small>
+      </div>
     </modal.body>
     <modal.footer>
       <BsButton @onClick={{modal.close}}>Cancel</BsButton>
       <BsButton @type="success" @onClick={{this.submit}}>Save</BsButton>
     </modal.footer>
   </BsModal>
-
+  
   */
   {
-    "id": "11bFgGzg",
-    "block": "[[[11,\"button\"],[24,0,\"btn btn-primary\"],[24,4,\"button\"],[4,[38,1],[\"click\",[30,0,[\"openModal\"]]],null],[12],[1,\"\\n          Edit Profile\\n\"],[13],[1,\"\\n\\n\"],[8,[39,2],null,[[\"@open\"],[[30,0,[\"isModalOpen\"]]]],[[\"default\"],[[[[1,\"\\n  \"],[8,[30,1,[\"header\"]],null,null,[[\"default\"],[[[[1,\"\\n    \"],[10,\"h4\"],[14,0,\"modal-title\"],[12],[1,\"\\n      Edit Profile\\n    \"],[13],[1,\"\\n  \"]],[]]]]],[1,\"\\n  \"],[8,[30,1,[\"body\"]],null,null,[[\"default\"],[[[[1,\"\\n    \\n      \"],[10,0],[14,0,\"form-group\"],[12],[1,\"\\n        \"],[10,\"label\"],[12],[1,\"Choose Avatar:\"],[13],[1,\"\\n        \"],[10,\"input\"],[14,0,\"form-control\"],[14,\"placeholder\",\"Choose Avatar\"],[14,4,\"file\"],[12],[13],[1,\"\\n        \"],[10,\"small\"],[12],[1,\"This is the visible Avatar on this Site\"],[13],[1,\"\\n      \"],[13],[1,\"\\n\\n      \"],[10,0],[14,0,\"form-group mt-3\"],[12],[1,\"\\n        \"],[10,\"label\"],[12],[1,\"Nickname:\"],[13],[1,\"\\n        \"],[11,\"input\"],[24,0,\"form-control\"],[16,2,[30,0,[\"newNickname\"]]],[24,4,\"name\"],[4,[38,1],[\"input\",[30,0,[\"updateNewNickname\"]]],null],[12],[13],[1,\"\\n        \"],[10,\"small\"],[12],[1,\"This is the visible Name on this Site\"],[13],[1,\"\\n      \"],[13],[1,\"\\n    \\n  \"]],[]]]]],[1,\"\\n  \"],[8,[30,1,[\"footer\"]],null,null,[[\"default\"],[[[[1,\"\\n    \"],[8,[39,8],null,[[\"@onClick\"],[[30,1,[\"close\"]]]],[[\"default\"],[[[[1,\"Cancel\"]],[]]]]],[1,\"\\n    \"],[8,[39,8],null,[[\"@type\",\"@onClick\"],[\"success\",[30,0,[\"submit\"]]]],[[\"default\"],[[[[1,\"Save\"]],[]]]]],[1,\"\\n  \"]],[]]]]],[1,\"\\n\"]],[1]]]]],[1,\"\\n\"]],[\"modal\"],false,[\"button\",\"on\",\"bs-modal\",\"h4\",\"div\",\"label\",\"input\",\"small\",\"bs-button\"]]",
+    "id": "puHxwSht",
+    "block": "[[[11,\"button\"],[24,0,\"btn btn-primary\"],[24,4,\"button\"],[4,[38,1],[\"click\",[30,0,[\"openModal\"]]],null],[12],[1,\"\\n  Edit Profile\\n\"],[13],[1,\"\\n\\n\"],[8,[39,2],null,[[\"@open\"],[[30,0,[\"isModalOpen\"]]]],[[\"default\"],[[[[1,\"\\n  \"],[8,[30,1,[\"header\"]],null,null,[[\"default\"],[[[[1,\"\\n    \"],[10,\"h4\"],[14,0,\"modal-title\"],[12],[1,\"\\n      Edit Profile\\n    \"],[13],[1,\"\\n  \"]],[]]]]],[1,\"\\n  \"],[8,[30,1,[\"body\"]],null,null,[[\"default\"],[[[[1,\"\\n    \"],[10,0],[14,0,\"form-group\"],[12],[1,\"\\n      \"],[10,\"label\"],[12],[1,\"Choose Avatar:\"],[13],[1,\"\\n      \"],[11,\"input\"],[24,0,\"form-control\"],[24,\"placeholder\",\"Choose Avatar\"],[24,4,\"file\"],[4,[38,1],[\"change\",[30,0,[\"updateAvatar\"]]],null],[12],[13],[1,\"\\n      \"],[10,\"small\"],[12],[1,\"This is the visible Avatar on this Site\"],[13],[1,\"\\n    \"],[13],[1,\"\\n\\n    \"],[10,0],[14,0,\"form-group mt-3\"],[12],[1,\"\\n      \"],[10,\"label\"],[12],[1,\"Nickname:\"],[13],[1,\"\\n      \"],[11,\"input\"],[24,0,\"form-control\"],[16,2,[30,0,[\"newNickname\"]]],[24,4,\"name\"],[4,[38,1],[\"input\",[30,0,[\"updateNewNickname\"]]],null],[12],[13],[1,\"\\n      \"],[10,\"small\"],[12],[1,\"This is the visible Name on this Site\"],[13],[1,\"\\n    \"],[13],[1,\"\\n  \"]],[]]]]],[1,\"\\n  \"],[8,[30,1,[\"footer\"]],null,null,[[\"default\"],[[[[1,\"\\n    \"],[8,[39,8],null,[[\"@onClick\"],[[30,1,[\"close\"]]]],[[\"default\"],[[[[1,\"Cancel\"]],[]]]]],[1,\"\\n    \"],[8,[39,8],null,[[\"@type\",\"@onClick\"],[\"success\",[30,0,[\"submit\"]]]],[[\"default\"],[[[[1,\"Save\"]],[]]]]],[1,\"\\n  \"]],[]]]]],[1,\"\\n\"]],[1]]]]],[1,\"\\n\"]],[\"modal\"],false,[\"button\",\"on\",\"bs-modal\",\"h4\",\"div\",\"label\",\"input\",\"small\",\"bs-button\"]]",
     "moduleName": "myapp/components/modal-profile.hbs",
     "isStrictMode": false
   });
   let ModalProfileComponent = _exports.default = (_class = class ModalProfileComponent extends _component2.default {
     constructor(...args) {
       super(...args);
-      // Property to manage modal visibility
       _initializerDefineProperty(this, "isModalOpen", _descriptor, this);
       _initializerDefineProperty(this, "newNickname", _descriptor2, this);
-      _initializerDefineProperty(this, "user", _descriptor3, this);
-      _initializerDefineProperty(this, "session", _descriptor4, this);
+      _initializerDefineProperty(this, "newAvatar", _descriptor3, this);
+      // Track the selected avatar file
+      _initializerDefineProperty(this, "user", _descriptor4, this);
+      _initializerDefineProperty(this, "session", _descriptor5, this);
     }
     openModal() {
-      console.log('openModal0');
+      console.log('Opening modal');
       this.isModalOpen = true;
       this.newNickname = this.user.profile.nickname;
       console.log(this.isModalOpen);
@@ -1518,36 +1522,39 @@
     updateNewNickname(event) {
       this.newNickname = event.target.value;
     }
-    submit() {
+    updateAvatar(event) {
+      this.newAvatar = event.target.files[0]; // Get the selected file
+      console.log('Selected avatar file:', this.newAvatar);
+    }
+    async submit() {
       console.log('Form submitted!');
-      this.changeNickname(this.newNickname);
+      await this.updateProfile();
       this.closeModal();
     }
-    cancel() {
-      console.log('Modal canceled');
-      this.closeModal(); // Close the modal without submitting
-    }
-    async changeNickname(newNickname) {
+    async updateProfile() {
       try {
-        const response = await fetch('users/users/update-profile/', {
+        const formData = new FormData();
+        formData.append('nickname', this.newNickname);
+        if (this.newAvatar) {
+          formData.append('avatar', this.newAvatar); // Append the avatar file
+        }
+        const response = await fetch('/users/users/update-profile/', {
           method: 'PUT',
           headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${this.session.data.authenticated.access}`
+            Authorization: `Bearer ${this.session.data.authenticated.access}` // Add authentication token
           },
-          body: JSON.stringify({
-            nickname: newNickname
-          })
+          body: formData // Send FormData
         });
         if (!response.ok) {
-          throw new Error('Network response was not ok');
+          throw new Error('Failed to update profile');
         }
         const data = await response.json();
-        if (data.nickname) {
-          this.user.profile.nickname = nickname;
+        console.log('Profile updated successfully:', data);
+        if (data.success) {
+          this.user.fetchUserData(this.newNickname);
         }
       } catch (error) {
-        console.error('Error changing nickname:', error);
+        console.error('Error updating profile:', error);
       }
     }
   }, _descriptor = _applyDecoratedDescriptor(_class.prototype, "isModalOpen", [_tracking.tracked], {
@@ -1562,17 +1569,24 @@
     enumerable: true,
     writable: true,
     initializer: null
-  }), _descriptor3 = _applyDecoratedDescriptor(_class.prototype, "user", [_service.inject], {
+  }), _descriptor3 = _applyDecoratedDescriptor(_class.prototype, "newAvatar", [_tracking.tracked], {
+    configurable: true,
+    enumerable: true,
+    writable: true,
+    initializer: function () {
+      return null;
+    }
+  }), _descriptor4 = _applyDecoratedDescriptor(_class.prototype, "user", [_service.inject], {
     configurable: true,
     enumerable: true,
     writable: true,
     initializer: null
-  }), _descriptor4 = _applyDecoratedDescriptor(_class.prototype, "session", [_service.inject], {
+  }), _descriptor5 = _applyDecoratedDescriptor(_class.prototype, "session", [_service.inject], {
     configurable: true,
     enumerable: true,
     writable: true,
     initializer: null
-  }), _applyDecoratedDescriptor(_class.prototype, "openModal", [_object.action], Object.getOwnPropertyDescriptor(_class.prototype, "openModal"), _class.prototype), _applyDecoratedDescriptor(_class.prototype, "closeModal", [_object.action], Object.getOwnPropertyDescriptor(_class.prototype, "closeModal"), _class.prototype), _applyDecoratedDescriptor(_class.prototype, "updateNewNickname", [_object.action], Object.getOwnPropertyDescriptor(_class.prototype, "updateNewNickname"), _class.prototype), _applyDecoratedDescriptor(_class.prototype, "submit", [_object.action], Object.getOwnPropertyDescriptor(_class.prototype, "submit"), _class.prototype), _applyDecoratedDescriptor(_class.prototype, "cancel", [_object.action], Object.getOwnPropertyDescriptor(_class.prototype, "cancel"), _class.prototype), _class);
+  }), _applyDecoratedDescriptor(_class.prototype, "openModal", [_object.action], Object.getOwnPropertyDescriptor(_class.prototype, "openModal"), _class.prototype), _applyDecoratedDescriptor(_class.prototype, "closeModal", [_object.action], Object.getOwnPropertyDescriptor(_class.prototype, "closeModal"), _class.prototype), _applyDecoratedDescriptor(_class.prototype, "updateNewNickname", [_object.action], Object.getOwnPropertyDescriptor(_class.prototype, "updateNewNickname"), _class.prototype), _applyDecoratedDescriptor(_class.prototype, "updateAvatar", [_object.action], Object.getOwnPropertyDescriptor(_class.prototype, "updateAvatar"), _class.prototype), _applyDecoratedDescriptor(_class.prototype, "submit", [_object.action], Object.getOwnPropertyDescriptor(_class.prototype, "submit"), _class.prototype), _class);
   (0, _component.setComponentTemplate)(__COLOCATED_TEMPLATE__, ModalProfileComponent);
 });
 ;define("myapp/components/navigation-bar", ["exports", "@ember/component", "@ember/component/template-only", "@ember/template-factory"], function (_exports, _component, _templateOnly, _templateFactory) {
@@ -1590,7 +1604,7 @@
       <button class="nav-button" type="button">All</button>
       <button class="nav-button" type="button">Last</button>
   </nav>
-
+  
   */
   {
     "id": "tLPJ+48H",
@@ -1611,7 +1625,7 @@
   const __COLOCATED_TEMPLATE__ = (0, _templateFactory.createTemplateFactory)(
   /*
     <div class="paddle {{this.args.side}}" style={{this.paddleStyle}}></div>
-
+  
   */
   {
     "id": "S8zvLVaU",
@@ -1622,8 +1636,6 @@
   class PaddleComponent extends _component2.default {
     constructor() {
       super(...arguments);
-      console.log('Paddle side:', this.args.side);
-      console.log('Paddle position:', this.args.position);
     }
     get paddleStyle() {
       // You can adjust the translateY based on your logic
@@ -1640,7 +1652,7 @@
     value: true
   });
   _exports.default = void 0;
-  var _class, _descriptor, _descriptor2, _descriptor3, _descriptor4, _descriptor5, _descriptor6, _descriptor7, _descriptor8, _descriptor9, _descriptor10, _descriptor11;
+  var _class, _descriptor, _descriptor2, _descriptor3, _descriptor4, _descriptor5, _descriptor6, _descriptor7, _descriptor8, _descriptor9, _descriptor10, _descriptor11, _descriptor12, _descriptor13;
   0; //eaimeta@70e063a35619d71f0,"@glimmer/component",0,"@glimmer/tracking",0,"@ember/service",0,"@ember/template-factory",0,"@ember/component"eaimeta@70e063a35619d71f
   function _initializerDefineProperty(e, i, r, l) { r && Object.defineProperty(e, i, { enumerable: r.enumerable, configurable: r.configurable, writable: r.writable, value: r.initializer ? r.initializer.call(l) : void 0 }); }
   function _defineProperty(e, r, t) { return (r = _toPropertyKey(r)) in e ? Object.defineProperty(e, r, { value: t, enumerable: !0, configurable: !0, writable: !0 }) : e[r] = t, e; }
@@ -1663,7 +1675,7 @@
       <Paddle @position={{this.rightPaddlePosition}} @side="paddle-right" />
     {{/if}}
   </div>
-
+  
   */
   {
     "id": "f3TDaoGl",
@@ -1684,18 +1696,20 @@
       // Ball position
       _initializerDefineProperty(this, "winner", _descriptor5, this);
       _initializerDefineProperty(this, "status", _descriptor6, this);
-      _initializerDefineProperty(this, "gameData", _descriptor7, this);
-      _initializerDefineProperty(this, "session", _descriptor8, this);
-      _initializerDefineProperty(this, "tournament", _descriptor9, this);
-      _initializerDefineProperty(this, "user", _descriptor10, this);
-      _initializerDefineProperty(this, "router", _descriptor11, this);
+      _initializerDefineProperty(this, "winnerSend", _descriptor7, this);
+      _initializerDefineProperty(this, "keyStates", _descriptor8, this);
+      _initializerDefineProperty(this, "gameData", _descriptor9, this);
+      _initializerDefineProperty(this, "session", _descriptor10, this);
+      _initializerDefineProperty(this, "tournament", _descriptor11, this);
+      _initializerDefineProperty(this, "user", _descriptor12, this);
+      _initializerDefineProperty(this, "router", _descriptor13, this);
       // Track the state of key presses
       _defineProperty(this, "p1UpKeyPressed", false);
       _defineProperty(this, "p1DownKeyPressed", false);
       _defineProperty(this, "p2UpKeyPressed", false);
       _defineProperty(this, "p2DownKeyPressed", false);
       this.setupKeyListeners();
-      this.startKeyPolling(); // Start polling when the controller is created
+      this.connectToLobby(this.gameData.roomData.room_name);
     }
     get roomData() {
       return this.gameData.roomData; // Access shared room data
@@ -1704,103 +1718,83 @@
       window.addEventListener('keydown', this.handleKeyDown.bind(this));
       window.addEventListener('keyup', this.handleKeyUp.bind(this));
     }
-    startKeyPolling() {
-      this.pollingInterval = setInterval(() => {
-        this.sendKeyPresses();
-      }, 70); // Poll every 50ms
-    }
-    async sendKeyPresses() {
-      const {
-        keyPressP1,
-        keyPressP2
-      } = this.getKeyPress();
-      try {
-        const requestBody = JSON.stringify({
-          keypress_p1: keyPressP1,
-          keypress_p2: keyPressP2,
-          room_name: this.roomData.room_name,
-          user: this.user.profile.nickname
-        });
-
-        //const response = await fetch(`/api/gamestate.json`, {
-        const response = await fetch(`/pong/pong/game_state/${this.roomData.room_name}`, {
-          method: 'POST',
-          headers: {
-            Authorization: `Bearer ${this.session.data.authenticated.access}`,
-            'Content-Type': 'application/json'
-          },
-          body: requestBody
-        });
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
-        }
-        const data = await response.json();
-        this.updateGameState(data);
-      } catch (error) {
-        console.error('Error sending key press:', error);
-      }
-    }
-    getKeyPress() {
-      let keyPressP1 = '';
-      let keyPressP2 = '';
-      if (this.p1UpKeyPressed && !this.p1DownKeyPressed) {
-        keyPressP1 = 'up';
-      } else if (this.p1DownKeyPressed && !this.p1UpKeyPressed) {
-        keyPressP1 = 'down';
-      }
-      if (this.p2UpKeyPressed && !this.p2DownKeyPressed) {
-        keyPressP2 = 'up';
-      } else if (this.p2DownKeyPressed && !this.p2UpKeyPressed) {
-        keyPressP2 = 'down';
-      }
-      return {
-        keyPressP1,
-        keyPressP2
-      };
-    }
     handleKeyDown(event) {
+      let direction_p1 = "";
+      let direction_p2 = "";
+      let type_p1 = "";
+      let type_p2 = "";
+      if (this.keyStates[event.key]) {
+        return; // Key is already released; no need to resend the event
+      }
       switch (event.key) {
         case 'ArrowUp':
-          this.p1UpKeyPressed = true;
-          console.log('Player 1 Up key pressed');
+          if (!this.keyStates.ArrowDown) {
+            direction_p1 = "up";
+            type_p1 = "start_move";
+          } else return;
           break;
         case 'ArrowDown':
-          this.p1DownKeyPressed = true;
-          console.log('Player 1 Down key pressed');
+          if (!this.keyStates.ArrowUp) {
+            direction_p1 = "down";
+            type_p1 = "start_move";
+          } else return;
           break;
         case 'w':
         case 'W':
-          this.p2UpKeyPressed = true;
-          console.log('Player 2 Up key pressed');
+          if (!this.keyStates.w && !this.keyStates.W) {
+            direction_p2 = "up";
+            type_p2 = "start_move";
+          } else return;
           break;
         case 's':
         case 'S':
-          this.p2DownKeyPressed = true;
-          console.log('Player 2 Down key pressed');
+          if (!this.keyStates.s && !this.keyStates.S) {
+            direction_p2 = "down";
+            type_p2 = "start_move";
+          } else return;
           break;
       }
+      this.keyStates[event.key] = true;
+      const data = JSON.stringify({
+        type_p1,
+        direction_p1,
+        type_p2,
+        direction_p2
+      });
+      this.sendMessage(data);
     }
     handleKeyUp(event) {
+      let direction_p1 = "";
+      let direction_p2 = "";
+      let type_p1 = "";
+      let type_p2 = "";
+      if (!this.keyStates[event.key]) {
+        return; // Key is already released; no need to resend the event
+      }
       switch (event.key) {
         case 'ArrowUp':
-          this.p1UpKeyPressed = false;
-          console.log('Player 1 Up key released');
+          type_p1 = "stop_move";
           break;
         case 'ArrowDown':
-          this.p1DownKeyPressed = false;
-          console.log('Player 1 Down key released');
+          type_p1 = "stop_move";
           break;
         case 'w':
         case 'W':
-          this.p2UpKeyPressed = false;
-          console.log('Player 2 Up key released');
+          type_p2 = "stop_move";
           break;
         case 's':
         case 'S':
-          this.p2DownKeyPressed = false;
-          console.log('Player 2 Down key released');
+          type_p2 = "stop_move";
           break;
       }
+      this.keyStates[event.key] = false;
+      const data = JSON.stringify({
+        type_p1,
+        direction_p1,
+        type_p2,
+        direction_p2
+      });
+      this.sendMessage(data);
     }
     updateGameState(data) {
       this.status = data.game_start_timer;
@@ -1813,17 +1807,65 @@
         this.gameData.left_score = data.left_score;
         this.gameData.right_score = data.right_score;
       }
-      if (this.winner) {
-        if (this.tournament.currentLobby) this.tournament.sendWinner(this.winner);
+      if (this.winner && !this.winnerSend) {
+        this.winnerSend = true;
+        if (this.tournament.currentLobby) {
+          this.tournament.sendWinner(this.winner);
+          if (this.winner !== this.user.profile.nickname) this.tournament.playerInTournament = false;
+          this.router.transitionTo('tournament');
+        }
         this.willDestroy();
       }
     }
     willDestroy() {
+      this.disconnectFromLobby(this.gameData.roomData.roomName);
       window.removeEventListener('keydown', this.handleKeyDown.bind(this));
       window.removeEventListener('keyup', this.handleKeyUp.bind(this));
-      clearInterval(this.pollingInterval);
       super.willDestroy();
-      this.router.transitionTo('tournament');
+    }
+    async connectToLobby(roomName) {
+      const token = this.session.data.authenticated.access;
+      const wsUrl = `wss://localhost/ws/pong-game/${roomName}/?token=${encodeURIComponent(token)}`;
+      console.log("connect to:", wsUrl);
+      if (this.socketRef) {
+        console.log("disconnect");
+        this.disconnectFromLobby(roomName);
+      }
+      const socket = this.websockets.socketFor(wsUrl);
+      // Register WebSocket event handlers
+      socket.on('open', () => this.onOpen(tournamentName), this);
+      socket.on('message', this.onMessage, this);
+      socket.on('close', this.onClose, this);
+      this.set('socketRef', socket);
+    }
+    async disconnectFromLobby(roomName) {
+      const token = this.session.data.authenticated.access;
+      const wsUrl = `wss://localhost/ws/pong-game/${roomName}/?token=${encodeURIComponent(token)}`;
+      console.log("websocket to close:", roomName);
+      this.websockets.closeSocketFor(wsUrl);
+      console.log("websocket closed", this.websockets.sockets);
+
+      // Remove event handlers
+      this.socketRef.off('open', this.onOpen, this);
+      this.socketRef.off('message', this.onMessage, this);
+      this.socketRef.off('close', this.onClose, this);
+
+      // Reset WebSocket reference
+      this.socketRef = null;
+    }
+    onMessage(event) {
+      console.log('WebSocket message received:', event.data);
+      const parsedMessage = JSON.parse(event.data);
+      this.updateGameState(parsedMessage);
+    }
+    sendMessage(data) {
+      console.log('WebSocket message send:', JSON.stringify(data));
+      if (this.socketRef) {
+        console.log('WebSocket message send:', JSON.stringify(data));
+        this.socketRef.send(JSON.stringify(data));
+      } else {
+        console.error('WebSocket is not connected.');
+      }
     }
   }, _descriptor = _applyDecoratedDescriptor(_class.prototype, "leftPaddlePosition", [_tracking.tracked], {
     configurable: true,
@@ -1863,27 +1905,46 @@
     enumerable: true,
     writable: true,
     initializer: null
-  }), _descriptor7 = _applyDecoratedDescriptor(_class.prototype, "gameData", [_service.inject], {
+  }), _descriptor7 = _applyDecoratedDescriptor(_class.prototype, "winnerSend", [_tracking.tracked], {
     configurable: true,
     enumerable: true,
     writable: true,
     initializer: null
-  }), _descriptor8 = _applyDecoratedDescriptor(_class.prototype, "session", [_service.inject], {
+  }), _descriptor8 = _applyDecoratedDescriptor(_class.prototype, "keyStates", [_tracking.tracked], {
+    configurable: true,
+    enumerable: true,
+    writable: true,
+    initializer: function () {
+      return {
+        ArrowUp: false,
+        ArrowDown: false,
+        w: false,
+        W: false,
+        s: false,
+        S: false
+      };
+    }
+  }), _descriptor9 = _applyDecoratedDescriptor(_class.prototype, "gameData", [_service.inject], {
     configurable: true,
     enumerable: true,
     writable: true,
     initializer: null
-  }), _descriptor9 = _applyDecoratedDescriptor(_class.prototype, "tournament", [_service.inject], {
+  }), _descriptor10 = _applyDecoratedDescriptor(_class.prototype, "session", [_service.inject], {
     configurable: true,
     enumerable: true,
     writable: true,
     initializer: null
-  }), _descriptor10 = _applyDecoratedDescriptor(_class.prototype, "user", [_service.inject], {
+  }), _descriptor11 = _applyDecoratedDescriptor(_class.prototype, "tournament", [_service.inject], {
     configurable: true,
     enumerable: true,
     writable: true,
     initializer: null
-  }), _descriptor11 = _applyDecoratedDescriptor(_class.prototype, "router", [_service.inject], {
+  }), _descriptor12 = _applyDecoratedDescriptor(_class.prototype, "user", [_service.inject], {
+    configurable: true,
+    enumerable: true,
+    writable: true,
+    initializer: null
+  }), _descriptor13 = _applyDecoratedDescriptor(_class.prototype, "router", [_service.inject], {
     configurable: true,
     enumerable: true,
     writable: true,
@@ -1914,7 +1975,7 @@
       <button type="button" class="btn-close top-left" onclick={{this.onCloseClick}}></button>
       <img src={{@selectedUser.avatar}} alt="Profile Picture" class="profile-pic" />
     </div>
-
+  
     {{!-- Profile details column (3 parts) --}}
     <div class="col-10">
       {{!-- First row of profile details --}}
@@ -1940,13 +2001,13 @@
         </div>
         <h2 class="points">{{@selectedUser.trophies}}🏆</h2>
       </div>
-
+  
       {{!-- Second row of profile details --}}
       <div class="profile-details">
         <ModalGameHistory />
         <h2 class="info">Wins: {{@selectedUser.wins}}</h2>
       </div>
-
+  
       <div class="profile-details">
         {{#if this.isOnline}}
         <h2 class="info">🟢 online</h2>
@@ -1955,7 +2016,7 @@
         {{/if}}
         <h2 class="info">Losses: {{@selectedUser.losses}}</h2>
       </div>
-
+  
     </div>
   </div>
   */
@@ -2047,9 +2108,9 @@
     <div class="container-fluid row fill p-2">
     <!-- Profile picture column (1 part) -->
     <div class="col center">
-      <img src={{this.user.profile.avatar}} alt="Profile Picture" class="profile-pic" />
+      <img src="https://localhost/users/users{{this.user.profile.avatar}}/" alt="Profile Picture" class="profile-pic" />
     </div>
-
+  
     <!-- Profile details column (3 parts) -->
     <div class="col-10">
       <!-- First row of profile details -->
@@ -2065,15 +2126,15 @@
         {{/if}}
         <h2 class="points info">{{this.user.profile.trophies}} 🏆</h2>
       </div>
-
+  
       <!-- Second row of profile details -->
       <div class="profile-details">
         <ModalGameHistory />
         <h2 class="info">Wins: {{this.user.profile.wins}}</h2>
       </div>
-
+  
       <div class="profile-details">
-        {{#if this.isOnline}}
+        {{#if this.isOnline}} 
           <h2 class="info">🟢 online</h2>
         {{else}}
           <h2 class="info">🔴 offline</h2>
@@ -2082,12 +2143,12 @@
       </div>
     </div>
   </div>
-
-
+  
+  
   */
   {
-    "id": "gQKzSoKE",
-    "block": "[[[10,0],[14,0,\"container-fluid row fill p-2\"],[12],[1,\"\\n  \"],[3,\" Profile picture column (1 part) \"],[1,\"\\n  \"],[10,0],[14,0,\"col center\"],[12],[1,\"\\n    \"],[10,\"img\"],[15,\"src\",[30,0,[\"user\",\"profile\",\"avatar\"]]],[14,\"alt\",\"Profile Picture\"],[14,0,\"profile-pic\"],[12],[13],[1,\"\\n  \"],[13],[1,\"\\n\\n  \"],[3,\" Profile details column (3 parts) \"],[1,\"\\n  \"],[10,0],[14,0,\"col-10\"],[12],[1,\"\\n    \"],[3,\" First row of profile details \"],[1,\"\\n    \"],[10,0],[14,0,\"profile-details\"],[12],[1,\"\\n\"],[41,[30,0,[\"isAuthenticated\"]],[[[1,\"        \"],[41,[30,0,[\"user\",\"profile\"]],[[[1,\" \"],[3,\" Access the user directly from the service \"],[1,\"\\n          \"],[10,\"h2\"],[14,0,\"name\"],[12],[1,[30,0,[\"user\",\"profile\",\"nickname\"]]],[13],[1,\"\\n          \"],[8,[39,4],null,null,null],[1,\"\\n\"]],[]],[[[1,\"          \"],[10,2],[12],[1,\"Loading user...\"],[13],[1,\" \"],[3,\" Or another fallback message \"],[1,\"\\n\"]],[]]],[1,\"        \"],[11,\"button\"],[24,0,\"logout-button\"],[24,4,\"button\"],[4,[38,7],[\"click\",[30,0,[\"logout\"]]],null],[12],[1,\"Logout\"],[13],[1,\"\\n\"]],[]],null],[1,\"      \"],[10,\"h2\"],[14,0,\"points info\"],[12],[1,[30,0,[\"user\",\"profile\",\"trophies\"]]],[1,\" 🏆\"],[13],[1,\"\\n    \"],[13],[1,\"\\n\\n    \"],[3,\" Second row of profile details \"],[1,\"\\n    \"],[10,0],[14,0,\"profile-details\"],[12],[1,\"\\n      \"],[8,[39,8],null,null,null],[1,\"\\n      \"],[10,\"h2\"],[14,0,\"info\"],[12],[1,\"Wins: \"],[1,[30,0,[\"user\",\"profile\",\"wins\"]]],[13],[1,\"\\n    \"],[13],[1,\"\\n\\n    \"],[10,0],[14,0,\"profile-details\"],[12],[1,\"\\n\"],[41,[30,0,[\"isOnline\"]],[[[1,\"        \"],[10,\"h2\"],[14,0,\"info\"],[12],[1,\"🟢 online\"],[13],[1,\"\\n\"]],[]],[[[1,\"        \"],[10,\"h2\"],[14,0,\"info\"],[12],[1,\"🔴 offline\"],[13],[1,\"\\n\"]],[]]],[1,\"      \"],[10,\"h2\"],[14,0,\"info\"],[12],[1,\"Losses: \"],[1,[30,0,[\"user\",\"profile\",\"losses\"]]],[13],[1,\"\\n    \"],[13],[1,\"\\n  \"],[13],[1,\"\\n\"],[13],[1,\"\\n\\n\"]],[],false,[\"div\",\"img\",\"if\",\"h2\",\"modal-profile\",\"p\",\"button\",\"on\",\"modal-game-history\"]]",
+    "id": "IafenBQn",
+    "block": "[[[10,0],[14,0,\"container-fluid row fill p-2\"],[12],[1,\"\\n  \"],[3,\" Profile picture column (1 part) \"],[1,\"\\n  \"],[10,0],[14,0,\"col center\"],[12],[1,\"\\n    \"],[10,\"img\"],[15,\"src\",[29,[\"https://localhost/users/users\",[30,0,[\"user\",\"profile\",\"avatar\"]],\"/\"]]],[14,\"alt\",\"Profile Picture\"],[14,0,\"profile-pic\"],[12],[13],[1,\"\\n  \"],[13],[1,\"\\n\\n  \"],[3,\" Profile details column (3 parts) \"],[1,\"\\n  \"],[10,0],[14,0,\"col-10\"],[12],[1,\"\\n    \"],[3,\" First row of profile details \"],[1,\"\\n    \"],[10,0],[14,0,\"profile-details\"],[12],[1,\"\\n\"],[41,[30,0,[\"isAuthenticated\"]],[[[1,\"        \"],[41,[30,0,[\"user\",\"profile\"]],[[[1,\" \"],[3,\" Access the user directly from the service \"],[1,\"\\n          \"],[10,\"h2\"],[14,0,\"name\"],[12],[1,[30,0,[\"user\",\"profile\",\"nickname\"]]],[13],[1,\"\\n          \"],[8,[39,4],null,null,null],[1,\"\\n\"]],[]],[[[1,\"          \"],[10,2],[12],[1,\"Loading user...\"],[13],[1,\" \"],[3,\" Or another fallback message \"],[1,\"\\n\"]],[]]],[1,\"        \"],[11,\"button\"],[24,0,\"logout-button\"],[24,4,\"button\"],[4,[38,7],[\"click\",[30,0,[\"logout\"]]],null],[12],[1,\"Logout\"],[13],[1,\"\\n\"]],[]],null],[1,\"      \"],[10,\"h2\"],[14,0,\"points info\"],[12],[1,[30,0,[\"user\",\"profile\",\"trophies\"]]],[1,\" 🏆\"],[13],[1,\"\\n    \"],[13],[1,\"\\n\\n    \"],[3,\" Second row of profile details \"],[1,\"\\n    \"],[10,0],[14,0,\"profile-details\"],[12],[1,\"\\n      \"],[8,[39,8],null,null,null],[1,\"\\n      \"],[10,\"h2\"],[14,0,\"info\"],[12],[1,\"Wins: \"],[1,[30,0,[\"user\",\"profile\",\"wins\"]]],[13],[1,\"\\n    \"],[13],[1,\"\\n\\n    \"],[10,0],[14,0,\"profile-details\"],[12],[1,\"\\n\"],[41,[30,0,[\"isOnline\"]],[[[1,\"        \"],[10,\"h2\"],[14,0,\"info\"],[12],[1,\"🟢 online\"],[13],[1,\"\\n\"]],[]],[[[1,\"        \"],[10,\"h2\"],[14,0,\"info\"],[12],[1,\"🔴 offline\"],[13],[1,\"\\n\"]],[]]],[1,\"      \"],[10,\"h2\"],[14,0,\"info\"],[12],[1,\"Losses: \"],[1,[30,0,[\"user\",\"profile\",\"losses\"]]],[13],[1,\"\\n    \"],[13],[1,\"\\n  \"],[13],[1,\"\\n\"],[13],[1,\"\\n\\n\"]],[],false,[\"div\",\"img\",\"if\",\"h2\",\"modal-profile\",\"p\",\"button\",\"on\",\"modal-game-history\"]]",
     "moduleName": "myapp/components/profile-own.hbs",
     "isStrictMode": false
   });
@@ -2145,20 +2206,20 @@
     <div class="container-fluid row border">
     {{!-- Profile picture column (1 part) --}}
     <div class="col-5">
-
+      
       <User @user={{this.gameData.player_1}} @selectUser={{this.args.selectUser}}/>
     </div>
-
+  
     {{!-- Profile details column (3 parts) --}}
     <div class="col-2">
       <div class="score center">{{this.gameData.left_score}}:{{this.gameData.right_score}}</div>
     </div>
-
+  
     <div class="col-5">
       <User @user={{this.gameData.player_2}} @selectUser={{this.args.selectUser}}/>
     </div>
   </div>
-
+  
   */
   {
     "id": "Iptq3Nrf",
@@ -2202,7 +2263,7 @@
      <span style="--i:8">nc</span>
      <span style="--i:8">e</span>
   </div>
-
+  
   */
   {
     "id": "l+mNLrgS",
@@ -2238,7 +2299,7 @@
           </div>
           <h2 class="points info">👥 {{@current_players}}/{{@max_players}}</h2>
   </div>
-
+  
   */
   {
     "id": "l+X2ycFG",
@@ -2299,7 +2360,7 @@
           <TournamentItem @creator={{tournament.name}} @current_players={{tournament.num_players}} @max_players="10"/>
       {{/each}}
   </div>
-
+  
   */
   {
     "id": "169tmhqw",
@@ -2521,21 +2582,21 @@
   const __COLOCATED_TEMPLATE__ = (0, _templateFactory.createTemplateFactory)(
   /*
     <div class="user-card" role="button" onclick={{this.select}}>
-      <img src={{@user.avatar}} alt="Profile Picture" class="user-pic user" />
+      <img src="https://localhost/users/users{{@user.avatar}}/" alt="Profile Picture" class="user-pic user" />
       <div class="profile-details">
-          {{#if this.isOnline}}
+          {{#if this.isOnline}} 
           <h2 class="info">{{@user.nickname}} 🟢</h2>
           {{else}}
           <h2 class="info">{{@user.nickname}} 🔴</h2>
           {{/if}}
-          <h2 class="points info">{{@user.trophies}} 🏆</h2>
+          <h2 class="points info">{{@user.trophies}} 🏆</h2>        
       </div>
   </div>
-
+  
   */
   {
-    "id": "KFUQYBB5",
-    "block": "[[[10,0],[14,0,\"user-card\"],[14,\"role\",\"button\"],[15,\"onclick\",[30,0,[\"select\"]]],[12],[1,\"\\n    \"],[10,\"img\"],[15,\"src\",[30,1,[\"avatar\"]]],[14,\"alt\",\"Profile Picture\"],[14,0,\"user-pic user\"],[12],[13],[1,\"\\n    \"],[10,0],[14,0,\"profile-details\"],[12],[1,\"\\n\"],[41,[30,0,[\"isOnline\"]],[[[1,\"        \"],[10,\"h2\"],[14,0,\"info\"],[12],[1,[30,1,[\"nickname\"]]],[1,\" 🟢\"],[13],[1,\"\\n\"]],[]],[[[1,\"        \"],[10,\"h2\"],[14,0,\"info\"],[12],[1,[30,1,[\"nickname\"]]],[1,\" 🔴\"],[13],[1,\"\\n\"]],[]]],[1,\"        \"],[10,\"h2\"],[14,0,\"points info\"],[12],[1,[30,1,[\"trophies\"]]],[1,\" 🏆\"],[13],[1,\"        \\n    \"],[13],[1,\"\\n\"],[13],[1,\"\\n\"]],[\"@user\"],false,[\"div\",\"img\",\"if\",\"h2\"]]",
+    "id": "hzsCJuQ4",
+    "block": "[[[10,0],[14,0,\"user-card\"],[14,\"role\",\"button\"],[15,\"onclick\",[30,0,[\"select\"]]],[12],[1,\"\\n    \"],[10,\"img\"],[15,\"src\",[29,[\"https://localhost/users/users\",[30,1,[\"avatar\"]],\"/\"]]],[14,\"alt\",\"Profile Picture\"],[14,0,\"user-pic user\"],[12],[13],[1,\"\\n    \"],[10,0],[14,0,\"profile-details\"],[12],[1,\"\\n\"],[41,[30,0,[\"isOnline\"]],[[[1,\"        \"],[10,\"h2\"],[14,0,\"info\"],[12],[1,[30,1,[\"nickname\"]]],[1,\" 🟢\"],[13],[1,\"\\n\"]],[]],[[[1,\"        \"],[10,\"h2\"],[14,0,\"info\"],[12],[1,[30,1,[\"nickname\"]]],[1,\" 🔴\"],[13],[1,\"\\n\"]],[]]],[1,\"        \"],[10,\"h2\"],[14,0,\"points info\"],[12],[1,[30,1,[\"trophies\"]]],[1,\" 🏆\"],[13],[1,\"        \\n    \"],[13],[1,\"\\n\"],[13],[1,\"\\n\"]],[\"@user\"],false,[\"div\",\"img\",\"if\",\"h2\"]]",
     "moduleName": "myapp/components/user.hbs",
     "isStrictMode": false
   });
@@ -2721,6 +2782,7 @@
           this.loading = false;
           console.log("data:", data);
           this.gameData.setGameData(gameType, data);
+          console.log("gameData:", this.gameData.roomData.room_name);
           this.router.transitionTo('pong-game');
         }
       } catch (error) {
@@ -3875,7 +3937,7 @@
     value: true
   });
   _exports.default = void 0;
-  var _class, _descriptor;
+  var _class, _descriptor, _descriptor2;
   0; //eaimeta@70e063a35619d71f0,"@ember/routing/route",0,"@ember/service"eaimeta@70e063a35619d71f
   function _initializerDefineProperty(e, i, r, l) { r && Object.defineProperty(e, i, { enumerable: r.enumerable, configurable: r.configurable, writable: r.writable, value: r.initializer ? r.initializer.call(l) : void 0 }); }
   function _defineProperty(e, r, t) { return (r = _toPropertyKey(r)) in e ? Object.defineProperty(e, r, { value: t, enumerable: !0, configurable: !0, writable: !0 }) : e[r] = t, e; }
@@ -3887,6 +3949,7 @@
     constructor(...args) {
       super(...args);
       _initializerDefineProperty(this, "session", _descriptor, this);
+      _initializerDefineProperty(this, "gameData", _descriptor2, this);
     }
     async beforeModel(transition) {
       if (!this.session.isAuthenticated) {
@@ -3894,6 +3957,11 @@
       }
     }
   }, _descriptor = _applyDecoratedDescriptor(_class.prototype, "session", [_service.inject], {
+    configurable: true,
+    enumerable: true,
+    writable: true,
+    initializer: null
+  }), _descriptor2 = _applyDecoratedDescriptor(_class.prototype, "gameData", [_service.inject], {
     configurable: true,
     enumerable: true,
     writable: true,
@@ -4315,7 +4383,7 @@
     value: true
   });
   _exports.default = void 0;
-  var _class, _descriptor, _descriptor2, _descriptor3, _descriptor4, _descriptor5, _descriptor6, _descriptor7, _descriptor8, _descriptor9;
+  var _class, _descriptor, _descriptor2, _descriptor3, _descriptor4, _descriptor5, _descriptor6, _descriptor7, _descriptor8, _descriptor9, _descriptor10, _descriptor11;
   0; //eaimeta@70e063a35619d71f0,"@ember/service",0,"@glimmer/tracking",0,"@ember/object",0,"@ember/service"eaimeta@70e063a35619d71f
   function _initializerDefineProperty(e, i, r, l) { r && Object.defineProperty(e, i, { enumerable: r.enumerable, configurable: r.configurable, writable: r.writable, value: r.initializer ? r.initializer.call(l) : void 0 }); }
   function _defineProperty(e, r, t) { return (r = _toPropertyKey(r)) in e ? Object.defineProperty(e, r, { value: t, enumerable: !0, configurable: !0, writable: !0 }) : e[r] = t, e; }
@@ -4335,7 +4403,9 @@
       _initializerDefineProperty(this, "currentLobby", _descriptor7, this);
       // Current lobby details
       _initializerDefineProperty(this, "currentPlayers", _descriptor8, this);
-      _initializerDefineProperty(this, "admin", _descriptor9, this);
+      _initializerDefineProperty(this, "playerProfiles", _descriptor9, this);
+      _initializerDefineProperty(this, "admin", _descriptor10, this);
+      _initializerDefineProperty(this, "playerInTournament", _descriptor11, this);
       _defineProperty(this, "socketRef", null);
       _defineProperty(this, "startTournament", () => {
         const data = {
@@ -4361,9 +4431,9 @@
     async disconnectFromLobby(tournamentName) {
       const token = this.session.data.authenticated.access;
       const wsUrl = `wss://localhost/ws/tournament/${tournamentName}/?token=${encodeURIComponent(token)}`;
-      console.log(tournamentName);
+      console.log("websocket to close:", tournamentName);
       this.websockets.closeSocketFor(wsUrl);
-      console.log("websocket1", this.websockets.sockets);
+      console.log("websocket closed", this.websockets.sockets);
 
       // Remove event handlers
       this.socketRef.off('open', this.onOpen, this);
@@ -4376,6 +4446,8 @@
       this.currentLobby = null;
       this.messages = [];
       this.currentPlayers = [];
+      this.playerProfiles = [];
+      this.playerInTournament = false;
     }
     sendWinner(winner) {
       const data = {
@@ -4387,7 +4459,7 @@
     }
     sendMessage(data) {
       if (this.socketRef) {
-        console.log(data);
+        console.log('WebSocket message send:', JSON.stringify(data));
         this.socketRef.send(JSON.stringify(data));
       } else {
         console.error('WebSocket is not connected.');
@@ -4402,7 +4474,7 @@
       console.log('WebSocket connection opened:');
       this.sendMessage(data);
       this.currentLobby = tournamentName;
-      console.log(this.currentLobby);
+      this.playerInTournament = true;
     }
     onMessage(event) {
       console.log('WebSocket message received:', event.data);
@@ -4411,9 +4483,11 @@
         case "create":
           this.handleCreate(parsedMessage);
           break;
-        case "join/create":
-          this.handleJoin(parsedMessage);
-          break;
+
+        //			case "join/create":
+        //				this.handleJoin(parsedMessage)
+        //				break;
+
         case "join":
           this.handleJoin(parsedMessage);
           break;
@@ -4435,7 +4509,7 @@
       }
     }
     handleCreate(parsedMessage) {
-      this.currentPlayers = [...parsedMessage.players];
+      this.updateCurrentPlayers(parsedMessage);
       this.admin = parsedMessage.admin;
       const data = {
         type: 'tournament',
@@ -4445,7 +4519,7 @@
       this.chat.messages = [...this.chat.messages, data];
     }
     handleJoin(parsedMessage) {
-      this.currentPlayers = [...parsedMessage.players];
+      this.updateCurrentPlayers(parsedMessage);
       this.admin = parsedMessage.admin;
       const data = {
         type: 'tournament',
@@ -4472,7 +4546,7 @@
     }
     handleLeave(parsedMessage) {
       this.admin = parsedMessage.admin;
-      this.currentPlayers = [...parsedMessage.players];
+      this.currentPlayers = this.currentPlayers.filter(player => player.nickname !== parsedMessage.player);
       const data = {
         type: 'tournament',
         from: 'System',
@@ -4499,8 +4573,42 @@
     }
     handleTournamentWinner(parsedMessage) {}
     onClose(event) {
-      console.log('WebSocket connection closed:', event);
-      this.currentLobby = null;
+      this.disconnectFromLobby(this.tournamentName);
+      console.log('onClose event triggered:', event);
+      //		this.currentLobby = null;
+      //		this.player_in_tournament = false;
+      //		this.currentPlayers = [];
+    }
+    async updateCurrentPlayers(parsedMessage) {
+      if (!this.currentPlayers || this.currentPlayers.length === 0) {
+        this.currentPlayers = await Promise.all(parsedMessage.players.map(player => this.fetchUserData(player)));
+      } else {
+        const newPlayer = await this.fetchUserData(parsedMessage.player);
+        if (newPlayer) {
+          this.currentPlayers = [...this.currentPlayers, newPlayer];
+        }
+      }
+    }
+    async fetchUserData(nickname) {
+      try {
+        const response = await fetch('/users/users/profile-info/', {
+          method: 'POST',
+          headers: {
+            Authorization: `Bearer ${this.session.data.authenticated.access}`,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            nickname
+          })
+        });
+        if (!response.ok) {
+          throw new Error('Failed to fetch user profile');
+        }
+        const data = await response.json();
+        return data;
+      } catch (error) {
+        console.error('Error fetching user profile:', error);
+      }
     }
   }, _descriptor = _applyDecoratedDescriptor(_class.prototype, "websockets", [_service.inject], {
     configurable: true,
@@ -4546,11 +4654,25 @@
     initializer: function () {
       return [];
     }
-  }), _descriptor9 = _applyDecoratedDescriptor(_class.prototype, "admin", [_tracking.tracked], {
+  }), _descriptor9 = _applyDecoratedDescriptor(_class.prototype, "playerProfiles", [_tracking.tracked], {
+    configurable: true,
+    enumerable: true,
+    writable: true,
+    initializer: function () {
+      return [];
+    }
+  }), _descriptor10 = _applyDecoratedDescriptor(_class.prototype, "admin", [_tracking.tracked], {
     configurable: true,
     enumerable: true,
     writable: true,
     initializer: null
+  }), _descriptor11 = _applyDecoratedDescriptor(_class.prototype, "playerInTournament", [_tracking.tracked], {
+    configurable: true,
+    enumerable: true,
+    writable: true,
+    initializer: function () {
+      return false;
+    }
   }), _applyDecoratedDescriptor(_class.prototype, "connectToLobby", [_object.action], Object.getOwnPropertyDescriptor(_class.prototype, "connectToLobby"), _class.prototype), _applyDecoratedDescriptor(_class.prototype, "disconnectFromLobby", [_object.action], Object.getOwnPropertyDescriptor(_class.prototype, "disconnectFromLobby"), _class.prototype), _class);
 });
 ;define("myapp/services/user", ["exports", "@ember/service", "@glimmer/tracking"], function (_exports, _service, _tracking) {
@@ -4560,8 +4682,8 @@
     value: true
   });
   _exports.default = void 0;
-  var _class, _descriptor;
-  0; //eaimeta@70e063a35619d71f0,"@ember/service",0,"@glimmer/tracking"eaimeta@70e063a35619d71f
+  var _class, _descriptor, _descriptor2;
+  0; //eaimeta@70e063a35619d71f0,"@ember/service",0,"@glimmer/tracking",0,"@ember/service"eaimeta@70e063a35619d71f
   function _initializerDefineProperty(e, i, r, l) { r && Object.defineProperty(e, i, { enumerable: r.enumerable, configurable: r.configurable, writable: r.writable, value: r.initializer ? r.initializer.call(l) : void 0 }); }
   function _defineProperty(e, r, t) { return (r = _toPropertyKey(r)) in e ? Object.defineProperty(e, r, { value: t, enumerable: !0, configurable: !0, writable: !0 }) : e[r] = t, e; }
   function _toPropertyKey(t) { var i = _toPrimitive(t, "string"); return "symbol" == typeof i ? i : i + ""; }
@@ -4572,14 +4694,35 @@
     constructor(...args) {
       super(...args);
       _initializerDefineProperty(this, "profile", _descriptor, this);
+      // Track the current user profile
+      _initializerDefineProperty(this, "session", _descriptor2, this);
     }
-    // Track the current user profile
-
     setProfile(userData) {
       this.profile = userData; // Set user data in the service
     }
     clearProfile() {
       this.profile = null; // Clear the user data (on logout)
+    }
+    async fetchUserData(nickname) {
+      try {
+        const response = await fetch('/users/users/profile-info/', {
+          method: 'POST',
+          headers: {
+            Authorization: `Bearer ${this.session.data.authenticated.access}`,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            nickname
+          })
+        });
+        if (!response.ok) {
+          throw new Error('Failed to fetch user profile');
+        }
+        const data = await response.json();
+        this.setProfile(data); // Store user data for use in the template
+      } catch (error) {
+        console.error('Error fetching user profile:', error);
+      }
     }
   }, _descriptor = _applyDecoratedDescriptor(_class.prototype, "profile", [_tracking.tracked], {
     configurable: true,
@@ -4588,6 +4731,11 @@
     initializer: function () {
       return null;
     }
+  }), _descriptor2 = _applyDecoratedDescriptor(_class.prototype, "session", [_service.inject], {
+    configurable: true,
+    enumerable: true,
+    writable: true,
+    initializer: null
   }), _class);
 });
 ;define("myapp/services/websockets", ["exports", "ember-websockets/services/websockets"], function (_exports, _websockets) {
@@ -4659,7 +4807,7 @@
     <div class="container-fluid row">
       <div class="container-fluid col-3 footer">
               <LinkTo @route="choose-game" class="nav-button">Game</LinkTo>
-              <LinkTo @route="chat" class="nav-button">Chat</LinkTo>
+              <LinkTo @route="chat" class="nav-button">Chat</LinkTo>            
               <LinkTo @route="tournament" class="nav-button">Tournament</LinkTo>
       </div>
       <div class="container-fluid col-6 footer">
@@ -4672,11 +4820,11 @@
           {{/unless}}
         {{/if}}
       </div>
-    </div>
+    </div>    
   </div>
-
+  
   </main>
-
+  
   */
   {
     "id": "00o/NGBf",
@@ -4696,7 +4844,7 @@
   var _default = _exports.default = (0, _templateFactory.createTemplateFactory)(
   /*
     <Chat/>
-
+  
   */
   {
     "id": "X/fO1PyJ",
@@ -4730,7 +4878,7 @@
         <span style="--i:4">PO</span>
         <span style="--i:5">NG</span>
       </div>
-
+  
       <div class="game-buttons">
         <button type="button" {{on "click" (fn this.chooseGame "computer")}}>Single Player</button>
         <button type="button" {{on "click" (fn this.chooseGame "local")}}>Local Multiplayer</button>
@@ -4739,7 +4887,7 @@
     </div>
     {{/if}}
   </div>
-
+  
   */
   {
     "id": "wfVEWvGZ",
@@ -4758,7 +4906,7 @@
   0; //eaimeta@70e063a35619d71f0,"@ember/template-factory"eaimeta@70e063a35619d71f
   var _default = _exports.default = (0, _templateFactory.createTemplateFactory)(
   /*
-
+    
   */
   {
     "id": "WC9lYDjz",
@@ -4782,14 +4930,14 @@
       <form {{on "submit" this.login}}>
         <label>Username:</label>
         <input type="text" name="username" {{on "change" (fn this.update "username")}} />
-
+  
         <label>Password:</label>
         <input type="password" name="password" {{on "change" (fn this.update "password")}} />
-
+  
         <button class="login" type="submit">Login</button>
         <button type="button" class="register-button" {{on "click" this.register}}>Register</button>
       </form>
-
+  
       {{#if this.error}}
         <p><strong>{{this.error}}</strong></p>
       {{/if}}
@@ -4835,20 +4983,23 @@
     <div class="container-fluid row">
   	{{#if this.tournament.currentLobby}}
   		<div class="col-7">
-  			<h2 class="points center">👥 1/10</h2>
+  			<h2 class="points center">👥 {{this.tournament.currentPlayers.length}}/10</h2>
   			<UserListTournament/>
   		</div>
   		<div class="button-container col-5">
-  			{{#if (eq this.tournament.admin this.user.profile.nickname)}}
-  				<button class="nav-button start" type="button" {{on "click" (fn this.tournament.startTournament)}}>Start Tournament</button>
+  			{{#if (and (eq this.tournament.admin this.user.profile.nickname) this.tournament.playerInTournament)}}
+    				<button class="nav-button start" type="button" {{on "click" (fn this.tournament.startTournament)}}>
+      				Start Tournament
+    				</button>
   			{{/if}}
-  		<button class="nav-button cancel" type="button" {{on "click" (fn this.tournament.disconnectFromLobby this.tournament.currentLobby)}}>Leave</button>
+  
+  		<button class="nav-button cancel" type="button" {{on "click" (fn this.tournament.disconnectFromLobby this.tournament.currentLobby)}}>Leave</button> 
   		</div>
   	{{else}}
   		<div class="d-flex justify-content-center align-items-center">
-  			<button
-  				class="nav-button mt-5"
-  				type="button"
+  			<button 
+  				class="nav-button mt-5" 
+  				type="button" 
   				{{on "click" (fn this.tournament.connectToLobby this.user.profile.nickname)}}
   			>
   			Create Tournament
@@ -4858,8 +5009,8 @@
   </div>
   */
   {
-    "id": "z25Bczj6",
-    "block": "[[[10,0],[14,0,\"container-fluid row\"],[12],[1,\"\\n\"],[41,[30,0,[\"tournament\",\"currentLobby\"]],[[[1,\"\\t\\t\"],[10,0],[14,0,\"col-7\"],[12],[1,\"\\n\\t\\t\\t\"],[10,\"h2\"],[14,0,\"points center\"],[12],[1,\"👥 1/10\"],[13],[1,\"\\n\\t\\t\\t\"],[8,[39,3],null,null,null],[1,\"\\n\\t\\t\"],[13],[1,\"\\n\\t\\t\"],[10,0],[14,0,\"button-container col-5\"],[12],[1,\"\\n\"],[41,[28,[37,4],[[30,0,[\"tournament\",\"admin\"]],[30,0,[\"user\",\"profile\",\"nickname\"]]],null],[[[1,\"\\t\\t\\t\\t\"],[11,\"button\"],[24,0,\"nav-button start\"],[24,4,\"button\"],[4,[38,6],[\"click\",[28,[37,7],[[30,0,[\"tournament\",\"startTournament\"]]],null]],null],[12],[1,\"Start Tournament\"],[13],[1,\"\\n\"]],[]],null],[1,\"\\t\\t\"],[11,\"button\"],[24,0,\"nav-button cancel\"],[24,4,\"button\"],[4,[38,6],[\"click\",[28,[37,7],[[30,0,[\"tournament\",\"disconnectFromLobby\"]],[30,0,[\"tournament\",\"currentLobby\"]]],null]],null],[12],[1,\"Leave\"],[13],[1,\" \\n\\t\\t\"],[13],[1,\"\\n\"]],[]],[[[1,\"\\t\\t\"],[10,0],[14,0,\"d-flex justify-content-center align-items-center\"],[12],[1,\"\\n\\t\\t\\t\"],[11,\"button\"],[24,0,\"nav-button mt-5\"],[24,4,\"button\"],[4,[38,6],[\"click\",[28,[37,7],[[30,0,[\"tournament\",\"connectToLobby\"]],[30,0,[\"user\",\"profile\",\"nickname\"]]],null]],null],[12],[1,\"\\n\\t\\t\\tCreate Tournament\\n\\t\\t\\t\"],[13],[1,\"\\n\\t\\t\\t\"],[13],[1,\"\\n\"]],[]]],[13]],[],false,[\"div\",\"if\",\"h2\",\"user-list-tournament\",\"eq\",\"button\",\"on\",\"fn\"]]",
+    "id": "ysbN+gDg",
+    "block": "[[[10,0],[14,0,\"container-fluid row\"],[12],[1,\"\\n\"],[41,[30,0,[\"tournament\",\"currentLobby\"]],[[[1,\"\\t\\t\"],[10,0],[14,0,\"col-7\"],[12],[1,\"\\n\\t\\t\\t\"],[10,\"h2\"],[14,0,\"points center\"],[12],[1,\"👥 \"],[1,[30,0,[\"tournament\",\"currentPlayers\",\"length\"]]],[1,\"/10\"],[13],[1,\"\\n\\t\\t\\t\"],[8,[39,3],null,null,null],[1,\"\\n\\t\\t\"],[13],[1,\"\\n\\t\\t\"],[10,0],[14,0,\"button-container col-5\"],[12],[1,\"\\n\"],[41,[28,[37,4],[[28,[37,5],[[30,0,[\"tournament\",\"admin\"]],[30,0,[\"user\",\"profile\",\"nickname\"]]],null],[30,0,[\"tournament\",\"playerInTournament\"]]],null],[[[1,\"  \\t\\t\\t\\t\"],[11,\"button\"],[24,0,\"nav-button start\"],[24,4,\"button\"],[4,[38,7],[\"click\",[28,[37,8],[[30,0,[\"tournament\",\"startTournament\"]]],null]],null],[12],[1,\"\\n    \\t\\t\\t\\tStart Tournament\\n  \\t\\t\\t\\t\"],[13],[1,\"\\n\"]],[]],null],[1,\"\\n\\t\\t\"],[11,\"button\"],[24,0,\"nav-button cancel\"],[24,4,\"button\"],[4,[38,7],[\"click\",[28,[37,8],[[30,0,[\"tournament\",\"disconnectFromLobby\"]],[30,0,[\"tournament\",\"currentLobby\"]]],null]],null],[12],[1,\"Leave\"],[13],[1,\" \\n\\t\\t\"],[13],[1,\"\\n\"]],[]],[[[1,\"\\t\\t\"],[10,0],[14,0,\"d-flex justify-content-center align-items-center\"],[12],[1,\"\\n\\t\\t\\t\"],[11,\"button\"],[24,0,\"nav-button mt-5\"],[24,4,\"button\"],[4,[38,7],[\"click\",[28,[37,8],[[30,0,[\"tournament\",\"connectToLobby\"]],[30,0,[\"user\",\"profile\",\"nickname\"]]],null]],null],[12],[1,\"\\n\\t\\t\\tCreate Tournament\\n\\t\\t\\t\"],[13],[1,\"\\n\\t\\t\\t\"],[13],[1,\"\\n\"]],[]]],[13]],[],false,[\"div\",\"if\",\"h2\",\"user-list-tournament\",\"and\",\"eq\",\"button\",\"on\",\"fn\"]]",
     "moduleName": "myapp/templates/tournament.hbs",
     "isStrictMode": false
   });
@@ -5037,5 +5188,5 @@ catch(err) {
           if (!runningTests) {
             require("myapp/app")["default"].create({"name":"myapp","version":"0.0.0"});
           }
-
+        
 //# sourceMappingURL=myapp.map
