@@ -1652,7 +1652,7 @@
     value: true
   });
   _exports.default = void 0;
-  var _class, _descriptor, _descriptor2, _descriptor3, _descriptor4, _descriptor5, _descriptor6, _descriptor7, _descriptor8, _descriptor9, _descriptor10, _descriptor11, _descriptor12, _descriptor13;
+  var _class, _descriptor, _descriptor2, _descriptor3, _descriptor4, _descriptor5, _descriptor6, _descriptor7, _descriptor8, _descriptor9, _descriptor10, _descriptor11, _descriptor12, _descriptor13, _descriptor14;
   0; //eaimeta@70e063a35619d71f0,"@glimmer/component",0,"@glimmer/tracking",0,"@ember/service",0,"@ember/template-factory",0,"@ember/component"eaimeta@70e063a35619d71f
   function _initializerDefineProperty(e, i, r, l) { r && Object.defineProperty(e, i, { enumerable: r.enumerable, configurable: r.configurable, writable: r.writable, value: r.initializer ? r.initializer.call(l) : void 0 }); }
   function _defineProperty(e, r, t) { return (r = _toPropertyKey(r)) in e ? Object.defineProperty(e, r, { value: t, enumerable: !0, configurable: !0, writable: !0 }) : e[r] = t, e; }
@@ -1703,6 +1703,8 @@
       _initializerDefineProperty(this, "tournament", _descriptor11, this);
       _initializerDefineProperty(this, "user", _descriptor12, this);
       _initializerDefineProperty(this, "router", _descriptor13, this);
+      _initializerDefineProperty(this, "websockets", _descriptor14, this);
+      _defineProperty(this, "stat", false);
       _defineProperty(this, "socketRef", null);
       // Track the state of key presses
       _defineProperty(this, "p1UpKeyPressed", false);
@@ -1710,7 +1712,6 @@
       _defineProperty(this, "p2UpKeyPressed", false);
       _defineProperty(this, "p2DownKeyPressed", false);
       this.setupKeyListeners();
-      this.connectToLobby(this.gameData.roomData.room_name);
     }
     get roomData() {
       return this.gameData.roomData; // Access shared room data
@@ -1724,6 +1725,10 @@
       let direction_p2 = "";
       let type_p1 = "";
       let type_p2 = "";
+      if (!this.stat) {
+        this.connectToLobby(this.gameData.roomData.room_name);
+        this.stat = true;
+      }
       if (this.keyStates[event.key]) {
         return; // Key is already released; no need to resend the event
       }
@@ -1832,9 +1837,11 @@
         console.log("disconnect");
         this.disconnectFromLobby(roomName);
       }
+      console.log("connect to:", wsUrl);
       const socket = this.websockets.socketFor(wsUrl);
+      console.log("connect to:", wsUrl);
       // Register WebSocket event handlers
-      socket.on('open', () => this.onOpen(tournamentName), this);
+      socket.on('open', () => this.onOpen(roomName), this);
       socket.on('message', this.onMessage, this);
       socket.on('close', this.onClose, this);
       this.set('socketRef', socket);
@@ -1946,6 +1953,11 @@
     writable: true,
     initializer: null
   }), _descriptor13 = _applyDecoratedDescriptor(_class.prototype, "router", [_service.inject], {
+    configurable: true,
+    enumerable: true,
+    writable: true,
+    initializer: null
+  }), _descriptor14 = _applyDecoratedDescriptor(_class.prototype, "websockets", [_service.inject], {
     configurable: true,
     enumerable: true,
     writable: true,
