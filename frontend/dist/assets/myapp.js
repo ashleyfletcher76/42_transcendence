@@ -1707,7 +1707,7 @@
     startKeyPolling() {
       this.pollingInterval = setInterval(() => {
         this.sendKeyPresses();
-      }, 50); // Poll every 50ms
+      }, 70); // Poll every 50ms
     }
     async sendKeyPresses() {
       const {

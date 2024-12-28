@@ -54,11 +54,14 @@ def game_state_view(request, room_name):
                 player = request.data.get("player", {})
                 keypress_p1 = request.data.get('keypress_p1', {})
                 keypress_p2 = request.data.get('keypress_p2', {})
-                if not player:
-                    handle_local_input(game, keypress_p1, keypress_p2)
-                else:
-                    handle_remote_input(game, keypress_p1, player)
-                game_logic(game)
+                try:
+                    if not player:
+                        handle_local_input(game, keypress_p1, keypress_p2)
+                    else:
+                        handle_remote_input(game, keypress_p1, player)
+                    game_logic(game)
+                except:
+                    print("game logic error")
             set_game_state(room_name, game)
             return Response(game)
 
@@ -113,7 +116,7 @@ def create_room(request):
             "ball_x" : 0,
             "ball_y" : 0,
             "ball_speed_x" : random.choice([0.02, -0.02]),
-            "ball_speed_y" : random.choice([0.02, -0.02]),
+            "ball_speed_y" : 0,
             "left_paddle_y" : 0,
             "right_paddle_y" : 0,
             "left_score" : 0,
