@@ -95,6 +95,8 @@ def create_room(request):
             "finished" : False,
             "p1_paddle" : "",
             "p2_paddle" : "",
+            "endloop" : False,
+            "winner" : "",
         }
 
         set_game_state(room_name, game_state)
