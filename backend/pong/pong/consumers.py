@@ -5,6 +5,7 @@ from asyncio import sleep
 from channels.generic.websocket import AsyncWebsocketConsumer
 from .utils.redis_helper import get_game_state, set_game_state
 from .logic.game_logic import game_logic, move_right_paddle, move_left_paddle
+from .utils.match_history import upload_match_details
 
 
 class GameConsumer(AsyncWebsocketConsumer):
@@ -28,6 +29,7 @@ class GameConsumer(AsyncWebsocketConsumer):
             print(f"Error authenticating user: {e}")
             await self.close(code=4001)
             return
+
         await self.channel_layer.group_add(
             self.room_group_name,
             self.channel_name
@@ -40,8 +42,8 @@ class GameConsumer(AsyncWebsocketConsumer):
             game["connections"] = 0
         game["connections"] += 1
         set_game_state(self.room_name, game)
-
-        if game["connections"] == 2 or game["game_type"] == "local" or game["game_type"] == "AI":
+        print(game)
+        if game["connections"] == 2 or game["player2"] == "local" or game["player2"] == "AI":
             await self.start_game_loop()
         print("websocket connection is coming!")
 
@@ -58,14 +60,6 @@ class GameConsumer(AsyncWebsocketConsumer):
 
     async def receive(self, text_data):
         data = json.loads(text_data)
-        action = data.get("action")
-
-        if action == "send_keypress":
-            await self.handle_keypress(data)
-        elif action == "get_game_state":
-            await self.send_game_state(data)
-
-    async def handle_keypress(self, data):
         t1 = data.get("type_p1")
         d1 = data.get("direction_p1")
         t2 = data.get("type_p2")
@@ -88,9 +82,7 @@ class GameConsumer(AsyncWebsocketConsumer):
                 game["p1_paddle"] = d2
             elif t2 == "stop_move":
                 game["p1_paddle"] = ""
-
-
-        set_game_state(self.room_name, game)
+            set_game_state(self.room_name, game)
 
     async def send_game_state(self, data):
         room_name = data.get("room_name")
@@ -116,12 +108,12 @@ class GameConsumer(AsyncWebsocketConsumer):
         """
         while True:
             await sleep(1 / 60)
+            print("game is running on backend")
 
             game = get_game_state(self.room_name)
 
             if game.get("finished"):
-                # send game stats info to the matchmaking info.
-                ...
+                self.game_stat_send()
                 break
 
             if not game["paused"]:
@@ -170,3 +162,13 @@ class GameConsumer(AsyncWebsocketConsumer):
             if header[0].decode("utf-8") == "authorization":
                 return header[1].decode("utf-8").split("Bearer ")[-1]
         return None
+    
+    def game_stat_send(self, game):
+        if self.nickname == game["player1"]:
+            opponent = self.nickname
+        else:
+            opponent = game["player2"]
+        score = f"{game["left_score"]}-{game["right_score"]}"
+        result = "win" if game["winner"] == self.nickname else "loss"
+        upload_match_details(self.user_id, opponent, result, score)
+        

@@ -10,6 +10,7 @@ import requests
 import json
 import random
 from asgiref.sync import async_to_sync
+from .utils.match_history import upload_match_details
 
 
 
@@ -19,8 +20,21 @@ class TournamentConsumer(WebsocketConsumer):
     def connect(self):
         self.room_name = self.scope["url_route"]["kwargs"]["room_name"]
         self.room_group_name = f"tournament_{self.room_name}"
-        self.username = None
         self.joined = False
+        token = self.get_jwt_from_headers(self.scope["headers"])
+        if not token:
+            print("No token found in headers")
+            self.close(code=4001)
+            return
+
+        try:
+            user_data = self.get_user_from_auth_service(token)
+            self.user_id = user_data["user_id"]
+            self.username = user_data["nickname"]
+        except Exception as e:
+            print(f"Error authenticating user: {e}")
+            self.close(code=4001)
+            return
 
         async_to_sync(self.channel_layer.group_add)(
             self.room_group_name,
@@ -185,6 +199,7 @@ class TournamentConsumer(WebsocketConsumer):
             room_name = response_data.get("room_name")
             print(response_data)
             return room_name
+        print("Error")
         return None
 
     def assign_match(self, player1, player2, room_name):
@@ -508,3 +523,34 @@ class TournamentConsumer(WebsocketConsumer):
         if not player.exists():
             self.disconnect(1005)
             return True
+        
+
+    def get_user_from_auth_service(self, token):
+        if isinstance(token, bytes):
+            token = token.decode("utf-8")
+        try:
+            response = requests.post(
+                "http://auth-service:8000/auth/get-user-token/",
+                json={"token": token}
+            )
+            if response.status_code == 200:
+                return response.json()
+            else:
+                raise Exception("User authentication failed")
+        except requests.RequestException as e:
+            raise Exception(f"Auth-service unreachable: {str(e)}")
+
+    def get_jwt_from_headers(self, headers):
+        for header in headers:
+            if header[0].decode("utf-8") == "authorization":
+                return header[1].decode("utf-8").split("Bearer ")[-1]
+        return None
+    
+    def game_stat_send(self, game):
+        if self.nickname == game["player1"]:
+            opponent = self.nickname
+        else:
+            opponent = game["player2"]
+        score = f"{game["left_score"]}-{game["right_score"]}"
+        result = "win" if game["winner"] == self.nickname else "loss"
+        upload_match_details(self.user_id, opponent, result, score)
