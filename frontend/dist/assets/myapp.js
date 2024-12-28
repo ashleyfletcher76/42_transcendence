@@ -1703,6 +1703,7 @@
       _initializerDefineProperty(this, "tournament", _descriptor11, this);
       _initializerDefineProperty(this, "user", _descriptor12, this);
       _initializerDefineProperty(this, "router", _descriptor13, this);
+      _defineProperty(this, "socketRef", null);
       // Track the state of key presses
       _defineProperty(this, "p1UpKeyPressed", false);
       _defineProperty(this, "p1DownKeyPressed", false);
