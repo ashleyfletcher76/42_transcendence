@@ -63,13 +63,10 @@ class GameConsumer(AsyncWebsocketConsumer):
         try:
             data = json.loads(text_data)
             if isinstance(data, str):
-                print("Detected double-encoded JSON")
                 data = json.loads(data)
         except json.JSONDecodeError as e:
             print(f"Error decoding JSON: {e}")
             return
-
-        print(f"Parsed data: {data}")
 
         t1 = data.get("type_p1", "")
         d1 = data.get("direction_p1", "")
@@ -89,10 +86,11 @@ class GameConsumer(AsyncWebsocketConsumer):
                     game["p1_paddle"] = ""
                 elif self.nickname == game["player2"]:
                     game["p2_paddle"] = ""
-            if t2 == "start_move":
-                game["p1_paddle"] = d2
-            elif t2 == "stop_move":
-                game["p1_paddle"] = ""
+            if game["game_type"] == "local":
+                if t2 == "start_move":
+                    game["p2_paddle"] = d2
+                elif t2 == "stop_move":
+                    game["p2_paddle"] = ""
             set_game_state(self.room_name, game)
 
 

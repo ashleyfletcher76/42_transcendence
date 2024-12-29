@@ -42,10 +42,10 @@ def find_remote_game_states():
                 if game_state_json:
                     game_state = json.loads(game_state_json)
                     if game_state.get("player2") == "remote":
-                        matching_rooms.append(key.decode().replace(GAME_STATE_PREFIX, ""))
+                        return game_state
             except (redis.RedisError, json.JSONDecodeError) as e:
                 print(f"Error processing game state for key '{key}': {e}")
     except redis.RedisError as e:
         print(f"Error fetching game state keys: {e}")
 
-    return matching_rooms
+    return None

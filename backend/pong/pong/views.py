@@ -44,16 +44,19 @@ def create_room(request):
         player_1 = data.get("player", "default")
         p2 = data.get("player_2", "default")
         game_type = data.get("gameType", "default")
+        print(game_type)
+        print(player_1)
 
         if game_type == "remote":
             waiting_room = find_remote_game_states()
+            print(waiting_room)
             if waiting_room:
 
                 waiting_room["player2"] = player_1
                 waiting_room["player2_timer"] = time.time()
                 waiting_room["player1_timer"] = time.time()
                 waiting_room["creation_time"] = time.time()
-                set_game_state(room_name, waiting_room)
+                set_game_state(waiting_room["room_name"], waiting_room)
                 print(waiting_room["player1"])
                 print(waiting_room["player2"])
                 return JsonResponse({
