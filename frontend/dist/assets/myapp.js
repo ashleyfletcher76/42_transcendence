@@ -1652,7 +1652,7 @@
     value: true
   });
   _exports.default = void 0;
-  var _class, _descriptor, _descriptor2, _descriptor3, _descriptor4, _descriptor5, _descriptor6, _descriptor7, _descriptor8, _descriptor9, _descriptor10, _descriptor11, _descriptor12, _descriptor13, _descriptor14;
+  var _class, _descriptor;
   0; //eaimeta@70e063a35619d71f0,"@glimmer/component",0,"@glimmer/tracking",0,"@ember/service",0,"@ember/template-factory",0,"@ember/component"eaimeta@70e063a35619d71f
   function _initializerDefineProperty(e, i, r, l) { r && Object.defineProperty(e, i, { enumerable: r.enumerable, configurable: r.configurable, writable: r.writable, value: r.initializer ? r.initializer.call(l) : void 0 }); }
   function _defineProperty(e, r, t) { return (r = _toPropertyKey(r)) in e ? Object.defineProperty(e, r, { value: t, enumerable: !0, configurable: !0, writable: !0 }) : e[r] = t, e; }
@@ -1663,301 +1663,32 @@
   const __COLOCATED_TEMPLATE__ = (0, _templateFactory.createTemplateFactory)(
   /*
     <div class="pong-game">
-    {{#if this.winner}}
-      <h1 class="white">Winner: {{this.winner}}</h1>
+    {{#if this.pongGame.winner}}
+      <h1 class="white">Winner: {{this.pongGame.winner}}</h1>
     {{else}}
-      {{#if (not (eq this.status 0))}}
-        <h1 class="white">{{this.status}}</h1>
+      {{#if (eq this.pongGame.status 0)}}
+        <h1 class="white">{{this.pongGame.status}}</h1>
       {{else}}
-        <Ball @positionX={{this.ballPositionX}} @positionY={{this.ballPositionY}} />
+        <Ball @positionX={{this.pongGame.ballPositionX}} @positionY={{this.pongGame.ballPositionY}} />
       {{/if}}
-      <Paddle @position={{this.leftPaddlePosition}} @side="paddle-left" />
-      <Paddle @position={{this.rightPaddlePosition}} @side="paddle-right" />
+      <Paddle @position={{this.pongGame.leftPaddlePosition}} @side="paddle-left" />
+      <Paddle @position={{this.pongGame.rightPaddlePosition}} @side="paddle-right" />
     {{/if}}
   </div>
   
   */
   {
-    "id": "f3TDaoGl",
-    "block": "[[[10,0],[14,0,\"pong-game\"],[12],[1,\"\\n\"],[41,[30,0,[\"winner\"]],[[[1,\"    \"],[10,\"h1\"],[14,0,\"white\"],[12],[1,\"Winner: \"],[1,[30,0,[\"winner\"]]],[13],[1,\"\\n\"]],[]],[[[41,[28,[37,3],[[28,[37,4],[[30,0,[\"status\"]],0],null]],null],[[[1,\"      \"],[10,\"h1\"],[14,0,\"white\"],[12],[1,[30,0,[\"status\"]]],[13],[1,\"\\n\"]],[]],[[[1,\"      \"],[8,[39,5],null,[[\"@positionX\",\"@positionY\"],[[30,0,[\"ballPositionX\"]],[30,0,[\"ballPositionY\"]]]],null],[1,\"\\n\"]],[]]],[1,\"    \"],[8,[39,6],null,[[\"@position\",\"@side\"],[[30,0,[\"leftPaddlePosition\"]],\"paddle-left\"]],null],[1,\"\\n    \"],[8,[39,6],null,[[\"@position\",\"@side\"],[[30,0,[\"rightPaddlePosition\"]],\"paddle-right\"]],null],[1,\"\\n\"]],[]]],[13],[1,\"\\n\"]],[],false,[\"div\",\"if\",\"h1\",\"not\",\"eq\",\"ball\",\"paddle\"]]",
+    "id": "cVrfRx1L",
+    "block": "[[[10,0],[14,0,\"pong-game\"],[12],[1,\"\\n\"],[41,[30,0,[\"pongGame\",\"winner\"]],[[[1,\"    \"],[10,\"h1\"],[14,0,\"white\"],[12],[1,\"Winner: \"],[1,[30,0,[\"pongGame\",\"winner\"]]],[13],[1,\"\\n\"]],[]],[[[41,[28,[37,3],[[30,0,[\"pongGame\",\"status\"]],0],null],[[[1,\"      \"],[10,\"h1\"],[14,0,\"white\"],[12],[1,[30,0,[\"pongGame\",\"status\"]]],[13],[1,\"\\n\"]],[]],[[[1,\"      \"],[8,[39,4],null,[[\"@positionX\",\"@positionY\"],[[30,0,[\"pongGame\",\"ballPositionX\"]],[30,0,[\"pongGame\",\"ballPositionY\"]]]],null],[1,\"\\n\"]],[]]],[1,\"    \"],[8,[39,5],null,[[\"@position\",\"@side\"],[[30,0,[\"pongGame\",\"leftPaddlePosition\"]],\"paddle-left\"]],null],[1,\"\\n    \"],[8,[39,5],null,[[\"@position\",\"@side\"],[[30,0,[\"pongGame\",\"rightPaddlePosition\"]],\"paddle-right\"]],null],[1,\"\\n\"]],[]]],[13],[1,\"\\n\"]],[],false,[\"div\",\"if\",\"h1\",\"eq\",\"ball\",\"paddle\"]]",
     "moduleName": "myapp/components/pong-game.hbs",
     "isStrictMode": false
   });
   let PongGameComponent = _exports.default = (_class = class PongGameComponent extends _component2.default {
-    constructor() {
-      super(...arguments);
-      _initializerDefineProperty(this, "leftPaddlePosition", _descriptor, this);
-      // Normalize between 0 and 1
-      _initializerDefineProperty(this, "rightPaddlePosition", _descriptor2, this);
-      // Normalize between 0 and 1
-      _initializerDefineProperty(this, "ballPositionX", _descriptor3, this);
-      // Ball position
-      _initializerDefineProperty(this, "ballPositionY", _descriptor4, this);
-      // Ball position
-      _initializerDefineProperty(this, "winner", _descriptor5, this);
-      _initializerDefineProperty(this, "status", _descriptor6, this);
-      _initializerDefineProperty(this, "winnerSend", _descriptor7, this);
-      _initializerDefineProperty(this, "keyStates", _descriptor8, this);
-      _initializerDefineProperty(this, "gameData", _descriptor9, this);
-      _initializerDefineProperty(this, "session", _descriptor10, this);
-      _initializerDefineProperty(this, "tournament", _descriptor11, this);
-      _initializerDefineProperty(this, "user", _descriptor12, this);
-      _initializerDefineProperty(this, "router", _descriptor13, this);
-      _initializerDefineProperty(this, "websockets", _descriptor14, this);
-      _defineProperty(this, "stat", false);
-      _defineProperty(this, "socketRef", null);
-      // Track the state of key presses
-      _defineProperty(this, "p1UpKeyPressed", false);
-      _defineProperty(this, "p1DownKeyPressed", false);
-      _defineProperty(this, "p2UpKeyPressed", false);
-      _defineProperty(this, "p2DownKeyPressed", false);
-      this.setupKeyListeners();
+    constructor(...args) {
+      super(...args);
+      _initializerDefineProperty(this, "pongGame", _descriptor, this);
     }
-    get roomData() {
-      return this.gameData.roomData; // Access shared room data
-    }
-    setupKeyListeners() {
-      window.addEventListener('keydown', this.handleKeyDown.bind(this));
-      window.addEventListener('keyup', this.handleKeyUp.bind(this));
-    }
-    handleKeyDown(event) {
-      let direction_p1 = "";
-      let direction_p2 = "";
-      let type_p1 = "";
-      let type_p2 = "";
-      if (!this.stat) {
-        this.connectToLobby(this.gameData.roomData.room_name);
-        this.stat = true;
-      }
-      if (this.keyStates[event.key]) {
-        return; // Key is already released; no need to resend the event
-      }
-      switch (event.key) {
-        case 'ArrowUp':
-          if (!this.keyStates.ArrowDown) {
-            direction_p1 = "up";
-            type_p1 = "start_move";
-          } else return;
-          break;
-        case 'ArrowDown':
-          if (!this.keyStates.ArrowUp) {
-            direction_p1 = "down";
-            type_p1 = "start_move";
-          } else return;
-          break;
-        case 'w':
-        case 'W':
-          if (!this.keyStates.w && !this.keyStates.W) {
-            direction_p2 = "up";
-            type_p2 = "start_move";
-          } else return;
-          break;
-        case 's':
-        case 'S':
-          if (!this.keyStates.s && !this.keyStates.S) {
-            direction_p2 = "down";
-            type_p2 = "start_move";
-          } else return;
-          break;
-      }
-      this.keyStates[event.key] = true;
-      const data = JSON.stringify({
-        type_p1,
-        direction_p1,
-        type_p2,
-        direction_p2
-      });
-      this.sendMessage(data);
-    }
-    handleKeyUp(event) {
-      let direction_p1 = "";
-      let direction_p2 = "";
-      let type_p1 = "";
-      let type_p2 = "";
-      if (!this.keyStates[event.key]) {
-        return; // Key is already released; no need to resend the event
-      }
-      switch (event.key) {
-        case 'ArrowUp':
-          type_p1 = "stop_move";
-          break;
-        case 'ArrowDown':
-          type_p1 = "stop_move";
-          break;
-        case 'w':
-        case 'W':
-          type_p2 = "stop_move";
-          break;
-        case 's':
-        case 'S':
-          type_p2 = "stop_move";
-          break;
-      }
-      this.keyStates[event.key] = false;
-      const data = JSON.stringify({
-        type_p1,
-        direction_p1,
-        type_p2,
-        direction_p2
-      });
-      this.sendMessage(data);
-    }
-    updateGameState(data) {
-      this.status = data.game_start_timer;
-      this.ballPositionX = data.ball_x * (25 - visualViewport.height / visualViewport.width);
-      this.ballPositionY = data.ball_y * 24;
-      this.leftPaddlePosition = data.left_paddle_y * 10;
-      this.rightPaddlePosition = data.right_paddle_y * 10;
-      this.winner = data.winner;
-      if (!this.winner) {
-        this.gameData.left_score = data.left_score;
-        this.gameData.right_score = data.right_score;
-      }
-      if (this.winner && !this.winnerSend) {
-        this.winnerSend = true;
-        if (this.tournament.currentLobby) {
-          this.tournament.sendWinner(this.winner);
-          if (this.winner !== this.user.profile.nickname) this.tournament.playerInTournament = false;
-          this.router.transitionTo('tournament');
-        }
-        this.willDestroy();
-      }
-    }
-    willDestroy() {
-      this.disconnectFromLobby(this.gameData.roomData.roomName);
-      window.removeEventListener('keydown', this.handleKeyDown.bind(this));
-      window.removeEventListener('keyup', this.handleKeyUp.bind(this));
-      super.willDestroy();
-    }
-    async connectToLobby(roomName) {
-      const token = this.session.data.authenticated.access;
-      const wsUrl = `wss://localhost/ws/pong-game/${roomName}/?token=${encodeURIComponent(token)}`;
-      console.log("connect to:", wsUrl);
-      if (this.socketRef) {
-        console.log("disconnect");
-        this.disconnectFromLobby(roomName);
-      }
-      console.log("connect to:", wsUrl);
-      const socket = this.websockets.socketFor(wsUrl);
-      console.log("connect to:", wsUrl);
-      // Register WebSocket event handlers
-      socket.on('open', () => this.onOpen(roomName), this);
-      socket.on('message', this.onMessage, this);
-      socket.on('close', this.onClose, this);
-      this.set('socketRef', socket);
-    }
-    async disconnectFromLobby(roomName) {
-      const token = this.session.data.authenticated.access;
-      const wsUrl = `wss://localhost/ws/pong-game/${roomName}/?token=${encodeURIComponent(token)}`;
-      console.log("websocket to close:", roomName);
-      this.websockets.closeSocketFor(wsUrl);
-      console.log("websocket closed", this.websockets.sockets);
-
-      // Remove event handlers
-      this.socketRef.off('open', this.onOpen, this);
-      this.socketRef.off('message', this.onMessage, this);
-      this.socketRef.off('close', this.onClose, this);
-
-      // Reset WebSocket reference
-      this.socketRef = null;
-    }
-    onMessage(event) {
-      console.log('WebSocket message received:', event.data);
-      const parsedMessage = JSON.parse(event.data);
-      this.updateGameState(parsedMessage);
-    }
-    sendMessage(data) {
-      console.log('WebSocket message send:', JSON.stringify(data));
-      if (this.socketRef) {
-        console.log('WebSocket message send:', JSON.stringify(data));
-        this.socketRef.send(JSON.stringify(data));
-      } else {
-        console.error('WebSocket is not connected.');
-      }
-    }
-  }, _descriptor = _applyDecoratedDescriptor(_class.prototype, "leftPaddlePosition", [_tracking.tracked], {
-    configurable: true,
-    enumerable: true,
-    writable: true,
-    initializer: function () {
-      return 0.5;
-    }
-  }), _descriptor2 = _applyDecoratedDescriptor(_class.prototype, "rightPaddlePosition", [_tracking.tracked], {
-    configurable: true,
-    enumerable: true,
-    writable: true,
-    initializer: function () {
-      return 0.5;
-    }
-  }), _descriptor3 = _applyDecoratedDescriptor(_class.prototype, "ballPositionX", [_tracking.tracked], {
-    configurable: true,
-    enumerable: true,
-    writable: true,
-    initializer: function () {
-      return 0.5;
-    }
-  }), _descriptor4 = _applyDecoratedDescriptor(_class.prototype, "ballPositionY", [_tracking.tracked], {
-    configurable: true,
-    enumerable: true,
-    writable: true,
-    initializer: function () {
-      return 0.5;
-    }
-  }), _descriptor5 = _applyDecoratedDescriptor(_class.prototype, "winner", [_tracking.tracked], {
-    configurable: true,
-    enumerable: true,
-    writable: true,
-    initializer: null
-  }), _descriptor6 = _applyDecoratedDescriptor(_class.prototype, "status", [_tracking.tracked], {
-    configurable: true,
-    enumerable: true,
-    writable: true,
-    initializer: null
-  }), _descriptor7 = _applyDecoratedDescriptor(_class.prototype, "winnerSend", [_tracking.tracked], {
-    configurable: true,
-    enumerable: true,
-    writable: true,
-    initializer: null
-  }), _descriptor8 = _applyDecoratedDescriptor(_class.prototype, "keyStates", [_tracking.tracked], {
-    configurable: true,
-    enumerable: true,
-    writable: true,
-    initializer: function () {
-      return {
-        ArrowUp: false,
-        ArrowDown: false,
-        w: false,
-        W: false,
-        s: false,
-        S: false
-      };
-    }
-  }), _descriptor9 = _applyDecoratedDescriptor(_class.prototype, "gameData", [_service.inject], {
-    configurable: true,
-    enumerable: true,
-    writable: true,
-    initializer: null
-  }), _descriptor10 = _applyDecoratedDescriptor(_class.prototype, "session", [_service.inject], {
-    configurable: true,
-    enumerable: true,
-    writable: true,
-    initializer: null
-  }), _descriptor11 = _applyDecoratedDescriptor(_class.prototype, "tournament", [_service.inject], {
-    configurable: true,
-    enumerable: true,
-    writable: true,
-    initializer: null
-  }), _descriptor12 = _applyDecoratedDescriptor(_class.prototype, "user", [_service.inject], {
-    configurable: true,
-    enumerable: true,
-    writable: true,
-    initializer: null
-  }), _descriptor13 = _applyDecoratedDescriptor(_class.prototype, "router", [_service.inject], {
-    configurable: true,
-    enumerable: true,
-    writable: true,
-    initializer: null
-  }), _descriptor14 = _applyDecoratedDescriptor(_class.prototype, "websockets", [_service.inject], {
+  }, _descriptor = _applyDecoratedDescriptor(_class.prototype, "pongGame", [_service.inject], {
     configurable: true,
     enumerable: true,
     writable: true,
@@ -4211,7 +3942,7 @@
     value: true
   });
   _exports.default = void 0;
-  var _class, _descriptor, _descriptor2, _descriptor3, _descriptor4, _descriptor5, _descriptor6, _descriptor7;
+  var _class, _descriptor, _descriptor2, _descriptor3, _descriptor4, _descriptor5, _descriptor6, _descriptor7, _descriptor8;
   0; //eaimeta@70e063a35619d71f0,"@ember/service",0,"@glimmer/tracking",0,"@ember/service"eaimeta@70e063a35619d71f
   function _initializerDefineProperty(e, i, r, l) { r && Object.defineProperty(e, i, { enumerable: r.enumerable, configurable: r.configurable, writable: r.writable, value: r.initializer ? r.initializer.call(l) : void 0 }); }
   function _defineProperty(e, r, t) { return (r = _toPropertyKey(r)) in e ? Object.defineProperty(e, r, { value: t, enumerable: !0, configurable: !0, writable: !0 }) : e[r] = t, e; }
@@ -4229,6 +3960,7 @@
       _initializerDefineProperty(this, "left_score", _descriptor5, this);
       _initializerDefineProperty(this, "right_score", _descriptor6, this);
       _initializerDefineProperty(this, "session", _descriptor7, this);
+      _initializerDefineProperty(this, "pongGame", _descriptor8, this);
     }
     async setGameData(gameType, roomData) {
       this.gameType = gameType;
@@ -4247,6 +3979,7 @@
         trophies: 999,
         status: "online"
       };
+      this.pongGame.connectToRoom(this.roomData.room_name);
     }
     clearGameData() {
       this.gameType = null;
@@ -4322,6 +4055,11 @@
     enumerable: true,
     writable: true,
     initializer: null
+  }), _descriptor8 = _applyDecoratedDescriptor(_class.prototype, "pongGame", [_service.inject], {
+    configurable: true,
+    enumerable: true,
+    writable: true,
+    initializer: null
   }), _class);
 });
 ;define("myapp/services/page-title", ["exports", "ember-page-title/services/page-title"], function (_exports, _pageTitle) {
@@ -4337,6 +4075,297 @@
     }
   });
   0; //eaimeta@70e063a35619d71f0,"ember-page-title/services/page-title"eaimeta@70e063a35619d71f
+});
+;define("myapp/services/pong-game", ["exports", "@ember/service", "@glimmer/tracking", "@ember/object"], function (_exports, _service, _tracking, _object) {
+  "use strict";
+
+  Object.defineProperty(_exports, "__esModule", {
+    value: true
+  });
+  _exports.default = void 0;
+  var _class, _descriptor, _descriptor2, _descriptor3, _descriptor4, _descriptor5, _descriptor6, _descriptor7, _descriptor8, _descriptor9, _descriptor10, _descriptor11, _descriptor12, _descriptor13, _descriptor14;
+  0; //eaimeta@70e063a35619d71f0,"@ember/service",0,"@glimmer/tracking",0,"@ember/object",0,"@ember/service"eaimeta@70e063a35619d71f
+  function _initializerDefineProperty(e, i, r, l) { r && Object.defineProperty(e, i, { enumerable: r.enumerable, configurable: r.configurable, writable: r.writable, value: r.initializer ? r.initializer.call(l) : void 0 }); }
+  function _defineProperty(e, r, t) { return (r = _toPropertyKey(r)) in e ? Object.defineProperty(e, r, { value: t, enumerable: !0, configurable: !0, writable: !0 }) : e[r] = t, e; }
+  function _toPropertyKey(t) { var i = _toPrimitive(t, "string"); return "symbol" == typeof i ? i : i + ""; }
+  function _toPrimitive(t, r) { if ("object" != typeof t || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != typeof i) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
+  function _applyDecoratedDescriptor(i, e, r, n, l) { var a = {}; return Object.keys(n).forEach(function (i) { a[i] = n[i]; }), a.enumerable = !!a.enumerable, a.configurable = !!a.configurable, ("value" in a || a.initializer) && (a.writable = !0), a = r.slice().reverse().reduce(function (r, n) { return n(i, e, r) || r; }, a), l && void 0 !== a.initializer && (a.value = a.initializer ? a.initializer.call(l) : void 0, a.initializer = void 0), void 0 === a.initializer ? (Object.defineProperty(i, e, a), null) : a; }
+  function _initializerWarningHelper(r, e) { throw Error("Decorating class property failed. Please ensure that transform-class-properties is enabled and runs after the decorators transform."); }
+  let PongGameService = _exports.default = (_class = class PongGameService extends _service.default {
+    constructor() {
+      super(...arguments);
+      _initializerDefineProperty(this, "leftPaddlePosition", _descriptor, this);
+      // Normalize between 0 and 1
+      _initializerDefineProperty(this, "rightPaddlePosition", _descriptor2, this);
+      // Normalize between 0 and 1
+      _initializerDefineProperty(this, "ballPositionX", _descriptor3, this);
+      // Ball position
+      _initializerDefineProperty(this, "ballPositionY", _descriptor4, this);
+      // Ball position
+      _initializerDefineProperty(this, "winner", _descriptor5, this);
+      _initializerDefineProperty(this, "status", _descriptor6, this);
+      _initializerDefineProperty(this, "winnerSend", _descriptor7, this);
+      _initializerDefineProperty(this, "keyStates", _descriptor8, this);
+      _initializerDefineProperty(this, "gameData", _descriptor9, this);
+      _initializerDefineProperty(this, "session", _descriptor10, this);
+      _initializerDefineProperty(this, "tournament", _descriptor11, this);
+      _initializerDefineProperty(this, "user", _descriptor12, this);
+      _initializerDefineProperty(this, "router", _descriptor13, this);
+      _initializerDefineProperty(this, "websockets", _descriptor14, this);
+      _defineProperty(this, "socketRef", null);
+      // Track the state of key presses
+      _defineProperty(this, "p1UpKeyPressed", false);
+      _defineProperty(this, "p1DownKeyPressed", false);
+      _defineProperty(this, "p2UpKeyPressed", false);
+      _defineProperty(this, "p2DownKeyPressed", false);
+      this.setupKeyListeners();
+    }
+    get roomData() {
+      return this.gameData.roomData; // Access shared room data
+    }
+    setupKeyListeners() {
+      window.addEventListener('keydown', this.handleKeyDown.bind(this));
+      window.addEventListener('keyup', this.handleKeyUp.bind(this));
+    }
+    handleKeyDown(event) {
+      let direction_p1 = "";
+      let direction_p2 = "";
+      let type_p1 = "";
+      let type_p2 = "";
+      if (this.keyStates[event.key]) {
+        return; // Key is already released; no need to resend the event
+      }
+      switch (event.key) {
+        case 'ArrowUp':
+          if (!this.keyStates.ArrowDown) {
+            direction_p1 = "up";
+            type_p1 = "start_move";
+          } else return;
+          break;
+        case 'ArrowDown':
+          if (!this.keyStates.ArrowUp) {
+            direction_p1 = "down";
+            type_p1 = "start_move";
+          } else return;
+          break;
+        case 'w':
+        case 'W':
+          if (!this.keyStates.w && !this.keyStates.W) {
+            direction_p2 = "up";
+            type_p2 = "start_move";
+          } else return;
+          break;
+        case 's':
+        case 'S':
+          if (!this.keyStates.s && !this.keyStates.S) {
+            direction_p2 = "down";
+            type_p2 = "start_move";
+          } else return;
+          break;
+      }
+      this.keyStates[event.key] = true;
+      const data = JSON.stringify({
+        type_p1,
+        direction_p1,
+        type_p2,
+        direction_p2
+      });
+      //this.sendMessage(data);
+    }
+    handleKeyUp(event) {
+      let direction_p1 = "";
+      let direction_p2 = "";
+      let type_p1 = "";
+      let type_p2 = "";
+      if (!this.keyStates[event.key]) {
+        return; // Key is already released; no need to resend the event
+      }
+      switch (event.key) {
+        case 'ArrowUp':
+          type_p1 = "stop_move";
+          break;
+        case 'ArrowDown':
+          type_p1 = "stop_move";
+          break;
+        case 'w':
+        case 'W':
+          type_p2 = "stop_move";
+          break;
+        case 's':
+        case 'S':
+          type_p2 = "stop_move";
+          break;
+      }
+      this.keyStates[event.key] = false;
+      const data = JSON.stringify({
+        type_p1,
+        direction_p1,
+        type_p2,
+        direction_p2
+      });
+      //this.sendMessage(data);
+    }
+    updateGameState(data) {
+      this.status = data.game_start_timer;
+      this.ballPositionX = data.ball_x * (25 - visualViewport.height / visualViewport.width);
+      this.ballPositionY = data.ball_y * 24;
+      this.leftPaddlePosition = data.left_paddle_y * 10;
+      this.rightPaddlePosition = data.right_paddle_y * 10;
+      this.winner = data.winner;
+      if (!this.winner) {
+        this.gameData.left_score = data.left_score;
+        this.gameData.right_score = data.right_score;
+      }
+      if (this.winner && !this.winnerSend) {
+        this.winnerSend = true;
+        if (this.tournament.currentLobby) {
+          this.tournament.sendWinner(this.winner);
+          if (this.winner !== this.user.profile.nickname) this.tournament.playerInTournament = false;
+          this.router.transitionTo('tournament');
+        }
+        this.willDestroy();
+      }
+    }
+    willDestroy() {
+      this.disconnectFromLobby(this.gameData.roomData.roomName);
+      window.removeEventListener('keydown', this.handleKeyDown.bind(this));
+      window.removeEventListener('keyup', this.handleKeyUp.bind(this));
+      super.willDestroy();
+    }
+    async connectToRoom(roomName) {
+      const token = this.session.data.authenticated.access;
+      const wsUrl = `wss://localhost/ws/pong-game/${roomName}/?token=${encodeURIComponent(token)}`;
+      console.log("connect to:", wsUrl);
+      if (this.socketRef) {
+        console.log("disconnect");
+        this.disconnectFromLobby(roomName);
+      }
+      const socket = this.websockets.socketFor(wsUrl);
+      // Register WebSocket event handlers
+      //socket.on('open', () => this.onOpen(roomName), this);
+      socket.on('message', this.onMessage, this);
+      socket.on('close', this.onClose, this);
+      this.set('socketRef', socket);
+    }
+    async disconnectFromLobby(roomName) {
+      const token = this.session.data.authenticated.access;
+      const wsUrl = `wss://localhost/ws/pong-game/${roomName}/?token=${encodeURIComponent(token)}`;
+      console.log("websocket to close:", roomName);
+      this.websockets.closeSocketFor(wsUrl);
+      console.log("websocket closed", this.websockets.sockets);
+
+      // Remove event handlers
+      this.socketRef.off('open', this.onOpen, this);
+      this.socketRef.off('message', this.onMessage, this);
+      this.socketRef.off('close', this.onClose, this);
+
+      // Reset WebSocket reference
+      this.socketRef = null;
+    }
+    onMessage(event) {
+      console.log('WebSocket message received:', event.data);
+      const parsedMessage = JSON.parse(event.data);
+      this.updateGameState(parsedMessage);
+    }
+    onClose(event) {
+      console.log("close:", event);
+    }
+    sendMessage(data) {
+      if (this.socketRef) {
+        console.log('WebSocket message send:', JSON.stringify(data));
+        this.socketRef.send(JSON.stringify(data));
+      } else {
+        console.error('WebSocket is not connected.');
+      }
+    }
+  }, _descriptor = _applyDecoratedDescriptor(_class.prototype, "leftPaddlePosition", [_tracking.tracked], {
+    configurable: true,
+    enumerable: true,
+    writable: true,
+    initializer: function () {
+      return 0.5;
+    }
+  }), _descriptor2 = _applyDecoratedDescriptor(_class.prototype, "rightPaddlePosition", [_tracking.tracked], {
+    configurable: true,
+    enumerable: true,
+    writable: true,
+    initializer: function () {
+      return 0.5;
+    }
+  }), _descriptor3 = _applyDecoratedDescriptor(_class.prototype, "ballPositionX", [_tracking.tracked], {
+    configurable: true,
+    enumerable: true,
+    writable: true,
+    initializer: function () {
+      return 0.5;
+    }
+  }), _descriptor4 = _applyDecoratedDescriptor(_class.prototype, "ballPositionY", [_tracking.tracked], {
+    configurable: true,
+    enumerable: true,
+    writable: true,
+    initializer: function () {
+      return 0.5;
+    }
+  }), _descriptor5 = _applyDecoratedDescriptor(_class.prototype, "winner", [_tracking.tracked], {
+    configurable: true,
+    enumerable: true,
+    writable: true,
+    initializer: null
+  }), _descriptor6 = _applyDecoratedDescriptor(_class.prototype, "status", [_tracking.tracked], {
+    configurable: true,
+    enumerable: true,
+    writable: true,
+    initializer: null
+  }), _descriptor7 = _applyDecoratedDescriptor(_class.prototype, "winnerSend", [_tracking.tracked], {
+    configurable: true,
+    enumerable: true,
+    writable: true,
+    initializer: null
+  }), _descriptor8 = _applyDecoratedDescriptor(_class.prototype, "keyStates", [_tracking.tracked], {
+    configurable: true,
+    enumerable: true,
+    writable: true,
+    initializer: function () {
+      return {
+        ArrowUp: false,
+        ArrowDown: false,
+        w: false,
+        W: false,
+        s: false,
+        S: false
+      };
+    }
+  }), _descriptor9 = _applyDecoratedDescriptor(_class.prototype, "gameData", [_service.inject], {
+    configurable: true,
+    enumerable: true,
+    writable: true,
+    initializer: null
+  }), _descriptor10 = _applyDecoratedDescriptor(_class.prototype, "session", [_service.inject], {
+    configurable: true,
+    enumerable: true,
+    writable: true,
+    initializer: null
+  }), _descriptor11 = _applyDecoratedDescriptor(_class.prototype, "tournament", [_service.inject], {
+    configurable: true,
+    enumerable: true,
+    writable: true,
+    initializer: null
+  }), _descriptor12 = _applyDecoratedDescriptor(_class.prototype, "user", [_service.inject], {
+    configurable: true,
+    enumerable: true,
+    writable: true,
+    initializer: null
+  }), _descriptor13 = _applyDecoratedDescriptor(_class.prototype, "router", [_service.inject], {
+    configurable: true,
+    enumerable: true,
+    writable: true,
+    initializer: null
+  }), _descriptor14 = _applyDecoratedDescriptor(_class.prototype, "websockets", [_service.inject], {
+    configurable: true,
+    enumerable: true,
+    writable: true,
+    initializer: null
+  }), _class);
 });
 ;define("myapp/services/session", ["exports", "ember-simple-auth/services/session"], function (_exports, _session) {
   "use strict";
