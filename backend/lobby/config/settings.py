@@ -52,6 +52,15 @@ SECURE_CONTENT_TYPE_NOSNIFF = True
 # Enable the browser XSS protection
 SECURE_BROWSER_XSS_FILTER = True
 
+CACHES = {
+    "default": {
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": "redis://redis:6379/1",
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+        },
+    }
+}
 
 # Application definition
 

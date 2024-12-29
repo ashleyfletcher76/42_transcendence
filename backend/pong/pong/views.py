@@ -49,7 +49,6 @@ def create_room(request):
 
         if game_type == "remote":
             waiting_room = find_remote_game_states()
-            print(waiting_room)
             if waiting_room:
 
                 waiting_room["player2"] = player_1

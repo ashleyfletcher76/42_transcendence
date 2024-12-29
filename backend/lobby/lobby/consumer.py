@@ -57,13 +57,11 @@ class TournamentConsumer(WebsocketConsumer):
         data = json.loads(text_data)
         print(data)
         action = data.get("action")
-        username = data.get("nickname")
         sender = data.get("sender")
         message = data.get("message")
         winner = data.get("winner")
 
         if action == "create_or_join":
-            self.username = username
             response = self.handle_create_or_join()
             self.lobby_message(response)
         elif action == "message":
@@ -428,8 +426,6 @@ class TournamentConsumer(WebsocketConsumer):
             "admin" : admin,
             "message" : message
         }))
-        if self.check_disconnect():
-            return
 
     def message(self, event):
 
@@ -500,13 +496,6 @@ class TournamentConsumer(WebsocketConsumer):
             "player2" : player2,
             "room" : roomname,
         }))
-        print(f"match info send to {self.username}")
-        print({
-            "type": "match",
-            "player1" : player1,
-            "player2" : player2,
-            "room" : roomname,
-        })
 
 
     def check_disconnect(self):

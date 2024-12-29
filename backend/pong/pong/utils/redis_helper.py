@@ -49,3 +49,24 @@ def find_remote_game_states():
         print(f"Error fetching game state keys: {e}")
 
     return None
+
+
+def get_all_games_from_redis():
+    """
+    Retrieve all tournaments from Redis with the specified prefix.
+    """
+    tournaments = []
+    try:
+        keys = redis_client.keys(f"{GAME_STATE_PREFIX}*")
+        for key in keys:
+            try:
+                tournament_json = redis_client.get(key)
+                if tournament_json:
+                    tournament_data = json.loads(tournament_json)
+                    tournaments.append(tournament_data)
+            except (redis.RedisError, json.JSONDecodeError) as e:
+                print(f"Error processing tournament data for key '{key}': {e}")
+    except redis.RedisError as e:
+        print(f"Error fetching tournament keys: {e}")
+
+    return tournaments

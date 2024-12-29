@@ -1,8 +1,8 @@
 from django.shortcuts import render
 from django.db import connection
 from django.http import JsonResponse
-from .models import Tournament
 import logging
+from .utils.redis_helper import get_all_tournaments_from_redis, delete_tournament_state
 
 logger = logging.getLogger(__name__)
 
@@ -22,21 +22,23 @@ def index(request):
 
 def listLobby(request):
     if request.method == 'GET':
-        if Tournament.objects.exists():
-            #Tournament.objects.all().delete()
-            inactive_tournaments = Tournament.objects.filter(active=False)
-            for inactive in inactive_tournaments:
-                inactive.delete()
-                
-            inactive_tournaments = Tournament.objects.filter(num_players=0)
-            for inactive in inactive_tournaments:
-                inactive.delete()
-            
-            tournaments = Tournament.objects.values('name', 'num_players', 'active')
-            tournaments_list = list(tournaments)
+        tournaments = get_all_tournaments_from_redis()
+        # print(tournaments)
+
+        # for t in tournaments:
+        #     delete_tournament_state(t.get("name"))
+        
+        if tournaments:
+            tournaments_list = [
+                {
+                    "name": t.get("name"),
+                    "num_players": t.get("num_players"),
+                    "active": t.get("active"),
+                }
+                for t in tournaments if t.get("num_players", 0) > 0 and t.get("ongoing") == False and t.get("active") == True
+            ]
             response = {"tournaments": tournaments_list}
         else:
             response = {"message": "No active tournaments found"}
+
         return JsonResponse(response)
-    else:
-        return JsonResponse({'error': 'Method not allowed'}, status=405)
