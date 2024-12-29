@@ -21,7 +21,6 @@ class GameConsumer(AsyncWebsocketConsumer):
             await self.close(code=4001)
             return
 
-        # authenticate user using auth service
         try:
             user_data = await self.get_user_from_auth_service(self.token)
             self.user_id = user_data["user_id"]
@@ -113,10 +112,10 @@ class GameConsumer(AsyncWebsocketConsumer):
 
     async def start_game_loop(self):
         """
-        Start a loop that runs at ~60 FPS to update and broadcast the game state.
+        Start a loop that runs at ~50 FPS to update and broadcast the game state.
         """
         while True:
-            await sleep(1 / 60)
+            await sleep(1 / 50)
             game = get_game_state(self.room_name)
 
             if not game["paused"]:
