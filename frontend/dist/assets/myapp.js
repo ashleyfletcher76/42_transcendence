@@ -4170,7 +4170,7 @@
         type_p2,
         direction_p2
       });
-      //this.sendMessage(data);
+      this.sendMessage(data);
     }
     handleKeyUp(event) {
       let direction_p1 = "";
@@ -4203,7 +4203,7 @@
         type_p2,
         direction_p2
       });
-      //this.sendMessage(data);
+      this.sendMessage(data);
     }
     updateGameState(data) {
       this.status = data.game_start_timer;
