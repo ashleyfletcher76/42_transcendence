@@ -4164,12 +4164,12 @@
           break;
       }
       this.keyStates[event.key] = true;
-      const data = JSON.stringify({
+      const data = {
         type_p1,
         direction_p1,
         type_p2,
         direction_p2
-      });
+      };
       this.sendMessage(data);
     }
     handleKeyUp(event) {
@@ -4197,12 +4197,12 @@
           break;
       }
       this.keyStates[event.key] = false;
-      const data = JSON.stringify({
+      const data = {
         type_p1,
         direction_p1,
         type_p2,
         direction_p2
-      });
+      };
       this.sendMessage(data);
     }
     updateGameState(data) {
