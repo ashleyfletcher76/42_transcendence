@@ -43,10 +43,8 @@ class GameConsumer(AsyncWebsocketConsumer):
             game["connections"] = 0
         game["connections"] += 1
         set_game_state(self.room_name, game)
-        print(game)
         if game["connections"] == 2 or game["player2"] == "local" or game["player2"] == "AI":
             self.game_task = asyncio.create_task(self.start_game_loop())
-        print("websocket connection is coming!")
 
 
     async def disconnect(self, close_code):
@@ -62,12 +60,21 @@ class GameConsumer(AsyncWebsocketConsumer):
         set_game_state(self.room_name, game)
 
     async def receive(self, text_data):
-        data = json.loads(text_data)
-        print(data)
-        t1 = data.get("type_p1")
-        d1 = data.get("direction_p1")
-        t2 = data.get("type_p2")
-        d2 = data.get("direction_p2")
+        try:
+            data = json.loads(text_data)
+            if isinstance(data, str):
+                print("Detected double-encoded JSON")
+                data = json.loads(data)
+        except json.JSONDecodeError as e:
+            print(f"Error decoding JSON: {e}")
+            return
+
+        print(f"Parsed data: {data}")
+
+        t1 = data.get("type_p1", "")
+        d1 = data.get("direction_p1", "")
+        t2 = data.get("type_p2", "")
+        d2 = data.get("direction_p2", "")
 
         game = get_game_state(self.room_name)
 

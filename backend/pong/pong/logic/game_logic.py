@@ -4,11 +4,14 @@ SCREEN_HEIGHT = 400
 BALL_RADIUS = 10
 PADDLE_WIDTH = 10
 PADDLE_HEIGHT = 0.4
-END_SCORE = 1
+END_SCORE = 5
 SPEED_PADDLE = 0.05
 
 
 def game_logic(game):
+
+    if game["player2"] == "AI":
+        update_ai(game)
 
     game["ball_x"] += game['ball_speed_x']
     game["ball_y"] += game["ball_speed_y"]
@@ -33,9 +36,6 @@ def game_logic(game):
     if game["right_score"] == END_SCORE or game["left_score"] == END_SCORE:
         end_game(game)
 
-    if game["player2"] == "AI":
-        update_ai(game)
-        
 
 
 def end_game(game):
