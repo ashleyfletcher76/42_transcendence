@@ -56,7 +56,6 @@ class TournamentConsumer(AsyncWebsocketConsumer):
 
     async def receive(self, text_data):
         data = json.loads(text_data)
-        print(data)
         action = data.get("action")
         sender = data.get("sender")
         message = data.get("message")
@@ -341,9 +340,11 @@ class TournamentConsumer(AsyncWebsocketConsumer):
     async def join(self, event):
         tournamnet = event["tournamnet"]
         player = event["player"]
+        player_list = [player["name"] for player in tournamnet["players"]]
+        print(player_list)
         await self.send(text_data=json.dumps({
             "type": "join",
-            "players": tournamnet["players"],
+            "players": player_list,
             "player": player,
             "admin": tournamnet["admin"],
             "message": f"{player} joined the lobby!"
@@ -353,9 +354,11 @@ class TournamentConsumer(AsyncWebsocketConsumer):
     async def create(self, event):
         tournamnet = event["tournamnet"]
         player = event["player"]
+        player_list = [player["name"] for player in tournamnet["players"]]
+        print(player_list)
         await self.send(text_data=json.dumps({
             "type": "create",
-            "players": tournamnet["players"],
+            "players": player_list,
             "player": player,
             "admin": tournamnet["admin"],
             "message" : f"{player} created the lobby!"
@@ -365,10 +368,11 @@ class TournamentConsumer(AsyncWebsocketConsumer):
     async def leave(self, event):
         tournamnet = event["tournamnet"]
         player = event["player"]
-        print(f"leave message send to {self.nickname}")
+        player_list = [player["name"] for player in tournamnet["players"]]
+        print(player_list)
         await self.send(text_data=json.dumps({
             "type": "leave",
-            "players": tournamnet["players"],
+            "players": player_list,
             "player": player,
             "admin": tournamnet["admin"],
             "message" : f"{player} left the lobby!"
