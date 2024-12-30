@@ -137,7 +137,7 @@ label {
   position: relative;
   padding: 0;
   margin: 0;
-  border: 2px solid white;
+  border: 0.2vw solid white;
   background-color: #000;
   height: 100%; /* Makes it half the viewport height */
   width: 100%;
@@ -160,17 +160,17 @@ label {
 /* Style the paddles */
 .paddle {
   position: absolute;
-  width: 1vh; /* 1% of the viewport width */
+  width: 0.8vw; /* 1% of the viewport width */
   height: 10vh; /* 10% of the viewport height */
   background-color: white;
 }
 
 .paddle-left {
-  left: 1vw; /* Positions the left paddle at 2% of the viewport width */
+  left: 1vw; 
 }
 
 .paddle-right {
-  right: 1vw; /* Positions the right paddle at 2% of the viewport width */
+  right: 1vw; 
 }
 
 /* Style the ball */
