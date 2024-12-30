@@ -1,6 +1,6 @@
 import requests
 
-def upload_match_details(user_id, opponent, result, score, token):
+def upload_match_details(user_id, opponent, result, score, tournament_win, token):
     url = "http://match-history-service:8000/match/add-match-history/"
     headers = {
         "Authorization": f"Bearer {token}",
@@ -11,6 +11,7 @@ def upload_match_details(user_id, opponent, result, score, token):
         "opponent": opponent,
         "result": result,
         "score": score,
+        "tournament_win": tournament_win,
     }
 
     try:

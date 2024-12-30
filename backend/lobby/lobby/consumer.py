@@ -146,9 +146,6 @@ class TournamentConsumer(WebsocketConsumer):
             return {"type": "error", "error": str(e), "player": self.username}
 
 
-
-
-
     """start tournament"""
     def start_tournament(self, message):
         try:

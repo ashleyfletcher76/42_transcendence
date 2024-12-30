@@ -187,6 +187,7 @@ class TournamentConsumer(AsyncWebsocketConsumer):
                     "winner" : active_players[0]["name"],
                 }
             )
+            self.game_stat_send(self, active_players[0])
             await sleep(1)
             self.reset_players(tournament)
             return
@@ -198,8 +199,8 @@ class TournamentConsumer(AsyncWebsocketConsumer):
         for pl in players:
             pl["opponent"] = ""
             pl["room"] = ""
-            pl["score"] = 0
-        tournament["ongoing"] = False    
+            pl["score"] = 1
+        tournament["ongoing"] = False
         set_tournament_state(self.room_name, tournament)
         ...
 
@@ -431,12 +432,9 @@ class TournamentConsumer(AsyncWebsocketConsumer):
         return None
     
     # game stats recording
-    def game_stat_send(self, game):
-        if self.nickname == game["player1"]:
-            opponent = self.nickname
-        else:
-            opponent = game["player2"]
-        score = f"{game["left_score"]}-{game["right_score"]}"
-        result = "win" if game["winner"] == self.nickname else "loss"
-        upload_match_details(self.user_id, opponent, result, score, self.token)
+    def game_stat_send(self, player):
+        opponent = player["opponent"]
+        score = player["score"]
+        result = "win"
+        # upload_match_details(self.user_id, opponent, result, score, True, self.token)
 

@@ -174,5 +174,6 @@ class GameConsumer(AsyncWebsocketConsumer):
         opponent = game["player2"]
         score = f"{game["left_score"]}-{game["right_score"]}"
         result = "win" if game["winner"] == self.nickname else "loss"
-        upload_match_details(self.user_id, opponent, result, score, self.token)
-        
+        tournament_win = True if game["game_type"] == "tournament" else False
+        upload_match_details(self.user_id, opponent, result, score, tournament_win, self.token)
+    

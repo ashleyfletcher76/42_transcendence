@@ -117,4 +117,3 @@ def create_room(request):
         logging.error("Error handling room: %s", str(e))
         return JsonResponse({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
-
