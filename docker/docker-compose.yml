@@ -61,25 +61,25 @@ services:
   #   ports:
   #     - "5436:5432"
 
-  # pong-db:
-  #   container_name: pong-db
-  #   build: ./../backend/pong/postgres
-  #   environment:
-  #     POSTGRES_USER: ${PONG_SERVICE_USER}
-  #     POSTGRES_PASSWORD: ${PONG_SERVICE_PASSWORD}
-  #     POSTGRES_DB: ${PONG_SERVICE_DB}
-  #   volumes:
-  #     - pong_data:/var/lib/postgresql/data
-  #   networks:
-  #     my_network:
-  #   healthcheck:
-  #     test: [ "CMD-SHELL", "[ -f /var/lib/postgresql/data/.db_ready ] || exit 1" ]
-  #     interval: 10s
-  #     timeout: 5s
-  #     retries: 5
-  #   restart: always
-  #   ports:
-  #     - "5435:5432"
+  pong-db:
+    container_name: pong-db
+    build: ./../backend/pong/postgres
+    environment:
+      POSTGRES_USER: ${PONG_SERVICE_USER}
+      POSTGRES_PASSWORD: ${PONG_SERVICE_PASSWORD}
+      POSTGRES_DB: ${PONG_SERVICE_DB}
+    volumes:
+      - pong_data:/var/lib/postgresql/data
+    networks:
+      my_network:
+    healthcheck:
+      test: [ "CMD-SHELL", "[ -f /var/lib/postgresql/data/.db_ready ] || exit 1" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: always
+    ports:
+      - "5435:5432"
 
   lobby-db:
     container_name: lobby-db

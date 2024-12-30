@@ -110,6 +110,7 @@ class TournamentConsumer(AsyncWebsocketConsumer):
             {
                 "type": "create",
                 "tournamnet": tournament,
+                "player" : self.nickname,
             }
         )
     
@@ -130,6 +131,7 @@ class TournamentConsumer(AsyncWebsocketConsumer):
             {
                 "type": "join",
                 "tournamnet": tournament,
+                "player": self.nickname,
             }
         )
 
@@ -162,6 +164,7 @@ class TournamentConsumer(AsyncWebsocketConsumer):
                 {
                     "type": "leave",
                     "tournamnet": tournament,
+                    "player" : self.nickname,
                 }
             )
         else:
@@ -202,7 +205,7 @@ class TournamentConsumer(AsyncWebsocketConsumer):
             pl["score"] = 1
         tournament["ongoing"] = False
         set_tournament_state(self.room_name, tournament)
-        ...
+
 
     async def matchmaking(self, tournament):
         players = tournament["players"]
@@ -337,35 +340,38 @@ class TournamentConsumer(AsyncWebsocketConsumer):
     # sending messages to gruop
     async def join(self, event):
         tournamnet = event["tournamnet"]
+        player = event["player"]
         await self.send(text_data=json.dumps({
             "type": "join",
             "players": tournamnet["players"],
-            "player": self.nickname,
+            "player": player,
             "admin": tournamnet["admin"],
-            "message": f"{self.nickname} joined the lobby!"
+            "message": f"{player} joined the lobby!"
         }))
     
 
     async def create(self, event):
         tournamnet = event["tournamnet"]
+        player = event["player"]
         await self.send(text_data=json.dumps({
             "type": "create",
             "players": tournamnet["players"],
-            "player": self.nickname,
+            "player": player,
             "admin": tournamnet["admin"],
-            "message" : f"{self.nickname} created the lobby!"
+            "message" : f"{player} created the lobby!"
         }))
 
 
     async def leave(self, event):
         tournamnet = event["tournamnet"]
-        print(self.nickname)
+        player = event["player"]
+        print(f"leave message send to {self.nickname}")
         await self.send(text_data=json.dumps({
             "type": "leave",
             "players": tournamnet["players"],
-            "player": self.nickname,
+            "player": player,
             "admin": tournamnet["admin"],
-            "message" : f"{self.nickname} left the lobby!"
+            "message" : f"{player} left the lobby!"
         }))
 
 
