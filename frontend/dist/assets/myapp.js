@@ -1150,26 +1150,26 @@
     <div class="history-item row m-1">
   
     <div class="col-12 mb-0 mt-1 pb-0">
-      <div class="date">2024.09.20 1:49pm</div>
+      <div class="date">{{@game.date}}</div>
     </div>
     {{!-- Profile picture column (1 part) --}}
     <div class="col-5">
       <div class="user-card m-0 mb-1" role="button" onclick={{this.select}}>
         <div class="profile-details">
-          <h2 class="info">Nickname</h2>
+          <h2 class="info">{{@game.user}}</h2>
         </div>
       </div>
     </div>
   
     {{!-- Profile details column (3 parts) --}}
     <div class="col-2">
-      <div class="score history center">3:1</div>
+      <div class="score history center">{{@game.score}}</div>
     </div>
   
     <div class="col-5">
       <div class="user-card m-0 mb-1" role="button" onclick={{this.select}}>
         <div class="profile-details">
-          <h2 class="info">Nickname2</h2>
+          <h2 class="info">{{@game.opponent}}</h2>
         </div>
       </div>
     </div>
@@ -1178,8 +1178,8 @@
   
   */
   {
-    "id": "F5VyigJy",
-    "block": "[[[10,0],[14,0,\"history-item row m-1\"],[12],[1,\"\\n\\n  \"],[10,0],[14,0,\"col-12 mb-0 mt-1 pb-0\"],[12],[1,\"\\n    \"],[10,0],[14,0,\"date\"],[12],[1,\"2024.09.20 1:49pm\"],[13],[1,\"\\n  \"],[13],[1,\"\\n\"],[1,\"  \"],[10,0],[14,0,\"col-5\"],[12],[1,\"\\n    \"],[10,0],[14,0,\"user-card m-0 mb-1\"],[14,\"role\",\"button\"],[15,\"onclick\",[30,0,[\"select\"]]],[12],[1,\"\\n      \"],[10,0],[14,0,\"profile-details\"],[12],[1,\"\\n        \"],[10,\"h2\"],[14,0,\"info\"],[12],[1,\"Nickname\"],[13],[1,\"\\n      \"],[13],[1,\"\\n    \"],[13],[1,\"\\n  \"],[13],[1,\"\\n\\n\"],[1,\"  \"],[10,0],[14,0,\"col-2\"],[12],[1,\"\\n    \"],[10,0],[14,0,\"score history center\"],[12],[1,\"3:1\"],[13],[1,\"\\n  \"],[13],[1,\"\\n\\n  \"],[10,0],[14,0,\"col-5\"],[12],[1,\"\\n    \"],[10,0],[14,0,\"user-card m-0 mb-1\"],[14,\"role\",\"button\"],[15,\"onclick\",[30,0,[\"select\"]]],[12],[1,\"\\n      \"],[10,0],[14,0,\"profile-details\"],[12],[1,\"\\n        \"],[10,\"h2\"],[14,0,\"info\"],[12],[1,\"Nickname2\"],[13],[1,\"\\n      \"],[13],[1,\"\\n    \"],[13],[1,\"\\n  \"],[13],[1,\"\\n\\n\"],[13],[1,\"\\n\"]],[],false,[\"div\",\"h2\"]]",
+    "id": "64fbmYXU",
+    "block": "[[[10,0],[14,0,\"history-item row m-1\"],[12],[1,\"\\n\\n  \"],[10,0],[14,0,\"col-12 mb-0 mt-1 pb-0\"],[12],[1,\"\\n    \"],[10,0],[14,0,\"date\"],[12],[1,[30,1,[\"date\"]]],[13],[1,\"\\n  \"],[13],[1,\"\\n\"],[1,\"  \"],[10,0],[14,0,\"col-5\"],[12],[1,\"\\n    \"],[10,0],[14,0,\"user-card m-0 mb-1\"],[14,\"role\",\"button\"],[15,\"onclick\",[30,0,[\"select\"]]],[12],[1,\"\\n      \"],[10,0],[14,0,\"profile-details\"],[12],[1,\"\\n        \"],[10,\"h2\"],[14,0,\"info\"],[12],[1,[30,1,[\"user\"]]],[13],[1,\"\\n      \"],[13],[1,\"\\n    \"],[13],[1,\"\\n  \"],[13],[1,\"\\n\\n\"],[1,\"  \"],[10,0],[14,0,\"col-2\"],[12],[1,\"\\n    \"],[10,0],[14,0,\"score history center\"],[12],[1,[30,1,[\"score\"]]],[13],[1,\"\\n  \"],[13],[1,\"\\n\\n  \"],[10,0],[14,0,\"col-5\"],[12],[1,\"\\n    \"],[10,0],[14,0,\"user-card m-0 mb-1\"],[14,\"role\",\"button\"],[15,\"onclick\",[30,0,[\"select\"]]],[12],[1,\"\\n      \"],[10,0],[14,0,\"profile-details\"],[12],[1,\"\\n        \"],[10,\"h2\"],[14,0,\"info\"],[12],[1,[30,1,[\"opponent\"]]],[13],[1,\"\\n      \"],[13],[1,\"\\n    \"],[13],[1,\"\\n  \"],[13],[1,\"\\n\\n\"],[13],[1,\"\\n\"]],[\"@game\"],false,[\"div\",\"h2\"]]",
     "moduleName": "myapp/components/history-item.hbs",
     "isStrictMode": false
   });
@@ -1334,7 +1334,7 @@
     value: true
   });
   _exports.default = void 0;
-  var _class, _descriptor, _descriptor2, _descriptor3, _descriptor4;
+  var _class, _descriptor, _descriptor2, _descriptor3, _descriptor4, _descriptor5;
   0; //eaimeta@70e063a35619d71f0,"@glimmer/component",0,"@ember/object",0,"@glimmer/tracking",0,"@ember/service",0,"@ember/template-factory",0,"@ember/component"eaimeta@70e063a35619d71f
   function _initializerDefineProperty(e, i, r, l) { r && Object.defineProperty(e, i, { enumerable: r.enumerable, configurable: r.configurable, writable: r.writable, value: r.initializer ? r.initializer.call(l) : void 0 }); }
   function _defineProperty(e, r, t) { return (r = _toPropertyKey(r)) in e ? Object.defineProperty(e, r, { value: t, enumerable: !0, configurable: !0, writable: !0 }) : e[r] = t, e; }
@@ -1352,23 +1352,19 @@
     @open={{this.isModalOpen}}
     as |modal|
   >
-    <modal.header>
-      <h4 class="modal-title">
+    <modal.header style="background-color: #706363;">
+      <h4 class="score history center">
         Match History
       </h4>
     </modal.header>
   
-    <modal.body>
+    <modal.body style="background-color: #706363;">
       <div class="container-fluid row" style="height: 50vh; overflow-y: auto; margin: 0; padding: 0;">
           <div class="scrollable-list history-scroll">
       
-            <HistoryItem />
-            <HistoryItem />
-            <HistoryItem />
-            <HistoryItem />
-            <HistoryItem />
-            <HistoryItem />
-            <HistoryItem />
+            {{#each this.games as |game|}}
+              <HistoryItem @game={{game}} />
+            {{/each}}
   
           </div>
       </div>
@@ -1380,8 +1376,8 @@
   
   */
   {
-    "id": "RBBlsKsg",
-    "block": "[[[11,\"button\"],[24,0,\"btn btn-success p-1 mb-1\"],[24,4,\"button\"],[4,[38,1],[\"click\",[30,0,[\"openModal\"]]],null],[12],[1,\"\\n          Games: \"],[1,[30,0,[\"user\",\"profile\",\"games_total\"]]],[1,\"\\n\"],[13],[1,\"\\n\\n\"],[8,[39,2],null,[[\"@open\"],[[30,0,[\"isModalOpen\"]]]],[[\"default\"],[[[[1,\"\\n  \"],[8,[30,1,[\"header\"]],null,null,[[\"default\"],[[[[1,\"\\n    \"],[10,\"h4\"],[14,0,\"modal-title\"],[12],[1,\"\\n      Match History\\n    \"],[13],[1,\"\\n  \"]],[]]]]],[1,\"\\n\\n  \"],[8,[30,1,[\"body\"]],null,null,[[\"default\"],[[[[1,\"\\n    \"],[10,0],[14,0,\"container-fluid row\"],[14,5,\"height: 50vh; overflow-y: auto; margin: 0; padding: 0;\"],[12],[1,\"\\n        \"],[10,0],[14,0,\"scrollable-list history-scroll\"],[12],[1,\"\\n    \\n          \"],[8,[39,5],null,null,null],[1,\"\\n          \"],[8,[39,5],null,null,null],[1,\"\\n          \"],[8,[39,5],null,null,null],[1,\"\\n          \"],[8,[39,5],null,null,null],[1,\"\\n          \"],[8,[39,5],null,null,null],[1,\"\\n          \"],[8,[39,5],null,null,null],[1,\"\\n          \"],[8,[39,5],null,null,null],[1,\"\\n\\n        \"],[13],[1,\"\\n    \"],[13],[1,\"\\n    \\n    \\n  \"]],[]]]]],[1,\"\\n\\n\"]],[1]]]]],[1,\"\\n\"]],[\"modal\"],false,[\"button\",\"on\",\"bs-modal\",\"h4\",\"div\",\"history-item\"]]",
+    "id": "6mWqe45K",
+    "block": "[[[11,\"button\"],[24,0,\"btn btn-success p-1 mb-1\"],[24,4,\"button\"],[4,[38,1],[\"click\",[30,0,[\"openModal\"]]],null],[12],[1,\"\\n          Games: \"],[1,[30,0,[\"user\",\"profile\",\"games_total\"]]],[1,\"\\n\"],[13],[1,\"\\n\\n\"],[8,[39,2],null,[[\"@open\"],[[30,0,[\"isModalOpen\"]]]],[[\"default\"],[[[[1,\"\\n  \"],[8,[30,1,[\"header\"]],[[24,5,\"background-color: #706363;\"]],null,[[\"default\"],[[[[1,\"\\n    \"],[10,\"h4\"],[14,0,\"score history center\"],[12],[1,\"\\n      Match History\\n    \"],[13],[1,\"\\n  \"]],[]]]]],[1,\"\\n\\n  \"],[8,[30,1,[\"body\"]],[[24,5,\"background-color: #706363;\"]],null,[[\"default\"],[[[[1,\"\\n    \"],[10,0],[14,0,\"container-fluid row\"],[14,5,\"height: 50vh; overflow-y: auto; margin: 0; padding: 0;\"],[12],[1,\"\\n        \"],[10,0],[14,0,\"scrollable-list history-scroll\"],[12],[1,\"\\n    \\n\"],[42,[28,[37,6],[[28,[37,6],[[30,0,[\"games\"]]],null]],null],null,[[[1,\"            \"],[8,[39,7],null,[[\"@game\"],[[30,2]]],null],[1,\"\\n\"]],[2]],null],[1,\"\\n        \"],[13],[1,\"\\n    \"],[13],[1,\"\\n    \\n    \\n  \"]],[]]]]],[1,\"\\n\\n\"]],[1]]]]],[1,\"\\n\"]],[\"modal\",\"game\"],false,[\"button\",\"on\",\"bs-modal\",\"h4\",\"div\",\"each\",\"-track-array\",\"history-item\"]]",
     "moduleName": "myapp/components/modal-game-history.hbs",
     "isStrictMode": false
   });
@@ -1393,20 +1389,28 @@
       _initializerDefineProperty(this, "newNickname", _descriptor2, this);
       _initializerDefineProperty(this, "user", _descriptor3, this);
       _initializerDefineProperty(this, "session", _descriptor4, this);
+      _initializerDefineProperty(this, "games", _descriptor5, this);
     }
     openModal() {
-      console.log('openModal0');
+      //console.log(this.args.user);
+      this.parseHistory(this.args.user.history);
       this.isModalOpen = true;
-      this.newNickname = this.user.profile.nickname;
-      console.log(this.isModalOpen);
+      //console.log(this.games);
+    }
+    parseHistory(history) {
+      this.games = history.map(game => ({
+        user: this.user.profile.nickname,
+        opponent: game.opponent,
+        result: game.result,
+        score: game.score,
+        date: game.date
+      }));
     }
     closeModal() {
-      console.log('Closing modal');
       this.isModalOpen = false;
     }
     cancel() {
-      console.log('Modal canceled');
-      this.closeModal(); // Close the modal without submitting
+      this.closeModal();
     }
   }, _descriptor = _applyDecoratedDescriptor(_class.prototype, "isModalOpen", [_tracking.tracked], {
     configurable: true,
@@ -1430,6 +1434,13 @@
     enumerable: true,
     writable: true,
     initializer: null
+  }), _descriptor5 = _applyDecoratedDescriptor(_class.prototype, "games", [_tracking.tracked], {
+    configurable: true,
+    enumerable: true,
+    writable: true,
+    initializer: function () {
+      return [];
+    }
   }), _applyDecoratedDescriptor(_class.prototype, "openModal", [_object.action], Object.getOwnPropertyDescriptor(_class.prototype, "openModal"), _class.prototype), _applyDecoratedDescriptor(_class.prototype, "closeModal", [_object.action], Object.getOwnPropertyDescriptor(_class.prototype, "closeModal"), _class.prototype), _applyDecoratedDescriptor(_class.prototype, "cancel", [_object.action], Object.getOwnPropertyDescriptor(_class.prototype, "cancel"), _class.prototype), _class);
   (0, _component.setComponentTemplate)(__COLOCATED_TEMPLATE__, ModalProfileComponent);
 });
@@ -1458,35 +1469,37 @@
     @open={{this.isModalOpen}}
     as |modal|
   >
-    <modal.header>
+    <modal.header style="background-color: #706363;">
       <h4 class="modal-title">
         Edit Profile
       </h4>
     </modal.header>
-    <modal.body>
-      <div class="form-group">
+    <modal.body style="background-color: #706363;">
+      <div class="form-group" >
         <label>Choose Avatar:</label>
         <input 
           type="file" 
-          class="form-control" 
+          class="form-control"
+          style="background-color: #706363;"
           placeholder="Choose Avatar" 
           {{on "change" this.updateAvatar}}
         >
         <small>This is the visible Avatar on this Site</small>
       </div>
   
-      <div class="form-group mt-3">
+      <div class="form-group mt-3" >
         <label>Nickname:</label>
         <input 
           type="name" 
-          class="form-control" 
+          class="form-control"
+          style="background-color: #706363;"
           value={{this.newNickname}}
           {{on "input" this.updateNewNickname}}
         >
         <small>This is the visible Name on this Site</small>
       </div>
     </modal.body>
-    <modal.footer>
+    <modal.footer style="background-color: #706363;">
       <BsButton @onClick={{modal.close}}>Cancel</BsButton>
       <BsButton @type="success" @onClick={{this.submit}}>Save</BsButton>
     </modal.footer>
@@ -1494,8 +1507,8 @@
   
   */
   {
-    "id": "puHxwSht",
-    "block": "[[[11,\"button\"],[24,0,\"btn btn-primary\"],[24,4,\"button\"],[4,[38,1],[\"click\",[30,0,[\"openModal\"]]],null],[12],[1,\"\\n  Edit Profile\\n\"],[13],[1,\"\\n\\n\"],[8,[39,2],null,[[\"@open\"],[[30,0,[\"isModalOpen\"]]]],[[\"default\"],[[[[1,\"\\n  \"],[8,[30,1,[\"header\"]],null,null,[[\"default\"],[[[[1,\"\\n    \"],[10,\"h4\"],[14,0,\"modal-title\"],[12],[1,\"\\n      Edit Profile\\n    \"],[13],[1,\"\\n  \"]],[]]]]],[1,\"\\n  \"],[8,[30,1,[\"body\"]],null,null,[[\"default\"],[[[[1,\"\\n    \"],[10,0],[14,0,\"form-group\"],[12],[1,\"\\n      \"],[10,\"label\"],[12],[1,\"Choose Avatar:\"],[13],[1,\"\\n      \"],[11,\"input\"],[24,0,\"form-control\"],[24,\"placeholder\",\"Choose Avatar\"],[24,4,\"file\"],[4,[38,1],[\"change\",[30,0,[\"updateAvatar\"]]],null],[12],[13],[1,\"\\n      \"],[10,\"small\"],[12],[1,\"This is the visible Avatar on this Site\"],[13],[1,\"\\n    \"],[13],[1,\"\\n\\n    \"],[10,0],[14,0,\"form-group mt-3\"],[12],[1,\"\\n      \"],[10,\"label\"],[12],[1,\"Nickname:\"],[13],[1,\"\\n      \"],[11,\"input\"],[24,0,\"form-control\"],[16,2,[30,0,[\"newNickname\"]]],[24,4,\"name\"],[4,[38,1],[\"input\",[30,0,[\"updateNewNickname\"]]],null],[12],[13],[1,\"\\n      \"],[10,\"small\"],[12],[1,\"This is the visible Name on this Site\"],[13],[1,\"\\n    \"],[13],[1,\"\\n  \"]],[]]]]],[1,\"\\n  \"],[8,[30,1,[\"footer\"]],null,null,[[\"default\"],[[[[1,\"\\n    \"],[8,[39,8],null,[[\"@onClick\"],[[30,1,[\"close\"]]]],[[\"default\"],[[[[1,\"Cancel\"]],[]]]]],[1,\"\\n    \"],[8,[39,8],null,[[\"@type\",\"@onClick\"],[\"success\",[30,0,[\"submit\"]]]],[[\"default\"],[[[[1,\"Save\"]],[]]]]],[1,\"\\n  \"]],[]]]]],[1,\"\\n\"]],[1]]]]],[1,\"\\n\"]],[\"modal\"],false,[\"button\",\"on\",\"bs-modal\",\"h4\",\"div\",\"label\",\"input\",\"small\",\"bs-button\"]]",
+    "id": "EnNwqYbR",
+    "block": "[[[11,\"button\"],[24,0,\"btn btn-primary\"],[24,4,\"button\"],[4,[38,1],[\"click\",[30,0,[\"openModal\"]]],null],[12],[1,\"\\n  Edit Profile\\n\"],[13],[1,\"\\n\\n\"],[8,[39,2],null,[[\"@open\"],[[30,0,[\"isModalOpen\"]]]],[[\"default\"],[[[[1,\"\\n  \"],[8,[30,1,[\"header\"]],[[24,5,\"background-color: #706363;\"]],null,[[\"default\"],[[[[1,\"\\n    \"],[10,\"h4\"],[14,0,\"modal-title\"],[12],[1,\"\\n      Edit Profile\\n    \"],[13],[1,\"\\n  \"]],[]]]]],[1,\"\\n  \"],[8,[30,1,[\"body\"]],[[24,5,\"background-color: #706363;\"]],null,[[\"default\"],[[[[1,\"\\n    \"],[10,0],[14,0,\"form-group\"],[12],[1,\"\\n      \"],[10,\"label\"],[12],[1,\"Choose Avatar:\"],[13],[1,\"\\n      \"],[11,\"input\"],[24,0,\"form-control\"],[24,5,\"background-color: #706363;\"],[24,\"placeholder\",\"Choose Avatar\"],[24,4,\"file\"],[4,[38,1],[\"change\",[30,0,[\"updateAvatar\"]]],null],[12],[13],[1,\"\\n      \"],[10,\"small\"],[12],[1,\"This is the visible Avatar on this Site\"],[13],[1,\"\\n    \"],[13],[1,\"\\n\\n    \"],[10,0],[14,0,\"form-group mt-3\"],[12],[1,\"\\n      \"],[10,\"label\"],[12],[1,\"Nickname:\"],[13],[1,\"\\n      \"],[11,\"input\"],[24,0,\"form-control\"],[24,5,\"background-color: #706363;\"],[16,2,[30,0,[\"newNickname\"]]],[24,4,\"name\"],[4,[38,1],[\"input\",[30,0,[\"updateNewNickname\"]]],null],[12],[13],[1,\"\\n      \"],[10,\"small\"],[12],[1,\"This is the visible Name on this Site\"],[13],[1,\"\\n    \"],[13],[1,\"\\n  \"]],[]]]]],[1,\"\\n  \"],[8,[30,1,[\"footer\"]],[[24,5,\"background-color: #706363;\"]],null,[[\"default\"],[[[[1,\"\\n    \"],[8,[39,8],null,[[\"@onClick\"],[[30,1,[\"close\"]]]],[[\"default\"],[[[[1,\"Cancel\"]],[]]]]],[1,\"\\n    \"],[8,[39,8],null,[[\"@type\",\"@onClick\"],[\"success\",[30,0,[\"submit\"]]]],[[\"default\"],[[[[1,\"Save\"]],[]]]]],[1,\"\\n  \"]],[]]]]],[1,\"\\n\"]],[1]]]]],[1,\"\\n\"]],[\"modal\"],false,[\"button\",\"on\",\"bs-modal\",\"h4\",\"div\",\"label\",\"input\",\"small\",\"bs-button\"]]",
     "moduleName": "myapp/components/modal-profile.hbs",
     "isStrictMode": false
   });
@@ -1748,7 +1761,7 @@
   
       {{!-- Second row of profile details --}}
       <div class="profile-details">
-        <ModalGameHistory />
+        <ModalGameHistory @user={{@selectedUser}}/>
         <h2 class="info">Wins: {{@selectedUser.wins}}</h2>
       </div>
   
@@ -1765,8 +1778,8 @@
   </div>
   */
   {
-    "id": "almFfX1s",
-    "block": "[[[10,0],[14,0,\"container-fluid row fill p-2\"],[12],[1,\"\\n\"],[1,\"  \"],[10,0],[14,0,\"col center no-padding position-relative\"],[12],[1,\"\\n    \"],[10,\"button\"],[14,0,\"btn-close top-left\"],[15,\"onclick\",[30,0,[\"onCloseClick\"]]],[14,4,\"button\"],[12],[13],[1,\"\\n    \"],[10,\"img\"],[15,\"src\",[30,1,[\"avatar\"]]],[14,\"alt\",\"Profile Picture\"],[14,0,\"profile-pic\"],[12],[13],[1,\"\\n  \"],[13],[1,\"\\n\\n\"],[1,\"  \"],[10,0],[14,0,\"col-10\"],[12],[1,\"\\n\"],[1,\"    \"],[10,0],[14,0,\"profile-details\"],[12],[1,\"\\n      \"],[10,\"h2\"],[14,0,\"name\"],[12],[1,[30,1,[\"nickname\"]]],[13],[1,\"\\n      \"],[10,0],[14,0,\"actions\"],[12],[1,\"\\n        \"],[11,\"button\"],[24,0,\"emoji-button info\"],[24,\"data-bs-toggle\",\"tooltip\"],[24,\"data-bs-placement\",\"top\"],[24,\"title\",\"Live Chat\"],[24,4,\"button\"],[4,[38,4],[\"click\",[30,0,[\"startLiveChat\"]]],null],[12],[1,\"\\n          💬\\n        \"],[13],[1,\"\\n        \"],[11,\"button\"],[24,0,\"emoji-button info\"],[24,\"data-bs-toggle\",\"tooltip\"],[24,\"data-bs-placement\",\"top\"],[24,\"title\",\"Play Game\"],[24,4,\"button\"],[4,[38,4],[\"click\",[30,0,[\"playGame\"]]],null],[12],[1,\"\\n          🎮\\n        \"],[13],[1,\"\\n        \"],[11,\"button\"],[24,0,\"emoji-button info\"],[24,\"data-bs-toggle\",\"tooltip\"],[24,\"data-bs-placement\",\"top\"],[24,\"title\",\"Add Friend\"],[24,4,\"button\"],[4,[38,4],[\"click\",[30,0,[\"addFriend\"]]],null],[12],[1,\"\\n          ➕\\n        \"],[13],[1,\"\\n        \"],[11,\"button\"],[24,0,\"emoji-button info\"],[24,\"data-bs-toggle\",\"tooltip\"],[24,\"data-bs-placement\",\"top\"],[24,\"title\",\"Block User\"],[24,4,\"button\"],[4,[38,4],[\"click\",[28,[37,5],[[30,0,[\"blockUser\"]],\"add\"],null]],null],[12],[1,\"\\n          🚫\\n        \"],[13],[1,\"\\n      \"],[13],[1,\"\\n      \"],[10,\"h2\"],[14,0,\"points\"],[12],[1,[30,1,[\"trophies\"]]],[1,\"🏆\"],[13],[1,\"\\n    \"],[13],[1,\"\\n\\n\"],[1,\"    \"],[10,0],[14,0,\"profile-details\"],[12],[1,\"\\n      \"],[8,[39,6],null,null,null],[1,\"\\n      \"],[10,\"h2\"],[14,0,\"info\"],[12],[1,\"Wins: \"],[1,[30,1,[\"wins\"]]],[13],[1,\"\\n    \"],[13],[1,\"\\n\\n    \"],[10,0],[14,0,\"profile-details\"],[12],[1,\"\\n\"],[41,[30,0,[\"isOnline\"]],[[[1,\"      \"],[10,\"h2\"],[14,0,\"info\"],[12],[1,\"🟢 online\"],[13],[1,\"\\n\"]],[]],[[[1,\"      \"],[10,\"h2\"],[14,0,\"info\"],[12],[1,\"🔴 offline\"],[13],[1,\"\\n\"]],[]]],[1,\"      \"],[10,\"h2\"],[14,0,\"info\"],[12],[1,\"Losses: \"],[1,[30,1,[\"losses\"]]],[13],[1,\"\\n    \"],[13],[1,\"\\n\\n  \"],[13],[1,\"\\n\"],[13]],[\"@selectedUser\"],false,[\"div\",\"button\",\"img\",\"h2\",\"on\",\"fn\",\"modal-game-history\",\"if\"]]",
+    "id": "8Rypa+CJ",
+    "block": "[[[10,0],[14,0,\"container-fluid row fill p-2\"],[12],[1,\"\\n\"],[1,\"  \"],[10,0],[14,0,\"col center no-padding position-relative\"],[12],[1,\"\\n    \"],[10,\"button\"],[14,0,\"btn-close top-left\"],[15,\"onclick\",[30,0,[\"onCloseClick\"]]],[14,4,\"button\"],[12],[13],[1,\"\\n    \"],[10,\"img\"],[15,\"src\",[30,1,[\"avatar\"]]],[14,\"alt\",\"Profile Picture\"],[14,0,\"profile-pic\"],[12],[13],[1,\"\\n  \"],[13],[1,\"\\n\\n\"],[1,\"  \"],[10,0],[14,0,\"col-10\"],[12],[1,\"\\n\"],[1,\"    \"],[10,0],[14,0,\"profile-details\"],[12],[1,\"\\n      \"],[10,\"h2\"],[14,0,\"name\"],[12],[1,[30,1,[\"nickname\"]]],[13],[1,\"\\n      \"],[10,0],[14,0,\"actions\"],[12],[1,\"\\n        \"],[11,\"button\"],[24,0,\"emoji-button info\"],[24,\"data-bs-toggle\",\"tooltip\"],[24,\"data-bs-placement\",\"top\"],[24,\"title\",\"Live Chat\"],[24,4,\"button\"],[4,[38,4],[\"click\",[30,0,[\"startLiveChat\"]]],null],[12],[1,\"\\n          💬\\n        \"],[13],[1,\"\\n        \"],[11,\"button\"],[24,0,\"emoji-button info\"],[24,\"data-bs-toggle\",\"tooltip\"],[24,\"data-bs-placement\",\"top\"],[24,\"title\",\"Play Game\"],[24,4,\"button\"],[4,[38,4],[\"click\",[30,0,[\"playGame\"]]],null],[12],[1,\"\\n          🎮\\n        \"],[13],[1,\"\\n        \"],[11,\"button\"],[24,0,\"emoji-button info\"],[24,\"data-bs-toggle\",\"tooltip\"],[24,\"data-bs-placement\",\"top\"],[24,\"title\",\"Add Friend\"],[24,4,\"button\"],[4,[38,4],[\"click\",[30,0,[\"addFriend\"]]],null],[12],[1,\"\\n          ➕\\n        \"],[13],[1,\"\\n        \"],[11,\"button\"],[24,0,\"emoji-button info\"],[24,\"data-bs-toggle\",\"tooltip\"],[24,\"data-bs-placement\",\"top\"],[24,\"title\",\"Block User\"],[24,4,\"button\"],[4,[38,4],[\"click\",[28,[37,5],[[30,0,[\"blockUser\"]],\"add\"],null]],null],[12],[1,\"\\n          🚫\\n        \"],[13],[1,\"\\n      \"],[13],[1,\"\\n      \"],[10,\"h2\"],[14,0,\"points\"],[12],[1,[30,1,[\"trophies\"]]],[1,\"🏆\"],[13],[1,\"\\n    \"],[13],[1,\"\\n\\n\"],[1,\"    \"],[10,0],[14,0,\"profile-details\"],[12],[1,\"\\n      \"],[8,[39,6],null,[[\"@user\"],[[30,1]]],null],[1,\"\\n      \"],[10,\"h2\"],[14,0,\"info\"],[12],[1,\"Wins: \"],[1,[30,1,[\"wins\"]]],[13],[1,\"\\n    \"],[13],[1,\"\\n\\n    \"],[10,0],[14,0,\"profile-details\"],[12],[1,\"\\n\"],[41,[30,0,[\"isOnline\"]],[[[1,\"      \"],[10,\"h2\"],[14,0,\"info\"],[12],[1,\"🟢 online\"],[13],[1,\"\\n\"]],[]],[[[1,\"      \"],[10,\"h2\"],[14,0,\"info\"],[12],[1,\"🔴 offline\"],[13],[1,\"\\n\"]],[]]],[1,\"      \"],[10,\"h2\"],[14,0,\"info\"],[12],[1,\"Losses: \"],[1,[30,1,[\"losses\"]]],[13],[1,\"\\n    \"],[13],[1,\"\\n\\n  \"],[13],[1,\"\\n\"],[13]],[\"@selectedUser\"],false,[\"div\",\"button\",\"img\",\"h2\",\"on\",\"fn\",\"modal-game-history\",\"if\"]]",
     "moduleName": "myapp/components/profile-other.hbs",
     "isStrictMode": false
   });
@@ -1873,7 +1886,7 @@
   
       <!-- Second row of profile details -->
       <div class="profile-details">
-        <ModalGameHistory />
+        <ModalGameHistory @user={{this.user.profile}}/>
         <h2 class="info">Wins: {{this.user.profile.wins}}</h2>
       </div>
   
@@ -1891,8 +1904,8 @@
   
   */
   {
-    "id": "IafenBQn",
-    "block": "[[[10,0],[14,0,\"container-fluid row fill p-2\"],[12],[1,\"\\n  \"],[3,\" Profile picture column (1 part) \"],[1,\"\\n  \"],[10,0],[14,0,\"col center\"],[12],[1,\"\\n    \"],[10,\"img\"],[15,\"src\",[29,[\"https://localhost/users/users\",[30,0,[\"user\",\"profile\",\"avatar\"]],\"/\"]]],[14,\"alt\",\"Profile Picture\"],[14,0,\"profile-pic\"],[12],[13],[1,\"\\n  \"],[13],[1,\"\\n\\n  \"],[3,\" Profile details column (3 parts) \"],[1,\"\\n  \"],[10,0],[14,0,\"col-10\"],[12],[1,\"\\n    \"],[3,\" First row of profile details \"],[1,\"\\n    \"],[10,0],[14,0,\"profile-details\"],[12],[1,\"\\n\"],[41,[30,0,[\"isAuthenticated\"]],[[[1,\"        \"],[41,[30,0,[\"user\",\"profile\"]],[[[1,\" \"],[3,\" Access the user directly from the service \"],[1,\"\\n          \"],[10,\"h2\"],[14,0,\"name\"],[12],[1,[30,0,[\"user\",\"profile\",\"nickname\"]]],[13],[1,\"\\n          \"],[8,[39,4],null,null,null],[1,\"\\n\"]],[]],[[[1,\"          \"],[10,2],[12],[1,\"Loading user...\"],[13],[1,\" \"],[3,\" Or another fallback message \"],[1,\"\\n\"]],[]]],[1,\"        \"],[11,\"button\"],[24,0,\"logout-button\"],[24,4,\"button\"],[4,[38,7],[\"click\",[30,0,[\"logout\"]]],null],[12],[1,\"Logout\"],[13],[1,\"\\n\"]],[]],null],[1,\"      \"],[10,\"h2\"],[14,0,\"points info\"],[12],[1,[30,0,[\"user\",\"profile\",\"trophies\"]]],[1,\" 🏆\"],[13],[1,\"\\n    \"],[13],[1,\"\\n\\n    \"],[3,\" Second row of profile details \"],[1,\"\\n    \"],[10,0],[14,0,\"profile-details\"],[12],[1,\"\\n      \"],[8,[39,8],null,null,null],[1,\"\\n      \"],[10,\"h2\"],[14,0,\"info\"],[12],[1,\"Wins: \"],[1,[30,0,[\"user\",\"profile\",\"wins\"]]],[13],[1,\"\\n    \"],[13],[1,\"\\n\\n    \"],[10,0],[14,0,\"profile-details\"],[12],[1,\"\\n\"],[41,[30,0,[\"isOnline\"]],[[[1,\"        \"],[10,\"h2\"],[14,0,\"info\"],[12],[1,\"🟢 online\"],[13],[1,\"\\n\"]],[]],[[[1,\"        \"],[10,\"h2\"],[14,0,\"info\"],[12],[1,\"🔴 offline\"],[13],[1,\"\\n\"]],[]]],[1,\"      \"],[10,\"h2\"],[14,0,\"info\"],[12],[1,\"Losses: \"],[1,[30,0,[\"user\",\"profile\",\"losses\"]]],[13],[1,\"\\n    \"],[13],[1,\"\\n  \"],[13],[1,\"\\n\"],[13],[1,\"\\n\\n\"]],[],false,[\"div\",\"img\",\"if\",\"h2\",\"modal-profile\",\"p\",\"button\",\"on\",\"modal-game-history\"]]",
+    "id": "r3F1U3pe",
+    "block": "[[[10,0],[14,0,\"container-fluid row fill p-2\"],[12],[1,\"\\n  \"],[3,\" Profile picture column (1 part) \"],[1,\"\\n  \"],[10,0],[14,0,\"col center\"],[12],[1,\"\\n    \"],[10,\"img\"],[15,\"src\",[29,[\"https://localhost/users/users\",[30,0,[\"user\",\"profile\",\"avatar\"]],\"/\"]]],[14,\"alt\",\"Profile Picture\"],[14,0,\"profile-pic\"],[12],[13],[1,\"\\n  \"],[13],[1,\"\\n\\n  \"],[3,\" Profile details column (3 parts) \"],[1,\"\\n  \"],[10,0],[14,0,\"col-10\"],[12],[1,\"\\n    \"],[3,\" First row of profile details \"],[1,\"\\n    \"],[10,0],[14,0,\"profile-details\"],[12],[1,\"\\n\"],[41,[30,0,[\"isAuthenticated\"]],[[[1,\"        \"],[41,[30,0,[\"user\",\"profile\"]],[[[1,\" \"],[3,\" Access the user directly from the service \"],[1,\"\\n          \"],[10,\"h2\"],[14,0,\"name\"],[12],[1,[30,0,[\"user\",\"profile\",\"nickname\"]]],[13],[1,\"\\n          \"],[8,[39,4],null,null,null],[1,\"\\n\"]],[]],[[[1,\"          \"],[10,2],[12],[1,\"Loading user...\"],[13],[1,\" \"],[3,\" Or another fallback message \"],[1,\"\\n\"]],[]]],[1,\"        \"],[11,\"button\"],[24,0,\"logout-button\"],[24,4,\"button\"],[4,[38,7],[\"click\",[30,0,[\"logout\"]]],null],[12],[1,\"Logout\"],[13],[1,\"\\n\"]],[]],null],[1,\"      \"],[10,\"h2\"],[14,0,\"points info\"],[12],[1,[30,0,[\"user\",\"profile\",\"trophies\"]]],[1,\" 🏆\"],[13],[1,\"\\n    \"],[13],[1,\"\\n\\n    \"],[3,\" Second row of profile details \"],[1,\"\\n    \"],[10,0],[14,0,\"profile-details\"],[12],[1,\"\\n      \"],[8,[39,8],null,[[\"@user\"],[[30,0,[\"user\",\"profile\"]]]],null],[1,\"\\n      \"],[10,\"h2\"],[14,0,\"info\"],[12],[1,\"Wins: \"],[1,[30,0,[\"user\",\"profile\",\"wins\"]]],[13],[1,\"\\n    \"],[13],[1,\"\\n\\n    \"],[10,0],[14,0,\"profile-details\"],[12],[1,\"\\n\"],[41,[30,0,[\"isOnline\"]],[[[1,\"        \"],[10,\"h2\"],[14,0,\"info\"],[12],[1,\"🟢 online\"],[13],[1,\"\\n\"]],[]],[[[1,\"        \"],[10,\"h2\"],[14,0,\"info\"],[12],[1,\"🔴 offline\"],[13],[1,\"\\n\"]],[]]],[1,\"      \"],[10,\"h2\"],[14,0,\"info\"],[12],[1,\"Losses: \"],[1,[30,0,[\"user\",\"profile\",\"losses\"]]],[13],[1,\"\\n    \"],[13],[1,\"\\n  \"],[13],[1,\"\\n\"],[13],[1,\"\\n\\n\"]],[],false,[\"div\",\"img\",\"if\",\"h2\",\"modal-profile\",\"p\",\"button\",\"on\",\"modal-game-history\"]]",
     "moduleName": "myapp/components/profile-own.hbs",
     "isStrictMode": false
   });
@@ -3587,7 +3600,7 @@
     value: true
   });
   _exports.default = void 0;
-  var _class, _descriptor;
+  var _class, _descriptor, _descriptor2, _descriptor3;
   0; //eaimeta@70e063a35619d71f0,"@ember/routing/route",0,"@ember/service"eaimeta@70e063a35619d71f
   function _initializerDefineProperty(e, i, r, l) { r && Object.defineProperty(e, i, { enumerable: r.enumerable, configurable: r.configurable, writable: r.writable, value: r.initializer ? r.initializer.call(l) : void 0 }); }
   function _defineProperty(e, r, t) { return (r = _toPropertyKey(r)) in e ? Object.defineProperty(e, r, { value: t, enumerable: !0, configurable: !0, writable: !0 }) : e[r] = t, e; }
@@ -3599,13 +3612,28 @@
     constructor(...args) {
       super(...args);
       _initializerDefineProperty(this, "session", _descriptor, this);
+      _initializerDefineProperty(this, "gameData", _descriptor2, this);
+      _initializerDefineProperty(this, "router", _descriptor3, this);
     }
     async beforeModel(transition) {
       if (!this.session.isAuthenticated) {
         this.session.requireAuthentication(transition, 'login');
       }
+      if (this.gameData.roomData) {
+        this.router.transitionTo('pong-game');
+      }
     }
   }, _descriptor = _applyDecoratedDescriptor(_class.prototype, "session", [_service.inject], {
+    configurable: true,
+    enumerable: true,
+    writable: true,
+    initializer: null
+  }), _descriptor2 = _applyDecoratedDescriptor(_class.prototype, "gameData", [_service.inject], {
+    configurable: true,
+    enumerable: true,
+    writable: true,
+    initializer: null
+  }), _descriptor3 = _applyDecoratedDescriptor(_class.prototype, "router", [_service.inject], {
     configurable: true,
     enumerable: true,
     writable: true,
@@ -3967,16 +3995,26 @@
       this.roomData = roomData;
 
       // Fetch user data for player_1 and player_2 asynchronously
-      if (roomData.player1 !== "AI") this.player_1 = await this.fetchUserData(roomData.player1);else this.player_1 = {
+      if (roomData.player1 !== "AI" && roomData.player1 !== "local") this.player_1 = await this.fetchUserData(roomData.player1);else if (roomData.player1 !== "local") this.player_1 = {
         nickname: "Computer",
-        avatar: "/images/default-profile.jpeg",
+        avatar: "/media/default_photo/default_photo.png",
         trophies: 999,
         status: "online"
+      };else this.player_1 = {
+        nickname: "Player_2",
+        avatar: "/media/default_photo/default_photo.png",
+        trophies: 0,
+        status: "online"
       };
-      if (roomData.player2 !== "AI") this.player_2 = await this.fetchUserData(roomData.player2);else this.player_2 = {
+      if (roomData.player2 !== "AI" && roomData.player2 !== "local") this.player_2 = await this.fetchUserData(roomData.player2);else if (roomData.player2 !== "local") this.player_2 = {
         nickname: "Computer",
-        avatar: "/images/default-profile.jpeg",
+        avatar: "/media/default_photo/default_photo.png",
         trophies: 999,
+        status: "online"
+      };else this.player_2 = {
+        nickname: "Player_2",
+        avatar: "/media/default_photo/default_photo.png",
+        trophies: 0,
         status: "online"
       };
       this.pongGame.connectToRoom(this.roomData.room_name);
@@ -4076,7 +4114,7 @@
   });
   0; //eaimeta@70e063a35619d71f0,"ember-page-title/services/page-title"eaimeta@70e063a35619d71f
 });
-;define("myapp/services/pong-game", ["exports", "@ember/service", "@glimmer/tracking", "@ember/object"], function (_exports, _service, _tracking, _object) {
+;define("myapp/services/pong-game", ["exports", "@ember/service", "@glimmer/tracking"], function (_exports, _service, _tracking) {
   "use strict";
 
   Object.defineProperty(_exports, "__esModule", {
@@ -4084,7 +4122,7 @@
   });
   _exports.default = void 0;
   var _class, _descriptor, _descriptor2, _descriptor3, _descriptor4, _descriptor5, _descriptor6, _descriptor7, _descriptor8, _descriptor9, _descriptor10, _descriptor11, _descriptor12, _descriptor13, _descriptor14;
-  0; //eaimeta@70e063a35619d71f0,"@ember/service",0,"@glimmer/tracking",0,"@ember/object",0,"@ember/service"eaimeta@70e063a35619d71f
+  0; //eaimeta@70e063a35619d71f0,"@ember/service",0,"@glimmer/tracking",0,"@ember/service"eaimeta@70e063a35619d71f
   function _initializerDefineProperty(e, i, r, l) { r && Object.defineProperty(e, i, { enumerable: r.enumerable, configurable: r.configurable, writable: r.writable, value: r.initializer ? r.initializer.call(l) : void 0 }); }
   function _defineProperty(e, r, t) { return (r = _toPropertyKey(r)) in e ? Object.defineProperty(e, r, { value: t, enumerable: !0, configurable: !0, writable: !0 }) : e[r] = t, e; }
   function _toPropertyKey(t) { var i = _toPrimitive(t, "string"); return "symbol" == typeof i ? i : i + ""; }
@@ -4212,10 +4250,8 @@
       this.leftPaddlePosition = data.left_paddle_y * 10;
       this.rightPaddlePosition = data.right_paddle_y * 10;
       this.winner = data.winner;
-      if (!this.winner) {
-        this.gameData.left_score = data.left_score;
-        this.gameData.right_score = data.right_score;
-      }
+      this.gameData.left_score = data.left_score;
+      this.gameData.right_score = data.right_score;
       if (this.winner && !this.winnerSend) {
         this.winnerSend = true;
         if (this.tournament.currentLobby) {
@@ -4227,7 +4263,9 @@
       }
     }
     willDestroy() {
-      this.disconnectFromLobby(this.gameData.roomData.roomName);
+      this.disconnectFromLobby(this.gameData.roomData.room_name);
+      this.winnerSend = false;
+      this.gameData.roomData = null;
       window.removeEventListener('keydown', this.handleKeyDown.bind(this));
       window.removeEventListener('keyup', this.handleKeyUp.bind(this));
       super.willDestroy();
