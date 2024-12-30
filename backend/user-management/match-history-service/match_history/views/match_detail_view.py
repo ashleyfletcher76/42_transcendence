@@ -41,6 +41,7 @@ class MatchDetailView(APIView):
 			score = data.get("score")
 			tournament = data.get("tournament", False)
 
+
 			# validate payload
 			if not all([opponent, result, score]):
 				print("[DEBUG] Missing required fields")
@@ -86,6 +87,7 @@ class MatchDetailView(APIView):
 			if result.lower() == "win":
 				match_history.wins += 1
 				if tournament:
+					print("i am adding trophies")
 					match_history.trophies += 1
 			elif result.lower() == "loss":
 				match_history.losses += 1

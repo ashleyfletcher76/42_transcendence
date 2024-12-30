@@ -11,13 +11,12 @@ def upload_match_details(user_id, opponent, result, score, tournament_win, token
         "opponent": opponent,
         "result": result,
         "score": score,
-        "tournament_win": tournament_win,
+        "tournament": tournament_win,
     }
-
+    print(payload)
     try:
         response = requests.post(url, headers=headers, json=payload)
         if response.status_code == 201:
-            print("success info send correctly tournamnet winner")
             return {"success": response.json()}
         else:
             return {"error": response.json()}

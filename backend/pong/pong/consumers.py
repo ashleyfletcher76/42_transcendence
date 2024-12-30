@@ -93,6 +93,8 @@ class GameConsumer(AsyncWebsocketConsumer):
             set_game_state(self.room_name, game)
 
 
+
+
     async def game_update(self, event):
         game_state = event["game_state"]
 
@@ -144,7 +146,13 @@ class GameConsumer(AsyncWebsocketConsumer):
                 }
             )
             if game.get("finished") or game.get("endloop"):
-                self.game_stat_send(game)
+                await self.channel_layer.group_send(
+                    self.room_group_name,
+                    {
+                        "type": "game_stat",
+                        "game_state": game,
+                    }
+                )
                 break
 
 
@@ -169,10 +177,22 @@ class GameConsumer(AsyncWebsocketConsumer):
                 return header[1].decode("utf-8").split("Bearer ")[-1]
         return None
     
+    async def game_stat(self, event):
+        game = event["game_state"]
+        self.game_stat_send(game)
     
     def game_stat_send(self, game):
-        opponent = game["player2"]
-        score = f"{game["left_score"]}-{game["right_score"]}"
-        result = "win" if game["winner"] == self.nickname else "loss"
-        upload_match_details(self.user_id, opponent, result, score, self.token)
+        if game["game_type"] == "tournament":
+            return
+        opponent = game["player2"] if self.nickname == game["player1"] else game["player1"]
+        if game["winner"] == self.nickname:
+            result = "win"
+            left_score = max(game["left_score"], game["right_score"])
+            right_score = min(game["left_score"], game["right_score"])
+        else:
+            result = "loss"
+            left_score = game["left_score"]
+            right_score = game["right_score"]
+        score = f"{left_score}-{right_score}"
+        upload_match_details(self.nickname, self.user_id, opponent, result, score, self.token)
     

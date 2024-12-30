@@ -1,5 +1,6 @@
 from rest_framework.response import Response
 from rest_framework import status
+import uuid
 import random
 from django.http import JsonResponse
 from django.db import connection
@@ -64,7 +65,7 @@ def create_room(request):
                     "game_state": waiting_room
                 }, status=status.HTTP_200_OK)
 
-        room_name = 'room-' + str(random.randint(1000, 9999))
+        room_name = f"room-{uuid.uuid4().hex[:8]}"
 
         if game_type == "computer":
             player_2 = "AI"

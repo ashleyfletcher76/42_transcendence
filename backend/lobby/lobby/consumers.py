@@ -189,7 +189,6 @@ class TournamentConsumer(AsyncWebsocketConsumer):
                     "winner" : active_players[0]["name"],
                 }
             )
-            self.game_stat_send(self, active_players[0])
             await sleep(1)
             self.reset_players(tournament)
             return
@@ -260,7 +259,7 @@ class TournamentConsumer(AsyncWebsocketConsumer):
                 player2 = match["player2"]
                 room_name = match["room_name"]
 
-                finished, winner = self.get_game_info(player1, player2, room_name)
+                finished, winner, game = self.get_game_info(player1, player2, room_name)
 
                 if finished:
                     player_1 = next((p for p in tournament["players"] if p["name"] == player1), None)
@@ -268,17 +267,29 @@ class TournamentConsumer(AsyncWebsocketConsumer):
                     if player_1["name"] == winner:
                         player_1["score"] += 1
                         player_2["score"] = 0
+                        winner_name = player_1["name"]
+                        loser_name = player_2["name"]
                     else:
                         player_1["score"] = 0
                         player_2["score"] += 1
-                        await self.channel_layer.group_send(
-                            self.room_group_name,
-                            {
-                                "type": "message",
-                                "sender" : "[system]",
-                                "message" : f"{player_1["name"]} won against {player_2["name"]}",
-                            }
-                        )
+                        winner_name = player_2["name"]
+                        loser_name = player_1["name"]
+                    
+                    await self.channel_layer.group_send(
+                        self.room_group_name,
+                        {
+                            "type": "message",
+                            "sender" : "[system]",
+                            "message" : f"{winner_name} won against {loser_name}",
+                        }
+                    )
+                    await self.channel_layer.group_send(
+                        self.room_group_name,
+                        {
+                            "type": "game_stat",
+                            "game_state": game,
+                        }
+                    )
 
                     matches.remove(match)
                     tournament["matches"] = matches
@@ -309,13 +320,13 @@ class TournamentConsumer(AsyncWebsocketConsumer):
                 (response_data.get("player1") == player1 or response_data.get("player2") == player1) and
                 (response_data.get("player1") == player2 or response_data.get("player2") == player2)
             ):
-                return True, response_data.get("winner")
+                return True, response_data.get("winner"), response_data
             else:
-                return False, None
+                return False, None, None
             
         except requests.exceptions.RequestException as e:
             print(f"Error calling game API: {e}")
-            return False, None
+            return False, None, None
 
     def get_game_room(self, player1, player2):
         data = {"player": player1["name"], "player_2": player2["name"], "gameType": "tournament"}
@@ -355,7 +366,6 @@ class TournamentConsumer(AsyncWebsocketConsumer):
         tournamnet = event["tournamnet"]
         player = event["player"]
         player_list = [player["name"] for player in tournamnet["players"]]
-        print(player_list)
         await self.send(text_data=json.dumps({
             "type": "create",
             "players": player_list,
@@ -369,7 +379,6 @@ class TournamentConsumer(AsyncWebsocketConsumer):
         tournamnet = event["tournamnet"]
         player = event["player"]
         player_list = [player["name"] for player in tournamnet["players"]]
-        print(player_list)
         await self.send(text_data=json.dumps({
             "type": "leave",
             "players": player_list,
@@ -441,10 +450,30 @@ class TournamentConsumer(AsyncWebsocketConsumer):
                 return header[1].decode("utf-8").split("Bearer ")[-1]
         return None
     
+
     # game stats recording
-    def game_stat_send(self, player):
+
+    async def game_stat(self, event):
+        game = event["game_state"]
+        tournament = get_tournamnet_state(self.room_name)
+        flag = False
+        active_players = [player for player in tournament["players"] if player["score"] > 0]
+        if len(active_players) == 1 and active_players[0]["name"] == self.nickname:
+            flag = True
+        player = next((p for p in tournament["players"] if p["name"] == self.nickname), None)
+        self.game_stat_send(player, game, flag)
+    
+    def game_stat_send(self, player, game, flag):
         opponent = player["opponent"]
-        score = player["score"]
-        result = "win"
-        # upload_match_details(self.user_id, opponent, result, score, True, self.token)
+        if game["winner"] == self.nickname:
+            result = "win"
+            left_score = max(game["left_score"], game["right_score"])
+            right_score = min(game["left_score"], game["right_score"])
+        else:
+            result = "loss"
+            left_score = game["left_score"]
+            right_score = game["right_score"]
+        score = f"{left_score}-{right_score}"
+        upload_match_details(self.user_id, opponent, result, score, flag, self.token)
+
 

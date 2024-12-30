@@ -1,6 +1,6 @@
 import requests
 
-def upload_match_details(user_id, opponent, result, score, token):
+def upload_match_details(user, user_id, opponent, result, score, token):
     url = "http://match-history-service:8000/match/add-match-history/"
     headers = {
         "Authorization": f"Bearer {token}",
@@ -12,6 +12,7 @@ def upload_match_details(user_id, opponent, result, score, token):
         "result": result,
         "score": score,
     }
+    print(f"{user} send this payload = {payload}")
 
     try:
         response = requests.post(url, headers=headers, json=payload)
