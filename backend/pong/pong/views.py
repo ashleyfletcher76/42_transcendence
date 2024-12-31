@@ -90,7 +90,7 @@ def create_room(request):
             "right_score" : 0,
             "player1" : player_1,
             "player2" : player_2,
-            "paused" : True,
+            "paused" : False,
             "game_type" : game_type,
             "game_start_timer" : 3,
             "creation_time" : time.time(),
