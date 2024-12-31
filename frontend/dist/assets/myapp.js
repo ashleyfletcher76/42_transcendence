@@ -3993,7 +3993,7 @@
     async setGameData(gameType, roomData) {
       this.gameType = gameType;
       this.roomData = roomData;
-
+      this.pongGame.winner = null;
       // Fetch user data for player_1 and player_2 asynchronously
       if (roomData.player1 !== "AI" && roomData.player1 !== "local") this.player_1 = await this.fetchUserData(roomData.player1);else if (roomData.player1 !== "local") this.player_1 = {
         nickname: "Computer",
@@ -4255,15 +4255,16 @@
       if (this.winner && !this.winnerSend) {
         this.winnerSend = true;
         if (this.tournament.currentLobby) {
-          this.tournament.sendWinner(this.winner);
-          if (this.winner !== this.user.profile.nickname) this.tournament.playerInTournament = false;
+          console.log("trans to tournament");
+          //if (this.winner !== this.user.profile.nickname)
+          //  this.tournament.playerInTournament = false;
           this.router.transitionTo('tournament');
         }
         this.willDestroy();
       }
     }
     willDestroy() {
-      this.disconnectFromLobby(this.gameData.roomData.room_name);
+      this.disconnectFromGame(this.gameData.roomData.room_name);
       this.winnerSend = false;
       this.gameData.roomData = null;
       window.removeEventListener('keydown', this.handleKeyDown.bind(this));
@@ -4276,7 +4277,7 @@
       console.log("connect to:", wsUrl);
       if (this.socketRef) {
         console.log("disconnect");
-        this.disconnectFromLobby(roomName);
+        this.disconnectFromGame(roomName);
       }
       const socket = this.websockets.socketFor(wsUrl);
       // Register WebSocket event handlers
@@ -4285,7 +4286,7 @@
       socket.on('close', this.onClose, this);
       this.set('socketRef', socket);
     }
-    async disconnectFromLobby(roomName) {
+    async disconnectFromGame(roomName) {
       const token = this.session.data.authenticated.access;
       const wsUrl = `wss://localhost/ws/pong-game/${roomName}/?token=${encodeURIComponent(token)}`;
       console.log("websocket to close:", roomName);
@@ -4529,14 +4530,6 @@
       this.playerProfiles = [];
       this.playerInTournament = false;
     }
-    sendWinner(winner) {
-      const data = {
-        action: 'winner',
-        // message/start
-        winner: winner
-      };
-      this.sendMessage(data);
-    }
     sendMessage(data) {
       if (this.socketRef) {
         console.log('WebSocket message send:', JSON.stringify(data));
@@ -4546,13 +4539,6 @@
       }
     }
     onOpen(tournamentName) {
-      const data = {
-        action: 'create_or_join',
-        tournament_name: tournamentName,
-        nickname: this.user.profile.nickname
-      };
-      console.log('WebSocket connection opened:');
-      this.sendMessage(data);
       this.currentLobby = tournamentName;
       this.playerInTournament = true;
     }
@@ -4563,11 +4549,9 @@
         case "create":
           this.handleCreate(parsedMessage);
           break;
-
-        //			case "join/create":
-        //				this.handleJoin(parsedMessage)
-        //				break;
-
+        case "result":
+          this.handleResult(parsedMessage);
+          break;
         case "join":
           this.handleJoin(parsedMessage);
           break;
@@ -4595,6 +4579,14 @@
         type: 'tournament',
         from: 'System',
         content: 'You created the Tournament ' + this.currentLobby
+      };
+      this.chat.messages = [...this.chat.messages, data];
+    }
+    handleResult(parsedMessage) {
+      const data = {
+        type: 'tournament',
+        from: 'System',
+        content: parsedMessage.winner + 'won against ' + parsedMessage.loser + '!'
       };
       this.chat.messages = [...this.chat.messages, data];
     }
