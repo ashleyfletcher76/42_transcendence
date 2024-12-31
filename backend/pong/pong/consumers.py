@@ -4,7 +4,7 @@ import random
 from asyncio import sleep
 import asyncio
 from channels.generic.websocket import AsyncWebsocketConsumer
-from .utils.redis_helper import get_game_state, set_game_state
+from .utils.redis_helper import get_game_state, set_game_state, delete_game_state
 from .logic.game_logic import game_logic, move_right_paddle, move_left_paddle
 from .utils.match_history import upload_match_details
 
@@ -56,6 +56,10 @@ class GameConsumer(AsyncWebsocketConsumer):
         game["connections"] -= 1
         if (game["connections"] == 0):
             game["endloop"] = True
+            if (game["game_type"] == "remote"):
+                delete_game_state(self.room_name)
+                return
+                
         set_game_state(self.room_name, game)
 
     async def receive(self, text_data):
@@ -100,6 +104,8 @@ class GameConsumer(AsyncWebsocketConsumer):
 
         await self.send(text_data=json.dumps({
             "room_name" : game_state["room_name"],
+            "player1" : game_state["player1"],
+            "player2" : game_state["player2"],
             "ball_x" : game_state["ball_x"],
             "ball_y" : game_state["ball_y"],
             "ball_speed_x" : game_state["ball_speed_x"],
@@ -116,6 +122,7 @@ class GameConsumer(AsyncWebsocketConsumer):
         """
         Start a loop that runs at ~50 FPS to update and broadcast the game state.
         """
+        timer = time.time()
         while True:
             await sleep(1 / 50)
             game = get_game_state(self.room_name)
@@ -131,9 +138,9 @@ class GameConsumer(AsyncWebsocketConsumer):
                     move_right_paddle(game, 1)
                 game_logic(game)
             else:
-                if game["game_start_timer"] > 0:
-                    time_diff = time.time() - game["creation_time"]
-                    game["game_start_timer"] = int(max(0, 3 - time_diff))
+                time_diff = time.time() - timer
+                game["game_start_timer"] = int(max(0, 3 - time_diff))
+                if game["game_start_timer"] <= 0:
                     game["paused"] = False
 
             set_game_state(self.room_name, game)

@@ -57,12 +57,12 @@ def create_room(request):
                 waiting_room["player1_timer"] = time.time()
                 waiting_room["creation_time"] = time.time()
                 set_game_state(waiting_room["room_name"], waiting_room)
-                print(waiting_room["player1"])
-                print(waiting_room["player2"])
                 return JsonResponse({
                     "message": "Joined an existing room",
                     "room_name": waiting_room["room_name"],
-                    "game_state": waiting_room
+                    "game_state": waiting_room,
+                    "player1": waiting_room["player1"],
+                    "player2": waiting_room["player2"],
                 }, status=status.HTTP_200_OK)
 
         room_name = f"room-{uuid.uuid4().hex[:8]}"
@@ -95,6 +95,7 @@ def create_room(request):
             "game_start_timer" : 3,
             "creation_time" : time.time(),
             "player1_timer" : time.time(),
+            "player2_timer" : time.time(),
             "finished" : False,
             "p1_paddle" : "",
             "p2_paddle" : "",
