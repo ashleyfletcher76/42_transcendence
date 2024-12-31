@@ -4302,7 +4302,7 @@
       this.socketRef = null;
     }
     onMessage(event) {
-      // console.log('WebSocket message received:', event.data);
+      console.log('WebSocket message received:', event.data);
       const parsedMessage = JSON.parse(event.data);
       this.updateGameState(parsedMessage);
     }
