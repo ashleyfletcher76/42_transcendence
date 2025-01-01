@@ -131,16 +131,9 @@ CHANNEL_LAYERS = {
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
 DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.postgresql",
-        "NAME": os.environ.get("PONG_SERVICE_DB"),
-        "USER": os.environ.get("PONG_SERVICE_USER"),
-        "PASSWORD": os.environ.get("PONG_SERVICE_PASSWORD"),
-        "HOST": "pong-db",
-        "PORT": "5432",
-        "OPTIONS": {
-            "sslmode": "require",  # we use this to enforce ssl on the database also
-        },
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': ':memory:'
     }
 }
 
