@@ -1,7 +1,7 @@
 
 BALL_RADIUS = 0.02  # 2% of game width
 PADDLE_WIDTH = 0.016  # 1.6% of game width
-PADDLE_HEIGHT = 0.30  # 20% of game height
+PADDLE_HEIGHT = 0.2  # 20% of game height
 PADDLE_DISTANCE = 0.016  # Same as paddle width
 SCREEN_DISTENCE = PADDLE_WIDTH + PADDLE_DISTANCE + BALL_RADIUS
 END_SCORE = 5

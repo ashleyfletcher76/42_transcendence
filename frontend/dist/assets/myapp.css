@@ -160,7 +160,7 @@ label {
 /* Style the paddles */
 .paddle {
   position: absolute;
-  width: 0.8vw; /* 1% of the viewport width */
+  width: 0.8vw; /* 0.8% of the viewport width */
   height: 10vh; /* 10% of the viewport height */
   background-color: white;
 }

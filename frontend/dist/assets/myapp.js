@@ -1651,8 +1651,7 @@
       super(...arguments);
     }
     get paddleStyle() {
-      // You can adjust the translateY based on your logic
-      return (0, _template.htmlSafe)(`transform: translateY(${this.args.position}vw);`); // Pass position from args
+      return (0, _template.htmlSafe)(`transform: translateY(${this.args.position}vh);`); // Pass position from args
     }
   }
   _exports.default = PaddleComponent;
@@ -1665,7 +1664,7 @@
     value: true
   });
   _exports.default = void 0;
-  var _class, _descriptor;
+  var _class, _descriptor, _descriptor2;
   0; //eaimeta@70e063a35619d71f0,"@glimmer/component",0,"@glimmer/tracking",0,"@ember/service",0,"@ember/template-factory",0,"@ember/component"eaimeta@70e063a35619d71f
   function _initializerDefineProperty(e, i, r, l) { r && Object.defineProperty(e, i, { enumerable: r.enumerable, configurable: r.configurable, writable: r.writable, value: r.initializer ? r.initializer.call(l) : void 0 }); }
   function _defineProperty(e, r, t) { return (r = _toPropertyKey(r)) in e ? Object.defineProperty(e, r, { value: t, enumerable: !0, configurable: !0, writable: !0 }) : e[r] = t, e; }
@@ -1676,23 +1675,30 @@
   const __COLOCATED_TEMPLATE__ = (0, _templateFactory.createTemplateFactory)(
   /*
     <div class="pong-game">
-    {{#if this.pongGame.winner}}
-      <h1 class="white">Winner: {{this.pongGame.winner}}</h1>
+    {{#if this.gameData.waiting}}
+      <h2 class="white p-3">Waiting for Player</h2>
+      <div class="spinner-border text-light" role="status">
+        <span class="visually-hidden"></span>
+      </div>
     {{else}}
-      {{#if (eq this.pongGame.status 0)}}
-        <h1 class="white">{{this.pongGame.status}}</h1>
+      {{#if this.pongGame.winner}}
+        <h1 class="white">Winner: {{this.pongGame.winner}}</h1>
       {{else}}
-        <Ball @positionX={{this.pongGame.ballPositionX}} @positionY={{this.pongGame.ballPositionY}} />
+        {{#if (not (eq this.pongGame.status 0))}}
+          <h1 class="white">{{this.pongGame.status}}</h1>
+        {{else}}
+          <Ball @positionX={{this.pongGame.ballPositionX}} @positionY={{this.pongGame.ballPositionY}} />
+        {{/if}}
+        <Paddle @position={{this.pongGame.leftPaddlePosition}} @side="paddle-left" />
+        <Paddle @position={{this.pongGame.rightPaddlePosition}} @side="paddle-right" />
       {{/if}}
-      <Paddle @position={{this.pongGame.leftPaddlePosition}} @side="paddle-left" />
-      <Paddle @position={{this.pongGame.rightPaddlePosition}} @side="paddle-right" />
     {{/if}}
   </div>
   
   */
   {
-    "id": "cVrfRx1L",
-    "block": "[[[10,0],[14,0,\"pong-game\"],[12],[1,\"\\n\"],[41,[30,0,[\"pongGame\",\"winner\"]],[[[1,\"    \"],[10,\"h1\"],[14,0,\"white\"],[12],[1,\"Winner: \"],[1,[30,0,[\"pongGame\",\"winner\"]]],[13],[1,\"\\n\"]],[]],[[[41,[28,[37,3],[[30,0,[\"pongGame\",\"status\"]],0],null],[[[1,\"      \"],[10,\"h1\"],[14,0,\"white\"],[12],[1,[30,0,[\"pongGame\",\"status\"]]],[13],[1,\"\\n\"]],[]],[[[1,\"      \"],[8,[39,4],null,[[\"@positionX\",\"@positionY\"],[[30,0,[\"pongGame\",\"ballPositionX\"]],[30,0,[\"pongGame\",\"ballPositionY\"]]]],null],[1,\"\\n\"]],[]]],[1,\"    \"],[8,[39,5],null,[[\"@position\",\"@side\"],[[30,0,[\"pongGame\",\"leftPaddlePosition\"]],\"paddle-left\"]],null],[1,\"\\n    \"],[8,[39,5],null,[[\"@position\",\"@side\"],[[30,0,[\"pongGame\",\"rightPaddlePosition\"]],\"paddle-right\"]],null],[1,\"\\n\"]],[]]],[13],[1,\"\\n\"]],[],false,[\"div\",\"if\",\"h1\",\"eq\",\"ball\",\"paddle\"]]",
+    "id": "joYO4b/b",
+    "block": "[[[10,0],[14,0,\"pong-game\"],[12],[1,\"\\n\"],[41,[30,0,[\"gameData\",\"waiting\"]],[[[1,\"    \"],[10,\"h2\"],[14,0,\"white p-3\"],[12],[1,\"Waiting for Player\"],[13],[1,\"\\n    \"],[10,0],[14,0,\"spinner-border text-light\"],[14,\"role\",\"status\"],[12],[1,\"\\n      \"],[10,1],[14,0,\"visually-hidden\"],[12],[13],[1,\"\\n    \"],[13],[1,\"\\n\"]],[]],[[[41,[30,0,[\"pongGame\",\"winner\"]],[[[1,\"      \"],[10,\"h1\"],[14,0,\"white\"],[12],[1,\"Winner: \"],[1,[30,0,[\"pongGame\",\"winner\"]]],[13],[1,\"\\n\"]],[]],[[[41,[28,[37,5],[[28,[37,6],[[30,0,[\"pongGame\",\"status\"]],0],null]],null],[[[1,\"        \"],[10,\"h1\"],[14,0,\"white\"],[12],[1,[30,0,[\"pongGame\",\"status\"]]],[13],[1,\"\\n\"]],[]],[[[1,\"        \"],[8,[39,7],null,[[\"@positionX\",\"@positionY\"],[[30,0,[\"pongGame\",\"ballPositionX\"]],[30,0,[\"pongGame\",\"ballPositionY\"]]]],null],[1,\"\\n\"]],[]]],[1,\"      \"],[8,[39,8],null,[[\"@position\",\"@side\"],[[30,0,[\"pongGame\",\"leftPaddlePosition\"]],\"paddle-left\"]],null],[1,\"\\n      \"],[8,[39,8],null,[[\"@position\",\"@side\"],[[30,0,[\"pongGame\",\"rightPaddlePosition\"]],\"paddle-right\"]],null],[1,\"\\n\"]],[]]]],[]]],[13],[1,\"\\n\"]],[],false,[\"div\",\"if\",\"h2\",\"span\",\"h1\",\"not\",\"eq\",\"ball\",\"paddle\"]]",
     "moduleName": "myapp/components/pong-game.hbs",
     "isStrictMode": false
   });
@@ -1700,8 +1706,14 @@
     constructor(...args) {
       super(...args);
       _initializerDefineProperty(this, "pongGame", _descriptor, this);
+      _initializerDefineProperty(this, "gameData", _descriptor2, this);
     }
   }, _descriptor = _applyDecoratedDescriptor(_class.prototype, "pongGame", [_service.inject], {
+    configurable: true,
+    enumerable: true,
+    writable: true,
+    initializer: null
+  }), _descriptor2 = _applyDecoratedDescriptor(_class.prototype, "gameData", [_service.inject], {
     configurable: true,
     enumerable: true,
     writable: true,
@@ -2493,7 +2505,7 @@
     value: true
   });
   _exports.default = void 0;
-  var _class, _descriptor, _descriptor2, _descriptor3, _descriptor4, _descriptor5;
+  var _class, _descriptor, _descriptor2, _descriptor3, _descriptor4;
   0; //eaimeta@70e063a35619d71f0,"@ember/controller",0,"@ember/object",0,"@ember/service",0,"@glimmer/tracking"eaimeta@70e063a35619d71f
   function _initializerDefineProperty(e, i, r, l) { r && Object.defineProperty(e, i, { enumerable: r.enumerable, configurable: r.configurable, writable: r.writable, value: r.initializer ? r.initializer.call(l) : void 0 }); }
   function _defineProperty(e, r, t) { return (r = _toPropertyKey(r)) in e ? Object.defineProperty(e, r, { value: t, enumerable: !0, configurable: !0, writable: !0 }) : e[r] = t, e; }
@@ -2505,15 +2517,13 @@
     constructor(...args) {
       super(...args);
       _initializerDefineProperty(this, "router", _descriptor, this);
-      _initializerDefineProperty(this, "loading", _descriptor2, this);
-      // Tracks the loading state
-      _initializerDefineProperty(this, "gameData", _descriptor3, this);
+      _initializerDefineProperty(this, "gameData", _descriptor2, this);
       // Inject the game-data service
-      _initializerDefineProperty(this, "user", _descriptor4, this);
-      _initializerDefineProperty(this, "session", _descriptor5, this);
+      _initializerDefineProperty(this, "user", _descriptor3, this);
+      _initializerDefineProperty(this, "session", _descriptor4, this);
     }
     chooseGame(gameType) {
-      this.loading = true;
+      this.gameData.waiting = true;
       this.createRoom(gameType);
     }
     async createRoom(gameType) {
@@ -2536,7 +2546,7 @@
         }
         const data = await response.json();
         if (data.room_name) {
-          this.loading = false;
+          if (data.player2 != "remote") this.gameData.waiting = false;
           console.log("data:", data);
           this.gameData.setGameData(gameType, data);
           console.log("gameData:", this.gameData.roomData.room_name);
@@ -2551,24 +2561,17 @@
     enumerable: true,
     writable: true,
     initializer: null
-  }), _descriptor2 = _applyDecoratedDescriptor(_class.prototype, "loading", [_tracking.tracked], {
-    configurable: true,
-    enumerable: true,
-    writable: true,
-    initializer: function () {
-      return false;
-    }
-  }), _descriptor3 = _applyDecoratedDescriptor(_class.prototype, "gameData", [_service.inject], {
+  }), _descriptor2 = _applyDecoratedDescriptor(_class.prototype, "gameData", [_service.inject], {
     configurable: true,
     enumerable: true,
     writable: true,
     initializer: null
-  }), _descriptor4 = _applyDecoratedDescriptor(_class.prototype, "user", [_service.inject], {
+  }), _descriptor3 = _applyDecoratedDescriptor(_class.prototype, "user", [_service.inject], {
     configurable: true,
     enumerable: true,
     writable: true,
     initializer: null
-  }), _descriptor5 = _applyDecoratedDescriptor(_class.prototype, "session", [_service.inject], {
+  }), _descriptor4 = _applyDecoratedDescriptor(_class.prototype, "session", [_service.inject], {
     configurable: true,
     enumerable: true,
     writable: true,
@@ -3970,7 +3973,7 @@
     value: true
   });
   _exports.default = void 0;
-  var _class, _descriptor, _descriptor2, _descriptor3, _descriptor4, _descriptor5, _descriptor6, _descriptor7, _descriptor8;
+  var _class, _descriptor, _descriptor2, _descriptor3, _descriptor4, _descriptor5, _descriptor6, _descriptor7, _descriptor8, _descriptor9;
   0; //eaimeta@70e063a35619d71f0,"@ember/service",0,"@glimmer/tracking",0,"@ember/service"eaimeta@70e063a35619d71f
   function _initializerDefineProperty(e, i, r, l) { r && Object.defineProperty(e, i, { enumerable: r.enumerable, configurable: r.configurable, writable: r.writable, value: r.initializer ? r.initializer.call(l) : void 0 }); }
   function _defineProperty(e, r, t) { return (r = _toPropertyKey(r)) in e ? Object.defineProperty(e, r, { value: t, enumerable: !0, configurable: !0, writable: !0 }) : e[r] = t, e; }
@@ -3987,8 +3990,9 @@
       _initializerDefineProperty(this, "player_2", _descriptor4, this);
       _initializerDefineProperty(this, "left_score", _descriptor5, this);
       _initializerDefineProperty(this, "right_score", _descriptor6, this);
-      _initializerDefineProperty(this, "session", _descriptor7, this);
-      _initializerDefineProperty(this, "pongGame", _descriptor8, this);
+      _initializerDefineProperty(this, "waiting", _descriptor7, this);
+      _initializerDefineProperty(this, "session", _descriptor8, this);
+      _initializerDefineProperty(this, "pongGame", _descriptor9, this);
     }
     async setGameData(gameType, roomData) {
       this.gameType = gameType;
@@ -4024,6 +4028,11 @@
       this.roomData = null;
       this.player_1 = null;
       this.player_2 = null;
+    }
+    async setPlayer2(nickname) {
+      console.log("setPlayer2", nickname);
+      this.player_2 = await this.fetchUserData(nickname);
+      this.waiting = false;
     }
     async fetchUserData(nickname) {
       try {
@@ -4088,12 +4097,19 @@
     initializer: function () {
       return 0;
     }
-  }), _descriptor7 = _applyDecoratedDescriptor(_class.prototype, "session", [_service.inject], {
+  }), _descriptor7 = _applyDecoratedDescriptor(_class.prototype, "waiting", [_tracking.tracked], {
+    configurable: true,
+    enumerable: true,
+    writable: true,
+    initializer: function () {
+      return true;
+    }
+  }), _descriptor8 = _applyDecoratedDescriptor(_class.prototype, "session", [_service.inject], {
     configurable: true,
     enumerable: true,
     writable: true,
     initializer: null
-  }), _descriptor8 = _applyDecoratedDescriptor(_class.prototype, "pongGame", [_service.inject], {
+  }), _descriptor9 = _applyDecoratedDescriptor(_class.prototype, "pongGame", [_service.inject], {
     configurable: true,
     enumerable: true,
     writable: true,
@@ -4245,10 +4261,10 @@
     }
     updateGameState(data) {
       this.status = data.game_start_timer;
-      this.ballPositionX = data.ball_x * (25 - visualViewport.height / visualViewport.width);
-      this.ballPositionY = data.ball_y * 24;
-      this.leftPaddlePosition = data.left_paddle_y * 10;
-      this.rightPaddlePosition = data.right_paddle_y * 10;
+      this.ballPositionX = data.ball_x * 25;
+      this.ballPositionY = data.ball_y * 25;
+      this.leftPaddlePosition = data.left_paddle_y * 25;
+      this.rightPaddlePosition = data.right_paddle_y * 25;
       this.winner = data.winner;
       this.gameData.left_score = data.left_score;
       this.gameData.right_score = data.right_score;
@@ -4304,6 +4320,7 @@
     onMessage(event) {
       console.log('WebSocket message received:', event.data);
       const parsedMessage = JSON.parse(event.data);
+      if (this.gameData.waiting) this.gameData.setPlayer2(parsedMessage.player2);
       this.updateGameState(parsedMessage);
     }
     onClose(event) {
@@ -4936,12 +4953,6 @@
   var _default = _exports.default = (0, _templateFactory.createTemplateFactory)(
   /*
     <div class="pong-game">
-    {{#if this.loading}}
-      <h2 class="white p-3">Waiting for Player</h2>
-      <div class="spinner-border text-light" role="status">
-        <span class="visually-hidden"></span>
-      </div>
-    {{else}}
     <div class="flex-col">
       <div class="waviy">
         <span style="--i:1">4</span>
@@ -4957,13 +4968,12 @@
         <button type="button" {{on "click" (fn this.chooseGame "remote")}}>Remote Multiplayer</button>
       </div>
     </div>
-    {{/if}}
   </div>
   
   */
   {
-    "id": "wfVEWvGZ",
-    "block": "[[[10,0],[14,0,\"pong-game\"],[12],[1,\"\\n\"],[41,[30,0,[\"loading\"]],[[[1,\"    \"],[10,\"h2\"],[14,0,\"white p-3\"],[12],[1,\"Waiting for Player\"],[13],[1,\"\\n    \"],[10,0],[14,0,\"spinner-border text-light\"],[14,\"role\",\"status\"],[12],[1,\"\\n      \"],[10,1],[14,0,\"visually-hidden\"],[12],[13],[1,\"\\n    \"],[13],[1,\"\\n\"]],[]],[[[1,\"  \"],[10,0],[14,0,\"flex-col\"],[12],[1,\"\\n    \"],[10,0],[14,0,\"waviy\"],[12],[1,\"\\n      \"],[10,1],[14,5,\"--i:1\"],[12],[1,\"4\"],[13],[1,\"\\n      \"],[10,1],[14,5,\"--i:2\"],[12],[1,\"2\"],[13],[1,\"\\n      \"],[10,1],[14,5,\"--i:3\"],[12],[1,\"_\"],[13],[1,\"\\n      \"],[10,1],[14,5,\"--i:4\"],[12],[1,\"PO\"],[13],[1,\"\\n      \"],[10,1],[14,5,\"--i:5\"],[12],[1,\"NG\"],[13],[1,\"\\n    \"],[13],[1,\"\\n\\n    \"],[10,0],[14,0,\"game-buttons\"],[12],[1,\"\\n      \"],[11,\"button\"],[24,4,\"button\"],[4,[38,5],[\"click\",[28,[37,6],[[30,0,[\"chooseGame\"]],\"computer\"],null]],null],[12],[1,\"Single Player\"],[13],[1,\"\\n      \"],[11,\"button\"],[24,4,\"button\"],[4,[38,5],[\"click\",[28,[37,6],[[30,0,[\"chooseGame\"]],\"local\"],null]],null],[12],[1,\"Local Multiplayer\"],[13],[1,\"\\n      \"],[11,\"button\"],[24,4,\"button\"],[4,[38,5],[\"click\",[28,[37,6],[[30,0,[\"chooseGame\"]],\"remote\"],null]],null],[12],[1,\"Remote Multiplayer\"],[13],[1,\"\\n    \"],[13],[1,\"\\n  \"],[13],[1,\"\\n\"]],[]]],[13],[1,\"\\n\"]],[],false,[\"div\",\"if\",\"h2\",\"span\",\"button\",\"on\",\"fn\"]]",
+    "id": "+RnukfWU",
+    "block": "[[[10,0],[14,0,\"pong-game\"],[12],[1,\"\\n  \"],[10,0],[14,0,\"flex-col\"],[12],[1,\"\\n    \"],[10,0],[14,0,\"waviy\"],[12],[1,\"\\n      \"],[10,1],[14,5,\"--i:1\"],[12],[1,\"4\"],[13],[1,\"\\n      \"],[10,1],[14,5,\"--i:2\"],[12],[1,\"2\"],[13],[1,\"\\n      \"],[10,1],[14,5,\"--i:3\"],[12],[1,\"_\"],[13],[1,\"\\n      \"],[10,1],[14,5,\"--i:4\"],[12],[1,\"PO\"],[13],[1,\"\\n      \"],[10,1],[14,5,\"--i:5\"],[12],[1,\"NG\"],[13],[1,\"\\n    \"],[13],[1,\"\\n\\n    \"],[10,0],[14,0,\"game-buttons\"],[12],[1,\"\\n      \"],[11,\"button\"],[24,4,\"button\"],[4,[38,3],[\"click\",[28,[37,4],[[30,0,[\"chooseGame\"]],\"computer\"],null]],null],[12],[1,\"Single Player\"],[13],[1,\"\\n      \"],[11,\"button\"],[24,4,\"button\"],[4,[38,3],[\"click\",[28,[37,4],[[30,0,[\"chooseGame\"]],\"local\"],null]],null],[12],[1,\"Local Multiplayer\"],[13],[1,\"\\n      \"],[11,\"button\"],[24,4,\"button\"],[4,[38,3],[\"click\",[28,[37,4],[[30,0,[\"chooseGame\"]],\"remote\"],null]],null],[12],[1,\"Remote Multiplayer\"],[13],[1,\"\\n    \"],[13],[1,\"\\n  \"],[13],[1,\"\\n\"],[13],[1,\"\\n\"]],[],false,[\"div\",\"span\",\"button\",\"on\",\"fn\"]]",
     "moduleName": "myapp/templates/choose-game.hbs",
     "isStrictMode": false
   });
