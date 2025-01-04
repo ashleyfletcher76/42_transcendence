@@ -2,7 +2,6 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.utils.timezone import now
 from django.core.validators import RegexValidator
-import uuid
 
 class UserProfile(models.Model):
 	user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="profile")
@@ -10,7 +9,6 @@ class UserProfile(models.Model):
 		max_length=50,
 		unique=True,
 		blank=True,
-		default=uuid.uuid4,
 		validators=[
 			RegexValidator(
 				regex=r'^[a-zA-Z0-9]*$',
