@@ -64,6 +64,7 @@ class LogoutView(APIView):
 	permission_classes = [IsAuthenticated]
 
 	def post(self, request):
+		print("[DEBUG] Logout triggered")
 		try:
 			# extrtact rhe refresh token from body
 			refresh_token = request.data["refresh_token"]
