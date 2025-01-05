@@ -14,7 +14,6 @@ class ProxyUser():
 
 class CustomJWTAuthentication(JWTAuthentication):
 	def authenticate(self, request):
-		print("CustomJWTAuthentication triggered")
 		header = self.get_header(request)
 		if header is None:
 			print("No Authorization header found")
@@ -33,8 +32,6 @@ class CustomJWTAuthentication(JWTAuthentication):
 		return user, raw_token
 
 	def get_user_from_auth_service(self, token):
-		## remove from production
-		# print(f"Token type: {type(token)}, Token value: {token}")
 
 		if isinstance(token, bytes):
 			token = token.decode("utf-8")

@@ -2,6 +2,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
+from datetime import datetime
 from ..models import MatchHistory
 from ..utils import get_user_data
 
@@ -25,12 +26,30 @@ class MatchHistoryView(APIView):
 			match_history = MatchHistory.objects.get(user_id=user_id)
 			history = match_history.history.all().values("opponent", "result", "score", "date")
 
+			# format the data in match history
+			formatted_history = []
+			for match in history:
+				date_raw = match["date"]
+				if isinstance(date_raw, str):
+					formatted_date = datetime.strptime(match["date"], "%Y-%m-%dT%H:%M:%S.%fZ").strftime("%d %b %Y, %I:%M %p")
+				else:
+					formatted_date = date_raw.strftime("%d %b %Y, %I:%M %p")
+				formatted_history.append({
+					"opponent": match["opponent"],
+					"result": match["result"],
+					"score": match["score"],
+					"date": formatted_date
+				})
+
+			# debug formatted history
+			print(f"[DEBUG] Formatted history: {formatted_history}")
+
 			response_data = {
 				"trophies": match_history.trophies,
 				"games_total": match_history.games_total,
 				"wins": match_history.wins,
 				"losses": match_history.losses,
-				"history": list(history)
+				"history": list(formatted_history)
 			}
 			return Response(response_data, status=status.HTTP_200_OK)
 
