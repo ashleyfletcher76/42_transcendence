@@ -19,6 +19,7 @@ def validate_nickname(new_nickname):
 	if not re.match(r'^[a-zA-Z0-9]*$', new_nickname):
 		raise ValueError("Nickname must contain only letters and numbers.")
 	if UserProfile.objects.filter(nickname__iexact=new_nickname).exists():
+		print(f"[DEBUG] We cannot change nickname to -> {new_nickname}")
 		raise ValueError("Nickname is already taken.")
 
 def update_avatar(new_avatar, user_directory, profile):
