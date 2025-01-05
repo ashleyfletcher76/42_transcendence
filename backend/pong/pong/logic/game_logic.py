@@ -1,9 +1,9 @@
 
 BALL_RADIUS = 0.02  # 2% of game width
-PADDLE_WIDTH = 0.016  # 1.6% of game width
+PADDLE_WIDTH = 0.016*2  # 1.6% of game width
 PADDLE_HEIGHT = 0.2  # 20% of game height
-PADDLE_DISTANCE = 0.016  # Same as paddle width
-SCREEN_DISTENCE = PADDLE_WIDTH + PADDLE_DISTANCE + BALL_RADIUS
+PADDLE_DISTANCE = 0.016*2  # Same as paddle width
+SCREEN_DISTANCE = PADDLE_WIDTH + PADDLE_DISTANCE + BALL_RADIUS
 END_SCORE = 5
 SPEED_PADDLE = 0.05
 MAX_BALL_SPEED = 0.2
@@ -23,14 +23,14 @@ def game_logic(game):
     if game["ball_y"] <= -1 or game["ball_y"] >= 1:
         game["ball_speed_y"] *= -1
 
-    if game["ball_x"] <= -1 + SCREEN_DISTENCE:
+    if game["ball_x"] <= -1 + SCREEN_DISTANCE:
         if is_paddle_hit(game["left_paddle_y"], game["ball_y"]):
             handle_paddle_hit(game, "left")
-            game["ball_x"] = -1 + SCREEN_DISTENCE
-    elif game["ball_x"] >= 1 - SCREEN_DISTENCE:
+            game["ball_x"] = -1 + SCREEN_DISTANCE
+    elif game["ball_x"] >= 1 - SCREEN_DISTANCE:
         if is_paddle_hit(game["right_paddle_y"], game["ball_y"]):
             handle_paddle_hit(game, "right")
-            game["ball_x"] = 1 - SCREEN_DISTENCE
+            game["ball_x"] = 1 - SCREEN_DISTANCE
 
     if game["ball_x"] <= -1:
         game["right_score"] += 1
