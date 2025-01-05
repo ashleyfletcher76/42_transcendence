@@ -2,7 +2,7 @@
   {{!-- Profile picture column (1 part) --}}
   <div class="col center no-padding position-relative">
     <button type="button" class="btn-close top-left" onclick={{this.onCloseClick}}></button>
-    <img src={{@selectedUser.avatar}} alt="Profile Picture" class="profile-pic" />
+    <img src="https://localhost/users/users{{@selectedUser.avatar}}/" alt="Profile Picture" class="profile-pic" />
   </div>
 
   {{!-- Profile details column (3 parts) --}}
@@ -33,7 +33,7 @@
 
     {{!-- Second row of profile details --}}
     <div class="profile-details">
-      <ModalGameHistory />
+      <ModalGameHistory @user={{@selectedUser}}/>
       <h2 class="info">Wins: {{@selectedUser.wins}}</h2>
     </div>
 

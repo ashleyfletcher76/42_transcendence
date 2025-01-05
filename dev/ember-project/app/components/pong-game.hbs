@@ -1,13 +1,20 @@
 <div class="pong-game">
-  {{#if this.winner}}
-    <h1 class="white">Winner: {{this.winner}}</h1>
+  {{#if this.gameData.waiting}}
+    <h2 class="white p-3">Waiting for Player</h2>
+    <div class="spinner-border text-light" role="status">
+      <span class="visually-hidden"></span>
+    </div>
   {{else}}
-    {{#if (not (eq this.status 0))}}
-      <h1 class="white">{{this.status}}</h1>
+    {{#if this.pongGame.winner}}
+      <h1 class="white">Winner: {{this.pongGame.winner}}</h1>
     {{else}}
-      <Ball @positionX={{this.ballPositionX}} @positionY={{this.ballPositionY}} />
+      {{#if (not (eq this.pongGame.status 0))}}
+        <h1 class="white">{{this.pongGame.status}}</h1>
+      {{else}}
+        <Ball @positionX={{this.pongGame.ballPositionX}} @positionY={{this.pongGame.ballPositionY}} />
+      {{/if}}
+      <Paddle @position={{this.pongGame.leftPaddlePosition}} @side="paddle-left" />
+      <Paddle @position={{this.pongGame.rightPaddlePosition}} @side="paddle-right" />
     {{/if}}
-    <Paddle @position={{this.leftPaddlePosition}} @side="paddle-left" />
-    <Paddle @position={{this.rightPaddlePosition}} @side="paddle-right" />
   {{/if}}
 </div>

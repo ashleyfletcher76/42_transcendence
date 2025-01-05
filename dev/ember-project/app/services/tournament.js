@@ -13,7 +13,9 @@ export default class TournamentService extends Service {
 
 	@tracked currentLobby = null; // Current lobby details
 	@tracked currentPlayers = [];
+	@tracked playerProfiles = [];
 	@tracked admin;
+	@tracked playerInTournament = false;
 	socketRef = null;
 
 	@action
@@ -37,9 +39,9 @@ export default class TournamentService extends Service {
 	async disconnectFromLobby(tournamentName) {
 		const token = this.session.data.authenticated.access;
 		const wsUrl = `wss://localhost/ws/tournament/${tournamentName}/?token=${encodeURIComponent(token)}`;
-		console.log(tournamentName);
+		console.log("websocket to close:", tournamentName);
 		this.websockets.closeSocketFor(wsUrl);
-		console.log("websocket1", this.websockets.sockets);
+		console.log("websocket closed", this.websockets.sockets);
 		
 		// Remove event handlers
 		this.socketRef.off('open', this.onOpen, this);
@@ -52,6 +54,8 @@ export default class TournamentService extends Service {
 		this.currentLobby = null;
 		this.messages = [];
 		this.currentPlayers = [];
+		this.playerProfiles = [];
+		this.playerInTournament = false;
 	}
 
 	startTournament = () => {
@@ -61,18 +65,9 @@ export default class TournamentService extends Service {
 		this.sendMessage(data);
 	  };
 
-	sendWinner(winner)
-	{
-		const data = {
-			action: 'winner', // message/start
-			winner: winner
-		};
-		this.sendMessage(data);
-	}
-
 	sendMessage(data) {
 		if (this.socketRef) {
-			console.log(data);
+			console.log('WebSocket message send:', JSON.stringify(data));
 			this.socketRef.send(JSON.stringify(data));
 		} else {
 			console.error('WebSocket is not connected.');
@@ -80,16 +75,10 @@ export default class TournamentService extends Service {
 	}
 
 	onOpen(tournamentName) {
-		const data = {
-			action: 'create_or_join',
-			tournament_name: tournamentName,
-			nickname: this.user.profile.nickname,
-		};
-		console.log('WebSocket connection opened:');
-		this.sendMessage(data);
 		this.currentLobby = tournamentName;
-		console.log(this.currentLobby);
+		this.playerInTournament = true;
 	}
+
 
 	onMessage(event) {
 		console.log('WebSocket message received:', event.data);
@@ -99,8 +88,8 @@ export default class TournamentService extends Service {
 				this.handleCreate(parsedMessage)
 				break;
 		
-			case "join/create":
-				this.handleJoin(parsedMessage)
+			case "result":
+				this.handleResult(parsedMessage)
 				break;
 			
       		case "join":
@@ -129,7 +118,7 @@ export default class TournamentService extends Service {
 	}
 
 	handleCreate(parsedMessage) {
-		this.currentPlayers = [...parsedMessage.players];
+		this.updateCurrentPlayers(parsedMessage);
 		this.admin = parsedMessage.admin;
 		const data = {
 			type: 'tournament',
@@ -139,9 +128,18 @@ export default class TournamentService extends Service {
 		this.chat.messages = [...this.chat.messages, data];
 	}
 
+	handleResult(parsedMessage) {
+		const data = {
+			type: 'tournament',
+			from: 'System',
+			content: parsedMessage.winner + 'won against ' + parsedMessage.loser + '!'
+		};
+		this.chat.messages = [...this.chat.messages, data];
+	}
+
 	handleJoin(parsedMessage) {
-	this.currentPlayers = [...parsedMessage.players];
-	this.admin = parsedMessage.admin;
+		this.updateCurrentPlayers(parsedMessage);
+		this.admin = parsedMessage.admin;
 		const data = {
 			type: 'tournament',
 			from: 'System',
@@ -170,7 +168,7 @@ export default class TournamentService extends Service {
 
 	handleLeave(parsedMessage) {
 		this.admin = parsedMessage.admin;
-		this.currentPlayers = [...parsedMessage.players];
+		this.currentPlayers = this.currentPlayers.filter(player => player.nickname !== parsedMessage.player);
 		const data = {
 			type: 'tournament',
 			from: 'System',
@@ -180,7 +178,6 @@ export default class TournamentService extends Service {
 	}
 
 	handleMatch(parsedMessage) {
-		console.log(parsedMessage);
 		let opponent = parsedMessage.player1;
 		if (parsedMessage.player1 === this.user.profile.nickname)
 			opponent = parsedMessage.player2;
@@ -204,7 +201,45 @@ export default class TournamentService extends Service {
 	}
 
 	onClose(event) {
-		console.log('WebSocket connection closed:', event);
-		this.currentLobby = null;
+		this.disconnectFromLobby(this.tournamentName);
+
+		console.log('onClose event triggered:', event);
+//		this.currentLobby = null;
+//		this.player_in_tournament = false;
+//		this.currentPlayers = [];
 	}
+
+	async updateCurrentPlayers(parsedMessage) {
+		if (!this.currentPlayers || this.currentPlayers.length === 0) {
+		  this.currentPlayers = await Promise.all(
+			parsedMessage.players.map(player => this.fetchUserData(player))
+		  );
+		} else {
+		  const newPlayer = await this.fetchUserData(parsedMessage.player);
+		  if (newPlayer) {
+			this.currentPlayers = [...this.currentPlayers, newPlayer];
+		  }
+		}
+	  }
+
+	async fetchUserData(nickname) {
+		try {
+		  const response = await fetch('/users/users/profile-info/', {
+			method: 'POST', 
+			headers: {
+			  Authorization: `Bearer ${this.session.data.authenticated.access}`, 
+			  'Content-Type': 'application/json',
+			},
+			body: JSON.stringify({ nickname }) 
+		  });
+	
+		  if (!response.ok) {
+			throw new Error('Failed to fetch user profile');
+		  }
+		  const data = await response.json();
+		  return (data);
+		} catch (error) {
+		  console.error('Error fetching user profile:', error);
+		}
+	  }
 }

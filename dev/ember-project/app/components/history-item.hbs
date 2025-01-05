@@ -1,26 +1,26 @@
 <div class="history-item row m-1">
 
   <div class="col-12 mb-0 mt-1 pb-0">
-    <div class="date">2024.09.20 1:49pm</div>
+    <div class="date">{{@game.date}}</div>
   </div>
   {{!-- Profile picture column (1 part) --}}
   <div class="col-5">
     <div class="user-card m-0 mb-1" role="button" onclick={{this.select}}>
       <div class="profile-details">
-        <h2 class="info">Nickname</h2>
+        <h2 class="info">{{@game.user}}</h2>
       </div>
     </div>
   </div>
 
   {{!-- Profile details column (3 parts) --}}
   <div class="col-2">
-    <div class="score history center">3:1</div>
+    <div class="score history center">{{@game.score}}</div>
   </div>
 
   <div class="col-5">
     <div class="user-card m-0 mb-1" role="button" onclick={{this.select}}>
       <div class="profile-details">
-        <h2 class="info">Nickname2</h2>
+        <h2 class="info">{{@game.opponent}}</h2>
       </div>
     </div>
   </div>

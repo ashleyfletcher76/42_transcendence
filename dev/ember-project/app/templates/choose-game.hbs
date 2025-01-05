@@ -1,10 +1,4 @@
 <div class="pong-game">
-  {{#if this.loading}}
-    <h2 class="white p-3">Waiting for Player</h2>
-    <div class="spinner-border text-light" role="status">
-      <span class="visually-hidden"></span>
-    </div>
-  {{else}}
   <div class="flex-col">
     <div class="waviy">
       <span style="--i:1">4</span>
@@ -20,5 +14,4 @@
       <button type="button" {{on "click" (fn this.chooseGame "remote")}}>Remote Multiplayer</button>
     </div>
   </div>
-  {{/if}}
 </div>

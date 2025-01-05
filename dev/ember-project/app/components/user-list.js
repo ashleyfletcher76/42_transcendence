@@ -5,7 +5,10 @@ import { inject as service } from '@ember/service';
 
 export default class UserListComponent extends Component {
   @tracked users = [];
+  @tracked filter = "all";
   @service session;
+  @service user;
+
   intervalId = null; // To store the interval ID for cleanup
 
   constructor() {
@@ -22,6 +25,22 @@ export default class UserListComponent extends Component {
       this.fetchUsers();
     }, 10000); // 10 seconds
   }
+
+	get filteredUsers() {
+		if (this.filter === 'friends') {
+		// Check if the user exists in the friends list
+		const friendsList = this.user.profile.friends || [];
+		return this.users.filter(user => friendsList.includes(user.nickname));
+		}
+		// Return all users if filter is 'all'
+		return this.users;
+	}
+
+	setFilter = (type) => {
+		this.filter = type;
+		console.log("filter:", type);
+	};
+	
 
 	@action
 	async fetchUsers() {

@@ -3,6 +3,7 @@ import { inject as service } from '@ember/service';
 
 export default class PongGameRoute extends Route {
   @service session;
+  @service gameData;
 
   async beforeModel(transition) {
     if (!this.session.isAuthenticated) {

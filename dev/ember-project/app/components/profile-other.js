@@ -17,13 +17,17 @@ export default class ProfileOtherComponent extends Component {
   playGame() {
     console.log('Game initiated');
     this.chat.updateInputValue("/*invite " + this.args.selectedUser.nickname);
-    this.chat.sendMessage()
+    this.chat.sendMessage();
   }
 
   @action
   addFriend() {
     this.chat.updateInputValue("/*add " + this.args.selectedUser.nickname);
-    this.chat.sendMessage()
+    this.chat.sendMessage();
+  }
+
+  get isOnline() {
+    return this.args.selectedUser?.status === 'online';
   }
 
   @action

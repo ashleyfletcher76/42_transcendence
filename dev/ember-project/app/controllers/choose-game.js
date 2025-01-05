@@ -5,14 +5,13 @@ import { tracked } from '@glimmer/tracking';
 
 export default class ChooseGameController extends Controller {
   @service router;
-  @tracked loading = false; // Tracks the loading state
   @service gameData; // Inject the game-data service
   @service user;
   @service session;
-
+  
   @action
   chooseGame(gameType) {
-    this.loading = true;
+    this.gameData.waiting = true;
     this.createRoom(gameType);
   }
 
@@ -38,9 +37,11 @@ export default class ChooseGameController extends Controller {
       const data = await response.json();
 
       if (data.room_name) {
-        this.loading = false;
+        if (data.player2 != "remote")
+          this.gameData.waiting = false;
         console.log("data:", data);
         this.gameData.setGameData(gameType, data);
+        console.log("gameData:", this.gameData.roomData.room_name);
         this.router.transitionTo('pong-game');
       }
     } catch (error) {

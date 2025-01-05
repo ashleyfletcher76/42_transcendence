@@ -1,7 +1,7 @@
 <div class="container-fluid row fill p-2">
   <!-- Profile picture column (1 part) -->
   <div class="col center">
-    <img src={{this.user.profile.avatar}} alt="Profile Picture" class="profile-pic" />
+    <img src="https://localhost/users/users{{this.user.profile.avatar}}/" alt="Profile Picture" class="profile-pic" />
   </div>
 
   <!-- Profile details column (3 parts) -->
@@ -22,7 +22,7 @@
 
     <!-- Second row of profile details -->
     <div class="profile-details">
-      <ModalGameHistory />
+      <ModalGameHistory @user={{this.user.profile}}/>
       <h2 class="info">Wins: {{this.user.profile.wins}}</h2>
     </div>
 

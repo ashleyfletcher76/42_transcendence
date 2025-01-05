@@ -6,6 +6,8 @@ export default class MessageComponent extends Component {
   @service session;
   @service gameData;
   @service user;
+  @service router;
+  @service chat;
 
   @action
   acceptFriend(event) {
@@ -18,10 +20,10 @@ export default class MessageComponent extends Component {
   acceptGame(event) {
     event.preventDefault();
     console.log(`${this.args.message.from} accepted game`);
-    this.createPrivateRoom("privat");
+    this.createPrivateRoom("private");
   }
 
-  async createRoom(gameType) {
+  async createPrivateRoom(gameType) {
     try {
       const response = await fetch('/pong/pong/create-room', {
         method: 'POST',
@@ -43,9 +45,12 @@ export default class MessageComponent extends Component {
       const data = await response.json();
 
       if (data.room_name) {
-        this.loading = false;
+        if (data.player2 != "remote")
+          this.gameData.waiting = false;
         console.log("data:", data);
         this.gameData.setGameData(gameType, data);
+        console.log("gameData:", this.gameData.roomData.room_name);
+        this.chat.sendGameAccept(data, this.args.message.from);
         this.router.transitionTo('pong-game');
       }
     } catch (error) {

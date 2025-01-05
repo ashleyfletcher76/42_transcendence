@@ -9,32 +9,50 @@ export default class GameDataService extends Service {
   @tracked player_2 = null;
   @tracked left_score = 0;
   @tracked right_score = 0;
+  @tracked waiting = true;
 
   @service session;
+  @service pongGame;
 
   async setGameData(gameType, roomData) {
     this.gameType = gameType;
     this.roomData = roomData;
 
+    this.pongGame.winner = null;
     // Fetch user data for player_1 and player_2 asynchronously
-    if(roomData.player1 !== "AI")
+    if(roomData.player1 !== "AI" && roomData.player1 !== "local")
       this.player_1 = await this.fetchUserData(roomData.player1);
-    else
+    else if (roomData.player1 !== "local")
       this.player_1 = {
 				nickname: "Computer",
-				avatar: "/images/default-profile.jpeg",
+				avatar: "/media/default_photo/default_photo.png",
 				trophies: 999,
         status: "online"
 			  }
-    if(roomData.player2 !== "AI")
+    else
+      this.player_1 = {
+        nickname: "Player_2",
+        avatar: "/media/default_photo/default_photo.png",
+        trophies: 0,
+        status: "online"
+        }
+    if(roomData.player2 !== "AI" && roomData.player2 !== "local")
       this.player_2 = await this.fetchUserData(roomData.player2);
-    else 
+    else if (roomData.player2 !== "local")
       this.player_2 = {
 				nickname: "Computer",
-				avatar: "/images/default-profile.jpeg",
+				avatar: "/media/default_photo/default_photo.png",
 				trophies: 999,
         status: "online"
 			  }
+    else
+    this.player_2 = {
+      nickname: "Player_2",
+      avatar: "/media/default_photo/default_photo.png",
+      trophies: 0,
+      status: "online"
+      }
+    this.pongGame.connectToRoom(this.roomData.room_name);
   }
 
   clearGameData() {
@@ -42,6 +60,13 @@ export default class GameDataService extends Service {
     this.roomData = null;
     this.player_1 = null;
     this.player_2 = null;
+  }
+
+  async setPlayer2(nickname)
+  {
+    console.log("setPlayer2", nickname);
+    this.player_2 = await this.fetchUserData(nickname);
+    this.waiting = false;
   }
 
   async fetchUserData(nickname) {

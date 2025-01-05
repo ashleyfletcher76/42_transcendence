@@ -11,7 +11,9 @@ export default class ChatService extends Service {
   @service websockets;
   @service session;
   @service tournament;
-
+  @service gameData;
+  @service router;
+  
   socketRef = null;
   inputElement = null; // Reference to the input element
   type = "all";
@@ -58,6 +60,15 @@ export default class ChatService extends Service {
   myMessageHandler(event) {
     console.log(`Message recieve: ${event.data}`);
     const newMessage = JSON.parse(event.data);
+    if (newMessage.content.room_name)
+    {
+      if (this.user.profile.nickname !== newMessage.from)
+      {
+        this.gameData.setGameData("private", newMessage.content);
+        this.router.transitionTo('pong-game');
+      }
+      return ;
+    }
     this.messages = [...this.messages, newMessage]; // Add the new message to the tracked array
     console.log(newMessage.content);
   }
@@ -119,11 +130,23 @@ export default class ChatService extends Service {
           timestamp: new Date().toISOString(),
         }),
       );
-      console.log(messageContent);
     }
     if (this.type === "all")
       this.messageInput = '';
     else
       this.messageInput = this.words[0] + " ";
   }
+
+  sendGameAccept(data, user) {
+
+      this.socketRef.send(
+        JSON.stringify({
+          type: "invite",
+          from: this.user.profile.nickname,
+          to: user,
+          content: data,
+          timestamp: new Date().toISOString(),
+        }),
+      );
+    }
 }

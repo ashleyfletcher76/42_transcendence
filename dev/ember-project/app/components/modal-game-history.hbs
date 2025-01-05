@@ -6,23 +6,19 @@
   @open={{this.isModalOpen}}
   as |modal|
 >
-  <modal.header>
-    <h4 class="modal-title">
+  <modal.header style="background-color: #706363;">
+    <h4 class="score history center">
       Match History
     </h4>
   </modal.header>
 
-  <modal.body>
+  <modal.body style="background-color: #706363;">
     <div class="container-fluid row" style="height: 50vh; overflow-y: auto; margin: 0; padding: 0;">
         <div class="scrollable-list history-scroll">
     
-          <HistoryItem />
-          <HistoryItem />
-          <HistoryItem />
-          <HistoryItem />
-          <HistoryItem />
-          <HistoryItem />
-          <HistoryItem />
+          {{#each this.games as |game|}}
+            <HistoryItem @game={{game}} />
+          {{/each}}
 
         </div>
     </div>

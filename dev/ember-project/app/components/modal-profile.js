@@ -4,15 +4,15 @@ import { tracked } from '@glimmer/tracking';
 import { inject as service } from '@ember/service';
 
 export default class ModalProfileComponent extends Component {
-  // Property to manage modal visibility
   @tracked isModalOpen = false;
   @tracked newNickname;
+  @tracked newAvatar = null; // Track the selected avatar file
   @service user;
   @service session;
 
   @action
   openModal() {
-    console.log('openModal0');
+    console.log('Opening modal');
     this.isModalOpen = true;
     this.newNickname = this.user.profile.nickname;
     console.log(this.isModalOpen);
@@ -30,42 +30,48 @@ export default class ModalProfileComponent extends Component {
   }
 
   @action
-  submit() {
-    console.log('Form submitted!');
-    this.changeNickname(this.newNickname);
-    this.closeModal();
+  updateAvatar(event) {
+    this.newAvatar = event.target.files[0]; // Get the selected file
+    console.log('Selected avatar file:', this.newAvatar);
   }
 
   @action
-  cancel() {
-    console.log('Modal canceled');
-    this.closeModal(); // Close the modal without submitting
+  async submit() {
+    console.log('Form submitted!');
+    await this.updateProfile();
+    this.closeModal();
   }
 
-  async changeNickname(newNickname) {
+  async updateProfile() {
     try {
-      const response = await fetch('/api/user/nickname', {
+      const formData = new FormData();
+      formData.append('nickname', this.newNickname);
+
+      if (this.newAvatar) {
+        formData.append('avatar', this.newAvatar); // Append the avatar file
+      }
+
+      const response = await fetch('/users/users/update-profile/', {
         method: 'PUT',
         headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${this.session.data.authenticated.access}`,
+          Authorization: `Bearer ${this.session.data.authenticated.access}`, // Add authentication token
         },
-        body: JSON.stringify({
-          nickname: newNickname,
-        }),
+        body: formData, // Send FormData
       });
 
       if (!response.ok) {
-        throw new Error('Network response was not ok');
+        throw new Error('Failed to update profile');
       }
 
       const data = await response.json();
+      console.log('Profile updated successfully:', data);
 
-      if (data.nickname) {
-        this.user.profile.nickname = nickname;
+      if (data.success) {
+        this.user.fetchUserData(this.newNickname);
       }
+
     } catch (error) {
-      console.error('Error changing nickname:', error);
+      console.error('Error updating profile:', error);
     }
   }
 }

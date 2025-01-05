@@ -10,23 +10,33 @@ export default class ModalProfileComponent extends Component {
   @service user;
   @service session;
 
+  @tracked games = [];
+
   @action
   openModal() {
-    console.log('openModal0');
+    //console.log(this.args.user);
+    this.parseHistory(this.args.user.history);
     this.isModalOpen = true;
-    this.newNickname = this.user.profile.nickname;
-    console.log(this.isModalOpen);
+    //console.log(this.games);
+  }
+
+  parseHistory(history) {
+    this.games = history.map(game => ({
+      user: this.user.profile.nickname,
+      opponent: game.opponent,
+      result: game.result,
+      score: game.score,
+      date: game.date,
+    }));
   }
 
   @action
   closeModal() {
-    console.log('Closing modal');
     this.isModalOpen = false;
   }
 
   @action
   cancel() {
-    console.log('Modal canceled');
-    this.closeModal(); // Close the modal without submitting
+    this.closeModal();
   }
 }
