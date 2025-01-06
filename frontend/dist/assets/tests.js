@@ -953,6 +953,20 @@ define("myapp/tests/unit/services/selected-test", ["qunit", "myapp/tests/helpers
     });
   });
 });
+define("myapp/tests/unit/services/session-test", ["qunit", "myapp/tests/helpers"], function (_qunit, _helpers) {
+  "use strict";
+
+  0; //eaimeta@70e063a35619d71f0,"qunit",0,"myapp/tests/helpers"eaimeta@70e063a35619d71f
+  (0, _qunit.module)('Unit | Service | session', function (hooks) {
+    (0, _helpers.setupTest)(hooks);
+
+    // TODO: Replace this with your real tests.
+    (0, _qunit.test)('it exists', function (assert) {
+      let service = this.owner.lookup('service:session');
+      assert.ok(service);
+    });
+  });
+});
 define("myapp/tests/unit/services/shopping-cart-test", ["qunit", "myapp/tests/helpers"], function (_qunit, _helpers) {
   "use strict";
 

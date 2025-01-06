@@ -166,11 +166,11 @@ label {
 }
 
 .paddle-left {
-  left: 1vw; 
+  left: 1vw;
 }
 
 .paddle-right {
-  right: 1vw; 
+  right: 1vw;
 }
 
 /* Style the ball */
@@ -284,6 +284,14 @@ label {
   cursor: pointer;
 }
 
+.ERROR {
+  display: flex; /* Use flexbox for alignment */
+  width: 65%;
+  color: rgb(255, 7, 7);
+  align-items: center;
+  justify-content: left;
+}
+
 .navigation-bar {
   display: flex; /* Use flexbox for alignment */
   width: 100%;
@@ -339,7 +347,6 @@ label {
   background-color: #1f1d1d;
   border-radius: 10px;
 }
-
 
 .profile-details {
   display: flex; /* Flexbox container */

@@ -24,39 +24,6 @@
   _exports.default = App;
   (0, _emberLoadInitializers.default)(App, _environment.default.modulePrefix);
 });
-;define("myapp/authenticators/token", ["exports", "ember-simple-auth/authenticators/base"], function (_exports, _base) {
-  "use strict";
-
-  Object.defineProperty(_exports, "__esModule", {
-    value: true
-  });
-  _exports.default = void 0;
-  0; //eaimeta@70e063a35619d71f0,"ember-simple-auth/authenticators/base"eaimeta@70e063a35619d71f
-  //import { BaseAuthenticator } from 'ember-simple-auth/authenticators/base';
-  var _default = _exports.default = _base.default.extend({
-    restore(data) {},
-    async authenticate(username, password) {
-      //let response = await fetch('/api/token.json', {
-      let response = await fetch('/auth/auth/login/', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          username,
-          password
-        })
-      });
-      if (response.ok) {
-        return response.json();
-      } else {
-        let error = await response.text();
-        throw new Error(error);
-      }
-    },
-    async invalidate(data) {}
-  });
-});
 ;define("myapp/component-managers/glimmer", ["exports", "@glimmer/component/-private/ember-component-manager"], function (_exports, _emberComponentManager) {
   "use strict";
 
@@ -1256,14 +1223,14 @@
     acceptGame(event) {
       event.preventDefault();
       console.log(`${this.args.message.from} accepted game`);
-      this.createPrivateRoom("private");
+      this.createPrivateRoom('private');
     }
     async createPrivateRoom(gameType) {
       try {
         const response = await fetch('/pong/pong/create-room', {
           method: 'POST',
           headers: {
-            Authorization: `Bearer ${this.session.data.authenticated.token}`,
+            Authorization: `Bearer ${this.session.data.token}`,
             'Content-Type': 'application/json'
           },
           body: JSON.stringify({
@@ -1277,10 +1244,10 @@
         }
         const data = await response.json();
         if (data.room_name) {
-          if (data.player2 != "remote") this.gameData.waiting = false;
-          console.log("data:", data);
+          if (data.player2 != 'remote') this.gameData.waiting = false;
+          console.log('data:', data);
           this.gameData.setGameData(gameType, data);
-          console.log("gameData:", this.gameData.roomData.room_name);
+          console.log('gameData:', this.gameData.roomData.room_name);
           this.chat.sendGameAccept(data, this.args.message.from);
           this.router.transitionTo('pong-game');
         }
@@ -1289,28 +1256,27 @@
       }
     }
     async makeFriends() {
-      const apiEndpoint = "users/users/add-friend/";
+      const apiEndpoint = 'users/users/add-friend/';
       try {
         const response = await fetch(apiEndpoint, {
-          method: "POST",
+          method: 'POST',
           headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${this.session.data.authenticated.access}`
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${this.session.data.access}`
           },
           body: JSON.stringify({
             nickname: this.args.message.from,
-            type: "add"
+            type: 'add'
           })
         });
         if (!response.ok) {
           const errorData = await response.json();
-          throw new Error(errorData.message || "Failed to add friend");
+          throw new Error(errorData.message || 'Failed to add friend');
         }
         const result = await response.json();
         console.log(result.message);
       } catch (error) {
-        console.error("Error adding friend:", error.message);
-        throw error;
+        console.error('Error adding friend:', error.message);
       }
     }
   }, _descriptor = _applyDecoratedDescriptor(_class.prototype, "session", [_service.inject], {
@@ -1359,7 +1325,7 @@
   const __COLOCATED_TEMPLATE__ = (0, _templateFactory.createTemplateFactory)(
   /*
     <button class="btn btn-success p-1 mb-1" type="button" {{on "click" this.openModal}}>
-            Games: {{this.user.profile.games_total}}
+            Games: {{@user.games_total}}
   </button>
   
   <BsModal
@@ -1390,8 +1356,8 @@
   
   */
   {
-    "id": "6mWqe45K",
-    "block": "[[[11,\"button\"],[24,0,\"btn btn-success p-1 mb-1\"],[24,4,\"button\"],[4,[38,1],[\"click\",[30,0,[\"openModal\"]]],null],[12],[1,\"\\n          Games: \"],[1,[30,0,[\"user\",\"profile\",\"games_total\"]]],[1,\"\\n\"],[13],[1,\"\\n\\n\"],[8,[39,2],null,[[\"@open\"],[[30,0,[\"isModalOpen\"]]]],[[\"default\"],[[[[1,\"\\n  \"],[8,[30,1,[\"header\"]],[[24,5,\"background-color: #706363;\"]],null,[[\"default\"],[[[[1,\"\\n    \"],[10,\"h4\"],[14,0,\"score history center\"],[12],[1,\"\\n      Match History\\n    \"],[13],[1,\"\\n  \"]],[]]]]],[1,\"\\n\\n  \"],[8,[30,1,[\"body\"]],[[24,5,\"background-color: #706363;\"]],null,[[\"default\"],[[[[1,\"\\n    \"],[10,0],[14,0,\"container-fluid row\"],[14,5,\"height: 50vh; overflow-y: auto; margin: 0; padding: 0;\"],[12],[1,\"\\n        \"],[10,0],[14,0,\"scrollable-list history-scroll\"],[12],[1,\"\\n    \\n\"],[42,[28,[37,6],[[28,[37,6],[[30,0,[\"games\"]]],null]],null],null,[[[1,\"            \"],[8,[39,7],null,[[\"@game\"],[[30,2]]],null],[1,\"\\n\"]],[2]],null],[1,\"\\n        \"],[13],[1,\"\\n    \"],[13],[1,\"\\n    \\n    \\n  \"]],[]]]]],[1,\"\\n\\n\"]],[1]]]]],[1,\"\\n\"]],[\"modal\",\"game\"],false,[\"button\",\"on\",\"bs-modal\",\"h4\",\"div\",\"each\",\"-track-array\",\"history-item\"]]",
+    "id": "IN6hm9iT",
+    "block": "[[[11,\"button\"],[24,0,\"btn btn-success p-1 mb-1\"],[24,4,\"button\"],[4,[38,1],[\"click\",[30,0,[\"openModal\"]]],null],[12],[1,\"\\n          Games: \"],[1,[30,1,[\"games_total\"]]],[1,\"\\n\"],[13],[1,\"\\n\\n\"],[8,[39,2],null,[[\"@open\"],[[30,0,[\"isModalOpen\"]]]],[[\"default\"],[[[[1,\"\\n  \"],[8,[30,2,[\"header\"]],[[24,5,\"background-color: #706363;\"]],null,[[\"default\"],[[[[1,\"\\n    \"],[10,\"h4\"],[14,0,\"score history center\"],[12],[1,\"\\n      Match History\\n    \"],[13],[1,\"\\n  \"]],[]]]]],[1,\"\\n\\n  \"],[8,[30,2,[\"body\"]],[[24,5,\"background-color: #706363;\"]],null,[[\"default\"],[[[[1,\"\\n    \"],[10,0],[14,0,\"container-fluid row\"],[14,5,\"height: 50vh; overflow-y: auto; margin: 0; padding: 0;\"],[12],[1,\"\\n        \"],[10,0],[14,0,\"scrollable-list history-scroll\"],[12],[1,\"\\n    \\n\"],[42,[28,[37,6],[[28,[37,6],[[30,0,[\"games\"]]],null]],null],null,[[[1,\"            \"],[8,[39,7],null,[[\"@game\"],[[30,3]]],null],[1,\"\\n\"]],[3]],null],[1,\"\\n        \"],[13],[1,\"\\n    \"],[13],[1,\"\\n    \\n    \\n  \"]],[]]]]],[1,\"\\n\\n\"]],[2]]]]],[1,\"\\n\"]],[\"@user\",\"modal\",\"game\"],false,[\"button\",\"on\",\"bs-modal\",\"h4\",\"div\",\"each\",\"-track-array\",\"history-item\"]]",
     "moduleName": "myapp/components/modal-game-history.hbs",
     "isStrictMode": false
   });
@@ -1401,9 +1367,9 @@
       // Property to manage modal visibility
       _initializerDefineProperty(this, "isModalOpen", _descriptor, this);
       _initializerDefineProperty(this, "newNickname", _descriptor2, this);
-      _initializerDefineProperty(this, "user", _descriptor3, this);
-      _initializerDefineProperty(this, "session", _descriptor4, this);
-      _initializerDefineProperty(this, "games", _descriptor5, this);
+      _initializerDefineProperty(this, "games", _descriptor3, this);
+      _initializerDefineProperty(this, "user", _descriptor4, this);
+      _initializerDefineProperty(this, "session", _descriptor5, this);
     }
     openModal() {
       //console.log(this.args.user);
@@ -1413,7 +1379,7 @@
     }
     parseHistory(history) {
       this.games = history.map(game => ({
-        user: this.user.profile.nickname,
+        user: this.args.user.nickname,
         opponent: game.opponent,
         result: game.result,
         score: game.score,
@@ -1438,23 +1404,23 @@
     enumerable: true,
     writable: true,
     initializer: null
-  }), _descriptor3 = _applyDecoratedDescriptor(_class.prototype, "user", [_service.inject], {
-    configurable: true,
-    enumerable: true,
-    writable: true,
-    initializer: null
-  }), _descriptor4 = _applyDecoratedDescriptor(_class.prototype, "session", [_service.inject], {
-    configurable: true,
-    enumerable: true,
-    writable: true,
-    initializer: null
-  }), _descriptor5 = _applyDecoratedDescriptor(_class.prototype, "games", [_tracking.tracked], {
+  }), _descriptor3 = _applyDecoratedDescriptor(_class.prototype, "games", [_tracking.tracked], {
     configurable: true,
     enumerable: true,
     writable: true,
     initializer: function () {
       return [];
     }
+  }), _descriptor4 = _applyDecoratedDescriptor(_class.prototype, "user", [_service.inject], {
+    configurable: true,
+    enumerable: true,
+    writable: true,
+    initializer: null
+  }), _descriptor5 = _applyDecoratedDescriptor(_class.prototype, "session", [_service.inject], {
+    configurable: true,
+    enumerable: true,
+    writable: true,
+    initializer: null
   }), _applyDecoratedDescriptor(_class.prototype, "openModal", [_object.action], Object.getOwnPropertyDescriptor(_class.prototype, "openModal"), _class.prototype), _applyDecoratedDescriptor(_class.prototype, "closeModal", [_object.action], Object.getOwnPropertyDescriptor(_class.prototype, "closeModal"), _class.prototype), _applyDecoratedDescriptor(_class.prototype, "cancel", [_object.action], Object.getOwnPropertyDescriptor(_class.prototype, "cancel"), _class.prototype), _class);
   (0, _component.setComponentTemplate)(__COLOCATED_TEMPLATE__, ModalProfileComponent);
 });
@@ -1465,7 +1431,7 @@
     value: true
   });
   _exports.default = void 0;
-  var _class, _descriptor, _descriptor2, _descriptor3, _descriptor4, _descriptor5;
+  var _class, _descriptor, _descriptor2, _descriptor3, _descriptor4, _descriptor5, _descriptor6;
   0; //eaimeta@70e063a35619d71f0,"@glimmer/component",0,"@ember/object",0,"@glimmer/tracking",0,"@ember/service",0,"@ember/template-factory",0,"@ember/component"eaimeta@70e063a35619d71f
   function _initializerDefineProperty(e, i, r, l) { r && Object.defineProperty(e, i, { enumerable: r.enumerable, configurable: r.configurable, writable: r.writable, value: r.initializer ? r.initializer.call(l) : void 0 }); }
   function _defineProperty(e, r, t) { return (r = _toPropertyKey(r)) in e ? Object.defineProperty(e, r, { value: t, enumerable: !0, configurable: !0, writable: !0 }) : e[r] = t, e; }
@@ -1514,6 +1480,7 @@
       </div>
     </modal.body>
     <modal.footer style="background-color: #706363;">
+      <label class="ERROR">{{this.error}}</label>
       <BsButton @onClick={{modal.close}}>Cancel</BsButton>
       <BsButton @type="success" @onClick={{this.submit}}>Save</BsButton>
     </modal.footer>
@@ -1521,8 +1488,8 @@
   
   */
   {
-    "id": "EnNwqYbR",
-    "block": "[[[11,\"button\"],[24,0,\"btn btn-primary\"],[24,4,\"button\"],[4,[38,1],[\"click\",[30,0,[\"openModal\"]]],null],[12],[1,\"\\n  Edit Profile\\n\"],[13],[1,\"\\n\\n\"],[8,[39,2],null,[[\"@open\"],[[30,0,[\"isModalOpen\"]]]],[[\"default\"],[[[[1,\"\\n  \"],[8,[30,1,[\"header\"]],[[24,5,\"background-color: #706363;\"]],null,[[\"default\"],[[[[1,\"\\n    \"],[10,\"h4\"],[14,0,\"modal-title\"],[12],[1,\"\\n      Edit Profile\\n    \"],[13],[1,\"\\n  \"]],[]]]]],[1,\"\\n  \"],[8,[30,1,[\"body\"]],[[24,5,\"background-color: #706363;\"]],null,[[\"default\"],[[[[1,\"\\n    \"],[10,0],[14,0,\"form-group\"],[12],[1,\"\\n      \"],[10,\"label\"],[12],[1,\"Choose Avatar:\"],[13],[1,\"\\n      \"],[11,\"input\"],[24,0,\"form-control\"],[24,5,\"background-color: #706363;\"],[24,\"placeholder\",\"Choose Avatar\"],[24,4,\"file\"],[4,[38,1],[\"change\",[30,0,[\"updateAvatar\"]]],null],[12],[13],[1,\"\\n      \"],[10,\"small\"],[12],[1,\"This is the visible Avatar on this Site\"],[13],[1,\"\\n    \"],[13],[1,\"\\n\\n    \"],[10,0],[14,0,\"form-group mt-3\"],[12],[1,\"\\n      \"],[10,\"label\"],[12],[1,\"Nickname:\"],[13],[1,\"\\n      \"],[11,\"input\"],[24,0,\"form-control\"],[24,5,\"background-color: #706363;\"],[16,2,[30,0,[\"newNickname\"]]],[24,4,\"name\"],[4,[38,1],[\"input\",[30,0,[\"updateNewNickname\"]]],null],[12],[13],[1,\"\\n      \"],[10,\"small\"],[12],[1,\"This is the visible Name on this Site\"],[13],[1,\"\\n    \"],[13],[1,\"\\n  \"]],[]]]]],[1,\"\\n  \"],[8,[30,1,[\"footer\"]],[[24,5,\"background-color: #706363;\"]],null,[[\"default\"],[[[[1,\"\\n    \"],[8,[39,8],null,[[\"@onClick\"],[[30,1,[\"close\"]]]],[[\"default\"],[[[[1,\"Cancel\"]],[]]]]],[1,\"\\n    \"],[8,[39,8],null,[[\"@type\",\"@onClick\"],[\"success\",[30,0,[\"submit\"]]]],[[\"default\"],[[[[1,\"Save\"]],[]]]]],[1,\"\\n  \"]],[]]]]],[1,\"\\n\"]],[1]]]]],[1,\"\\n\"]],[\"modal\"],false,[\"button\",\"on\",\"bs-modal\",\"h4\",\"div\",\"label\",\"input\",\"small\",\"bs-button\"]]",
+    "id": "uaJZM0eo",
+    "block": "[[[11,\"button\"],[24,0,\"btn btn-primary\"],[24,4,\"button\"],[4,[38,1],[\"click\",[30,0,[\"openModal\"]]],null],[12],[1,\"\\n  Edit Profile\\n\"],[13],[1,\"\\n\\n\"],[8,[39,2],null,[[\"@open\"],[[30,0,[\"isModalOpen\"]]]],[[\"default\"],[[[[1,\"\\n  \"],[8,[30,1,[\"header\"]],[[24,5,\"background-color: #706363;\"]],null,[[\"default\"],[[[[1,\"\\n    \"],[10,\"h4\"],[14,0,\"modal-title\"],[12],[1,\"\\n      Edit Profile\\n    \"],[13],[1,\"\\n  \"]],[]]]]],[1,\"\\n  \"],[8,[30,1,[\"body\"]],[[24,5,\"background-color: #706363;\"]],null,[[\"default\"],[[[[1,\"\\n    \"],[10,0],[14,0,\"form-group\"],[12],[1,\"\\n      \"],[10,\"label\"],[12],[1,\"Choose Avatar:\"],[13],[1,\"\\n      \"],[11,\"input\"],[24,0,\"form-control\"],[24,5,\"background-color: #706363;\"],[24,\"placeholder\",\"Choose Avatar\"],[24,4,\"file\"],[4,[38,1],[\"change\",[30,0,[\"updateAvatar\"]]],null],[12],[13],[1,\"\\n      \"],[10,\"small\"],[12],[1,\"This is the visible Avatar on this Site\"],[13],[1,\"\\n    \"],[13],[1,\"\\n\\n    \"],[10,0],[14,0,\"form-group mt-3\"],[12],[1,\"\\n      \"],[10,\"label\"],[12],[1,\"Nickname:\"],[13],[1,\"\\n      \"],[11,\"input\"],[24,0,\"form-control\"],[24,5,\"background-color: #706363;\"],[16,2,[30,0,[\"newNickname\"]]],[24,4,\"name\"],[4,[38,1],[\"input\",[30,0,[\"updateNewNickname\"]]],null],[12],[13],[1,\"\\n      \"],[10,\"small\"],[12],[1,\"This is the visible Name on this Site\"],[13],[1,\"\\n    \"],[13],[1,\"\\n  \"]],[]]]]],[1,\"\\n  \"],[8,[30,1,[\"footer\"]],[[24,5,\"background-color: #706363;\"]],null,[[\"default\"],[[[[1,\"\\n    \"],[10,\"label\"],[14,0,\"ERROR\"],[12],[1,[30,0,[\"error\"]]],[13],[1,\"\\n    \"],[8,[39,8],null,[[\"@onClick\"],[[30,1,[\"close\"]]]],[[\"default\"],[[[[1,\"Cancel\"]],[]]]]],[1,\"\\n    \"],[8,[39,8],null,[[\"@type\",\"@onClick\"],[\"success\",[30,0,[\"submit\"]]]],[[\"default\"],[[[[1,\"Save\"]],[]]]]],[1,\"\\n  \"]],[]]]]],[1,\"\\n\"]],[1]]]]],[1,\"\\n\"]],[\"modal\"],false,[\"button\",\"on\",\"bs-modal\",\"h4\",\"div\",\"label\",\"input\",\"small\",\"bs-button\"]]",
     "moduleName": "myapp/components/modal-profile.hbs",
     "isStrictMode": false
   });
@@ -1533,17 +1500,15 @@
       _initializerDefineProperty(this, "newNickname", _descriptor2, this);
       _initializerDefineProperty(this, "newAvatar", _descriptor3, this);
       // Track the selected avatar file
-      _initializerDefineProperty(this, "user", _descriptor4, this);
-      _initializerDefineProperty(this, "session", _descriptor5, this);
+      _initializerDefineProperty(this, "error", _descriptor4, this);
+      _initializerDefineProperty(this, "user", _descriptor5, this);
+      _initializerDefineProperty(this, "session", _descriptor6, this);
     }
     openModal() {
-      console.log('Opening modal');
       this.isModalOpen = true;
       this.newNickname = this.user.profile.nickname;
-      console.log(this.isModalOpen);
     }
     closeModal() {
-      console.log('Closing modal');
       this.isModalOpen = false;
     }
     updateNewNickname(event) {
@@ -1551,38 +1516,28 @@
     }
     updateAvatar(event) {
       this.newAvatar = event.target.files[0]; // Get the selected file
-      console.log('Selected avatar file:', this.newAvatar);
     }
     async submit() {
-      console.log('Form submitted!');
       await this.updateProfile();
-      this.closeModal();
+      if (!this.error) this.closeModal();
     }
     async updateProfile() {
-      try {
-        const formData = new FormData();
-        formData.append('nickname', this.newNickname);
-        if (this.newAvatar) {
-          formData.append('avatar', this.newAvatar); // Append the avatar file
-        }
-        const response = await fetch('/users/users/update-profile/', {
-          method: 'PUT',
-          headers: {
-            Authorization: `Bearer ${this.session.data.authenticated.access}` // Add authentication token
-          },
-          body: formData // Send FormData
-        });
-        if (!response.ok) {
-          throw new Error('Failed to update profile');
-        }
-        const data = await response.json();
-        console.log('Profile updated successfully:', data);
-        if (data.success) {
-          this.user.fetchUserData(this.newNickname);
-        }
-      } catch (error) {
-        console.error('Error updating profile:', error);
+      const formData = new FormData();
+      formData.append('nickname', this.newNickname);
+      if (this.newAvatar) {
+        formData.append('avatar', this.newAvatar); // Append the avatar file
       }
+      const response = await fetch('/users/users/update-profile/', {
+        method: 'PUT',
+        headers: {
+          Authorization: `Bearer ${this.session.data.access}` // Add authentication token
+        },
+        body: formData // Send FormData
+      });
+      const data = await response.json();
+      if (data.success) {
+        this.user.fetchUserData(this.newNickname);
+      } else this.error = data.message;
     }
   }, _descriptor = _applyDecoratedDescriptor(_class.prototype, "isModalOpen", [_tracking.tracked], {
     configurable: true,
@@ -1603,12 +1558,17 @@
     initializer: function () {
       return null;
     }
-  }), _descriptor4 = _applyDecoratedDescriptor(_class.prototype, "user", [_service.inject], {
+  }), _descriptor4 = _applyDecoratedDescriptor(_class.prototype, "error", [_tracking.tracked], {
     configurable: true,
     enumerable: true,
     writable: true,
     initializer: null
-  }), _descriptor5 = _applyDecoratedDescriptor(_class.prototype, "session", [_service.inject], {
+  }), _descriptor5 = _applyDecoratedDescriptor(_class.prototype, "user", [_service.inject], {
+    configurable: true,
+    enumerable: true,
+    writable: true,
+    initializer: null
+  }), _descriptor6 = _applyDecoratedDescriptor(_class.prototype, "session", [_service.inject], {
     configurable: true,
     enumerable: true,
     writable: true,
@@ -1697,7 +1657,7 @@
       {{#if this.pongGame.winner}}
         <h1 class="white">Winner: {{this.pongGame.winner}}</h1>
       {{else}}
-        {{#if (not (eq this.pongGame.status 0))}}
+        {{#if (not-eq this.pongGame.status 0)}}
           <h1 class="white">{{this.pongGame.status}}</h1>
         {{else}}
           <Ball @positionX={{this.pongGame.ballPositionX}} @positionY={{this.pongGame.ballPositionY}} />
@@ -1710,8 +1670,8 @@
   
   */
   {
-    "id": "joYO4b/b",
-    "block": "[[[10,0],[14,0,\"pong-game\"],[12],[1,\"\\n\"],[41,[30,0,[\"gameData\",\"waiting\"]],[[[1,\"    \"],[10,\"h2\"],[14,0,\"white p-3\"],[12],[1,\"Waiting for Player\"],[13],[1,\"\\n    \"],[10,0],[14,0,\"spinner-border text-light\"],[14,\"role\",\"status\"],[12],[1,\"\\n      \"],[10,1],[14,0,\"visually-hidden\"],[12],[13],[1,\"\\n    \"],[13],[1,\"\\n\"]],[]],[[[41,[30,0,[\"pongGame\",\"winner\"]],[[[1,\"      \"],[10,\"h1\"],[14,0,\"white\"],[12],[1,\"Winner: \"],[1,[30,0,[\"pongGame\",\"winner\"]]],[13],[1,\"\\n\"]],[]],[[[41,[28,[37,5],[[28,[37,6],[[30,0,[\"pongGame\",\"status\"]],0],null]],null],[[[1,\"        \"],[10,\"h1\"],[14,0,\"white\"],[12],[1,[30,0,[\"pongGame\",\"status\"]]],[13],[1,\"\\n\"]],[]],[[[1,\"        \"],[8,[39,7],null,[[\"@positionX\",\"@positionY\"],[[30,0,[\"pongGame\",\"ballPositionX\"]],[30,0,[\"pongGame\",\"ballPositionY\"]]]],null],[1,\"\\n\"]],[]]],[1,\"      \"],[8,[39,8],null,[[\"@position\",\"@side\"],[[30,0,[\"pongGame\",\"leftPaddlePosition\"]],\"paddle-left\"]],null],[1,\"\\n      \"],[8,[39,8],null,[[\"@position\",\"@side\"],[[30,0,[\"pongGame\",\"rightPaddlePosition\"]],\"paddle-right\"]],null],[1,\"\\n\"]],[]]]],[]]],[13],[1,\"\\n\"]],[],false,[\"div\",\"if\",\"h2\",\"span\",\"h1\",\"not\",\"eq\",\"ball\",\"paddle\"]]",
+    "id": "VI8y4pR4",
+    "block": "[[[10,0],[14,0,\"pong-game\"],[12],[1,\"\\n\"],[41,[30,0,[\"gameData\",\"waiting\"]],[[[1,\"    \"],[10,\"h2\"],[14,0,\"white p-3\"],[12],[1,\"Waiting for Player\"],[13],[1,\"\\n    \"],[10,0],[14,0,\"spinner-border text-light\"],[14,\"role\",\"status\"],[12],[1,\"\\n      \"],[10,1],[14,0,\"visually-hidden\"],[12],[13],[1,\"\\n    \"],[13],[1,\"\\n\"]],[]],[[[41,[30,0,[\"pongGame\",\"winner\"]],[[[1,\"      \"],[10,\"h1\"],[14,0,\"white\"],[12],[1,\"Winner: \"],[1,[30,0,[\"pongGame\",\"winner\"]]],[13],[1,\"\\n\"]],[]],[[[41,[28,[37,5],[[30,0,[\"pongGame\",\"status\"]],0],null],[[[1,\"        \"],[10,\"h1\"],[14,0,\"white\"],[12],[1,[30,0,[\"pongGame\",\"status\"]]],[13],[1,\"\\n\"]],[]],[[[1,\"        \"],[8,[39,6],null,[[\"@positionX\",\"@positionY\"],[[30,0,[\"pongGame\",\"ballPositionX\"]],[30,0,[\"pongGame\",\"ballPositionY\"]]]],null],[1,\"\\n\"]],[]]],[1,\"      \"],[8,[39,7],null,[[\"@position\",\"@side\"],[[30,0,[\"pongGame\",\"leftPaddlePosition\"]],\"paddle-left\"]],null],[1,\"\\n      \"],[8,[39,7],null,[[\"@position\",\"@side\"],[[30,0,[\"pongGame\",\"rightPaddlePosition\"]],\"paddle-right\"]],null],[1,\"\\n\"]],[]]]],[]]],[13],[1,\"\\n\"]],[],false,[\"div\",\"if\",\"h2\",\"span\",\"h1\",\"not-eq\",\"ball\",\"paddle\"]]",
     "moduleName": "myapp/components/pong-game.hbs",
     "isStrictMode": false
   });
@@ -1741,7 +1701,7 @@
     value: true
   });
   _exports.default = void 0;
-  var _class, _descriptor, _descriptor2;
+  var _class, _descriptor, _descriptor2, _descriptor3;
   0; //eaimeta@70e063a35619d71f0,"@glimmer/component",0,"@ember/object",0,"@ember/service",0,"@ember/template-factory",0,"@ember/component"eaimeta@70e063a35619d71f
   function _initializerDefineProperty(e, i, r, l) { r && Object.defineProperty(e, i, { enumerable: r.enumerable, configurable: r.configurable, writable: r.writable, value: r.initializer ? r.initializer.call(l) : void 0 }); }
   function _defineProperty(e, r, t) { return (r = _toPropertyKey(r)) in e ? Object.defineProperty(e, r, { value: t, enumerable: !0, configurable: !0, writable: !0 }) : e[r] = t, e; }
@@ -1772,14 +1732,28 @@
             type="button" {{on "click" this.playGame}}>
             🎮
           </button>
+          {{#if this.isFriend}}
           <button class="emoji-button info" data-bs-toggle="tooltip" data-bs-placement="top" title="Add Friend"
-            type="button" {{on "click" this.addFriend}}>
+            type="button" {{on "click" (fn this.addFriend "remove")}}>
+            ➖ 
+          </button>
+          {{else}}
+          <button class="emoji-button info" data-bs-toggle="tooltip" data-bs-placement="top" title="Add Friend"
+            type="button" {{on "click" (fn this.addFriend "add")}}>
             ➕
           </button>
+          {{/if}}
+          {{#if this.isBlocked}}
+          <button class="emoji-button info" data-bs-toggle="tooltip" data-bs-placement="top" title="Block User"
+            type="button" {{on "click" (fn this.blockUser "remove")}}>
+            ✅ 
+          </button>
+          {{else}}
           <button class="emoji-button info" data-bs-toggle="tooltip" data-bs-placement="top" title="Block User"
             type="button" {{on "click" (fn this.blockUser "add")}}>
             🚫
           </button>
+          {{/if}}
         </div>
         <h2 class="points">{{@selectedUser.trophies}}🏆</h2>
       </div>
@@ -1803,8 +1777,8 @@
   </div>
   */
   {
-    "id": "AJCcqgB9",
-    "block": "[[[10,0],[14,0,\"container-fluid row fill p-2\"],[12],[1,\"\\n\"],[1,\"  \"],[10,0],[14,0,\"col center no-padding position-relative\"],[12],[1,\"\\n    \"],[10,\"button\"],[14,0,\"btn-close top-left\"],[15,\"onclick\",[30,0,[\"onCloseClick\"]]],[14,4,\"button\"],[12],[13],[1,\"\\n    \"],[10,\"img\"],[15,\"src\",[29,[\"https://localhost/users/users\",[30,1,[\"avatar\"]],\"/\"]]],[14,\"alt\",\"Profile Picture\"],[14,0,\"profile-pic\"],[12],[13],[1,\"\\n  \"],[13],[1,\"\\n\\n\"],[1,\"  \"],[10,0],[14,0,\"col-10\"],[12],[1,\"\\n\"],[1,\"    \"],[10,0],[14,0,\"profile-details\"],[12],[1,\"\\n      \"],[10,\"h2\"],[14,0,\"name\"],[12],[1,[30,1,[\"nickname\"]]],[13],[1,\"\\n      \"],[10,0],[14,0,\"actions\"],[12],[1,\"\\n        \"],[11,\"button\"],[24,0,\"emoji-button info\"],[24,\"data-bs-toggle\",\"tooltip\"],[24,\"data-bs-placement\",\"top\"],[24,\"title\",\"Live Chat\"],[24,4,\"button\"],[4,[38,4],[\"click\",[30,0,[\"startLiveChat\"]]],null],[12],[1,\"\\n          💬\\n        \"],[13],[1,\"\\n        \"],[11,\"button\"],[24,0,\"emoji-button info\"],[24,\"data-bs-toggle\",\"tooltip\"],[24,\"data-bs-placement\",\"top\"],[24,\"title\",\"Play Game\"],[24,4,\"button\"],[4,[38,4],[\"click\",[30,0,[\"playGame\"]]],null],[12],[1,\"\\n          🎮\\n        \"],[13],[1,\"\\n        \"],[11,\"button\"],[24,0,\"emoji-button info\"],[24,\"data-bs-toggle\",\"tooltip\"],[24,\"data-bs-placement\",\"top\"],[24,\"title\",\"Add Friend\"],[24,4,\"button\"],[4,[38,4],[\"click\",[30,0,[\"addFriend\"]]],null],[12],[1,\"\\n          ➕\\n        \"],[13],[1,\"\\n        \"],[11,\"button\"],[24,0,\"emoji-button info\"],[24,\"data-bs-toggle\",\"tooltip\"],[24,\"data-bs-placement\",\"top\"],[24,\"title\",\"Block User\"],[24,4,\"button\"],[4,[38,4],[\"click\",[28,[37,5],[[30,0,[\"blockUser\"]],\"add\"],null]],null],[12],[1,\"\\n          🚫\\n        \"],[13],[1,\"\\n      \"],[13],[1,\"\\n      \"],[10,\"h2\"],[14,0,\"points\"],[12],[1,[30,1,[\"trophies\"]]],[1,\"🏆\"],[13],[1,\"\\n    \"],[13],[1,\"\\n\\n\"],[1,\"    \"],[10,0],[14,0,\"profile-details\"],[12],[1,\"\\n      \"],[8,[39,6],null,[[\"@user\"],[[30,1]]],null],[1,\"\\n      \"],[10,\"h2\"],[14,0,\"info\"],[12],[1,\"Wins: \"],[1,[30,1,[\"wins\"]]],[13],[1,\"\\n    \"],[13],[1,\"\\n\\n    \"],[10,0],[14,0,\"profile-details\"],[12],[1,\"\\n\"],[41,[30,0,[\"isOnline\"]],[[[1,\"      \"],[10,\"h2\"],[14,0,\"info\"],[12],[1,\"🟢 online\"],[13],[1,\"\\n\"]],[]],[[[1,\"      \"],[10,\"h2\"],[14,0,\"info\"],[12],[1,\"🔴 offline\"],[13],[1,\"\\n\"]],[]]],[1,\"      \"],[10,\"h2\"],[14,0,\"info\"],[12],[1,\"Losses: \"],[1,[30,1,[\"losses\"]]],[13],[1,\"\\n    \"],[13],[1,\"\\n\\n  \"],[13],[1,\"\\n\"],[13]],[\"@selectedUser\"],false,[\"div\",\"button\",\"img\",\"h2\",\"on\",\"fn\",\"modal-game-history\",\"if\"]]",
+    "id": "XFsyisKd",
+    "block": "[[[10,0],[14,0,\"container-fluid row fill p-2\"],[12],[1,\"\\n\"],[1,\"  \"],[10,0],[14,0,\"col center no-padding position-relative\"],[12],[1,\"\\n    \"],[10,\"button\"],[14,0,\"btn-close top-left\"],[15,\"onclick\",[30,0,[\"onCloseClick\"]]],[14,4,\"button\"],[12],[13],[1,\"\\n    \"],[10,\"img\"],[15,\"src\",[29,[\"https://localhost/users/users\",[30,1,[\"avatar\"]],\"/\"]]],[14,\"alt\",\"Profile Picture\"],[14,0,\"profile-pic\"],[12],[13],[1,\"\\n  \"],[13],[1,\"\\n\\n\"],[1,\"  \"],[10,0],[14,0,\"col-10\"],[12],[1,\"\\n\"],[1,\"    \"],[10,0],[14,0,\"profile-details\"],[12],[1,\"\\n      \"],[10,\"h2\"],[14,0,\"name\"],[12],[1,[30,1,[\"nickname\"]]],[13],[1,\"\\n      \"],[10,0],[14,0,\"actions\"],[12],[1,\"\\n        \"],[11,\"button\"],[24,0,\"emoji-button info\"],[24,\"data-bs-toggle\",\"tooltip\"],[24,\"data-bs-placement\",\"top\"],[24,\"title\",\"Live Chat\"],[24,4,\"button\"],[4,[38,4],[\"click\",[30,0,[\"startLiveChat\"]]],null],[12],[1,\"\\n          💬\\n        \"],[13],[1,\"\\n        \"],[11,\"button\"],[24,0,\"emoji-button info\"],[24,\"data-bs-toggle\",\"tooltip\"],[24,\"data-bs-placement\",\"top\"],[24,\"title\",\"Play Game\"],[24,4,\"button\"],[4,[38,4],[\"click\",[30,0,[\"playGame\"]]],null],[12],[1,\"\\n          🎮\\n        \"],[13],[1,\"\\n\"],[41,[30,0,[\"isFriend\"]],[[[1,\"        \"],[11,\"button\"],[24,0,\"emoji-button info\"],[24,\"data-bs-toggle\",\"tooltip\"],[24,\"data-bs-placement\",\"top\"],[24,\"title\",\"Add Friend\"],[24,4,\"button\"],[4,[38,4],[\"click\",[28,[37,6],[[30,0,[\"addFriend\"]],\"remove\"],null]],null],[12],[1,\"\\n          ➖ \\n        \"],[13],[1,\"\\n\"]],[]],[[[1,\"        \"],[11,\"button\"],[24,0,\"emoji-button info\"],[24,\"data-bs-toggle\",\"tooltip\"],[24,\"data-bs-placement\",\"top\"],[24,\"title\",\"Add Friend\"],[24,4,\"button\"],[4,[38,4],[\"click\",[28,[37,6],[[30,0,[\"addFriend\"]],\"add\"],null]],null],[12],[1,\"\\n          ➕\\n        \"],[13],[1,\"\\n\"]],[]]],[41,[30,0,[\"isBlocked\"]],[[[1,\"        \"],[11,\"button\"],[24,0,\"emoji-button info\"],[24,\"data-bs-toggle\",\"tooltip\"],[24,\"data-bs-placement\",\"top\"],[24,\"title\",\"Block User\"],[24,4,\"button\"],[4,[38,4],[\"click\",[28,[37,6],[[30,0,[\"blockUser\"]],\"remove\"],null]],null],[12],[1,\"\\n          ✅ \\n        \"],[13],[1,\"\\n\"]],[]],[[[1,\"        \"],[11,\"button\"],[24,0,\"emoji-button info\"],[24,\"data-bs-toggle\",\"tooltip\"],[24,\"data-bs-placement\",\"top\"],[24,\"title\",\"Block User\"],[24,4,\"button\"],[4,[38,4],[\"click\",[28,[37,6],[[30,0,[\"blockUser\"]],\"add\"],null]],null],[12],[1,\"\\n          🚫\\n        \"],[13],[1,\"\\n\"]],[]]],[1,\"      \"],[13],[1,\"\\n      \"],[10,\"h2\"],[14,0,\"points\"],[12],[1,[30,1,[\"trophies\"]]],[1,\"🏆\"],[13],[1,\"\\n    \"],[13],[1,\"\\n\\n\"],[1,\"    \"],[10,0],[14,0,\"profile-details\"],[12],[1,\"\\n      \"],[8,[39,7],null,[[\"@user\"],[[30,1]]],null],[1,\"\\n      \"],[10,\"h2\"],[14,0,\"info\"],[12],[1,\"Wins: \"],[1,[30,1,[\"wins\"]]],[13],[1,\"\\n    \"],[13],[1,\"\\n\\n    \"],[10,0],[14,0,\"profile-details\"],[12],[1,\"\\n\"],[41,[30,0,[\"isOnline\"]],[[[1,\"      \"],[10,\"h2\"],[14,0,\"info\"],[12],[1,\"🟢 online\"],[13],[1,\"\\n\"]],[]],[[[1,\"      \"],[10,\"h2\"],[14,0,\"info\"],[12],[1,\"🔴 offline\"],[13],[1,\"\\n\"]],[]]],[1,\"      \"],[10,\"h2\"],[14,0,\"info\"],[12],[1,\"Losses: \"],[1,[30,1,[\"losses\"]]],[13],[1,\"\\n    \"],[13],[1,\"\\n\\n  \"],[13],[1,\"\\n\"],[13]],[\"@selectedUser\"],false,[\"div\",\"button\",\"img\",\"h2\",\"on\",\"if\",\"fn\",\"modal-game-history\"]]",
     "moduleName": "myapp/components/profile-other.hbs",
     "isStrictMode": false
   });
@@ -1813,32 +1787,65 @@
       super(...args);
       _initializerDefineProperty(this, "chat", _descriptor, this);
       _initializerDefineProperty(this, "session", _descriptor2, this);
+      _initializerDefineProperty(this, "user", _descriptor3, this);
+    }
+    get isFriend() {
+      const friendsList = this.user.profile.friends || [];
+      return friendsList.includes(this.args.selectedUser.nickname);
+    }
+    get isBlocked() {
+      const blockedList = this.user.profile.blocked || [];
+      return blockedList.includes(this.args.selectedUser.nickname);
     }
     startLiveChat() {
       console.log('Live chat started');
-      this.chat.updateInputValue("/" + this.args.selectedUser.nickname + " ");
+      this.chat.updateInputValue('/' + this.args.selectedUser.nickname + ' ');
       this.chat.focusInput();
     }
     playGame() {
       console.log('Game initiated');
-      this.chat.updateInputValue("/*invite " + this.args.selectedUser.nickname);
+      this.chat.updateInputValue('/*invite ' + this.args.selectedUser.nickname);
       this.chat.sendMessage();
     }
-    addFriend() {
-      this.chat.updateInputValue("/*add " + this.args.selectedUser.nickname);
-      this.chat.sendMessage();
+    addFriend(type) {
+      if (type === "add") {
+        this.chat.updateInputValue('/*add ' + this.args.selectedUser.nickname);
+        this.chat.sendMessage();
+      } else this.removeFriends();
+    }
+    async removeFriends() {
+      const apiEndpoint = 'users/users/add-friend/';
+      try {
+        const response = await fetch(apiEndpoint, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${this.session.data.access}`
+          },
+          body: JSON.stringify({
+            nickname: this.args.selectedUser.nickname,
+            type: 'remove'
+          })
+        });
+        if (!response.ok) {
+          const errorData = await response.json();
+          throw new Error(errorData.message || 'Failed to remove friend');
+        }
+      } catch (error) {
+        console.error('Error adding friend:', error.message);
+      }
     }
     get isOnline() {
       return this.args.selectedUser?.status === 'online';
     }
     async blockUser(type) {
-      const apiEndpoint = "users/users/block-user/";
+      const apiEndpoint = 'users/users/block-user/';
       try {
         const response = await fetch(apiEndpoint, {
-          method: "POST",
+          method: 'POST',
           headers: {
-            Authorization: `Bearer ${this.session.data.authenticated.access}`,
-            "Content-Type": "application/json"
+            Authorization: `Bearer ${this.session.data.access}`,
+            'Content-Type': 'application/json'
           },
           body: JSON.stringify({
             nickname: this.args.selectedUser.nickname,
@@ -1847,12 +1854,12 @@
         });
         if (!response.ok) {
           const errorData = await response.json();
-          throw new Error(errorData.message || "Failed to block user");
+          throw new Error(errorData.message || 'Failed to block user');
         }
         const result = await response.json();
         console.log(result.message);
       } catch (error) {
-        console.error("Error blocking user:", error.message);
+        console.error('Error blocking user:', error.message);
         throw error;
       }
     }
@@ -1866,6 +1873,11 @@
     writable: true,
     initializer: null
   }), _descriptor2 = _applyDecoratedDescriptor(_class.prototype, "session", [_service.inject], {
+    configurable: true,
+    enumerable: true,
+    writable: true,
+    initializer: null
+  }), _descriptor3 = _applyDecoratedDescriptor(_class.prototype, "user", [_service.inject], {
     configurable: true,
     enumerable: true,
     writable: true,
@@ -1891,28 +1903,28 @@
   const __COLOCATED_TEMPLATE__ = (0, _templateFactory.createTemplateFactory)(
   /*
     <div class="container-fluid row fill p-2">
-    <!-- Profile picture column (1 part) -->
+    {{!-- Profile picture column (1 part) --}}
     <div class="col center">
       <img src="https://localhost/users/users{{this.user.profile.avatar}}/" alt="Profile Picture" class="profile-pic" />
     </div>
   
-    <!-- Profile details column (3 parts) -->
+    {{!-- Profile details column (3 parts) --}}
     <div class="col-10">
-      <!-- First row of profile details -->
+      {{!-- First row of profile details --}}
       <div class="profile-details">
         {{#if this.isAuthenticated}}
-          {{#if this.user.profile}} <!-- Access the user directly from the service -->
+          {{#if this.user.profile}} {{!-- Access the user directly from the service --}}
             <h2 class="name">{{this.user.profile.nickname}}</h2>
             <ModalProfile/>
           {{else}}
-            <p>Loading user...</p> <!-- Or another fallback message -->
+            <p>Loading user...</p> {{!-- Or another fallback message --}}
           {{/if}}
           <button class="logout-button" type="button" {{on "click" this.logout}}>Logout</button>
         {{/if}}
         <h2 class="points info">{{this.user.profile.trophies}} 🏆</h2>
       </div>
   
-      <!-- Second row of profile details -->
+      {{!-- Second row of profile details --}}
       <div class="profile-details">
         <ModalGameHistory @user={{this.user.profile}}/>
         <h2 class="info">Wins: {{this.user.profile.wins}}</h2>
@@ -1932,8 +1944,8 @@
   
   */
   {
-    "id": "r3F1U3pe",
-    "block": "[[[10,0],[14,0,\"container-fluid row fill p-2\"],[12],[1,\"\\n  \"],[3,\" Profile picture column (1 part) \"],[1,\"\\n  \"],[10,0],[14,0,\"col center\"],[12],[1,\"\\n    \"],[10,\"img\"],[15,\"src\",[29,[\"https://localhost/users/users\",[30,0,[\"user\",\"profile\",\"avatar\"]],\"/\"]]],[14,\"alt\",\"Profile Picture\"],[14,0,\"profile-pic\"],[12],[13],[1,\"\\n  \"],[13],[1,\"\\n\\n  \"],[3,\" Profile details column (3 parts) \"],[1,\"\\n  \"],[10,0],[14,0,\"col-10\"],[12],[1,\"\\n    \"],[3,\" First row of profile details \"],[1,\"\\n    \"],[10,0],[14,0,\"profile-details\"],[12],[1,\"\\n\"],[41,[30,0,[\"isAuthenticated\"]],[[[1,\"        \"],[41,[30,0,[\"user\",\"profile\"]],[[[1,\" \"],[3,\" Access the user directly from the service \"],[1,\"\\n          \"],[10,\"h2\"],[14,0,\"name\"],[12],[1,[30,0,[\"user\",\"profile\",\"nickname\"]]],[13],[1,\"\\n          \"],[8,[39,4],null,null,null],[1,\"\\n\"]],[]],[[[1,\"          \"],[10,2],[12],[1,\"Loading user...\"],[13],[1,\" \"],[3,\" Or another fallback message \"],[1,\"\\n\"]],[]]],[1,\"        \"],[11,\"button\"],[24,0,\"logout-button\"],[24,4,\"button\"],[4,[38,7],[\"click\",[30,0,[\"logout\"]]],null],[12],[1,\"Logout\"],[13],[1,\"\\n\"]],[]],null],[1,\"      \"],[10,\"h2\"],[14,0,\"points info\"],[12],[1,[30,0,[\"user\",\"profile\",\"trophies\"]]],[1,\" 🏆\"],[13],[1,\"\\n    \"],[13],[1,\"\\n\\n    \"],[3,\" Second row of profile details \"],[1,\"\\n    \"],[10,0],[14,0,\"profile-details\"],[12],[1,\"\\n      \"],[8,[39,8],null,[[\"@user\"],[[30,0,[\"user\",\"profile\"]]]],null],[1,\"\\n      \"],[10,\"h2\"],[14,0,\"info\"],[12],[1,\"Wins: \"],[1,[30,0,[\"user\",\"profile\",\"wins\"]]],[13],[1,\"\\n    \"],[13],[1,\"\\n\\n    \"],[10,0],[14,0,\"profile-details\"],[12],[1,\"\\n\"],[41,[30,0,[\"isOnline\"]],[[[1,\"        \"],[10,\"h2\"],[14,0,\"info\"],[12],[1,\"🟢 online\"],[13],[1,\"\\n\"]],[]],[[[1,\"        \"],[10,\"h2\"],[14,0,\"info\"],[12],[1,\"🔴 offline\"],[13],[1,\"\\n\"]],[]]],[1,\"      \"],[10,\"h2\"],[14,0,\"info\"],[12],[1,\"Losses: \"],[1,[30,0,[\"user\",\"profile\",\"losses\"]]],[13],[1,\"\\n    \"],[13],[1,\"\\n  \"],[13],[1,\"\\n\"],[13],[1,\"\\n\\n\"]],[],false,[\"div\",\"img\",\"if\",\"h2\",\"modal-profile\",\"p\",\"button\",\"on\",\"modal-game-history\"]]",
+    "id": "bw1NpvAp",
+    "block": "[[[10,0],[14,0,\"container-fluid row fill p-2\"],[12],[1,\"\\n\"],[1,\"  \"],[10,0],[14,0,\"col center\"],[12],[1,\"\\n    \"],[10,\"img\"],[15,\"src\",[29,[\"https://localhost/users/users\",[30,0,[\"user\",\"profile\",\"avatar\"]],\"/\"]]],[14,\"alt\",\"Profile Picture\"],[14,0,\"profile-pic\"],[12],[13],[1,\"\\n  \"],[13],[1,\"\\n\\n\"],[1,\"  \"],[10,0],[14,0,\"col-10\"],[12],[1,\"\\n\"],[1,\"    \"],[10,0],[14,0,\"profile-details\"],[12],[1,\"\\n\"],[41,[30,0,[\"isAuthenticated\"]],[[[1,\"        \"],[41,[30,0,[\"user\",\"profile\"]],[[[1,\" \"],[1,\"\\n          \"],[10,\"h2\"],[14,0,\"name\"],[12],[1,[30,0,[\"user\",\"profile\",\"nickname\"]]],[13],[1,\"\\n          \"],[8,[39,4],null,null,null],[1,\"\\n\"]],[]],[[[1,\"          \"],[10,2],[12],[1,\"Loading user...\"],[13],[1,\" \"],[1,\"\\n\"]],[]]],[1,\"        \"],[11,\"button\"],[24,0,\"logout-button\"],[24,4,\"button\"],[4,[38,7],[\"click\",[30,0,[\"logout\"]]],null],[12],[1,\"Logout\"],[13],[1,\"\\n\"]],[]],null],[1,\"      \"],[10,\"h2\"],[14,0,\"points info\"],[12],[1,[30,0,[\"user\",\"profile\",\"trophies\"]]],[1,\" 🏆\"],[13],[1,\"\\n    \"],[13],[1,\"\\n\\n\"],[1,\"    \"],[10,0],[14,0,\"profile-details\"],[12],[1,\"\\n      \"],[8,[39,8],null,[[\"@user\"],[[30,0,[\"user\",\"profile\"]]]],null],[1,\"\\n      \"],[10,\"h2\"],[14,0,\"info\"],[12],[1,\"Wins: \"],[1,[30,0,[\"user\",\"profile\",\"wins\"]]],[13],[1,\"\\n    \"],[13],[1,\"\\n\\n    \"],[10,0],[14,0,\"profile-details\"],[12],[1,\"\\n\"],[41,[30,0,[\"isOnline\"]],[[[1,\"        \"],[10,\"h2\"],[14,0,\"info\"],[12],[1,\"🟢 online\"],[13],[1,\"\\n\"]],[]],[[[1,\"        \"],[10,\"h2\"],[14,0,\"info\"],[12],[1,\"🔴 offline\"],[13],[1,\"\\n\"]],[]]],[1,\"      \"],[10,\"h2\"],[14,0,\"info\"],[12],[1,\"Losses: \"],[1,[30,0,[\"user\",\"profile\",\"losses\"]]],[13],[1,\"\\n    \"],[13],[1,\"\\n  \"],[13],[1,\"\\n\"],[13],[1,\"\\n\\n\"]],[],false,[\"div\",\"img\",\"if\",\"h2\",\"modal-profile\",\"p\",\"button\",\"on\",\"modal-game-history\"]]",
     "moduleName": "myapp/components/profile-own.hbs",
     "isStrictMode": false
   });
@@ -2184,7 +2196,7 @@
         const response = await fetch('/lobby/list/', {
           method: 'GET',
           headers: {
-            Authorization: `Bearer ${this.session.data.authenticated.access}`,
+            Authorization: `Bearer ${this.session.data.access}`,
             'Content-Type': 'application/json'
           }
         });
@@ -2310,7 +2322,7 @@
       _defineProperty(this, "intervalId", null);
       _defineProperty(this, "setFilter", type => {
         this.filter = type;
-        console.log("filter:", type);
+        console.log('filter:', type);
       });
       this.startFetchingUsers();
     }
@@ -2338,7 +2350,7 @@
         const response = await fetch('/users/users/profile-list/', {
           method: 'GET',
           headers: {
-            Authorization: `Bearer ${this.session.data.authenticated.access}`,
+            Authorization: `Bearer ${this.session.data.access}`,
             'Content-Type': 'application/json'
           }
         });
@@ -2368,7 +2380,7 @@
     enumerable: true,
     writable: true,
     initializer: function () {
-      return "all";
+      return 'all';
     }
   }), _descriptor3 = _applyDecoratedDescriptor(_class.prototype, "session", [_service.inject], {
     configurable: true,
@@ -2509,7 +2521,7 @@
         const response = await fetch('/users/users/profile-info/', {
           method: 'POST',
           headers: {
-            Authorization: `Bearer ${this.session.data.authenticated.access}`,
+            Authorization: `Bearer ${this.session.data.access}`,
             'Content-Type': 'application/json'
           },
           body: JSON.stringify({
@@ -2583,7 +2595,7 @@
         const response = await fetch('/pong/pong/create-room', {
           method: 'POST',
           headers: {
-            Authorization: `Bearer ${this.session.data.authenticated.token}`,
+            Authorization: `Bearer ${this.session.data.token}`,
             'Content-Type': 'application/json'
           },
           body: JSON.stringify({
@@ -2597,10 +2609,10 @@
         }
         const data = await response.json();
         if (data.room_name) {
-          if (data.player2 != "remote") this.gameData.waiting = false;
-          console.log("data:", data);
+          if (data.player2 != 'remote') this.gameData.waiting = false;
+          console.log('data:', data);
           this.gameData.setGameData(gameType, data);
-          console.log("gameData:", this.gameData.roomData.room_name);
+          console.log('gameData:', this.gameData.roomData.room_name);
           this.router.transitionTo('pong-game');
         }
       } catch (error) {
@@ -2660,10 +2672,9 @@
     async login(event) {
       event.preventDefault();
       try {
-        await this.session.authenticate('authenticator:token', this.username, this.password);
-        this.fetchUserData("");
+        await this.session.authenticate(this.username, this.password);
+        this.fetchUserData('');
         console.log(this.session.data);
-        console.log(this.session.data.authenticated.access);
         this.router.transitionTo('choose-game');
       } catch (error) {
         this.error = error;
@@ -2687,7 +2698,8 @@
 
         // Optionally, log in the user directly after registration
         await this.session.authenticate('authenticator:token', this.username, this.password);
-        this.fetchUserData("");
+        console.log("access:", this.session.data.access);
+        this.fetchUserData('');
         this.router.transitionTo('choose-game');
       } catch (error) {
         this.error = error.message || 'An error occurred during registration';
@@ -2698,7 +2710,7 @@
         const response = await fetch('/users/users/profile-info/', {
           method: 'POST',
           headers: {
-            Authorization: `Bearer ${this.session.data.authenticated.access}`,
+            Authorization: `Bearer ${this.session.data.access}`,
             'Content-Type': 'application/json'
           },
           body: JSON.stringify({
@@ -3377,20 +3389,6 @@
     }
   };
 });
-;define("myapp/initializers/ember-simple-auth", ["exports", "ember-simple-auth/initializers/ember-simple-auth"], function (_exports, _emberSimpleAuth) {
-  "use strict";
-
-  Object.defineProperty(_exports, "__esModule", {
-    value: true
-  });
-  Object.defineProperty(_exports, "default", {
-    enumerable: true,
-    get: function () {
-      return _emberSimpleAuth.default;
-    }
-  });
-  0; //eaimeta@70e063a35619d71f0,"ember-simple-auth/initializers/ember-simple-auth"eaimeta@70e063a35619d71f
-});
 ;define("myapp/initializers/load-bootstrap-config", ["exports", "myapp/config/environment", "ember-bootstrap/config", "ember-bootstrap/version"], function (_exports, _environment, _config, _version) {
   "use strict";
 
@@ -3604,7 +3602,7 @@
       _initializerDefineProperty(this, "session", _descriptor, this);
     }
     async beforeModel() {
-      if (!this.sessionInitialized) {
+      if (!this.session.Initialized) {
         await this.session.setup();
       }
     }
@@ -3747,7 +3745,7 @@
       _initializerDefineProperty(this, "session", _descriptor, this);
     }
     beforeModel() {
-      this.session.prohibitAuthentication('/');
+      this.session.prohibitAuthentication('choose-game');
     }
   }, _descriptor = _applyDecoratedDescriptor(_class.prototype, "session", [_service.inject], {
     configurable: true,
@@ -3882,8 +3880,8 @@
       _defineProperty(this, "socketRef", null);
       _defineProperty(this, "inputElement", null);
       // Reference to the input element
-      _defineProperty(this, "type", "all");
-      _defineProperty(this, "to_user", "");
+      _defineProperty(this, "type", 'all');
+      _defineProperty(this, "to_user", '');
       _defineProperty(this, "words", null);
       _defineProperty(this, "predefinedColors", {
         all: 'rgb(0 0 0)',
@@ -3891,8 +3889,8 @@
         whisper: 'rgb(255 49 255)',
         system: 'rgb(130 140 55)'
       });
-      console.log("connect ...");
-      const token = this.session.data.authenticated.access;
+      console.log('connect ...');
+      const token = this.session.data.access;
       const url = `wss://localhost/ws/chat/lobby/?token=${encodeURIComponent(token)}`;
       const socket = this.websockets.socketFor(url);
       socket.on('open', this.myOpenHandler, this);
@@ -3901,14 +3899,14 @@
       this.socketRef = socket;
     }
     myOpenHandler(event) {
-      console.log(`On open event has been called token: ${this.session.data.authenticated.access}`);
+      console.log(`On open event has been called token: ${this.session.data.access}`);
     }
     myMessageHandler(event) {
       console.log(`Message recieve: ${event.data}`);
       const newMessage = JSON.parse(event.data);
       if (newMessage.content.room_name) {
         if (this.user.profile.nickname !== newMessage.from) {
-          this.gameData.setGameData("private", newMessage.content);
+          this.gameData.setGameData('private', newMessage.content);
           this.router.transitionTo('pong-game');
         }
         return;
@@ -3945,12 +3943,12 @@
     }
     sendMessage() {
       let messageContent = this.messageInput.trim();
-      if (this.type !== "all") {
+      if (this.type !== 'all') {
         messageContent = this.words.slice(1).join(' ');
       }
-      if (this.type === "tournament") {
+      if (this.type === 'tournament') {
         const data = {
-          action: "message",
+          action: 'message',
           sender: this.user.profile.nickname,
           message: messageContent,
           timestamp: new Date().toISOString()
@@ -3966,11 +3964,11 @@
           timestamp: new Date().toISOString()
         }));
       }
-      if (this.type === "all") this.messageInput = '';else this.messageInput = this.words[0] + " ";
+      if (this.type === 'all') this.messageInput = '';else this.messageInput = this.words[0] + ' ';
     }
     sendGameAccept(data, user) {
       this.socketRef.send(JSON.stringify({
-        type: "invite",
+        type: 'invite',
         from: this.user.profile.nickname,
         to: user,
         content: data,
@@ -4030,20 +4028,6 @@
     initializer: null
   }), _class);
 });
-;define("myapp/services/cookies", ["exports", "ember-cookies/services/cookies"], function (_exports, _cookies) {
-  "use strict";
-
-  Object.defineProperty(_exports, "__esModule", {
-    value: true
-  });
-  Object.defineProperty(_exports, "default", {
-    enumerable: true,
-    get: function () {
-      return _cookies.default;
-    }
-  });
-  0; //eaimeta@70e063a35619d71f0,"ember-cookies/services/cookies"eaimeta@70e063a35619d71f
-});
 ;define("myapp/services/game-data", ["exports", "@ember/service", "@glimmer/tracking"], function (_exports, _service, _tracking) {
   "use strict";
 
@@ -4077,27 +4061,27 @@
       this.roomData = roomData;
       this.pongGame.winner = null;
       // Fetch user data for player_1 and player_2 asynchronously
-      if (roomData.player1 !== "AI" && roomData.player1 !== "local") this.player_1 = await this.fetchUserData(roomData.player1);else if (roomData.player1 !== "local") this.player_1 = {
-        nickname: "Computer",
-        avatar: "/media/default_photo/default_photo.png",
+      if (roomData.player1 !== 'AI' && roomData.player1 !== 'local') this.player_1 = await this.fetchUserData(roomData.player1);else if (roomData.player1 !== 'local') this.player_1 = {
+        nickname: 'Computer',
+        avatar: '/media/default_photo/default_photo.png',
         trophies: 999,
-        status: "online"
+        status: 'online'
       };else this.player_1 = {
-        nickname: "Player_2",
-        avatar: "/media/default_photo/default_photo.png",
+        nickname: 'Player_2',
+        avatar: '/media/default_photo/default_photo.png',
         trophies: 0,
-        status: "online"
+        status: 'online'
       };
-      if (roomData.player2 !== "AI" && roomData.player2 !== "local") this.player_2 = await this.fetchUserData(roomData.player2);else if (roomData.player2 !== "local") this.player_2 = {
-        nickname: "Computer",
-        avatar: "/media/default_photo/default_photo.png",
+      if (roomData.player2 !== 'AI' && roomData.player2 !== 'local') this.player_2 = await this.fetchUserData(roomData.player2);else if (roomData.player2 !== 'local') this.player_2 = {
+        nickname: 'Computer',
+        avatar: '/media/default_photo/default_photo.png',
         trophies: 999,
-        status: "online"
+        status: 'online'
       };else this.player_2 = {
-        nickname: "Player_2",
-        avatar: "/media/default_photo/default_photo.png",
+        nickname: 'Player_2',
+        avatar: '/media/default_photo/default_photo.png',
         trophies: 0,
-        status: "online"
+        status: 'online'
       };
       this.pongGame.connectToRoom(this.roomData.room_name);
     }
@@ -4108,7 +4092,7 @@
       this.player_2 = null;
     }
     async setPlayer2(nickname) {
-      console.log("setPlayer2", nickname);
+      console.log('setPlayer2', nickname);
       this.player_2 = await this.fetchUserData(nickname);
       this.waiting = false;
     }
@@ -4117,7 +4101,7 @@
         const response = await fetch('/users/users/profile-info/', {
           method: 'POST',
           headers: {
-            Authorization: `Bearer ${this.session.data.authenticated.access}`,
+            Authorization: `Bearer ${this.session.data.access}`,
             'Content-Type': 'application/json'
           },
           body: JSON.stringify({
@@ -4260,38 +4244,38 @@
       window.addEventListener('keyup', this.handleKeyUp.bind(this));
     }
     handleKeyDown(event) {
-      let direction_p1 = "";
-      let direction_p2 = "";
-      let type_p1 = "";
-      let type_p2 = "";
+      let direction_p1 = '';
+      let direction_p2 = '';
+      let type_p1 = '';
+      let type_p2 = '';
       if (this.keyStates[event.key]) {
         return; // Key is already released; no need to resend the event
       }
       switch (event.key) {
         case 'ArrowUp':
           if (!this.keyStates.ArrowDown) {
-            direction_p1 = "up";
-            type_p1 = "start_move";
+            direction_p1 = 'up';
+            type_p1 = 'start_move';
           } else return;
           break;
         case 'ArrowDown':
           if (!this.keyStates.ArrowUp) {
-            direction_p1 = "down";
-            type_p1 = "start_move";
+            direction_p1 = 'down';
+            type_p1 = 'start_move';
           } else return;
           break;
         case 'w':
         case 'W':
           if (!this.keyStates.w && !this.keyStates.W) {
-            direction_p2 = "up";
-            type_p2 = "start_move";
+            direction_p2 = 'up';
+            type_p2 = 'start_move';
           } else return;
           break;
         case 's':
         case 'S':
           if (!this.keyStates.s && !this.keyStates.S) {
-            direction_p2 = "down";
-            type_p2 = "start_move";
+            direction_p2 = 'down';
+            type_p2 = 'start_move';
           } else return;
           break;
       }
@@ -4305,27 +4289,27 @@
       this.sendMessage(data);
     }
     handleKeyUp(event) {
-      let direction_p1 = "";
-      let direction_p2 = "";
-      let type_p1 = "";
-      let type_p2 = "";
+      let direction_p1 = '';
+      let direction_p2 = '';
+      let type_p1 = '';
+      let type_p2 = '';
       if (!this.keyStates[event.key]) {
         return; // Key is already released; no need to resend the event
       }
       switch (event.key) {
         case 'ArrowUp':
-          type_p1 = "stop_move";
+          type_p1 = 'stop_move';
           break;
         case 'ArrowDown':
-          type_p1 = "stop_move";
+          type_p1 = 'stop_move';
           break;
         case 'w':
         case 'W':
-          type_p2 = "stop_move";
+          type_p2 = 'stop_move';
           break;
         case 's':
         case 'S':
-          type_p2 = "stop_move";
+          type_p2 = 'stop_move';
           break;
       }
       this.keyStates[event.key] = false;
@@ -4349,7 +4333,7 @@
       if (this.winner && !this.winnerSend) {
         this.winnerSend = true;
         if (this.tournament.currentLobby) {
-          console.log("trans to tournament");
+          console.log('trans to tournament');
           //if (this.winner !== this.user.profile.nickname)
           //  this.tournament.playerInTournament = false;
           this.router.transitionTo('tournament');
@@ -4366,11 +4350,11 @@
       super.willDestroy();
     }
     async connectToRoom(roomName) {
-      const token = this.session.data.authenticated.access;
+      const token = this.session.data.access;
       const wsUrl = `wss://localhost/ws/pong-game/${roomName}/?token=${encodeURIComponent(token)}`;
-      console.log("connect to:", wsUrl);
+      console.log('connect to:', wsUrl);
       if (this.socketRef) {
-        console.log("disconnect");
+        console.log('disconnect');
         this.disconnectFromGame(roomName);
       }
       const socket = this.websockets.socketFor(wsUrl);
@@ -4381,11 +4365,11 @@
       this.set('socketRef', socket);
     }
     async disconnectFromGame(roomName) {
-      const token = this.session.data.authenticated.access;
+      const token = this.session.data.access;
       const wsUrl = `wss://localhost/ws/pong-game/${roomName}/?token=${encodeURIComponent(token)}`;
-      console.log("websocket to close:", roomName);
+      console.log('websocket to close:', roomName);
       this.websockets.closeSocketFor(wsUrl);
-      console.log("websocket closed", this.websockets.sockets);
+      console.log('websocket closed', this.websockets.sockets);
 
       // Remove event handlers
       this.socketRef.off('open', this.onOpen, this);
@@ -4402,7 +4386,7 @@
       this.updateGameState(parsedMessage);
     }
     onClose(event) {
-      console.log("close:", event);
+      console.log('close:', event);
     }
     sendMessage(data) {
       if (this.socketRef) {
@@ -4501,19 +4485,90 @@
     initializer: null
   }), _class);
 });
-;define("myapp/services/session", ["exports", "ember-simple-auth/services/session"], function (_exports, _session) {
+;define("myapp/services/session", ["exports", "@ember/service", "@glimmer/tracking"], function (_exports, _service, _tracking) {
   "use strict";
 
   Object.defineProperty(_exports, "__esModule", {
     value: true
   });
-  Object.defineProperty(_exports, "default", {
-    enumerable: true,
-    get: function () {
-      return _session.default;
+  _exports.default = void 0;
+  var _class, _descriptor, _descriptor2, _descriptor3, _descriptor4;
+  0; //eaimeta@70e063a35619d71f0,"@ember/service",0,"@glimmer/tracking",0,"@ember/service"eaimeta@70e063a35619d71f
+  function _initializerDefineProperty(e, i, r, l) { r && Object.defineProperty(e, i, { enumerable: r.enumerable, configurable: r.configurable, writable: r.writable, value: r.initializer ? r.initializer.call(l) : void 0 }); }
+  function _defineProperty(e, r, t) { return (r = _toPropertyKey(r)) in e ? Object.defineProperty(e, r, { value: t, enumerable: !0, configurable: !0, writable: !0 }) : e[r] = t, e; }
+  function _toPropertyKey(t) { var i = _toPrimitive(t, "string"); return "symbol" == typeof i ? i : i + ""; }
+  function _toPrimitive(t, r) { if ("object" != typeof t || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != typeof i) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
+  function _applyDecoratedDescriptor(i, e, r, n, l) { var a = {}; return Object.keys(n).forEach(function (i) { a[i] = n[i]; }), a.enumerable = !!a.enumerable, a.configurable = !!a.configurable, ("value" in a || a.initializer) && (a.writable = !0), a = r.slice().reverse().reduce(function (r, n) { return n(i, e, r) || r; }, a), l && void 0 !== a.initializer && (a.value = a.initializer ? a.initializer.call(l) : void 0, a.initializer = void 0), void 0 === a.initializer ? (Object.defineProperty(i, e, a), null) : a; }
+  function _initializerWarningHelper(r, e) { throw Error("Decorating class property failed. Please ensure that transform-class-properties is enabled and runs after the decorators transform."); }
+  let SessionService = _exports.default = (_class = class SessionService extends _service.default {
+    constructor(...args) {
+      super(...args);
+      _initializerDefineProperty(this, "isAuthenticated", _descriptor, this);
+      _initializerDefineProperty(this, "data", _descriptor2, this);
+      _initializerDefineProperty(this, "Initialized", _descriptor3, this);
+      _initializerDefineProperty(this, "router", _descriptor4, this);
     }
-  });
-  0; //eaimeta@70e063a35619d71f0,"ember-simple-auth/services/session"eaimeta@70e063a35619d71f
+    requireAuthentication(type, route) {
+      if (type === 'transition') this.router.transitionTo(route);
+    }
+    async authenticate(username, password) {
+      //let response = await fetch('/api/token.json', {
+      let response = await fetch('/auth/auth/login/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          username,
+          password
+        })
+      });
+      if (response.ok) {
+        // Await the response.json() to get the actual data
+        this.data = await response.json();
+
+        // Now you can safely access this.data
+        console.log("access:", this.data.access);
+        this.isAuthenticated = true;
+      } else {
+        let error = await response.text();
+        throw new Error(error);
+      }
+    }
+    invalidate() {
+      this.isAuthenticated = false;
+      this.data = null;
+      this.Initialized = false;
+      this.router.transitionTo('login');
+    }
+    prohibitAuthentication(route) {
+      if (this.isAuthenticated) this.router.transitionTo(route);
+    }
+    setup() {
+      this.Initialized = true;
+      this.router.transitionTo('login');
+    }
+  }, _descriptor = _applyDecoratedDescriptor(_class.prototype, "isAuthenticated", [_tracking.tracked], {
+    configurable: true,
+    enumerable: true,
+    writable: true,
+    initializer: null
+  }), _descriptor2 = _applyDecoratedDescriptor(_class.prototype, "data", [_tracking.tracked], {
+    configurable: true,
+    enumerable: true,
+    writable: true,
+    initializer: null
+  }), _descriptor3 = _applyDecoratedDescriptor(_class.prototype, "Initialized", [_tracking.tracked], {
+    configurable: true,
+    enumerable: true,
+    writable: true,
+    initializer: null
+  }), _descriptor4 = _applyDecoratedDescriptor(_class.prototype, "router", [_service.inject], {
+    configurable: true,
+    enumerable: true,
+    writable: true,
+    initializer: null
+  }), _class);
 });
 ;define("myapp/services/socket-io", ["exports", "ember-websockets/services/socket-io"], function (_exports, _socketIo) {
   "use strict";
@@ -4591,10 +4646,10 @@
       });
     }
     async connectToLobby(tournamentName) {
-      const token = this.session.data.authenticated.access;
+      const token = this.session.data.access;
       const wsUrl = `wss://localhost/ws/tournament/${tournamentName}/?token=${encodeURIComponent(token)}`;
       if (this.socketRef) {
-        console.log("disconnect");
+        console.log('disconnect');
         this.disconnectFromLobby(this.currentLobby);
       }
       const socket = this.websockets.socketFor(wsUrl);
@@ -4605,11 +4660,11 @@
       this.set('socketRef', socket);
     }
     async disconnectFromLobby(tournamentName) {
-      const token = this.session.data.authenticated.access;
+      const token = this.session.data.access;
       const wsUrl = `wss://localhost/ws/tournament/${tournamentName}/?token=${encodeURIComponent(token)}`;
-      console.log("websocket to close:", tournamentName);
+      console.log('websocket to close:', tournamentName);
       this.websockets.closeSocketFor(wsUrl);
-      console.log("websocket closed", this.websockets.sockets);
+      console.log('websocket closed', this.websockets.sockets);
 
       // Remove event handlers
       this.socketRef.off('open', this.onOpen, this);
@@ -4641,25 +4696,25 @@
       console.log('WebSocket message received:', event.data);
       const parsedMessage = JSON.parse(event.data);
       switch (parsedMessage.type) {
-        case "create":
+        case 'create':
           this.handleCreate(parsedMessage);
           break;
-        case "result":
+        case 'result':
           this.handleResult(parsedMessage);
           break;
-        case "join":
+        case 'join':
           this.handleJoin(parsedMessage);
           break;
-        case "message":
+        case 'message':
           this.handleMessage(parsedMessage);
           break;
-        case "leave":
+        case 'leave':
           this.handleLeave(parsedMessage);
           break;
-        case "match":
+        case 'match':
           this.handleMatch(parsedMessage);
           break;
-        case "tournament_winner":
+        case 'tournament_winner':
           this.handleTournamentWinner(parsedMessage);
           break;
         default:
@@ -4727,7 +4782,7 @@
       const data = {
         type: 'tournament',
         from: 'System',
-        content: "Get ready! Your next game is against " + opponent + " and it starts in just 20 seconds!"
+        content: 'Get ready! Your next game is against ' + opponent + ' and it starts in just 20 seconds!'
       };
       this.chat.messages = [...this.chat.messages, data];
       const roomdata = {
@@ -4735,7 +4790,7 @@
         player1: parsedMessage.player1,
         player2: parsedMessage.player2
       };
-      this.gameData.setGameData("tournament", roomdata);
+      this.gameData.setGameData('tournament', roomdata);
       this.router.transitionTo('pong-game');
     }
     handleTournamentWinner(parsedMessage) {}
@@ -4761,7 +4816,7 @@
         const response = await fetch('/users/users/profile-info/', {
           method: 'POST',
           headers: {
-            Authorization: `Bearer ${this.session.data.authenticated.access}`,
+            Authorization: `Bearer ${this.session.data.access}`,
             'Content-Type': 'application/json'
           },
           body: JSON.stringify({
@@ -4885,7 +4940,7 @@
         const response = await fetch('/users/users/profile-info/', {
           method: 'POST',
           headers: {
-            Authorization: `Bearer ${this.session.data.authenticated.access}`,
+            Authorization: `Bearer ${this.session.data.access}`,
             'Content-Type': 'application/json'
           },
           body: JSON.stringify({
@@ -4928,20 +4983,6 @@
     }
   });
   0; //eaimeta@70e063a35619d71f0,"ember-websockets/services/websockets"eaimeta@70e063a35619d71f
-});
-;define("myapp/session-stores/application", ["exports", "ember-simple-auth/session-stores/application"], function (_exports, _application) {
-  "use strict";
-
-  Object.defineProperty(_exports, "__esModule", {
-    value: true
-  });
-  Object.defineProperty(_exports, "default", {
-    enumerable: true,
-    get: function () {
-      return _application.default;
-    }
-  });
-  0; //eaimeta@70e063a35619d71f0,"ember-simple-auth/session-stores/application"eaimeta@70e063a35619d71f
 });
 ;define("myapp/templates/application", ["exports", "@ember/template-factory"], function (_exports, _templateFactory) {
   "use strict";
@@ -5112,10 +5153,11 @@
       {{/if}}
     </div>
   </div>
+  
   */
   {
-    "id": "4p4XKAP+",
-    "block": "[[[10,0],[14,0,\"overlay\"],[12],[1,\"\\n  \"],[10,0],[14,0,\"overlay-content\"],[12],[1,\"\\n    \"],[11,\"form\"],[4,[38,2],[\"submit\",[30,0,[\"login\"]]],null],[12],[1,\"\\n      \"],[10,\"label\"],[12],[1,\"Username:\"],[13],[1,\"\\n      \"],[11,\"input\"],[24,3,\"username\"],[24,4,\"text\"],[4,[38,2],[\"change\",[28,[37,5],[[30,0,[\"update\"]],\"username\"],null]],null],[12],[13],[1,\"\\n\\n      \"],[10,\"label\"],[12],[1,\"Password:\"],[13],[1,\"\\n      \"],[11,\"input\"],[24,3,\"password\"],[24,4,\"password\"],[4,[38,2],[\"change\",[28,[37,5],[[30,0,[\"update\"]],\"password\"],null]],null],[12],[13],[1,\"\\n\\n      \"],[10,\"button\"],[14,0,\"login\"],[14,4,\"submit\"],[12],[1,\"Login\"],[13],[1,\"\\n      \"],[11,\"button\"],[24,0,\"register-button\"],[24,4,\"button\"],[4,[38,2],[\"click\",[30,0,[\"register\"]]],null],[12],[1,\"Register\"],[13],[1,\"\\n    \"],[13],[1,\"\\n\\n\"],[41,[30,0,[\"error\"]],[[[1,\"      \"],[10,2],[12],[10,\"strong\"],[12],[1,[30,0,[\"error\"]]],[13],[13],[1,\"\\n\"]],[]],null],[1,\"  \"],[13],[1,\"\\n\"],[13]],[],false,[\"div\",\"form\",\"on\",\"label\",\"input\",\"fn\",\"button\",\"if\",\"p\",\"strong\"]]",
+    "id": "u7BVp89c",
+    "block": "[[[10,0],[14,0,\"overlay\"],[12],[1,\"\\n  \"],[10,0],[14,0,\"overlay-content\"],[12],[1,\"\\n    \"],[11,\"form\"],[4,[38,2],[\"submit\",[30,0,[\"login\"]]],null],[12],[1,\"\\n      \"],[10,\"label\"],[12],[1,\"Username:\"],[13],[1,\"\\n      \"],[11,\"input\"],[24,3,\"username\"],[24,4,\"text\"],[4,[38,2],[\"change\",[28,[37,5],[[30,0,[\"update\"]],\"username\"],null]],null],[12],[13],[1,\"\\n\\n      \"],[10,\"label\"],[12],[1,\"Password:\"],[13],[1,\"\\n      \"],[11,\"input\"],[24,3,\"password\"],[24,4,\"password\"],[4,[38,2],[\"change\",[28,[37,5],[[30,0,[\"update\"]],\"password\"],null]],null],[12],[13],[1,\"\\n\\n      \"],[10,\"button\"],[14,0,\"login\"],[14,4,\"submit\"],[12],[1,\"Login\"],[13],[1,\"\\n      \"],[11,\"button\"],[24,0,\"register-button\"],[24,4,\"button\"],[4,[38,2],[\"click\",[30,0,[\"register\"]]],null],[12],[1,\"Register\"],[13],[1,\"\\n    \"],[13],[1,\"\\n\\n\"],[41,[30,0,[\"error\"]],[[[1,\"      \"],[10,2],[12],[10,\"strong\"],[12],[1,[30,0,[\"error\"]]],[13],[13],[1,\"\\n\"]],[]],null],[1,\"  \"],[13],[1,\"\\n\"],[13],[1,\"\\n\"]],[],false,[\"div\",\"form\",\"on\",\"label\",\"input\",\"fn\",\"button\",\"if\",\"p\",\"strong\"]]",
     "moduleName": "myapp/templates/login.hbs",
     "isStrictMode": false
   });
@@ -5157,7 +5199,7 @@
   		</div>
   		<div class="button-container col-5">
   			{{#if (and (eq this.tournament.admin this.user.profile.nickname) this.tournament.playerInTournament)}}
-    				<button class="nav-button start" type="button" {{on "click" (fn this.tournament.startTournament)}}>
+    				<button class="nav-button start" type="button" {{on "click" this.tournament.startTournament}}>
       				Start Tournament
     				</button>
   			{{/if}}
@@ -5178,8 +5220,8 @@
   </div>
   */
   {
-    "id": "ysbN+gDg",
-    "block": "[[[10,0],[14,0,\"container-fluid row\"],[12],[1,\"\\n\"],[41,[30,0,[\"tournament\",\"currentLobby\"]],[[[1,\"\\t\\t\"],[10,0],[14,0,\"col-7\"],[12],[1,\"\\n\\t\\t\\t\"],[10,\"h2\"],[14,0,\"points center\"],[12],[1,\"👥 \"],[1,[30,0,[\"tournament\",\"currentPlayers\",\"length\"]]],[1,\"/10\"],[13],[1,\"\\n\\t\\t\\t\"],[8,[39,3],null,null,null],[1,\"\\n\\t\\t\"],[13],[1,\"\\n\\t\\t\"],[10,0],[14,0,\"button-container col-5\"],[12],[1,\"\\n\"],[41,[28,[37,4],[[28,[37,5],[[30,0,[\"tournament\",\"admin\"]],[30,0,[\"user\",\"profile\",\"nickname\"]]],null],[30,0,[\"tournament\",\"playerInTournament\"]]],null],[[[1,\"  \\t\\t\\t\\t\"],[11,\"button\"],[24,0,\"nav-button start\"],[24,4,\"button\"],[4,[38,7],[\"click\",[28,[37,8],[[30,0,[\"tournament\",\"startTournament\"]]],null]],null],[12],[1,\"\\n    \\t\\t\\t\\tStart Tournament\\n  \\t\\t\\t\\t\"],[13],[1,\"\\n\"]],[]],null],[1,\"\\n\\t\\t\"],[11,\"button\"],[24,0,\"nav-button cancel\"],[24,4,\"button\"],[4,[38,7],[\"click\",[28,[37,8],[[30,0,[\"tournament\",\"disconnectFromLobby\"]],[30,0,[\"tournament\",\"currentLobby\"]]],null]],null],[12],[1,\"Leave\"],[13],[1,\" \\n\\t\\t\"],[13],[1,\"\\n\"]],[]],[[[1,\"\\t\\t\"],[10,0],[14,0,\"d-flex justify-content-center align-items-center\"],[12],[1,\"\\n\\t\\t\\t\"],[11,\"button\"],[24,0,\"nav-button mt-5\"],[24,4,\"button\"],[4,[38,7],[\"click\",[28,[37,8],[[30,0,[\"tournament\",\"connectToLobby\"]],[30,0,[\"user\",\"profile\",\"nickname\"]]],null]],null],[12],[1,\"\\n\\t\\t\\tCreate Tournament\\n\\t\\t\\t\"],[13],[1,\"\\n\\t\\t\\t\"],[13],[1,\"\\n\"]],[]]],[13]],[],false,[\"div\",\"if\",\"h2\",\"user-list-tournament\",\"and\",\"eq\",\"button\",\"on\",\"fn\"]]",
+    "id": "f/F9ub5o",
+    "block": "[[[10,0],[14,0,\"container-fluid row\"],[12],[1,\"\\n\"],[41,[30,0,[\"tournament\",\"currentLobby\"]],[[[1,\"\\t\\t\"],[10,0],[14,0,\"col-7\"],[12],[1,\"\\n\\t\\t\\t\"],[10,\"h2\"],[14,0,\"points center\"],[12],[1,\"👥 \"],[1,[30,0,[\"tournament\",\"currentPlayers\",\"length\"]]],[1,\"/10\"],[13],[1,\"\\n\\t\\t\\t\"],[8,[39,3],null,null,null],[1,\"\\n\\t\\t\"],[13],[1,\"\\n\\t\\t\"],[10,0],[14,0,\"button-container col-5\"],[12],[1,\"\\n\"],[41,[28,[37,4],[[28,[37,5],[[30,0,[\"tournament\",\"admin\"]],[30,0,[\"user\",\"profile\",\"nickname\"]]],null],[30,0,[\"tournament\",\"playerInTournament\"]]],null],[[[1,\"  \\t\\t\\t\\t\"],[11,\"button\"],[24,0,\"nav-button start\"],[24,4,\"button\"],[4,[38,7],[\"click\",[30,0,[\"tournament\",\"startTournament\"]]],null],[12],[1,\"\\n    \\t\\t\\t\\tStart Tournament\\n  \\t\\t\\t\\t\"],[13],[1,\"\\n\"]],[]],null],[1,\"\\n\\t\\t\"],[11,\"button\"],[24,0,\"nav-button cancel\"],[24,4,\"button\"],[4,[38,7],[\"click\",[28,[37,8],[[30,0,[\"tournament\",\"disconnectFromLobby\"]],[30,0,[\"tournament\",\"currentLobby\"]]],null]],null],[12],[1,\"Leave\"],[13],[1,\" \\n\\t\\t\"],[13],[1,\"\\n\"]],[]],[[[1,\"\\t\\t\"],[10,0],[14,0,\"d-flex justify-content-center align-items-center\"],[12],[1,\"\\n\\t\\t\\t\"],[11,\"button\"],[24,0,\"nav-button mt-5\"],[24,4,\"button\"],[4,[38,7],[\"click\",[28,[37,8],[[30,0,[\"tournament\",\"connectToLobby\"]],[30,0,[\"user\",\"profile\",\"nickname\"]]],null]],null],[12],[1,\"\\n\\t\\t\\tCreate Tournament\\n\\t\\t\\t\"],[13],[1,\"\\n\\t\\t\\t\"],[13],[1,\"\\n\"]],[]]],[13]],[],false,[\"div\",\"if\",\"h2\",\"user-list-tournament\",\"and\",\"eq\",\"button\",\"on\",\"fn\"]]",
     "moduleName": "myapp/templates/tournament.hbs",
     "isStrictMode": false
   });
@@ -5275,62 +5317,6 @@
       available: '5.2'
     }
   }));
-});
-;define("myapp/utils/inject", ["exports", "ember-simple-auth/utils/inject"], function (_exports, _inject) {
-  "use strict";
-
-  Object.defineProperty(_exports, "__esModule", {
-    value: true
-  });
-  Object.defineProperty(_exports, "default", {
-    enumerable: true,
-    get: function () {
-      return _inject.default;
-    }
-  });
-  0; //eaimeta@70e063a35619d71f0,"ember-simple-auth/utils/inject"eaimeta@70e063a35619d71f
-});
-;define("myapp/utils/is-fastboot", ["exports", "ember-simple-auth/utils/is-fastboot"], function (_exports, _isFastboot) {
-  "use strict";
-
-  Object.defineProperty(_exports, "__esModule", {
-    value: true
-  });
-  Object.defineProperty(_exports, "default", {
-    enumerable: true,
-    get: function () {
-      return _isFastboot.default;
-    }
-  });
-  0; //eaimeta@70e063a35619d71f0,"ember-simple-auth/utils/is-fastboot"eaimeta@70e063a35619d71f
-});
-;define("myapp/utils/location", ["exports", "ember-simple-auth/utils/location"], function (_exports, _location) {
-  "use strict";
-
-  Object.defineProperty(_exports, "__esModule", {
-    value: true
-  });
-  Object.defineProperty(_exports, "default", {
-    enumerable: true,
-    get: function () {
-      return _location.default;
-    }
-  });
-  0; //eaimeta@70e063a35619d71f0,"ember-simple-auth/utils/location"eaimeta@70e063a35619d71f
-});
-;define("myapp/utils/objects-are-equal", ["exports", "ember-simple-auth/utils/objects-are-equal"], function (_exports, _objectsAreEqual) {
-  "use strict";
-
-  Object.defineProperty(_exports, "__esModule", {
-    value: true
-  });
-  Object.defineProperty(_exports, "default", {
-    enumerable: true,
-    get: function () {
-      return _objectsAreEqual.default;
-    }
-  });
-  0; //eaimeta@70e063a35619d71f0,"ember-simple-auth/utils/objects-are-equal"eaimeta@70e063a35619d71f
 });
 ;
 
