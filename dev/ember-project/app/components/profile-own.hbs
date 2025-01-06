@@ -1,26 +1,26 @@
 <div class="container-fluid row fill p-2">
-  <!-- Profile picture column (1 part) -->
+  {{!-- Profile picture column (1 part) --}}
   <div class="col center">
     <img src="https://localhost/users/users{{this.user.profile.avatar}}/" alt="Profile Picture" class="profile-pic" />
   </div>
 
-  <!-- Profile details column (3 parts) -->
+  {{!-- Profile details column (3 parts) --}}
   <div class="col-10">
-    <!-- First row of profile details -->
+    {{!-- First row of profile details --}}
     <div class="profile-details">
       {{#if this.isAuthenticated}}
-        {{#if this.user.profile}} <!-- Access the user directly from the service -->
+        {{#if this.user.profile}} {{!-- Access the user directly from the service --}}
           <h2 class="name">{{this.user.profile.nickname}}</h2>
           <ModalProfile/>
         {{else}}
-          <p>Loading user...</p> <!-- Or another fallback message -->
+          <p>Loading user...</p> {{!-- Or another fallback message --}}
         {{/if}}
         <button class="logout-button" type="button" {{on "click" this.logout}}>Logout</button>
       {{/if}}
       <h2 class="points info">{{this.user.profile.trophies}} 🏆</h2>
     </div>
 
-    <!-- Second row of profile details -->
+    {{!-- Second row of profile details --}}
     <div class="profile-details">
       <ModalGameHistory @user={{this.user.profile}}/>
       <h2 class="info">Wins: {{this.user.profile.wins}}</h2>

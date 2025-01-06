@@ -20,38 +20,38 @@ export default class GameDataService extends Service {
 
     this.pongGame.winner = null;
     // Fetch user data for player_1 and player_2 asynchronously
-    if(roomData.player1 !== "AI" && roomData.player1 !== "local")
+    if (roomData.player1 !== 'AI' && roomData.player1 !== 'local')
       this.player_1 = await this.fetchUserData(roomData.player1);
-    else if (roomData.player1 !== "local")
+    else if (roomData.player1 !== 'local')
       this.player_1 = {
-				nickname: "Computer",
-				avatar: "/media/default_photo/default_photo.png",
-				trophies: 999,
-        status: "online"
-			  }
+        nickname: 'Computer',
+        avatar: '/media/default_photo/default_photo.png',
+        trophies: 999,
+        status: 'online',
+      };
     else
       this.player_1 = {
-        nickname: "Player_2",
-        avatar: "/media/default_photo/default_photo.png",
+        nickname: 'Player_2',
+        avatar: '/media/default_photo/default_photo.png',
         trophies: 0,
-        status: "online"
-        }
-    if(roomData.player2 !== "AI" && roomData.player2 !== "local")
+        status: 'online',
+      };
+    if (roomData.player2 !== 'AI' && roomData.player2 !== 'local')
       this.player_2 = await this.fetchUserData(roomData.player2);
-    else if (roomData.player2 !== "local")
+    else if (roomData.player2 !== 'local')
       this.player_2 = {
-				nickname: "Computer",
-				avatar: "/media/default_photo/default_photo.png",
-				trophies: 999,
-        status: "online"
-			  }
+        nickname: 'Computer',
+        avatar: '/media/default_photo/default_photo.png',
+        trophies: 999,
+        status: 'online',
+      };
     else
-    this.player_2 = {
-      nickname: "Player_2",
-      avatar: "/media/default_photo/default_photo.png",
-      trophies: 0,
-      status: "online"
-      }
+      this.player_2 = {
+        nickname: 'Player_2',
+        avatar: '/media/default_photo/default_photo.png',
+        trophies: 0,
+        status: 'online',
+      };
     this.pongGame.connectToRoom(this.roomData.room_name);
   }
 
@@ -62,9 +62,8 @@ export default class GameDataService extends Service {
     this.player_2 = null;
   }
 
-  async setPlayer2(nickname)
-  {
-    console.log("setPlayer2", nickname);
+  async setPlayer2(nickname) {
+    console.log('setPlayer2', nickname);
     this.player_2 = await this.fetchUserData(nickname);
     this.waiting = false;
   }
@@ -72,12 +71,12 @@ export default class GameDataService extends Service {
   async fetchUserData(nickname) {
     try {
       const response = await fetch('/users/users/profile-info/', {
-        method: 'POST', 
+        method: 'POST',
         headers: {
-          Authorization: `Bearer ${this.session.data.authenticated.access}`, 
+          Authorization: `Bearer ${this.session.data.access}`,
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ nickname }) 
+        body: JSON.stringify({ nickname }),
       });
 
       if (!response.ok) {

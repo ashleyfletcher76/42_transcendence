@@ -19,14 +19,28 @@
           type="button" {{on "click" this.playGame}}>
           🎮
         </button>
+        {{#if this.isFriend}}
         <button class="emoji-button info" data-bs-toggle="tooltip" data-bs-placement="top" title="Add Friend"
-          type="button" {{on "click" this.addFriend}}>
+          type="button" {{on "click" (fn this.addFriend "remove")}}>
+          ➖ 
+        </button>
+        {{else}}
+        <button class="emoji-button info" data-bs-toggle="tooltip" data-bs-placement="top" title="Add Friend"
+          type="button" {{on "click" (fn this.addFriend "add")}}>
           ➕
         </button>
+        {{/if}}
+        {{#if this.isBlocked}}
+        <button class="emoji-button info" data-bs-toggle="tooltip" data-bs-placement="top" title="Block User"
+          type="button" {{on "click" (fn this.blockUser "remove")}}>
+          ✅ 
+        </button>
+        {{else}}
         <button class="emoji-button info" data-bs-toggle="tooltip" data-bs-placement="top" title="Block User"
           type="button" {{on "click" (fn this.blockUser "add")}}>
           🚫
         </button>
+        {{/if}}
       </div>
       <h2 class="points">{{@selectedUser.trophies}}🏆</h2>
     </div>

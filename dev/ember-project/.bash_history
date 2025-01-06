@@ -88,3 +88,6 @@ npm install
 exit
 npm install
 exit
+npm uninstall ember-simple-auth
+ember generate service session
+exit

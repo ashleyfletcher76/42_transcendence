@@ -6,7 +6,7 @@
 		</div>
 		<div class="button-container col-5">
 			{{#if (and (eq this.tournament.admin this.user.profile.nickname) this.tournament.playerInTournament)}}
-  				<button class="nav-button start" type="button" {{on "click" (fn this.tournament.startTournament)}}>
+  				<button class="nav-button start" type="button" {{on "click" this.tournament.startTournament}}>
     				Start Tournament
   				</button>
 			{{/if}}

@@ -23,7 +23,10 @@ export default class ChatComponent extends Component {
       if (this.showTournament && message.type === 'tournament') {
         return true;
       }
-      if (this.showSystem && (message.type === 'add' || message.type === 'invite')) {
+      if (
+        this.showSystem &&
+        (message.type === 'add' || message.type === 'invite')
+      ) {
         return true;
       }
       return false;
@@ -66,5 +69,4 @@ export default class ChatComponent extends Component {
   setInputRef(element) {
     this.chat.setInputElement(element); // Pass the input element reference to the service
   }
-
 }

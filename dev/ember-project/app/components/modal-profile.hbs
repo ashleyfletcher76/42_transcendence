@@ -37,6 +37,7 @@
     </div>
   </modal.body>
   <modal.footer style="background-color: #706363;">
+    <label class="ERROR">{{this.error}}</label>
     <BsButton @onClick={{modal.close}}>Cancel</BsButton>
     <BsButton @type="success" @onClick={{this.submit}}>Save</BsButton>
   </modal.footer>

@@ -23,13 +23,11 @@ export default class LoginController extends Controller {
 
     try {
       await this.session.authenticate(
-        'authenticator:token',
         this.username,
         this.password,
       );
-      this.fetchUserData("");
+      this.fetchUserData('');
       console.log(this.session.data);
-      console.log(this.session.data.authenticated.access);
       this.router.transitionTo('choose-game');
     } catch (error) {
       this.error = error;
@@ -60,7 +58,8 @@ export default class LoginController extends Controller {
         this.username,
         this.password,
       );
-      this.fetchUserData("");
+      console.log("access:", this.session.data.access);
+      this.fetchUserData('');
       this.router.transitionTo('choose-game');
     } catch (error) {
       this.error = error.message || 'An error occurred during registration';
@@ -70,14 +69,14 @@ export default class LoginController extends Controller {
   async fetchUserData(nickname) {
     try {
       const response = await fetch('/users/users/profile-info/', {
-        method: 'POST', 
+        method: 'POST',
         headers: {
-          Authorization: `Bearer ${this.session.data.authenticated.access}`, 
+          Authorization: `Bearer ${this.session.data.access}`,
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ nickname }) 
+        body: JSON.stringify({ nickname }),
       });
-  
+
       if (!response.ok) {
         throw new Error('Failed to fetch user profile');
       }

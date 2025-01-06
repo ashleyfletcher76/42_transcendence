@@ -9,5 +9,4 @@ export default class TournamentRoute extends Route {
       this.session.requireAuthentication(transition, 'login');
     }
   }
-
 }

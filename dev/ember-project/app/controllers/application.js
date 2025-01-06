@@ -17,21 +17,20 @@ export default class ApplicationController extends Controller {
   @action
   selectUser(user) {
     console.log('Selected User:', user);
-    if (user && (user.nickname !== this.user.profile.nickname))
+    if (user && user.nickname !== this.user.profile.nickname)
       this.fetchUserData(user.nickname);
-    else
-      this.selectedUser = null;
+    else this.selectedUser = null;
   }
 
   async fetchUserData(nickname) {
     try {
       const response = await fetch('/users/users/profile-info/', {
-        method: 'POST', 
+        method: 'POST',
         headers: {
-          Authorization: `Bearer ${this.session.data.authenticated.access}`, 
+          Authorization: `Bearer ${this.session.data.access}`,
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ nickname }) 
+        body: JSON.stringify({ nickname }),
       });
 
       if (!response.ok) {

@@ -8,7 +8,7 @@
     {{#if this.pongGame.winner}}
       <h1 class="white">Winner: {{this.pongGame.winner}}</h1>
     {{else}}
-      {{#if (not (eq this.pongGame.status 0))}}
+      {{#if (not-eq this.pongGame.status 0)}}
         <h1 class="white">{{this.pongGame.status}}</h1>
       {{else}}
         <Ball @positionX={{this.pongGame.ballPositionX}} @positionY={{this.pongGame.ballPositionY}} />

@@ -5,25 +5,66 @@ import { inject as service } from '@ember/service';
 export default class ProfileOtherComponent extends Component {
   @service chat;
   @service session;
+  @service user;
+
+  get isFriend() {
+      const friendsList = this.user.profile.friends || [];
+      return friendsList.includes(this.args.selectedUser.nickname);
+  }
+
+  get isBlocked() {
+    const blockedList = this.user.profile.blocked || [];
+    return blockedList.includes(this.args.selectedUser.nickname);
+  }
 
   @action
   startLiveChat() {
     console.log('Live chat started');
-    this.chat.updateInputValue("/" + this.args.selectedUser.nickname + " ")
+    this.chat.updateInputValue('/' + this.args.selectedUser.nickname + ' ');
     this.chat.focusInput();
   }
 
   @action
   playGame() {
     console.log('Game initiated');
-    this.chat.updateInputValue("/*invite " + this.args.selectedUser.nickname);
+    this.chat.updateInputValue('/*invite ' + this.args.selectedUser.nickname);
     this.chat.sendMessage();
   }
 
   @action
-  addFriend() {
-    this.chat.updateInputValue("/*add " + this.args.selectedUser.nickname);
-    this.chat.sendMessage();
+  addFriend(type) {
+    if (type === "add")
+    {
+      this.chat.updateInputValue('/*add ' + this.args.selectedUser.nickname);
+      this.chat.sendMessage();
+    }
+    else
+      this.removeFriends();
+  }
+
+  async removeFriends() {
+    const apiEndpoint = 'users/users/add-friend/';
+
+    try {
+      const response = await fetch(apiEndpoint, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${this.session.data.access}`,
+        },
+        body: JSON.stringify({
+          nickname: this.args.selectedUser.nickname,
+          type: 'remove',
+        }),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || 'Failed to remove friend');
+      }
+    } catch (error) {
+      console.error('Error adding friend:', error.message);
+    }
   }
 
   get isOnline() {
@@ -32,30 +73,30 @@ export default class ProfileOtherComponent extends Component {
 
   @action
   async blockUser(type) {
-    const apiEndpoint = "users/users/block-user/";
+    const apiEndpoint = 'users/users/block-user/';
 
     try {
       const response = await fetch(apiEndpoint, {
-        method: "POST",
+        method: 'POST',
         headers: {
-          Authorization: `Bearer ${this.session.data.authenticated.access}`,
-          "Content-Type": "application/json",
+          Authorization: `Bearer ${this.session.data.access}`,
+          'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ 
-            nickname: this.args.selectedUser.nickname,
-            type: type,
+        body: JSON.stringify({
+          nickname: this.args.selectedUser.nickname,
+          type: type,
         }),
       });
 
       if (!response.ok) {
         const errorData = await response.json();
-        throw new Error(errorData.message || "Failed to block user");
+        throw new Error(errorData.message || 'Failed to block user');
       }
-
+      
       const result = await response.json();
       console.log(result.message);
     } catch (error) {
-      console.error("Error blocking user:", error.message);
+      console.error('Error blocking user:', error.message);
       throw error;
     }
   }

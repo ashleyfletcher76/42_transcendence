@@ -8,7 +8,7 @@ export default class ChooseGameController extends Controller {
   @service gameData; // Inject the game-data service
   @service user;
   @service session;
-  
+
   @action
   chooseGame(gameType) {
     this.gameData.waiting = true;
@@ -20,9 +20,9 @@ export default class ChooseGameController extends Controller {
       //const response = await fetch('/api/create-room.json', {
       const response = await fetch('/pong/pong/create-room', {
         method: 'POST',
-        headers: { 
-          Authorization: `Bearer ${this.session.data.authenticated.token}`,
-          'Content-Type': 'application/json' 
+        headers: {
+          Authorization: `Bearer ${this.session.data.token}`,
+          'Content-Type': 'application/json',
         },
         body: JSON.stringify({
           player: this.user.profile.nickname, // Add player_1 with the user's value
@@ -37,11 +37,10 @@ export default class ChooseGameController extends Controller {
       const data = await response.json();
 
       if (data.room_name) {
-        if (data.player2 != "remote")
-          this.gameData.waiting = false;
-        console.log("data:", data);
+        if (data.player2 != 'remote') this.gameData.waiting = false;
+        console.log('data:', data);
         this.gameData.setGameData(gameType, data);
-        console.log("gameData:", this.gameData.roomData.room_name);
+        console.log('gameData:', this.gameData.roomData.room_name);
         this.router.transitionTo('pong-game');
       }
     } catch (error) {

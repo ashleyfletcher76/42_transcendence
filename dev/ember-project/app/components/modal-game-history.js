@@ -7,10 +7,10 @@ export default class ModalProfileComponent extends Component {
   // Property to manage modal visibility
   @tracked isModalOpen = false;
   @tracked newNickname;
+  @tracked games = [];
+
   @service user;
   @service session;
-
-  @tracked games = [];
 
   @action
   openModal() {
@@ -21,8 +21,8 @@ export default class ModalProfileComponent extends Component {
   }
 
   parseHistory(history) {
-    this.games = history.map(game => ({
-      user: this.user.profile.nickname,
+    this.games = history.map((game) => ({
+      user: this.args.user.nickname,
       opponent: game.opponent,
       result: game.result,
       score: game.score,

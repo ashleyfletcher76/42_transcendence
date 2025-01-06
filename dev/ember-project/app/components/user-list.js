@@ -5,7 +5,7 @@ import { inject as service } from '@ember/service';
 
 export default class UserListComponent extends Component {
   @tracked users = [];
-  @tracked filter = "all";
+  @tracked filter = 'all';
   @service session;
   @service user;
 
@@ -26,47 +26,46 @@ export default class UserListComponent extends Component {
     }, 10000); // 10 seconds
   }
 
-	get filteredUsers() {
-		if (this.filter === 'friends') {
-		// Check if the user exists in the friends list
-		const friendsList = this.user.profile.friends || [];
-		return this.users.filter(user => friendsList.includes(user.nickname));
-		}
-		// Return all users if filter is 'all'
-		return this.users;
-	}
+  get filteredUsers() {
+    if (this.filter === 'friends') {
+      // Check if the user exists in the friends list
+      const friendsList = this.user.profile.friends || [];
+      return this.users.filter((user) => friendsList.includes(user.nickname));
+    }
+    // Return all users if filter is 'all'
+    return this.users;
+  }
 
-	setFilter = (type) => {
-		this.filter = type;
-		console.log("filter:", type);
-	};
-	
+  setFilter = (type) => {
+    this.filter = type;
+    console.log('filter:', type);
+  };
 
-	@action
-	async fetchUsers() {
-		try {
-			const response = await fetch('/users/users/profile-list/', {
-			method: 'GET',
-			headers: {
-				Authorization: `Bearer ${this.session.data.authenticated.access}`,
-				'Content-Type': 'application/json',
-			},
-			});
+  @action
+  async fetchUsers() {
+    try {
+      const response = await fetch('/users/users/profile-list/', {
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${this.session.data.access}`,
+          'Content-Type': 'application/json',
+        },
+      });
 
-			if (!response.ok) {
-			throw new Error('Network response was not ok');
-			}
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
 
-			this.users = await response.json();
-		} catch (error) {
-			console.error('Failed to fetch users:', error);
-		}
-	}
+      this.users = await response.json();
+    } catch (error) {
+      console.error('Failed to fetch users:', error);
+    }
+  }
 
-	willDestroy() {
-		super.willDestroy(...arguments);
-		if (this.intervalId) {
-		  clearInterval(this.intervalId); // Clear the interval
-		}
-	  }
+  willDestroy() {
+    super.willDestroy(...arguments);
+    if (this.intervalId) {
+      clearInterval(this.intervalId); // Clear the interval
+    }
+  }
 }

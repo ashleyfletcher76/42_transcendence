@@ -5,7 +5,7 @@ export default class ApplicationRoute extends Route {
   @service session;
 
   async beforeModel() {
-    if (!this.sessionInitialized) {
+    if (!this.session.Initialized) {
       await this.session.setup();
     }
   }
