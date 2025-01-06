@@ -39,31 +39,6 @@ class ValidateTokenView(APIView):
 		print("before auth header malformed")
 		return Response({"detail": "Authorization header missing or malformed"}, status=status.HTTP_400_BAD_REQUEST)
 
-class ValidateUserView(APIView):
-	authentication_classes = []
-	permission_classes = []
-
-	def get(self, request, user_id):
-		# query user service
-		user_service_url = f"http://user-service:8001/exists/{user_id}/"
-
-		try:
-			response = request.get(user_service_url)
-			if  response.status_code == 200:
-				return Response({"detail": "User exists"}, status=status.HTTP_200_OK)
-			elif response.status_code == 404:
-				return Response({"detail": "User not found"}, status=status.HTTP_404_NOT_FOUND)
-			else:
-				return Response(
-					{"error": "Unexpected repsonse from user-service"},
-					status=status.HTTP_502_BAD_GATEWAY,
-				)
-		except request.RequestException as e:
-			return  Response(
-				{"error": f"Failed to connect to user-service: {str(e)}"},
-				status=status.HTTP_503_SERVICE_UNAVAILABLE,
-			)
-
 class GetUserFromTokenView(APIView):
 	authentication_classes = []
 	permission_classes = []

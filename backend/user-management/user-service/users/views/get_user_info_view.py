@@ -29,19 +29,6 @@ def get_single_user_data(request, user_id):
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
-def get_usernames(request):
-	try:
-		user_ids = request.GET.getlist("user_ids")
-		user_ids = [int(uid) for uid in user_ids]
-		users = User.objects.filter(id__in=user_ids).values("id", "username")
-		return JsonResponse({"users": list(users)})
-	except ValueError:
-		return JsonResponse({"error": "Invalid user ID's"}, status=400)
-	except Exception as e:
-		return JsonResponse({"error": str(e)}, status=500)
-
-@api_view(['GET'])
-@permission_classes([IsAuthenticated])
 def get_profile_token(request):
 	try:
 		user = request.user
@@ -58,26 +45,6 @@ def get_profile_token(request):
 		)
 	except User.DoesNotExist:
 		return JsonResponse({"error": "User not found."}, status=404)
-
-@api_view(['GET'])
-@permission_classes([IsAuthenticated])
-def get_user_id_by_nickname(request):
-	try:
-		# extract nickname from payload
-		data = request.data
-		nickname = data.get("nickname", "").strip()
-		if not nickname:
-			return Response({"error": "Nickname is required."}, status=400)
-
-		user = User.objects.filter(profile__nickname=nickname).first()
-		if not user:
-			return Response(
-				{"error": "User with given nickname not found."},
-				status=404
-			)
-		return Response({"user_id": user.id}, status=200)
-	except Exception as e:
-		return Response({"error": str(e)}, status=500)
 
 ##################################################
 ### Latest user profile enquiry using nickname ###

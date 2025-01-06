@@ -9,11 +9,9 @@ from .views.verify_views import verify_user, UserExistsView, UserProfileView
 from .views.update_profile_view import update_profile
 from .views.get_user_info_view import (
 	get_single_user_data,
-	get_usernames,
 	get_profile_token,
 	get_profile_info,
-	get_all_profiles,
-	get_user_id_by_nickname
+	get_all_profiles
 )
 
 urlpatterns = [
@@ -30,8 +28,6 @@ urlpatterns = [
 	path("update-profile/", update_profile, name="update-profiles"),
 
 	path("get-single-user-data/<int:user_id>/", get_single_user_data, name="get-single-user-data"),
-	path("get-usernames/", get_usernames, name="get-usernames"),
-	path("get-user-by-nickname/", get_user_id_by_nickname, name="get-user-by-nickname"),
 
 	path("add-friend/", AddFriendView.as_view(), name="add-friend"),
 	path("block-user/", BlockUserView.as_view(), name="block-user"),

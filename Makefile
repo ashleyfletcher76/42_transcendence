@@ -128,6 +128,6 @@ exec-%:
 
 # to run unit testing for all
 test:
-	$(DOCKER_COMPOSE) exec auth-service python manage.py test
+	$(DOCKER_COMPOSE) exec match-history-service python manage.py test
 
 .PHONY: up build-nocache re fclean logs down clean-volumes clean-images clean-all superuser rebuild
