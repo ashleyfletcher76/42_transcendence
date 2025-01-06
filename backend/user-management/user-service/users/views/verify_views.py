@@ -30,17 +30,10 @@ def verify_user(request):
 	return Response({"error": "Invalid credentials"}, status=status.HTTP_401_UNAUTHORIZED)
 
 class UserExistsView(View):
-	def get(self, request, user_id):
+	def get(self, _, user_id):
 		try:
 			# check if exists
-			user = User.objects.get(id=user_id)
+			User.objects.get(id=user_id)
 			return JsonResponse({"exists": True}, status=200)
 		except User.DoesNotExist:
 			return JsonResponse({"exists": False}, status=404)
-
-class UserProfileView(generics.RetrieveUpdateAPIView):
-	serializer_class = UserSerializer
-	permission_classes = [IsAuthenticated]
-
-	def get_object(self):
-		return self.request.user.profile

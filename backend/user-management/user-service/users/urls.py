@@ -5,7 +5,7 @@ from .views.register_view import UserRegisterView
 from .views.health_check_view import health_check
 from .views.add_friend_view import AddFriendView
 from .views.block_user_view import BlockUserView
-from .views.verify_views import verify_user, UserExistsView, UserProfileView
+from .views.verify_views import verify_user, UserExistsView
 from .views.update_profile_view import update_profile
 from .views.get_user_info_view import (
 	get_single_user_data,

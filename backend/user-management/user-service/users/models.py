@@ -32,8 +32,3 @@ class UserProfile(models.Model):
 
 	def __str__(self):
 		return self.nickname or self.user.username
-
-
-
-
-## USERS FRIENDS NEEDS TO BE IMPLEMENTED AND DEFAULT AVATAR PHOTO

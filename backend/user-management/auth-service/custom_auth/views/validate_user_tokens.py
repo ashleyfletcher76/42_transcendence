@@ -5,73 +5,99 @@ from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework_simplejwt.exceptions import InvalidToken, TokenError, AuthenticationFailed
 import requests
 
-class ValidateTokenView(APIView):
+class BaseTokenView(APIView):
+	"""Base class to handle common token operations"""
 	authentication_classes = []
 	permission_classes = []
+
+	def validate_token(self, token):
+		"""Vlaidate a JWT token and return its payload"""
+		try:
+			jwt_auth = JWTAuthentication()
+			# validate token
+			validated_token = jwt_auth.get_validated_token(token)
+			return validated_token
+		except (InvalidToken, TokenError) as e:
+			# raise an error if token is invalid or expired
+			raise AuthenticationFailed(f"Invalid or expired token: {str(e)}")
+
+	def call_user_service(self, endpoint, headers=None):
+		"""Send a request to the user-service and return the reponse"""
+		try:
+			response = requests.get(endpoint, headers=headers)
+			response.raise_for_status()
+			return response
+		except requests.exceptions.RequestException as e:
+			# handle cases where user-service is unreachable
+			raise Exception(f"User-service unavailable: {str(e)}")
+
+#################################################################
+## This view validates a JWT token and ensures the user exists ##
+#################################################################
+class ValidateTokenView(BaseTokenView):
+	"""View to validate a token and check a users existence"""
 
 	def post(self, request):
-		print("Authorization header:", request.headers.get("Authorization"))
+		# extract the auth header from incoming requests
+		# print("Authorization header:", request.headers.get("Authorization"))
 		auth_header = request.headers.get("Authorization")
-		if auth_header and auth_header.startswith("Bearer "):
-			token = auth_header.split("Bearer ")[1]
-			jwt_auth = JWTAuthentication()
 
-			try:
-				# validate token
-				validated_token = jwt_auth.get_validated_token(token)
-				user_id = validated_token.get("user_id")
-				print(f"Token user_id: {user_id}")
+		# check if the auth header contains a token
+		if not (auth_header and auth_header.startswith("Bearer ")):
+			return Response(
+				{"error": "Authorization header missing or malformed"},
+				status=status.HTTP_400_BAD_REQUEST)
 
-				# verify user with user-service
-				verification_url = f"http://user-service:8000/users/exists/{user_id}/"
-				response = requests.get(verification_url)
-				if response.status_code == 200:
-					print("Success here")
-					return Response({"detail": "Token is valid", "user_id": user_id}, status=status.HTTP_200_OK)
-				else:
-					print("Else suer not found here")
-					return Response({"error": "User not found"}, status=status.HTTP_404_NOT_FOUND)
+		token = auth_header.split("Bearer ")[1]
+		try:
+			# validate token
+			validated_token = self.validate_token(token)
+			user_id = validated_token.get("user_id")
+			if not user_id:
+				return Response({"error": "Token is missing user_id"}, status=status.HTTP_400_BAD_REQUEST)
+			print(f"Token user_id: {user_id}")
+			# verify user with user-service
+			verification_url = f"http://user-service:8000/users/exists/{user_id}/"
+			response = self.call_user_service(verification_url)
+			# check if the response from the user-service indicates success
+			if response.status_code == 200:
+				return Response({"detail": "Token is valid", "user_id": user_id}, status=status.HTTP_200_OK)
+			else:
+				return Response({"error": "User not found"}, status=status.HTTP_404_NOT_FOUND)
+		except AuthenticationFailed as e:
+			return Response({"detail": str(e)}, status=status.HTTP_401_UNAUTHORIZED)
+		except Exception as e:
+			return Response({"error": "Service error occurred"}, status=status.HTTP_503_SERVICE_UNAVAILABLE)
 
-			except (InvalidToken, TokenError) as e:
-				print("inside except here")
-				return Response({"detail": "Invalid or expired token"}, status=status.HTTP_401_UNAUTHORIZED)
 
-		print("before auth header malformed")
-		return Response({"detail": "Authorization header missing or malformed"}, status=status.HTTP_400_BAD_REQUEST)
+#############################################################
+## This view retrieves user details based on a valid token ##
+#############################################################
 
-class GetUserFromTokenView(APIView):
-	authentication_classes = []
-	permission_classes = []
-
+class GetUserFromTokenView(BaseTokenView):
+	"""View to get user details from a token."""
 	def post(self, request):
 		token = request.data.get("token")
-		# print(f"Token: {token}")
 		if not token:
-			print("Error: Token missing in request")
 			return Response({"error": "Token is required"}, status=status.HTTP_400_BAD_REQUEST)
 
 		try:
-			jwt_auth = JWTAuthentication()
-			validated_token = jwt_auth.get_validated_token(token)
-			# print(f"Validated token payload: {validated_token}")
+			validated_token = self.validate_token(token)
 			user_id = validated_token.get("user_id")
-			print(f"Token id: {user_id}")
 			if not user_id:
-				raise AuthenticationFailed("Token does contain user_id")
+				return Response({"error": "Token missing user_id"}, status=status.HTTP_400_BAD_REQUEST)
 
-			# query from user-service the username
-			print(f"Querying user-service for user_id: {user_id}")
-			response = requests.get(
-				f"http://user-service:8000/users/get-single-user-data/{user_id}/",
-				headers={"Authorization": f"Bearer {token}"}
-			)
-			if response.status_code == 200:
+			user_data_url = f"http://user-service:8000/users/get-single-user-data/{user_id}/"
+			headers = {"Authorization": f"Bearer {token}"}
+			response = self.call_user_service(user_data_url, headers=headers)
+
+			try:
 				user_data = response.json()
-				print(f"User-service response: {user_data}")
-				return Response(user_data, status=status.HTTP_200_OK)
-			else:
-				print(f"User-service error response: {response.status_code} - {response.text}")
-				return Response({"error": "User not found"}, status=status.HTTP_404_NOT_FOUND)
+			except ValueError:
+				return Response({"error": "Malformed response from user-service"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+			return Response(user_data, status=status.HTTP_200_OK)
+		except AuthenticationFailed as e:
+			return Response({"detail": str(e)}, status=status.HTTP_401_UNAUTHORIZED)
 		except Exception as e:
-			print(f"Error during token validation or user-service query: {e}")
-			return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+			return Response({"error": "Service error occurred"}, status=status.HTTP_503_SERVICE_UNAVAILABLE)

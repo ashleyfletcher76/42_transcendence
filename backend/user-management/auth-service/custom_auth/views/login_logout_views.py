@@ -4,9 +4,6 @@ from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated, AllowAny
 import requests
-import logging
-
-logger = logging.getLogger(__name__)
 
 class LoginView(APIView):
 	authentication_classes = []
