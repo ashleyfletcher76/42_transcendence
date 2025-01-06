@@ -96,9 +96,6 @@ def handle_paddle_hit(game, side):
     game["ball_speed_y"] = max(min(game["ball_speed_y"], MAX_BALL_SPEED), -MAX_BALL_SPEED)
 
 
-
-
-
 def reset_ball(game):
     game["ball_x"], game["ball_y"] = 0, 0
     game["ball_speed_x"] = 0.02 if game["ball_speed_x"] > 0 else -0.02
