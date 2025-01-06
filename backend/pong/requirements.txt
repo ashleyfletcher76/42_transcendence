@@ -12,5 +12,4 @@ pyOpenSSL==23.2.0
 django-cors-headers
 django-redis
 django-celery-beat
-redis-lock
 requests>=2.26.0

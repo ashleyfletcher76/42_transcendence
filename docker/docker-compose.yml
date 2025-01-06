@@ -41,49 +41,29 @@ services:
     ports:
       - "5433:5432"
 
-  pong-db:
-    container_name: pong-db
-    build: ./../backend/pong/postgres
-    environment:
-      POSTGRES_USER: ${PONG_SERVICE_USER}
-      POSTGRES_PASSWORD: ${PONG_SERVICE_PASSWORD}
-      POSTGRES_DB: ${PONG_SERVICE_DB}
-    volumes:
-      - pong_data:/var/lib/postgresql/data
-    networks:
-      my_network:
-    healthcheck:
-      test: [ "CMD-SHELL", "[ -f /var/lib/postgresql/data/.db_ready ] || exit 1" ]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-    restart: always
-    ports:
-      - "5435:5432"
-
-  lobby-db:
-    container_name: lobby-db
-    build: ./../backend/lobby/postgres
-    environment:
-      POSTGRES_USER: ${LOBBY_SERVICE_USER}
-      POSTGRES_PASSWORD: ${LOBBY_SERVICE_PASSWORD}
-      POSTGRES_DB: ${LOBBY_SERVICE_DB}
-    volumes:
-      - lobby_data:/var/lib/postgresql/data
-    networks:
-      my_network:
-    healthcheck:
-      test: [ "CMD-SHELL", "[ -f /var/lib/postgresql/data/.db_ready ] || exit 1" ]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-    restart: always
-    ports:
-      - "5437:5432"
+  # chat-db:
+  #   container_name: chat-db
+  #   build: ./../backend/chat-service/postgres
+  #   environment:
+  #     POSTGRES_USER: ${CHAT_SERVICE_USER}
+  #     POSTGRES_PASSWORD: ${CHAT_SERVICE_PASSWORD}
+  #     POSTGRES_DB: ${CHAT_SERVICE_DB}
+  #   volumes:
+  #     - chat_data:/var/lib/postgresql/data
+  #   networks:
+  #     my_network:
+  #   healthcheck:
+  #     test: [ "CMD-SHELL", "[ -f /var/lib/postgresql/data/.db_ready ] || exit 1" ]
+  #     interval: 10s
+  #     timeout: 5s
+  #     retries: 5
+  #   restart: always
+  #   ports:
+  #     - "5436:5432"
 
   match-history-db:
     container_name: match-history-db
-    build: ./../backend/lobby/postgres
+    build: ./../backend/user-management/match-history-service/postgres
     environment:
       POSTGRES_USER: ${MATCH_SERVICE_USER}
       POSTGRES_PASSWORD: ${MATCH_SERVICE_PASSWORD}
@@ -211,8 +191,8 @@ services:
 
   pong-game:
     build: ./../backend/pong
-    volumes:
-      - ./../backend/pong:/app
+    # volumes:
+    #   - ./../backend/pong:/app
     container_name: pong
     environment:
       DJANGO_SECRET_KEY: ${DJANGO_SECRET_KEY}
@@ -232,14 +212,17 @@ services:
       interval: 3s
       timeout: 5s
       retries: 5
+    depends_on:
+      redis:
+        condition: service_healthy
     restart: always
     ports:
       - "8002:8000"
 
   lobby:
     build: ./../backend/lobby
-    volumes:
-      - ./../backend/lobby:/app
+    # volumes:
+    #   - ./../backend/lobby:/app
     container_name: lobby
     environment:
       DJANGO_SECRET_KEY: ${DJANGO_SECRET_KEY}
@@ -259,9 +242,6 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
-    depends_on:
-      lobby-db:
-        condition: service_healthy
     restart: always
     ports:
       - "8004:8000"
@@ -313,7 +293,6 @@ volumes:
   user_data:
   auth_data:
   db_data:
-  pong_data:
-  lobby_data:
+  # chat_data:
   redis_data:
   match_history_data:
