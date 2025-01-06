@@ -1637,7 +1637,7 @@
     value: true
   });
   _exports.default = void 0;
-  var _class, _descriptor, _descriptor2;
+  var _class, _descriptor, _descriptor2, _descriptor3;
   0; //eaimeta@70e063a35619d71f0,"@glimmer/component",0,"@glimmer/tracking",0,"@ember/service",0,"@ember/template-factory",0,"@ember/component"eaimeta@70e063a35619d71f
   function _initializerDefineProperty(e, i, r, l) { r && Object.defineProperty(e, i, { enumerable: r.enumerable, configurable: r.configurable, writable: r.writable, value: r.initializer ? r.initializer.call(l) : void 0 }); }
   function _defineProperty(e, r, t) { return (r = _toPropertyKey(r)) in e ? Object.defineProperty(e, r, { value: t, enumerable: !0, configurable: !0, writable: !0 }) : e[r] = t, e; }
@@ -1649,13 +1649,30 @@
   /*
     <div class="pong-game">
     {{#if this.gameData.waiting}}
-      <h2 class="white p-3">Waiting for Player</h2>
-      <div class="spinner-border text-light" role="status">
+    <div class="waiting-container d-flex flex-column align-items-center">
+    <!-- Row for the text and spinner -->
+    <div class="d-flex align-items-center">
+      <h2 class="white mb-0">Waiting for Player</h2>
+      <div class="spinner-border text-light ms-3" role="status">
         <span class="visually-hidden"></span>
       </div>
+    </div>
+    <!-- Row for the Leave button -->
+    <div class="game-buttons mt-5">
+      <button type="button" class="btn btn-danger" {{on "click" this.leaveGame}}>Leave</button>
+    </div>
+  </div>
+  
+  
+  
     {{else}}
       {{#if this.pongGame.winner}}
+      <div class="waiting-container d-flex flex-column align-items-center">
         <h1 class="white">Winner: {{this.pongGame.winner}}</h1>
+      <div class="game-buttons mt-5">
+      <button type="button" class="btn btn-danger" {{on "click" this.leaveGame}}>Leave</button>
+    </div>
+  </div>
       {{else}}
         {{#if (not-eq this.pongGame.status 0)}}
           <h1 class="white">{{this.pongGame.status}}</h1>
@@ -1670,8 +1687,8 @@
   
   */
   {
-    "id": "VI8y4pR4",
-    "block": "[[[10,0],[14,0,\"pong-game\"],[12],[1,\"\\n\"],[41,[30,0,[\"gameData\",\"waiting\"]],[[[1,\"    \"],[10,\"h2\"],[14,0,\"white p-3\"],[12],[1,\"Waiting for Player\"],[13],[1,\"\\n    \"],[10,0],[14,0,\"spinner-border text-light\"],[14,\"role\",\"status\"],[12],[1,\"\\n      \"],[10,1],[14,0,\"visually-hidden\"],[12],[13],[1,\"\\n    \"],[13],[1,\"\\n\"]],[]],[[[41,[30,0,[\"pongGame\",\"winner\"]],[[[1,\"      \"],[10,\"h1\"],[14,0,\"white\"],[12],[1,\"Winner: \"],[1,[30,0,[\"pongGame\",\"winner\"]]],[13],[1,\"\\n\"]],[]],[[[41,[28,[37,5],[[30,0,[\"pongGame\",\"status\"]],0],null],[[[1,\"        \"],[10,\"h1\"],[14,0,\"white\"],[12],[1,[30,0,[\"pongGame\",\"status\"]]],[13],[1,\"\\n\"]],[]],[[[1,\"        \"],[8,[39,6],null,[[\"@positionX\",\"@positionY\"],[[30,0,[\"pongGame\",\"ballPositionX\"]],[30,0,[\"pongGame\",\"ballPositionY\"]]]],null],[1,\"\\n\"]],[]]],[1,\"      \"],[8,[39,7],null,[[\"@position\",\"@side\"],[[30,0,[\"pongGame\",\"leftPaddlePosition\"]],\"paddle-left\"]],null],[1,\"\\n      \"],[8,[39,7],null,[[\"@position\",\"@side\"],[[30,0,[\"pongGame\",\"rightPaddlePosition\"]],\"paddle-right\"]],null],[1,\"\\n\"]],[]]]],[]]],[13],[1,\"\\n\"]],[],false,[\"div\",\"if\",\"h2\",\"span\",\"h1\",\"not-eq\",\"ball\",\"paddle\"]]",
+    "id": "8rWfYOPe",
+    "block": "[[[10,0],[14,0,\"pong-game\"],[12],[1,\"\\n\"],[41,[30,0,[\"gameData\",\"waiting\"]],[[[1,\"  \"],[10,0],[14,0,\"waiting-container d-flex flex-column align-items-center\"],[12],[1,\"\\n  \"],[3,\" Row for the text and spinner \"],[1,\"\\n  \"],[10,0],[14,0,\"d-flex align-items-center\"],[12],[1,\"\\n    \"],[10,\"h2\"],[14,0,\"white mb-0\"],[12],[1,\"Waiting for Player\"],[13],[1,\"\\n    \"],[10,0],[14,0,\"spinner-border text-light ms-3\"],[14,\"role\",\"status\"],[12],[1,\"\\n      \"],[10,1],[14,0,\"visually-hidden\"],[12],[13],[1,\"\\n    \"],[13],[1,\"\\n  \"],[13],[1,\"\\n  \"],[3,\" Row for the Leave button \"],[1,\"\\n  \"],[10,0],[14,0,\"game-buttons mt-5\"],[12],[1,\"\\n    \"],[11,\"button\"],[24,0,\"btn btn-danger\"],[24,4,\"button\"],[4,[38,5],[\"click\",[30,0,[\"leaveGame\"]]],null],[12],[1,\"Leave\"],[13],[1,\"\\n  \"],[13],[1,\"\\n\"],[13],[1,\"\\n\\n\\n\\n\"]],[]],[[[41,[30,0,[\"pongGame\",\"winner\"]],[[[1,\"    \"],[10,0],[14,0,\"waiting-container d-flex flex-column align-items-center\"],[12],[1,\"\\n      \"],[10,\"h1\"],[14,0,\"white\"],[12],[1,\"Winner: \"],[1,[30,0,[\"pongGame\",\"winner\"]]],[13],[1,\"\\n    \"],[10,0],[14,0,\"game-buttons mt-5\"],[12],[1,\"\\n    \"],[11,\"button\"],[24,0,\"btn btn-danger\"],[24,4,\"button\"],[4,[38,5],[\"click\",[30,0,[\"leaveGame\"]]],null],[12],[1,\"Leave\"],[13],[1,\"\\n  \"],[13],[1,\"\\n\"],[13],[1,\"\\n\"]],[]],[[[41,[28,[37,7],[[30,0,[\"pongGame\",\"status\"]],0],null],[[[1,\"        \"],[10,\"h1\"],[14,0,\"white\"],[12],[1,[30,0,[\"pongGame\",\"status\"]]],[13],[1,\"\\n\"]],[]],[[[1,\"        \"],[8,[39,8],null,[[\"@positionX\",\"@positionY\"],[[30,0,[\"pongGame\",\"ballPositionX\"]],[30,0,[\"pongGame\",\"ballPositionY\"]]]],null],[1,\"\\n\"]],[]]],[1,\"      \"],[8,[39,9],null,[[\"@position\",\"@side\"],[[30,0,[\"pongGame\",\"leftPaddlePosition\"]],\"paddle-left\"]],null],[1,\"\\n      \"],[8,[39,9],null,[[\"@position\",\"@side\"],[[30,0,[\"pongGame\",\"rightPaddlePosition\"]],\"paddle-right\"]],null],[1,\"\\n\"]],[]]]],[]]],[13],[1,\"\\n\"]],[],false,[\"div\",\"if\",\"h2\",\"span\",\"button\",\"on\",\"h1\",\"not-eq\",\"ball\",\"paddle\"]]",
     "moduleName": "myapp/components/pong-game.hbs",
     "isStrictMode": false
   });
@@ -1680,6 +1697,11 @@
       super(...args);
       _initializerDefineProperty(this, "pongGame", _descriptor, this);
       _initializerDefineProperty(this, "gameData", _descriptor2, this);
+      _initializerDefineProperty(this, "router", _descriptor3, this);
+      _defineProperty(this, "leaveGame", () => {
+        if (this.gameData.roomData) this.pongGame.disconnectFromGame(this.gameData.roomData.room_name);
+        this.router.transitionTo('choose-game');
+      });
     }
   }, _descriptor = _applyDecoratedDescriptor(_class.prototype, "pongGame", [_service.inject], {
     configurable: true,
@@ -1687,6 +1709,11 @@
     writable: true,
     initializer: null
   }), _descriptor2 = _applyDecoratedDescriptor(_class.prototype, "gameData", [_service.inject], {
+    configurable: true,
+    enumerable: true,
+    writable: true,
+    initializer: null
+  }), _descriptor3 = _applyDecoratedDescriptor(_class.prototype, "router", [_service.inject], {
     configurable: true,
     enumerable: true,
     writable: true,
@@ -2674,7 +2701,6 @@
       try {
         await this.session.authenticate(this.username, this.password);
         this.fetchUserData('');
-        console.log(this.session.data);
         this.router.transitionTo('choose-game');
       } catch (error) {
         this.error = error;
@@ -2697,8 +2723,7 @@
         }
 
         // Optionally, log in the user directly after registration
-        await this.session.authenticate('authenticator:token', this.username, this.password);
-        console.log("access:", this.session.data.access);
+        await this.session.authenticate(this.username, this.password);
         this.fetchUserData('');
         this.router.transitionTo('choose-game');
       } catch (error) {
@@ -4344,7 +4369,7 @@
     willDestroy() {
       this.disconnectFromGame(this.gameData.roomData.room_name);
       this.winnerSend = false;
-      this.gameData.roomData = null;
+      //this.gameData.roomData = null;
       window.removeEventListener('keydown', this.handleKeyDown.bind(this));
       window.removeEventListener('keyup', this.handleKeyUp.bind(this));
       super.willDestroy();
@@ -4378,6 +4403,7 @@
 
       // Reset WebSocket reference
       this.socketRef = null;
+      this.gameData.clearGameData();
     }
     onMessage(event) {
       console.log('WebSocket message received:', event.data);
@@ -5138,12 +5164,16 @@
     <div class="overlay">
     <div class="overlay-content">
       <form {{on "submit" this.login}}>
-        <label>Username:</label>
-        <input type="text" name="username" {{on "change" (fn this.update "username")}} />
+        <div class="login-field">
+          <label>Username:</label>
+          <input type="text" name="username" {{on "change" (fn this.update "username")}} />
+        </div>
   
+        <div class="login-field">
         <label>Password:</label>
         <input type="password" name="password" {{on "change" (fn this.update "password")}} />
-  
+        </div>
+        
         <button class="login" type="submit">Login</button>
         <button type="button" class="register-button" {{on "click" this.register}}>Register</button>
       </form>
@@ -5156,8 +5186,8 @@
   
   */
   {
-    "id": "u7BVp89c",
-    "block": "[[[10,0],[14,0,\"overlay\"],[12],[1,\"\\n  \"],[10,0],[14,0,\"overlay-content\"],[12],[1,\"\\n    \"],[11,\"form\"],[4,[38,2],[\"submit\",[30,0,[\"login\"]]],null],[12],[1,\"\\n      \"],[10,\"label\"],[12],[1,\"Username:\"],[13],[1,\"\\n      \"],[11,\"input\"],[24,3,\"username\"],[24,4,\"text\"],[4,[38,2],[\"change\",[28,[37,5],[[30,0,[\"update\"]],\"username\"],null]],null],[12],[13],[1,\"\\n\\n      \"],[10,\"label\"],[12],[1,\"Password:\"],[13],[1,\"\\n      \"],[11,\"input\"],[24,3,\"password\"],[24,4,\"password\"],[4,[38,2],[\"change\",[28,[37,5],[[30,0,[\"update\"]],\"password\"],null]],null],[12],[13],[1,\"\\n\\n      \"],[10,\"button\"],[14,0,\"login\"],[14,4,\"submit\"],[12],[1,\"Login\"],[13],[1,\"\\n      \"],[11,\"button\"],[24,0,\"register-button\"],[24,4,\"button\"],[4,[38,2],[\"click\",[30,0,[\"register\"]]],null],[12],[1,\"Register\"],[13],[1,\"\\n    \"],[13],[1,\"\\n\\n\"],[41,[30,0,[\"error\"]],[[[1,\"      \"],[10,2],[12],[10,\"strong\"],[12],[1,[30,0,[\"error\"]]],[13],[13],[1,\"\\n\"]],[]],null],[1,\"  \"],[13],[1,\"\\n\"],[13],[1,\"\\n\"]],[],false,[\"div\",\"form\",\"on\",\"label\",\"input\",\"fn\",\"button\",\"if\",\"p\",\"strong\"]]",
+    "id": "d723lvpa",
+    "block": "[[[10,0],[14,0,\"overlay\"],[12],[1,\"\\n  \"],[10,0],[14,0,\"overlay-content\"],[12],[1,\"\\n    \"],[11,\"form\"],[4,[38,2],[\"submit\",[30,0,[\"login\"]]],null],[12],[1,\"\\n      \"],[10,0],[14,0,\"login-field\"],[12],[1,\"\\n        \"],[10,\"label\"],[12],[1,\"Username:\"],[13],[1,\"\\n        \"],[11,\"input\"],[24,3,\"username\"],[24,4,\"text\"],[4,[38,2],[\"change\",[28,[37,5],[[30,0,[\"update\"]],\"username\"],null]],null],[12],[13],[1,\"\\n      \"],[13],[1,\"\\n\\n      \"],[10,0],[14,0,\"login-field\"],[12],[1,\"\\n      \"],[10,\"label\"],[12],[1,\"Password:\"],[13],[1,\"\\n      \"],[11,\"input\"],[24,3,\"password\"],[24,4,\"password\"],[4,[38,2],[\"change\",[28,[37,5],[[30,0,[\"update\"]],\"password\"],null]],null],[12],[13],[1,\"\\n      \"],[13],[1,\"\\n      \\n      \"],[10,\"button\"],[14,0,\"login\"],[14,4,\"submit\"],[12],[1,\"Login\"],[13],[1,\"\\n      \"],[11,\"button\"],[24,0,\"register-button\"],[24,4,\"button\"],[4,[38,2],[\"click\",[30,0,[\"register\"]]],null],[12],[1,\"Register\"],[13],[1,\"\\n    \"],[13],[1,\"\\n\\n\"],[41,[30,0,[\"error\"]],[[[1,\"      \"],[10,2],[12],[10,\"strong\"],[12],[1,[30,0,[\"error\"]]],[13],[13],[1,\"\\n\"]],[]],null],[1,\"  \"],[13],[1,\"\\n\"],[13],[1,\"\\n\"]],[],false,[\"div\",\"form\",\"on\",\"label\",\"input\",\"fn\",\"button\",\"if\",\"p\",\"strong\"]]",
     "moduleName": "myapp/templates/login.hbs",
     "isStrictMode": false
   });
