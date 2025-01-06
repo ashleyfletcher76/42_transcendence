@@ -160,7 +160,7 @@ export default class PongGameService extends Service {
   willDestroy() {
     this.disconnectFromGame(this.gameData.roomData.room_name);
     this.winnerSend = false;
-    this.gameData.roomData = null;
+    //this.gameData.roomData = null;
     window.removeEventListener('keydown', this.handleKeyDown.bind(this));
     window.removeEventListener('keyup', this.handleKeyUp.bind(this));
     super.willDestroy();
@@ -196,6 +196,7 @@ export default class PongGameService extends Service {
 
     // Reset WebSocket reference
     this.socketRef = null;
+    this.gameData.clearGameData();
   }
 
   onMessage(event) {

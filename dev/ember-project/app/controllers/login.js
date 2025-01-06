@@ -27,7 +27,6 @@ export default class LoginController extends Controller {
         this.password,
       );
       this.fetchUserData('');
-      console.log(this.session.data);
       this.router.transitionTo('choose-game');
     } catch (error) {
       this.error = error;
@@ -54,11 +53,9 @@ export default class LoginController extends Controller {
 
       // Optionally, log in the user directly after registration
       await this.session.authenticate(
-        'authenticator:token',
         this.username,
         this.password,
       );
-      console.log("access:", this.session.data.access);
       this.fetchUserData('');
       this.router.transitionTo('choose-game');
     } catch (error) {

@@ -83,6 +83,13 @@ label {
   color: #302e2e; /* Light gray color for labels */
 }
 
+.login-field{
+  margin-bottom: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+}
+
 /* Button styling */
 .login {
   padding: 10px; /* Padding inside button */
@@ -93,6 +100,8 @@ label {
   font-size: 16px; /* Font size for button */
   cursor: pointer; /* Pointer cursor on hover */
   transition: background-color 0.3s; /* Smooth background transition */
+  margin: 1rem;
+  width: 5vw;
 }
 
 .login:hover {
@@ -222,6 +231,7 @@ label {
   height: 100%;
 }
 
+
 .overlay {
   position: fixed;
   top: 0;
@@ -230,6 +240,7 @@ label {
   height: 100vh;
   background-color: rgb(0 0 0 / 50%); /* Semi-transparent overlay */
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   z-index: 1000; /* Ensure it's above all other elements */
@@ -237,10 +248,10 @@ label {
 
 .overlay-content {
   background: white;
-  padding: 1rem;
+  padding: 2rem;
+  margin: 1rem;
   border-radius: 8px;
-  max-width: 400px;
-  width: 90%; /* Makes it responsive on smaller screens */
+  width: 20vw;
   box-shadow: 0 4px 8px rgb(0 0 0 / 20%);
   text-align: center;
 }
@@ -290,6 +301,10 @@ label {
   color: rgb(255, 7, 7);
   align-items: center;
   justify-content: left;
+}
+
+.waiting-container {
+  text-align: center;
 }
 
 .navigation-bar {
@@ -425,6 +440,7 @@ label {
   cursor: pointer; /* Change cursor to pointer on hover */
   font-size: 1em; /* Adjust font size as needed */
   margin-top: 5px;
+  width: 5vw;
 }
 
 .orange-button:hover {

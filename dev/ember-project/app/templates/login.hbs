@@ -1,12 +1,16 @@
 <div class="overlay">
   <div class="overlay-content">
     <form {{on "submit" this.login}}>
-      <label>Username:</label>
-      <input type="text" name="username" {{on "change" (fn this.update "username")}} />
+      <div class="login-field">
+        <label>Username:</label>
+        <input type="text" name="username" {{on "change" (fn this.update "username")}} />
+      </div>
 
+      <div class="login-field">
       <label>Password:</label>
       <input type="password" name="password" {{on "change" (fn this.update "password")}} />
-
+      </div>
+      
       <button class="login" type="submit">Login</button>
       <button type="button" class="register-button" {{on "click" this.register}}>Register</button>
     </form>
