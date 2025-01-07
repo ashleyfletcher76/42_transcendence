@@ -1,6 +1,7 @@
 import redis
 import threading
 import json
+import asyncio
 
 _redis_client = None
 _pubsub = None
@@ -57,50 +58,18 @@ def redis_listener(user_channels, channels_lock):
 			_pubsub.close()
 		print("[INFO] Redis listener stopped.")
 
-def handle_user_service_event(event_data, user_channels, channels_lock):
-    """Handle events from user-service."""
-    action = event_data.get("action")
-    new_nickname = event_data.get("nickname")
-	old_nickname = event_data.get("old_nickname")
-    online_status = event_data.get("online_status")
-
-    print(f"[DEBUG] Handling event: {event_data}")
-
-    if action == "online_status_update" and nickname is not None:
-        with channels_lock:
-            if online_status is False:  # User logged out
-                if nickname in user_channels:
-                    consumers = user_channels.pop(nickname, [])
-                    for consumer in consumers:
-                        consumer.close()  # Disconnect WebSocket
-                    print(f"[INFO] Disconnected WebSocket for {nickname} due to logout.")
-                else:
-                    print(f"[WARNING] Nickname {nickname} not found in user_channels.")
-            elif online_status is True:
-                print(f"[INFO] User {nickname} is now online.")
-    elif action == "nickname_change" and old_nickname and new_nickname:
-        with channels_lock:
-            if old_nickname in user_channels:
-                consumers = user_channels.pop(old_nickname)
-                user_channels[new_nickname] = consumers
-                for consumer in consumers:
-                    consumer.nickname = new_nickname
-                print(f"[INFO] Updated nickname in user_channels: {old_nickname} -> {new_nickname}")
-            else:
-                print(f"[WARNING] Old nickname {old_nickname} not found in user_channels.")
-    else:
-        print(f"[WARNING] Unhandled event: {event_data}")
-
-
 # def handle_user_service_event(event_data, user_channels, channels_lock):
 # 	"""Handle events from user-service."""
 # 	action = event_data.get("action")
 # 	old_nickname = event_data.get("old_nickname")
 # 	new_nickname = event_data.get("new_nickname")
+# 	nickname = event_data.get("nickname")
+# 	online_status = event_data.get("status")
 
 # 	print(f"[DEBUG] Handling event: {event_data}")
 
 # 	if action == "nickname_change" and old_nickname and new_nickname:
+# 		# Handle nickname change
 # 		with channels_lock:
 # 			if old_nickname in user_channels:
 # 				consumers = user_channels.pop(old_nickname)
@@ -110,8 +79,44 @@ def handle_user_service_event(event_data, user_channels, channels_lock):
 # 				print(f"[INFO] Updated nickname in user_channels: {old_nickname} -> {new_nickname}")
 # 			else:
 # 				print(f"[WARNING] Old nickname {old_nickname} not found in user_channels.")
+
+# 	elif action == "online_status_update" and nickname is not None:
+# 		# Handle online status update
+# 		with channels_lock:
+# 			if online_status is False:  # User logged out
+# 				if nickname in user_channels:
+# 					consumers = user_channels.pop(nickname, [])
+# 					for consumer in consumers:
+# 						asyncio.create_task(consumer.close())  # Disconnect WebSocket
+# 					print(f"[INFO] Disconnected WebSocket for {nickname} due to logout.")
+# 				else:
+# 					print(f"[WARNING] Nickname {nickname} not found in user_channels.")
+# 			elif online_status is True:
+# 				print(f"[INFO] User {nickname} is now online.")
 # 	else:
 # 		print(f"[WARNING] Unhandled event: {event_data}")
+
+
+def handle_user_service_event(event_data, user_channels, channels_lock):
+	"""Handle events from user-service."""
+	action = event_data.get("action")
+	old_nickname = event_data.get("old_nickname")
+	new_nickname = event_data.get("new_nickname")
+
+	print(f"[DEBUG] Handling event: {event_data}")
+
+	if action == "nickname_change" and old_nickname and new_nickname:
+		with channels_lock:
+			if old_nickname in user_channels:
+				consumers = user_channels.pop(old_nickname)
+				user_channels[new_nickname] = consumers
+				for consumer in consumers:
+					consumer.nickname = new_nickname
+				print(f"[INFO] Updated nickname in user_channels: {old_nickname} -> {new_nickname}")
+			else:
+				print(f"[WARNING] Old nickname {old_nickname} not found in user_channels.")
+	else:
+		print(f"[WARNING] Unhandled event: {event_data}")
 
 def start_redis_listener(user_channels, channels_lock):
 	"""Start the Redis listener in a background thread."""
