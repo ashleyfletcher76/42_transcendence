@@ -59,6 +59,19 @@ def publish_nickname_change(redis_client, old_nickname, new_nickname):
 	except Exception as e:
 		print(f"[ERROR] Failed to publish nickname change to Redis: {e}")
 
+def publish_online_status_change(redis_client, nickname, online_status):
+	"""Publish the nickname change event to Redis"""
+	status_event = {
+		"action": "status_change",
+		"nickname": nickname,
+		"status": online_status
+	}
+	try:
+		redis_client.publish("user_service_updates", json.dumps(status_event))
+		print(f"[INFO] Published online status change event to Redis: {status_event}")
+	except Exception as e:
+		print(f"[ERROR] Failed to publish online status change to Redis: {e}")
+
 #######################################
 # ---------- MAIN FUNCTION ---------- #
 #######################################
@@ -107,6 +120,8 @@ def update_profile(request):
 				)
 			profile.online = new_online_status
 			updated_fields.append("online")
+			# publish the event only if the status changes
+			publish_online_status_change(redis_client, profile.nickname, new_online_status)
 
 		## save profile info in database ##
 		if updated_fields:

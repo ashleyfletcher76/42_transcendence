@@ -75,6 +75,8 @@ def handle_status_update(event_data):
 	else:
 		print(f"[WARNING] Unhandled Redis action: {event_data}")
 
+
+
 # register signal handlers
 signal.signal(signal.SIGTERM, handle_shutdown)
 signal.signal(signal.SIGINT, handle_shutdown)
