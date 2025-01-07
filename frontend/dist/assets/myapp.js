@@ -4518,7 +4518,7 @@
     value: true
   });
   _exports.default = void 0;
-  var _class, _descriptor, _descriptor2, _descriptor3, _descriptor4;
+  var _class, _descriptor, _descriptor2, _descriptor3, _descriptor4, _descriptor5;
   0; //eaimeta@70e063a35619d71f0,"@ember/service",0,"@glimmer/tracking",0,"@ember/service"eaimeta@70e063a35619d71f
   function _initializerDefineProperty(e, i, r, l) { r && Object.defineProperty(e, i, { enumerable: r.enumerable, configurable: r.configurable, writable: r.writable, value: r.initializer ? r.initializer.call(l) : void 0 }); }
   function _defineProperty(e, r, t) { return (r = _toPropertyKey(r)) in e ? Object.defineProperty(e, r, { value: t, enumerable: !0, configurable: !0, writable: !0 }) : e[r] = t, e; }
@@ -4533,6 +4533,7 @@
       _initializerDefineProperty(this, "data", _descriptor2, this);
       _initializerDefineProperty(this, "Initialized", _descriptor3, this);
       _initializerDefineProperty(this, "router", _descriptor4, this);
+      _initializerDefineProperty(this, "chat", _descriptor5, this);
     }
     requireAuthentication(type, route) {
       if (type === 'transition') this.router.transitionTo(route);
@@ -4562,10 +4563,7 @@
       }
     }
     invalidate() {
-      this.isAuthenticated = false;
-      this.data = null;
-      this.Initialized = false;
-      this.router.transitionTo('login');
+      window.location.reload();
     }
     prohibitAuthentication(route) {
       if (this.isAuthenticated) this.router.transitionTo(route);
@@ -4590,6 +4588,11 @@
     writable: true,
     initializer: null
   }), _descriptor4 = _applyDecoratedDescriptor(_class.prototype, "router", [_service.inject], {
+    configurable: true,
+    enumerable: true,
+    writable: true,
+    initializer: null
+  }), _descriptor5 = _applyDecoratedDescriptor(_class.prototype, "chat", [_service.inject], {
     configurable: true,
     enumerable: true,
     writable: true,
