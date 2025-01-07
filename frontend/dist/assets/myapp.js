@@ -4562,8 +4562,23 @@
         throw new Error(error);
       }
     }
-    invalidate() {
+    async invalidate() {
+      await this.logout();
       window.location.reload();
+    }
+    async logout() {
+      //let response = await fetch('/api/token.json', {
+
+      let response = await fetch('/auth/auth/logout/', {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${this.data.access}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          refresh_token: this.data.refresh
+        })
+      });
     }
     prohibitAuthentication(route) {
       if (this.isAuthenticated) this.router.transitionTo(route);
