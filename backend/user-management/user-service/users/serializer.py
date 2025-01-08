@@ -2,6 +2,7 @@ from rest_framework import serializers
 from django.contrib.auth.models import User
 from django.contrib.auth.hashers import make_password
 from django.core.validators import RegexValidator, MinLengthValidator
+from .models import UserProfile
 
 class UserSerializer(serializers.ModelSerializer):
 	username = serializers.RegexField(
@@ -38,3 +39,22 @@ class UserSerializer(serializers.ModelSerializer):
 			password=make_password(validated_data["password"]),
 		)
 		return user
+
+class UserProfileSerializer(serializers.ModelSerializer):
+	friends = serializers.SerializerMethodField()
+	blocker_users = serializers.SerializerMethodField()
+
+	class Meta:
+		model = UserProfile
+		fields = [
+			'user', 'nickname', 'avatar',
+			'bio', 'friends', 'blocked_users',
+			'online', 'last_seen', 'game_active',
+			'tournament_name', 'game_name',
+		]
+
+	def get_friends(self, obj):
+		return list(obj.friends.value_list('nickname', flat=True))
+
+	def get_blocked_users(self, obj):
+		return list(obj.blocked_users.value_list('nickname', flat=True))

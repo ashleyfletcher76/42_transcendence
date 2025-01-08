@@ -30,5 +30,13 @@ class UserProfile(models.Model):
 	online = models.BooleanField(default=False)
 	last_seen = models.DateTimeField(default=now)
 
+	#########################
+	## Game-related fields ##
+	#########################
+	
+	game_active = models.BooleanField(default=False)
+	tournament_name = models.CharField(max_length=100, blank=True, null=True)
+	game_name = models.CharField(max_length=100, blank=True, null=True)
+
 	def __str__(self):
 		return self.nickname or self.user.username

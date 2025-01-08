@@ -4,7 +4,6 @@ from rest_framework.response import Response
 from django.core.files.storage import default_storage
 from django.core.files.base import ContentFile
 from django.conf import settings
-# from datetime import timezone
 import json, re, os, uuid
 from django.db.models import Q
 from ..models import UserProfile

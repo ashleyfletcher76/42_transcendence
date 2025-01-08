@@ -7,6 +7,7 @@ from .views.add_friend_view import AddFriendView
 from .views.block_user_view import BlockUserView
 from .views.verify_views import verify_user, UserExistsView
 from .views.update_profile_view import update_profile
+from .views.tournament_active import TournamentActive
 from .views.get_user_info_view import (
 	get_single_user_data,
 	get_profile_token,
@@ -31,6 +32,7 @@ urlpatterns = [
 
 	path("add-friend/", AddFriendView.as_view(), name="add-friend"),
 	path("block-user/", BlockUserView.as_view(), name="block-user"),
+	path("tournament-active/", TournamentActive.as_view(), name="tournament-active")
 ]
 
 # serve media files during development
