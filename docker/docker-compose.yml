@@ -41,26 +41,6 @@ services:
     ports:
       - "5433:5432"
 
-  # chat-db:
-  #   container_name: chat-db
-  #   build: ./../backend/chat-service/postgres
-  #   environment:
-  #     POSTGRES_USER: ${CHAT_SERVICE_USER}
-  #     POSTGRES_PASSWORD: ${CHAT_SERVICE_PASSWORD}
-  #     POSTGRES_DB: ${CHAT_SERVICE_DB}
-  #   volumes:
-  #     - chat_data:/var/lib/postgresql/data
-  #   networks:
-  #     my_network:
-  #   healthcheck:
-  #     test: [ "CMD-SHELL", "[ -f /var/lib/postgresql/data/.db_ready ] || exit 1" ]
-  #     interval: 10s
-  #     timeout: 5s
-  #     retries: 5
-  #   restart: always
-  #   ports:
-  #     - "5436:5432"
-
   match-history-db:
     container_name: match-history-db
     build: ./../backend/user-management/match-history-service/postgres
@@ -191,8 +171,6 @@ services:
 
   pong-game:
     build: ./../backend/pong
-    # volumes:
-    #   - ./../backend/pong:/app
     container_name: pong
     environment:
       DJANGO_SECRET_KEY: ${DJANGO_SECRET_KEY}
@@ -221,8 +199,6 @@ services:
 
   lobby:
     build: ./../backend/lobby
-    # volumes:
-    #   - ./../backend/lobby:/app
     container_name: lobby
     environment:
       DJANGO_SECRET_KEY: ${DJANGO_SECRET_KEY}
@@ -292,7 +268,5 @@ networks:
 volumes:
   user_data:
   auth_data:
-  db_data:
-  # chat_data:
   redis_data:
   match_history_data:
