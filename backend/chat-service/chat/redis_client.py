@@ -34,29 +34,43 @@ def cleanup_redis():
 			_redis_client = None
 
 def redis_listener(user_channels, channels_lock):
-	"""Listen for Redis events and update user_channels."""
-	global _pubsub
+    """Listen for Redis events and update user_channels."""
+    global _pubsub
 
-	try:
-		redis_client = get_redis_client()
-		_pubsub = redis_client.pubsub()
-		_pubsub.subscribe("user_service_updates")
-		print("[INFO] Subscribed to user_service_updates.")
+    try:
+        redis_client = get_redis_client()
+        _pubsub = redis_client.pubsub()
+        _pubsub.subscribe("user_service_updates")
+        print("[INFO] Subscribed to user_service_updates.")
 
-		while not should_stop.is_set():
-			message = _pubsub.get_message(timeout=1.0)
-			if message and message["type"] == "message":
-				try:
-					event_data = json.loads(message["data"])
-					handle_user_service_event(event_data, user_channels, channels_lock)
-				except json.JSONDecodeError as e:
-					print(f"[ERROR] Failed to decode Redis message: {e}")
-	except redis.ConnectionError as e:
-		print(f"[ERROR] Redis connection error: {e}")
-	finally:
-		if _pubsub:
-			_pubsub.close()
-		print("[INFO] Redis listener stopped.")
+        while not should_stop.is_set():
+            try:
+                message = _pubsub.get_message(timeout=1.0)
+                if message and message["type"] == "message":
+                    try:
+                        event_data = json.loads(message["data"])
+                        handle_user_service_event(event_data, user_channels, channels_lock)
+                    except json.JSONDecodeError as e:
+                        print(f"[ERROR] Failed to decode Redis message: {e}")
+            except redis.ConnectionError as e:
+                if not should_stop.is_set():
+                    print(f"[ERROR] Redis connection error: {e}")
+                break
+            except Exception as e:
+                if not should_stop.is_set():
+                    print(f"[ERROR] Unexpected error in Redis listener: {e}")
+                break
+    except Exception as e:
+        if not should_stop.is_set():
+            print(f"[ERROR] Failed to initialize Redis connection: {e}")
+    finally:
+        if _pubsub:
+            try:
+                _pubsub.close()
+            except Exception as e:
+                print(f"[ERROR] Failed to close pubsub: {e}")
+        print("[INFO] Redis listener stopped.")
+
 
 def handle_user_service_event(event_data, user_channels, channels_lock):
 	"""Handle events from user-service."""
