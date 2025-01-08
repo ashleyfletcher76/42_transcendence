@@ -6,6 +6,7 @@ import asyncio
 from channels.generic.websocket import AsyncWebsocketConsumer
 from .utils.redis_helper import get_game_state, set_game_state, delete_game_state
 from .logic.game_logic import game_logic, move_right_paddle, move_left_paddle
+from .logic.ai import PongAI
 from .utils.match_history import upload_match_details
 
 
@@ -44,6 +45,8 @@ class GameConsumer(AsyncWebsocketConsumer):
         set_game_state(self.room_name, game)
         if game["connections"] == 2 or game["player2"] == "local" or game["player2"] == "AI":
             self.game_task = asyncio.create_task(self.start_game_loop())
+            if game["player2"] == "AI":
+                self.game_task = asyncio.create_task(self.start_game_loop_ai())
 
 
     async def disconnect(self, close_code):
@@ -71,12 +74,17 @@ class GameConsumer(AsyncWebsocketConsumer):
             print(f"Error decoding JSON: {e}")
             return
 
+        action = data.get("action", "")
         t1 = data.get("type_p1", "")
         d1 = data.get("direction_p1", "")
         t2 = data.get("type_p2", "")
         d2 = data.get("direction_p2", "")
 
         game = get_game_state(self.room_name)
+        if action == "pause":
+            game["paused"] = not game["paused"]
+            set_game_state(self.room_name, game)
+            return
 
         if not game["paused"]:
             if t1 == "start_move":
@@ -161,6 +169,29 @@ class GameConsumer(AsyncWebsocketConsumer):
                     }
                 )
                 break
+    
+    async def start_game_loop_ai(self):
+        ai_player = PongAI()
+        while True:
+            await sleep(1)
+            game = get_game_state(self.room_name)
+            if not game.get("paused"):
+                ai_move = ai_player.decide_move(
+                    ball_x=game["ball_x"],
+                    ball_y=game["ball_y"],
+                    ball_speed_x=game["ball_speed_x"],
+                    ball_speed_y=game["ball_speed_y"],
+                    paddle_y=game["right_paddle_y"]
+                )
+                if ai_move == "up":
+                    game["p2_paddle"] = "up"
+                elif ai_move == "down":
+                    game["p2_paddle"] = "down"
+                else:
+                    game["p2_paddle"] = ""
+                set_game_state(self.room_name, game)
+            if game.get("finished") or game.get("endloop"):
+                break
 
 
     async def get_user_from_auth_service(self, token):
@@ -202,4 +233,3 @@ class GameConsumer(AsyncWebsocketConsumer):
             right_score = game["right_score"]
         score = f"{left_score}-{right_score}"
         upload_match_details(self.nickname, self.user_id, opponent, result, score, self.token)
-    

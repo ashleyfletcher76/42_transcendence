@@ -1,4 +1,3 @@
-
 BALL_RADIUS = 0.02  # 2% of game width
 PADDLE_WIDTH = 0.016*2  # 1.6% of game width
 PADDLE_HEIGHT = 0.2  # 20% of game height
@@ -11,10 +10,7 @@ ANGLE_FACTOR = 0.015
 SPEED_INCREMENT = 0.001
 
 
-# Main game logic
 def game_logic(game):
-    if game["player2"] == "AI":
-        update_ai(game)
 
     game["ball_x"] += game["ball_speed_x"]
     game["ball_y"] += game["ball_speed_y"]
@@ -106,3 +102,5 @@ def is_paddle_hit(paddle_y, ball_y):
     paddle_top = paddle_y + PADDLE_HEIGHT
     paddle_bottom = paddle_y - PADDLE_HEIGHT
     return paddle_bottom <= ball_y <= paddle_top
+
+
