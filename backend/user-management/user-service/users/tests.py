@@ -5,7 +5,6 @@ from .models import UserProfile
 from rest_framework_simplejwt.tokens import RefreshToken
 import json
 
-
 class UserServiceTests(TestCase):
 	def setUp(self):
 		"""Set up test environment, including test users and authentication."""
@@ -477,11 +476,138 @@ class TournamentActiveTests(TestCase):
 		self.assertEqual(response.status_code, 400)
 		self.assertEqual(response.data["error"], "'action_type' is required and must be either 'start' or 'end'.")
 
-	# def test_invalid_field_types(self):
-	# 	"""Test sending invalid data types."""
-	# 	url = "/users/tournament-active/"
-	# 	payload = {"game_name": 123, "action_type": "start"}
-	# 	response = self.client.post(url, payload)
 
-	# 	self.assertEqual(response.status_code, 400)
-	# 	self.assertIn("At least 'game_name' and 'action_type' must be provided.", str(response.data))
+class EmailAndTwoFATests(TestCase):
+	def setUp(self):
+		"""Set up test environment, including test user and profile"""
+		self.user = User.objects.create_user(username="testuser", password="password")
+		self.user_profile = self.user.profile
+		self.client = APIClient()
+		self.client.login(username="testuser", password="password")
+		refresh = RefreshToken.for_user(self.user)
+		self.client.credentials(HTTP_AUTHORIZATION=f'Bearer {refresh.access_token}')
+
+	def tearDown(self):
+		"""Clean up test environment"""
+		UserProfile.objects.all().delete()
+		User.objects.all().delete()
+
+	#################################
+	## EMAIL AND 2FA FUNCTIONALITY ##
+	#################################
+
+	def test_enable_2fa_with_email(self):
+		"""Test enabling 2FA with a valid email"""
+		url = "/users/update-profile/"
+		payload = {"twofa_enabled": True, "email": "testuser@example.com"}
+		response = self.client.put(url, json.dumps(payload), content_type="application/json")
+
+		print(f"[DEBUG] Response status code: {response.status_code}")
+		print(f"[DEBUG] Response data: {response.json()}")
+
+		# check the response
+		self.assertEqual(response.status_code, 200)
+		self.assertEqual(True, response.data["success"])
+		self.assertEqual("Twofa_enabled and email updated successfully.", response.data["message"])
+
+		# check the database
+		self.user_profile.refresh_from_db()
+		self.assertTrue(self.user_profile.twofa_enabled)
+		self.assertEqual(self.user_profile.email, "testuser@example.com")
+
+	def test_enable_2fa_without_email(self):
+		"""Test enabling 2FA without a valid email"""
+		url = "/users/update-profile/"
+		payload = {"twofa_enabled": True}
+		response = self.client.put(url, json.dumps(payload), content_type="application/json")
+
+		print(f"[DEBUG] Response status code: {response.status_code}")
+		print(f"[DEBUG] Response data: {response.json()}")
+
+		# check the response
+		self.assertEqual(response.status_code, 400)
+		self.assertEqual(False, response.data["success"])
+		self.assertEqual("Email is required to enable 2FA.", response.data["message"])
+
+		# check the database
+		self.user_profile.refresh_from_db()
+		self.assertFalse(self.user_profile.twofa_enabled)
+
+	def test_enable_2fa_without_email_exisiting_true(self):
+		"""Test enabling 2FA without an email but an exisiting email exists"""
+
+		self.user_profile.email = "testuser@example.com"
+		self.user_profile.save()
+
+		url = "/users/update-profile/"
+		payload = {"twofa_enabled": True}
+		response = self.client.put(url, json.dumps(payload), content_type="application/json")
+
+		print(f"[DEBUG] Response status code: {response.status_code}")
+		print(f"[DEBUG] Response data: {response.json()}")
+
+		# check the response
+		self.assertEqual(response.status_code, 200)
+		self.assertEqual(response.data["success"], True)
+		self.assertEqual(response.data["message"], "Twofa_enabled updated successfully.")
+
+		# check the database
+		self.user_profile.refresh_from_db()
+		self.assertTrue(self.user_profile.twofa_enabled)
+
+	def test_enable_2fa_with_invalid_email(self):
+		"""Test enabling 2FA without an invalid email"""
+
+		url = "/users/update-profile/"
+		payload = {"twofa_enabled": True, "email": "testuser"}
+		response = self.client.put(url, json.dumps(payload), content_type="application/json")
+
+		print(f"[DEBUG] Response status code: {response.status_code}")
+		print(f"[DEBUG] Response data: {response.json()}")
+
+		# check the response
+		self.assertEqual(response.status_code, 400)
+		self.assertEqual(response.data["success"], False)
+		self.assertEqual(response.data["message"], "Invalid email format.")
+
+		# check the database
+		self.user_profile.refresh_from_db()
+		self.assertFalse(self.user_profile.twofa_enabled)
+
+	def test_enable_2fa_without_any_fields(self):
+		"""Test enabling 2FA without any fields"""
+
+		url = "/users/update-profile/"
+		payload = {}
+		response = self.client.put(url, json.dumps(payload), content_type="application/json")
+
+		print(f"[DEBUG] Response status code: {response.status_code}")
+		print(f"[DEBUG] Response data: {response.json()}")
+
+		# check the response
+		self.assertEqual(response.status_code, 400)
+		self.assertEqual(response.data["success"], False)
+		self.assertEqual(response.data["message"], "No changes detected in the request.")
+
+		# check the database
+		self.user_profile.refresh_from_db()
+		self.assertFalse(self.user_profile.twofa_enabled)
+
+	def test_disable_2fa(self):
+		"""Test disbaling 2FA"""
+
+		url = "/users/update-profile/"
+		payload = {"twofa_enabled": False}
+		response = self.client.put(url, json.dumps(payload), content_type="application/json")
+
+		print(f"[DEBUG] Response status code: {response.status_code}")
+		print(f"[DEBUG] Response data: {response.json()}")
+
+		# check the response
+		self.assertEqual(response.status_code, 200)
+		self.assertEqual(response.data["success"], True)
+		self.assertEqual(response.data["message"], "Twofa_enabled updated successfully.")
+
+		# check the database
+		self.user_profile.refresh_from_db()
+		self.assertFalse(self.user_profile.twofa_enabled)

@@ -61,33 +61,37 @@ def publish_nickname_change(redis_client, old_nickname, new_nickname):
 
 def validate_and_update_2fa(data, profile):
 	"""Validate and update 2FA auth settings"""
-	twofa_enabled = data.get("twofa_enabled")
-	email = data.get("email")
 
-	if not isinstance(twofa_enabled, bool):
-		raise ValueError("2FA auth must be a boolean.")
+	try:
+		twofa_enabled = data.get("twofa_enabled")
+		email = data.get("email")
 
-	if twofa_enabled and not email:
-		raise ValueError("Email is required to enable 2FA auth.")
+		if not isinstance(twofa_enabled, bool):
+			raise ValueError("2FA status must be a boolean.")
 
-	if email:
-		# validate the email
-		validator = EmailValidator()
-		try:
-			validator(email)
-		except Exception:
-			raise ValueError("Invalid email format.")
+		if twofa_enabled:  # Enabling 2FA
+			# check if an email is provided or already exists in the profile
+			if not email and not profile.email:
+				raise ValueError("Email is required to enable 2FA.")
 
-	# update the fields in the profile
-	profile.twofa_enabled = twofa_enabled
-	if email:
-		profile.email = email
+			# if email is provided, validate and update it
+			if email:
+				validator = EmailValidator()
+				try:
+					validator(email)
+				except Exception:
+					raise ValueError("Invalid email format.")
+				profile.email = email
 
-	# return updated fields to keep track
-	updated_fields = ["twofa_enabled"]
-	if email:
-		updated_fields.append("email")
-	return updated_fields
+			profile.twofa_enabled = True
+		else:
+			profile.twofa_enabled = False
+
+		return ["Twofa_enabled"] + (["email"] if email else [])
+	except ValueError as e:
+		print(f"[DEBUG] Validation error in 2FA: {e}")
+		raise
+
 
 #######################################
 # ---------- MAIN FUNCTION ---------- #
@@ -103,6 +107,8 @@ def update_profile(request):
 
 	updated_fields = []
 	old_nickname = profile.nickname
+
+	print(f"[DEBUG] Received request data: {data}")
 
 	try:
 		#####################
@@ -152,6 +158,7 @@ def update_profile(request):
 
 			## generate response for successful updates ##
 			updated_fields_str = " and ".join(updated_fields)
+			print(f"[DEBUG] Updated fields: {updated_fields}")
 			return Response(
 				{
 					"success": True,
@@ -161,15 +168,17 @@ def update_profile(request):
 			)
 
 		## no updates detected, no event published ##
+		print(f"[DEBUG] No changes detected for user {user.username}")
 		return Response(
 			{"success": False, "message": "No changes detected in the request."},
 			status=400,
 		)
 
 	except ValueError as e:
+		print(f"[DEBUG] Validation error: {e}")
 		return Response({"success": False, "message": str(e)}, status=400)
 
 	except Exception as e:
-		print(f"[ERROR] {e}")
+		print(f"[ERROR] Unexpected error: {e}")
 		return Response({"success": False, "message": "An error occurred."}, status=500)
 
