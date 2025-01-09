@@ -58,3 +58,14 @@ class UserProfileSerializer(serializers.ModelSerializer):
 
 	def get_blocked_users(self, obj):
 		return list(obj.blocked_users.values_list('nickname', flat=True))
+
+class TwoFASerializer(serializers.ModelSerializer):
+	class meta:
+		model = UserProfile
+		fields = ['twofa_enabled', 'email']
+
+	def validate(self, data):
+		# validate email presence if 2FA is enabled
+		if data.get('twofa_enabled') and not data.get('email'):
+			raise serializers.ValidationError("Email is required to enable 2FA.")
+		return data
