@@ -1,0 +1,82 @@
+[
+    {
+        "username": "Testuser",
+        "nickname": "pLaYeR",
+        "avatar": "/images/profile.png",
+        "points": "100",
+        "games_total": "6",
+        "wins": "5",
+        "losses": "1",
+        "status": "online"
+    },
+    {
+        "username": "Testuser",
+        "nickname": "Tom",
+        "avatar": "/images/profile.png",
+        "points": "123",
+        "games_total": "6",
+        "wins": "5",
+        "losses": "1",
+        "status": "online"
+    },
+    {
+        "username": "Testuser",
+        "nickname": "Tim",
+        "avatar": "/images/profile.png",
+        "points": "200",
+        "games_total": "6",
+        "wins": "5",
+        "losses": "1",
+        "status": "offline"
+    },
+    {
+        "username": "Testuser",
+        "nickname": "Bob",
+        "avatar": "/images/profile.png",
+        "points": "1560",
+        "games_total": "6",
+        "wins": "5",
+        "losses": "1",
+        "status": "online"
+    },
+    {
+        "username": "Testuser",
+        "nickname": "John",
+        "avatar": "/images/profile.png",
+        "points": "100",
+        "games_total": "6",
+        "wins": "5",
+        "losses": "1",
+        "status": "offline"
+    },
+    {
+        "username": "Testuser",
+        "nickname": "Jana",
+        "avatar": "/images/profile.png",
+        "points": "100",
+        "games_total": "6",
+        "wins": "5",
+        "losses": "1",
+        "status": "online"
+    },
+    {
+        "username": "Testuser",
+        "nickname": "Dom",
+        "avatar": "/images/profile.png",
+        "points": "100",
+        "games_total": "6",
+        "wins": "5",
+        "losses": "1",
+        "status": "offline"
+    },
+    {
+        "username": "Testuser",
+        "nickname": "player123",
+        "avatar": "/images/profile.png",
+        "points": "100",
+        "games_total": "6",
+        "wins": "5",
+        "losses": "1",
+        "status": "online"
+    }
+]
