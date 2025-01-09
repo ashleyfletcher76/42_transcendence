@@ -90,6 +90,10 @@ label {
   text-align: left;
 }
 
+.custom-checkbox {
+  width: 20px;
+}
+
 .badge {
   text-decoration: none;
 }

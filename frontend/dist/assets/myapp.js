@@ -982,7 +982,7 @@
   
   <div class="scrollable-list chat" >
     {{#each this.filteredMessages as |message|}}
-      <Message @message={{message}} @ownNickname={{this.chat.user.profile.nickname}} @selectUser={{@selectUser}}/>
+      <Message @message={{message}} @ownNickname={{this.chat.user.profile.nickname}}/>
     {{/each}}
   </div>
   
@@ -1007,8 +1007,8 @@
   </div>
   */
   {
-    "id": "SIcf+KC/",
-    "block": "[[[10,0],[14,0,\"container-row chat-container\"],[12],[1,\"\\n\"],[10,0],[14,0,\"btn-group\"],[14,\"role\",\"group\"],[14,\"aria-label\",\"Basic checkbox toggle button group\"],[12],[1,\"\\n  \"],[11,\"input\"],[24,0,\"btn-check\"],[24,1,\"btncheck1\"],[24,\"autocomplete\",\"off\"],[16,\"checked\",[30,0,[\"showGeneral\"]]],[24,4,\"checkbox\"],[4,[38,2],[\"change\",[28,[37,3],[[30,0,[\"toggleCheckbox\"]],\"all\"],null]],null],[12],[13],[1,\"\\n  \"],[10,\"label\"],[14,0,\"btn btn-outline-secondary btn-sm\"],[14,\"for\",\"btncheck1\"],[12],[1,\"General\"],[13],[1,\"\\n\\n  \"],[11,\"input\"],[24,0,\"btn-check\"],[24,1,\"btncheck2\"],[24,\"autocomplete\",\"off\"],[16,\"checked\",[30,0,[\"showWhisper\"]]],[24,4,\"checkbox\"],[4,[38,2],[\"change\",[28,[37,3],[[30,0,[\"toggleCheckbox\"]],\"whisper\"],null]],null],[12],[13],[1,\"\\n  \"],[10,\"label\"],[14,0,\"btn btn-outline-secondary btn-sm\"],[14,\"for\",\"btncheck2\"],[12],[1,\"Whisper\"],[13],[1,\"\\n\\n  \"],[11,\"input\"],[24,0,\"btn-check\"],[24,1,\"btncheck3\"],[24,\"autocomplete\",\"off\"],[16,\"checked\",[30,0,[\"showTournament\"]]],[24,4,\"checkbox\"],[4,[38,2],[\"change\",[28,[37,3],[[30,0,[\"toggleCheckbox\"]],\"tournament\"],null]],null],[12],[13],[1,\"\\n  \"],[10,\"label\"],[14,0,\"btn btn-outline-secondary btn-sm\"],[14,\"for\",\"btncheck3\"],[12],[1,\"Tournament\"],[13],[1,\"\\n\\n  \"],[11,\"input\"],[24,0,\"btn-check\"],[24,1,\"btncheck4\"],[24,\"autocomplete\",\"off\"],[16,\"checked\",[30,0,[\"showSystem\"]]],[24,4,\"checkbox\"],[4,[38,2],[\"change\",[28,[37,3],[[30,0,[\"toggleCheckbox\"]],\"system\"],null]],null],[12],[13],[1,\"\\n  \"],[10,\"label\"],[14,0,\"btn btn-outline-secondary btn-sm\"],[14,\"for\",\"btncheck4\"],[12],[1,\"System\"],[13],[1,\"\\n\"],[13],[1,\"\\n\\n\"],[10,0],[14,0,\"scrollable-list chat\"],[12],[1,\"\\n\"],[42,[28,[37,6],[[28,[37,6],[[30,0,[\"filteredMessages\"]]],null]],null],null,[[[1,\"    \"],[8,[39,7],null,[[\"@message\",\"@ownNickname\",\"@selectUser\"],[[30,1],[30,0,[\"chat\",\"user\",\"profile\",\"nickname\"]],[30,2]]],null],[1,\"\\n\"]],[1]],null],[13],[1,\"\\n\\n\"],[10,0],[14,0,\"input-group\"],[12],[1,\"\\n  \"],[11,\"input\"],[24,0,\"form-control\"],[24,\"placeholder\",\"Put your message here\"],[16,5,[29,[\"color: \",[30,0,[\"chat\",\"inputColor\"]],\";\"]]],[24,\"aria-label\",\"Recipient's username\"],[24,\"aria-describedby\",\"basic-addon2\"],[16,2,[30,0,[\"chat\",\"messageInput\"]]],[24,4,\"text\"],[4,[38,2],[\"input\",[30,0,[\"updateInputValue\"]]],null],[4,[38,2],[\"keydown\",[30,0,[\"handleKeyDown\"]]],null],[4,[38,8],[[30,0,[\"setInputRef\"]]],null],[12],[13],[1,\"\\n  \"],[10,0],[14,0,\"input-group-append\"],[12],[1,\"\\n    \"],[11,\"button\"],[24,0,\"btn btn-outline-secondary\"],[24,4,\"button\"],[4,[38,2],[\"click\",[30,0,[\"sendMessage\"]]],null],[12],[1,\"Send\"],[13],[1,\"\\n  \"],[13],[1,\"\\n\"],[13],[1,\"\\n\"],[13]],[\"message\",\"@selectUser\"],false,[\"div\",\"input\",\"on\",\"fn\",\"label\",\"each\",\"-track-array\",\"message\",\"did-insert\",\"button\"]]",
+    "id": "cHPyaJUo",
+    "block": "[[[10,0],[14,0,\"container-row chat-container\"],[12],[1,\"\\n\"],[10,0],[14,0,\"btn-group\"],[14,\"role\",\"group\"],[14,\"aria-label\",\"Basic checkbox toggle button group\"],[12],[1,\"\\n  \"],[11,\"input\"],[24,0,\"btn-check\"],[24,1,\"btncheck1\"],[24,\"autocomplete\",\"off\"],[16,\"checked\",[30,0,[\"showGeneral\"]]],[24,4,\"checkbox\"],[4,[38,2],[\"change\",[28,[37,3],[[30,0,[\"toggleCheckbox\"]],\"all\"],null]],null],[12],[13],[1,\"\\n  \"],[10,\"label\"],[14,0,\"btn btn-outline-secondary btn-sm\"],[14,\"for\",\"btncheck1\"],[12],[1,\"General\"],[13],[1,\"\\n\\n  \"],[11,\"input\"],[24,0,\"btn-check\"],[24,1,\"btncheck2\"],[24,\"autocomplete\",\"off\"],[16,\"checked\",[30,0,[\"showWhisper\"]]],[24,4,\"checkbox\"],[4,[38,2],[\"change\",[28,[37,3],[[30,0,[\"toggleCheckbox\"]],\"whisper\"],null]],null],[12],[13],[1,\"\\n  \"],[10,\"label\"],[14,0,\"btn btn-outline-secondary btn-sm\"],[14,\"for\",\"btncheck2\"],[12],[1,\"Whisper\"],[13],[1,\"\\n\\n  \"],[11,\"input\"],[24,0,\"btn-check\"],[24,1,\"btncheck3\"],[24,\"autocomplete\",\"off\"],[16,\"checked\",[30,0,[\"showTournament\"]]],[24,4,\"checkbox\"],[4,[38,2],[\"change\",[28,[37,3],[[30,0,[\"toggleCheckbox\"]],\"tournament\"],null]],null],[12],[13],[1,\"\\n  \"],[10,\"label\"],[14,0,\"btn btn-outline-secondary btn-sm\"],[14,\"for\",\"btncheck3\"],[12],[1,\"Tournament\"],[13],[1,\"\\n\\n  \"],[11,\"input\"],[24,0,\"btn-check\"],[24,1,\"btncheck4\"],[24,\"autocomplete\",\"off\"],[16,\"checked\",[30,0,[\"showSystem\"]]],[24,4,\"checkbox\"],[4,[38,2],[\"change\",[28,[37,3],[[30,0,[\"toggleCheckbox\"]],\"system\"],null]],null],[12],[13],[1,\"\\n  \"],[10,\"label\"],[14,0,\"btn btn-outline-secondary btn-sm\"],[14,\"for\",\"btncheck4\"],[12],[1,\"System\"],[13],[1,\"\\n\"],[13],[1,\"\\n\\n\"],[10,0],[14,0,\"scrollable-list chat\"],[12],[1,\"\\n\"],[42,[28,[37,6],[[28,[37,6],[[30,0,[\"filteredMessages\"]]],null]],null],null,[[[1,\"    \"],[8,[39,7],null,[[\"@message\",\"@ownNickname\"],[[30,1],[30,0,[\"chat\",\"user\",\"profile\",\"nickname\"]]]],null],[1,\"\\n\"]],[1]],null],[13],[1,\"\\n\\n\"],[10,0],[14,0,\"input-group\"],[12],[1,\"\\n  \"],[11,\"input\"],[24,0,\"form-control\"],[24,\"placeholder\",\"Put your message here\"],[16,5,[29,[\"color: \",[30,0,[\"chat\",\"inputColor\"]],\";\"]]],[24,\"aria-label\",\"Recipient's username\"],[24,\"aria-describedby\",\"basic-addon2\"],[16,2,[30,0,[\"chat\",\"messageInput\"]]],[24,4,\"text\"],[4,[38,2],[\"input\",[30,0,[\"updateInputValue\"]]],null],[4,[38,2],[\"keydown\",[30,0,[\"handleKeyDown\"]]],null],[4,[38,8],[[30,0,[\"setInputRef\"]]],null],[12],[13],[1,\"\\n  \"],[10,0],[14,0,\"input-group-append\"],[12],[1,\"\\n    \"],[11,\"button\"],[24,0,\"btn btn-outline-secondary\"],[24,4,\"button\"],[4,[38,2],[\"click\",[30,0,[\"sendMessage\"]]],null],[12],[1,\"Send\"],[13],[1,\"\\n  \"],[13],[1,\"\\n\"],[13],[1,\"\\n\"],[13]],[\"message\"],false,[\"div\",\"input\",\"on\",\"fn\",\"label\",\"each\",\"-track-array\",\"message\",\"did-insert\",\"button\"]]",
     "moduleName": "myapp/components/chat.hbs",
     "isStrictMode": false
   });
@@ -1221,7 +1221,7 @@
       this.makeFriends();
     }
     select(user) {
-      this.args.selectUser(user); // Passing the selected user to the parent action
+      this.user.selectUser(user); // Passing the selected user to the parent action
     }
     acceptGame(event) {
       event.preventDefault();
@@ -1434,7 +1434,7 @@
     value: true
   });
   _exports.default = void 0;
-  var _class, _descriptor, _descriptor2, _descriptor3, _descriptor4, _descriptor5, _descriptor6;
+  var _class, _descriptor, _descriptor2, _descriptor3, _descriptor4, _descriptor5, _descriptor6, _descriptor7, _descriptor8;
   0; //eaimeta@70e063a35619d71f0,"@glimmer/component",0,"@ember/object",0,"@glimmer/tracking",0,"@ember/service",0,"@ember/template-factory",0,"@ember/component"eaimeta@70e063a35619d71f
   function _initializerDefineProperty(e, i, r, l) { r && Object.defineProperty(e, i, { enumerable: r.enumerable, configurable: r.configurable, writable: r.writable, value: r.initializer ? r.initializer.call(l) : void 0 }); }
   function _defineProperty(e, r, t) { return (r = _toPropertyKey(r)) in e ? Object.defineProperty(e, r, { value: t, enumerable: !0, configurable: !0, writable: !0 }) : e[r] = t, e; }
@@ -1481,6 +1481,24 @@
         >
         <small>This is the visible Name on this Site</small>
       </div>
+  
+      <div class="form-group mt-3" >
+        <label>E-Mail:</label>
+        <input 
+          type="name" 
+          class="form-control"
+          style="background-color: #706363;"
+          value={{this.newEmail}}
+          {{on "input" this.updateNewEmail}}
+        >
+        <input type="checkbox" 
+         aria-label="Checkbox for following text input" 
+         checked={{this.twofa_enabled}} 
+         {{on "change" this.toggle2fa}}>
+        <small>Enable Email for 2-FA</small>  
+      </div>
+  
+  
     </modal.body>
     <modal.footer style="background-color: #706363;">
       <label class="ERROR">{{this.error}}</label>
@@ -1491,8 +1509,8 @@
   
   */
   {
-    "id": "uaJZM0eo",
-    "block": "[[[11,\"button\"],[24,0,\"btn btn-primary\"],[24,4,\"button\"],[4,[38,1],[\"click\",[30,0,[\"openModal\"]]],null],[12],[1,\"\\n  Edit Profile\\n\"],[13],[1,\"\\n\\n\"],[8,[39,2],null,[[\"@open\"],[[30,0,[\"isModalOpen\"]]]],[[\"default\"],[[[[1,\"\\n  \"],[8,[30,1,[\"header\"]],[[24,5,\"background-color: #706363;\"]],null,[[\"default\"],[[[[1,\"\\n    \"],[10,\"h4\"],[14,0,\"modal-title\"],[12],[1,\"\\n      Edit Profile\\n    \"],[13],[1,\"\\n  \"]],[]]]]],[1,\"\\n  \"],[8,[30,1,[\"body\"]],[[24,5,\"background-color: #706363;\"]],null,[[\"default\"],[[[[1,\"\\n    \"],[10,0],[14,0,\"form-group\"],[12],[1,\"\\n      \"],[10,\"label\"],[12],[1,\"Choose Avatar:\"],[13],[1,\"\\n      \"],[11,\"input\"],[24,0,\"form-control\"],[24,5,\"background-color: #706363;\"],[24,\"placeholder\",\"Choose Avatar\"],[24,4,\"file\"],[4,[38,1],[\"change\",[30,0,[\"updateAvatar\"]]],null],[12],[13],[1,\"\\n      \"],[10,\"small\"],[12],[1,\"This is the visible Avatar on this Site\"],[13],[1,\"\\n    \"],[13],[1,\"\\n\\n    \"],[10,0],[14,0,\"form-group mt-3\"],[12],[1,\"\\n      \"],[10,\"label\"],[12],[1,\"Nickname:\"],[13],[1,\"\\n      \"],[11,\"input\"],[24,0,\"form-control\"],[24,5,\"background-color: #706363;\"],[16,2,[30,0,[\"newNickname\"]]],[24,4,\"name\"],[4,[38,1],[\"input\",[30,0,[\"updateNewNickname\"]]],null],[12],[13],[1,\"\\n      \"],[10,\"small\"],[12],[1,\"This is the visible Name on this Site\"],[13],[1,\"\\n    \"],[13],[1,\"\\n  \"]],[]]]]],[1,\"\\n  \"],[8,[30,1,[\"footer\"]],[[24,5,\"background-color: #706363;\"]],null,[[\"default\"],[[[[1,\"\\n    \"],[10,\"label\"],[14,0,\"ERROR\"],[12],[1,[30,0,[\"error\"]]],[13],[1,\"\\n    \"],[8,[39,8],null,[[\"@onClick\"],[[30,1,[\"close\"]]]],[[\"default\"],[[[[1,\"Cancel\"]],[]]]]],[1,\"\\n    \"],[8,[39,8],null,[[\"@type\",\"@onClick\"],[\"success\",[30,0,[\"submit\"]]]],[[\"default\"],[[[[1,\"Save\"]],[]]]]],[1,\"\\n  \"]],[]]]]],[1,\"\\n\"]],[1]]]]],[1,\"\\n\"]],[\"modal\"],false,[\"button\",\"on\",\"bs-modal\",\"h4\",\"div\",\"label\",\"input\",\"small\",\"bs-button\"]]",
+    "id": "GO6oCuHH",
+    "block": "[[[11,\"button\"],[24,0,\"btn btn-primary\"],[24,4,\"button\"],[4,[38,1],[\"click\",[30,0,[\"openModal\"]]],null],[12],[1,\"\\n  Edit Profile\\n\"],[13],[1,\"\\n\\n\"],[8,[39,2],null,[[\"@open\"],[[30,0,[\"isModalOpen\"]]]],[[\"default\"],[[[[1,\"\\n  \"],[8,[30,1,[\"header\"]],[[24,5,\"background-color: #706363;\"]],null,[[\"default\"],[[[[1,\"\\n    \"],[10,\"h4\"],[14,0,\"modal-title\"],[12],[1,\"\\n      Edit Profile\\n    \"],[13],[1,\"\\n  \"]],[]]]]],[1,\"\\n  \"],[8,[30,1,[\"body\"]],[[24,5,\"background-color: #706363;\"]],null,[[\"default\"],[[[[1,\"\\n    \"],[10,0],[14,0,\"form-group\"],[12],[1,\"\\n      \"],[10,\"label\"],[12],[1,\"Choose Avatar:\"],[13],[1,\"\\n      \"],[11,\"input\"],[24,0,\"form-control\"],[24,5,\"background-color: #706363;\"],[24,\"placeholder\",\"Choose Avatar\"],[24,4,\"file\"],[4,[38,1],[\"change\",[30,0,[\"updateAvatar\"]]],null],[12],[13],[1,\"\\n      \"],[10,\"small\"],[12],[1,\"This is the visible Avatar on this Site\"],[13],[1,\"\\n    \"],[13],[1,\"\\n\\n    \"],[10,0],[14,0,\"form-group mt-3\"],[12],[1,\"\\n      \"],[10,\"label\"],[12],[1,\"Nickname:\"],[13],[1,\"\\n      \"],[11,\"input\"],[24,0,\"form-control\"],[24,5,\"background-color: #706363;\"],[16,2,[30,0,[\"newNickname\"]]],[24,4,\"name\"],[4,[38,1],[\"input\",[30,0,[\"updateNewNickname\"]]],null],[12],[13],[1,\"\\n      \"],[10,\"small\"],[12],[1,\"This is the visible Name on this Site\"],[13],[1,\"\\n    \"],[13],[1,\"\\n\\n    \"],[10,0],[14,0,\"form-group mt-3\"],[12],[1,\"\\n      \"],[10,\"label\"],[12],[1,\"E-Mail:\"],[13],[1,\"\\n      \"],[11,\"input\"],[24,0,\"form-control\"],[24,5,\"background-color: #706363;\"],[16,2,[30,0,[\"newEmail\"]]],[24,4,\"name\"],[4,[38,1],[\"input\",[30,0,[\"updateNewEmail\"]]],null],[12],[13],[1,\"\\n      \"],[11,\"input\"],[24,\"aria-label\",\"Checkbox for following text input\"],[16,\"checked\",[30,0,[\"twofa_enabled\"]]],[24,4,\"checkbox\"],[4,[38,1],[\"change\",[30,0,[\"toggle2fa\"]]],null],[12],[13],[1,\"\\n      \"],[10,\"small\"],[12],[1,\"Enable Email for 2-FA\"],[13],[1,\"  \\n    \"],[13],[1,\"\\n\\n\\n  \"]],[]]]]],[1,\"\\n  \"],[8,[30,1,[\"footer\"]],[[24,5,\"background-color: #706363;\"]],null,[[\"default\"],[[[[1,\"\\n    \"],[10,\"label\"],[14,0,\"ERROR\"],[12],[1,[30,0,[\"error\"]]],[13],[1,\"\\n    \"],[8,[39,8],null,[[\"@onClick\"],[[30,1,[\"close\"]]]],[[\"default\"],[[[[1,\"Cancel\"]],[]]]]],[1,\"\\n    \"],[8,[39,8],null,[[\"@type\",\"@onClick\"],[\"success\",[30,0,[\"submit\"]]]],[[\"default\"],[[[[1,\"Save\"]],[]]]]],[1,\"\\n  \"]],[]]]]],[1,\"\\n\"]],[1]]]]],[1,\"\\n\"]],[\"modal\"],false,[\"button\",\"on\",\"bs-modal\",\"h4\",\"div\",\"label\",\"input\",\"small\",\"bs-button\"]]",
     "moduleName": "myapp/components/modal-profile.hbs",
     "isStrictMode": false
   });
@@ -1501,21 +1519,31 @@
       super(...args);
       _initializerDefineProperty(this, "isModalOpen", _descriptor, this);
       _initializerDefineProperty(this, "newNickname", _descriptor2, this);
-      _initializerDefineProperty(this, "newAvatar", _descriptor3, this);
+      _initializerDefineProperty(this, "newEmail", _descriptor3, this);
+      _initializerDefineProperty(this, "twofa_enabled", _descriptor4, this);
+      _initializerDefineProperty(this, "newAvatar", _descriptor5, this);
       // Track the selected avatar file
-      _initializerDefineProperty(this, "error", _descriptor4, this);
-      _initializerDefineProperty(this, "user", _descriptor5, this);
-      _initializerDefineProperty(this, "session", _descriptor6, this);
+      _initializerDefineProperty(this, "error", _descriptor6, this);
+      _initializerDefineProperty(this, "user", _descriptor7, this);
+      _initializerDefineProperty(this, "session", _descriptor8, this);
     }
     openModal() {
       this.isModalOpen = true;
       this.newNickname = this.user.profile.nickname;
+      this.newEmail = this.user.profile.email;
+      this.twofa_enabled = this.user.profile.twofa_enabled;
     }
     closeModal() {
       this.isModalOpen = false;
     }
+    toggle2fa() {
+      this.twofa_enabled = !this.twofa_enabled;
+    }
     updateNewNickname(event) {
       this.newNickname = event.target.value;
+    }
+    updateNewEmail(event) {
+      this.newEmail = event.target.value;
     }
     updateAvatar(event) {
       this.newAvatar = event.target.files[0]; // Get the selected file
@@ -1527,6 +1555,8 @@
     async updateProfile() {
       const formData = new FormData();
       formData.append('nickname', this.newNickname);
+      formData.append('email', this.newEmail);
+      formData.append('twofa_enabled', this.twofa_enabled);
       if (this.newAvatar) {
         formData.append('avatar', this.newAvatar); // Append the avatar file
       }
@@ -1554,29 +1584,39 @@
     enumerable: true,
     writable: true,
     initializer: null
-  }), _descriptor3 = _applyDecoratedDescriptor(_class.prototype, "newAvatar", [_tracking.tracked], {
+  }), _descriptor3 = _applyDecoratedDescriptor(_class.prototype, "newEmail", [_tracking.tracked], {
+    configurable: true,
+    enumerable: true,
+    writable: true,
+    initializer: null
+  }), _descriptor4 = _applyDecoratedDescriptor(_class.prototype, "twofa_enabled", [_tracking.tracked], {
+    configurable: true,
+    enumerable: true,
+    writable: true,
+    initializer: null
+  }), _descriptor5 = _applyDecoratedDescriptor(_class.prototype, "newAvatar", [_tracking.tracked], {
     configurable: true,
     enumerable: true,
     writable: true,
     initializer: function () {
       return null;
     }
-  }), _descriptor4 = _applyDecoratedDescriptor(_class.prototype, "error", [_tracking.tracked], {
+  }), _descriptor6 = _applyDecoratedDescriptor(_class.prototype, "error", [_tracking.tracked], {
     configurable: true,
     enumerable: true,
     writable: true,
     initializer: null
-  }), _descriptor5 = _applyDecoratedDescriptor(_class.prototype, "user", [_service.inject], {
+  }), _descriptor7 = _applyDecoratedDescriptor(_class.prototype, "user", [_service.inject], {
     configurable: true,
     enumerable: true,
     writable: true,
     initializer: null
-  }), _descriptor6 = _applyDecoratedDescriptor(_class.prototype, "session", [_service.inject], {
+  }), _descriptor8 = _applyDecoratedDescriptor(_class.prototype, "session", [_service.inject], {
     configurable: true,
     enumerable: true,
     writable: true,
     initializer: null
-  }), _applyDecoratedDescriptor(_class.prototype, "openModal", [_object.action], Object.getOwnPropertyDescriptor(_class.prototype, "openModal"), _class.prototype), _applyDecoratedDescriptor(_class.prototype, "closeModal", [_object.action], Object.getOwnPropertyDescriptor(_class.prototype, "closeModal"), _class.prototype), _applyDecoratedDescriptor(_class.prototype, "updateNewNickname", [_object.action], Object.getOwnPropertyDescriptor(_class.prototype, "updateNewNickname"), _class.prototype), _applyDecoratedDescriptor(_class.prototype, "updateAvatar", [_object.action], Object.getOwnPropertyDescriptor(_class.prototype, "updateAvatar"), _class.prototype), _applyDecoratedDescriptor(_class.prototype, "submit", [_object.action], Object.getOwnPropertyDescriptor(_class.prototype, "submit"), _class.prototype), _class);
+  }), _applyDecoratedDescriptor(_class.prototype, "openModal", [_object.action], Object.getOwnPropertyDescriptor(_class.prototype, "openModal"), _class.prototype), _applyDecoratedDescriptor(_class.prototype, "closeModal", [_object.action], Object.getOwnPropertyDescriptor(_class.prototype, "closeModal"), _class.prototype), _applyDecoratedDescriptor(_class.prototype, "toggle2fa", [_object.action], Object.getOwnPropertyDescriptor(_class.prototype, "toggle2fa"), _class.prototype), _applyDecoratedDescriptor(_class.prototype, "updateNewNickname", [_object.action], Object.getOwnPropertyDescriptor(_class.prototype, "updateNewNickname"), _class.prototype), _applyDecoratedDescriptor(_class.prototype, "updateNewEmail", [_object.action], Object.getOwnPropertyDescriptor(_class.prototype, "updateNewEmail"), _class.prototype), _applyDecoratedDescriptor(_class.prototype, "updateAvatar", [_object.action], Object.getOwnPropertyDescriptor(_class.prototype, "updateAvatar"), _class.prototype), _applyDecoratedDescriptor(_class.prototype, "submit", [_object.action], Object.getOwnPropertyDescriptor(_class.prototype, "submit"), _class.prototype), _class);
   (0, _component.setComponentTemplate)(__COLOCATED_TEMPLATE__, ModalProfileComponent);
 });
 ;define("myapp/components/navigation-bar", ["exports", "@ember/component", "@ember/component/template-only", "@ember/template-factory"], function (_exports, _component, _templateOnly, _templateFactory) {
@@ -1745,14 +1785,14 @@
     {{!-- Profile picture column (1 part) --}}
     <div class="col center no-padding position-relative">
       <button type="button" class="btn-close top-left" onclick={{this.onCloseClick}}></button>
-      <img src="https://localhost/users/users{{@selectedUser.avatar}}/" alt="Profile Picture" class="profile-pic" />
+      <img src="https://localhost/users/users{{this.user.selectedUser.avatar}}/" alt="Profile Picture" class="profile-pic" />
     </div>
   
     {{!-- Profile details column (3 parts) --}}
     <div class="col-10">
       {{!-- First row of profile details --}}
       <div class="profile-details">
-        <h2 class="name">{{@selectedUser.nickname}}</h2>
+        <h2 class="name">{{this.user.selectedUser.nickname}}</h2>
         <div class="actions">
           <button class="emoji-button info" data-bs-toggle="tooltip" data-bs-placement="top" title="Live Chat"
             type="button" {{on "click" this.startLiveChat}}>
@@ -1785,13 +1825,13 @@
           </button>
           {{/if}}
         </div>
-        <h2 class="points">{{@selectedUser.trophies}}🏆</h2>
+        <h2 class="points">{{this.user.selectedUser.trophies}}🏆</h2>
       </div>
   
       {{!-- Second row of profile details --}}
       <div class="profile-details">
-        <ModalGameHistory @user={{@selectedUser}}/>
-        <h2 class="info">Wins: {{@selectedUser.wins}}</h2>
+        <ModalGameHistory @user={{this.user.selectedUser}}/>
+        <h2 class="info">Wins: {{this.user.selectedUser.wins}}</h2>
       </div>
   
       <div class="profile-details">
@@ -1800,15 +1840,15 @@
         {{else}}
         <h2 class="info">🔴 offline</h2>
         {{/if}}
-        <h2 class="info">Losses: {{@selectedUser.losses}}</h2>
+        <h2 class="info">Losses: {{this.user.selectedUser.losses}}</h2>
       </div>
   
     </div>
   </div>
   */
   {
-    "id": "XFsyisKd",
-    "block": "[[[10,0],[14,0,\"container-fluid row fill p-2\"],[12],[1,\"\\n\"],[1,\"  \"],[10,0],[14,0,\"col center no-padding position-relative\"],[12],[1,\"\\n    \"],[10,\"button\"],[14,0,\"btn-close top-left\"],[15,\"onclick\",[30,0,[\"onCloseClick\"]]],[14,4,\"button\"],[12],[13],[1,\"\\n    \"],[10,\"img\"],[15,\"src\",[29,[\"https://localhost/users/users\",[30,1,[\"avatar\"]],\"/\"]]],[14,\"alt\",\"Profile Picture\"],[14,0,\"profile-pic\"],[12],[13],[1,\"\\n  \"],[13],[1,\"\\n\\n\"],[1,\"  \"],[10,0],[14,0,\"col-10\"],[12],[1,\"\\n\"],[1,\"    \"],[10,0],[14,0,\"profile-details\"],[12],[1,\"\\n      \"],[10,\"h2\"],[14,0,\"name\"],[12],[1,[30,1,[\"nickname\"]]],[13],[1,\"\\n      \"],[10,0],[14,0,\"actions\"],[12],[1,\"\\n        \"],[11,\"button\"],[24,0,\"emoji-button info\"],[24,\"data-bs-toggle\",\"tooltip\"],[24,\"data-bs-placement\",\"top\"],[24,\"title\",\"Live Chat\"],[24,4,\"button\"],[4,[38,4],[\"click\",[30,0,[\"startLiveChat\"]]],null],[12],[1,\"\\n          💬\\n        \"],[13],[1,\"\\n        \"],[11,\"button\"],[24,0,\"emoji-button info\"],[24,\"data-bs-toggle\",\"tooltip\"],[24,\"data-bs-placement\",\"top\"],[24,\"title\",\"Play Game\"],[24,4,\"button\"],[4,[38,4],[\"click\",[30,0,[\"playGame\"]]],null],[12],[1,\"\\n          🎮\\n        \"],[13],[1,\"\\n\"],[41,[30,0,[\"isFriend\"]],[[[1,\"        \"],[11,\"button\"],[24,0,\"emoji-button info\"],[24,\"data-bs-toggle\",\"tooltip\"],[24,\"data-bs-placement\",\"top\"],[24,\"title\",\"Add Friend\"],[24,4,\"button\"],[4,[38,4],[\"click\",[28,[37,6],[[30,0,[\"addFriend\"]],\"remove\"],null]],null],[12],[1,\"\\n          ➖ \\n        \"],[13],[1,\"\\n\"]],[]],[[[1,\"        \"],[11,\"button\"],[24,0,\"emoji-button info\"],[24,\"data-bs-toggle\",\"tooltip\"],[24,\"data-bs-placement\",\"top\"],[24,\"title\",\"Add Friend\"],[24,4,\"button\"],[4,[38,4],[\"click\",[28,[37,6],[[30,0,[\"addFriend\"]],\"add\"],null]],null],[12],[1,\"\\n          ➕\\n        \"],[13],[1,\"\\n\"]],[]]],[41,[30,0,[\"isBlocked\"]],[[[1,\"        \"],[11,\"button\"],[24,0,\"emoji-button info\"],[24,\"data-bs-toggle\",\"tooltip\"],[24,\"data-bs-placement\",\"top\"],[24,\"title\",\"Block User\"],[24,4,\"button\"],[4,[38,4],[\"click\",[28,[37,6],[[30,0,[\"blockUser\"]],\"remove\"],null]],null],[12],[1,\"\\n          ✅ \\n        \"],[13],[1,\"\\n\"]],[]],[[[1,\"        \"],[11,\"button\"],[24,0,\"emoji-button info\"],[24,\"data-bs-toggle\",\"tooltip\"],[24,\"data-bs-placement\",\"top\"],[24,\"title\",\"Block User\"],[24,4,\"button\"],[4,[38,4],[\"click\",[28,[37,6],[[30,0,[\"blockUser\"]],\"add\"],null]],null],[12],[1,\"\\n          🚫\\n        \"],[13],[1,\"\\n\"]],[]]],[1,\"      \"],[13],[1,\"\\n      \"],[10,\"h2\"],[14,0,\"points\"],[12],[1,[30,1,[\"trophies\"]]],[1,\"🏆\"],[13],[1,\"\\n    \"],[13],[1,\"\\n\\n\"],[1,\"    \"],[10,0],[14,0,\"profile-details\"],[12],[1,\"\\n      \"],[8,[39,7],null,[[\"@user\"],[[30,1]]],null],[1,\"\\n      \"],[10,\"h2\"],[14,0,\"info\"],[12],[1,\"Wins: \"],[1,[30,1,[\"wins\"]]],[13],[1,\"\\n    \"],[13],[1,\"\\n\\n    \"],[10,0],[14,0,\"profile-details\"],[12],[1,\"\\n\"],[41,[30,0,[\"isOnline\"]],[[[1,\"      \"],[10,\"h2\"],[14,0,\"info\"],[12],[1,\"🟢 online\"],[13],[1,\"\\n\"]],[]],[[[1,\"      \"],[10,\"h2\"],[14,0,\"info\"],[12],[1,\"🔴 offline\"],[13],[1,\"\\n\"]],[]]],[1,\"      \"],[10,\"h2\"],[14,0,\"info\"],[12],[1,\"Losses: \"],[1,[30,1,[\"losses\"]]],[13],[1,\"\\n    \"],[13],[1,\"\\n\\n  \"],[13],[1,\"\\n\"],[13]],[\"@selectedUser\"],false,[\"div\",\"button\",\"img\",\"h2\",\"on\",\"if\",\"fn\",\"modal-game-history\"]]",
+    "id": "of/h9TNc",
+    "block": "[[[10,0],[14,0,\"container-fluid row fill p-2\"],[12],[1,\"\\n\"],[1,\"  \"],[10,0],[14,0,\"col center no-padding position-relative\"],[12],[1,\"\\n    \"],[10,\"button\"],[14,0,\"btn-close top-left\"],[15,\"onclick\",[30,0,[\"onCloseClick\"]]],[14,4,\"button\"],[12],[13],[1,\"\\n    \"],[10,\"img\"],[15,\"src\",[29,[\"https://localhost/users/users\",[30,0,[\"user\",\"selectedUser\",\"avatar\"]],\"/\"]]],[14,\"alt\",\"Profile Picture\"],[14,0,\"profile-pic\"],[12],[13],[1,\"\\n  \"],[13],[1,\"\\n\\n\"],[1,\"  \"],[10,0],[14,0,\"col-10\"],[12],[1,\"\\n\"],[1,\"    \"],[10,0],[14,0,\"profile-details\"],[12],[1,\"\\n      \"],[10,\"h2\"],[14,0,\"name\"],[12],[1,[30,0,[\"user\",\"selectedUser\",\"nickname\"]]],[13],[1,\"\\n      \"],[10,0],[14,0,\"actions\"],[12],[1,\"\\n        \"],[11,\"button\"],[24,0,\"emoji-button info\"],[24,\"data-bs-toggle\",\"tooltip\"],[24,\"data-bs-placement\",\"top\"],[24,\"title\",\"Live Chat\"],[24,4,\"button\"],[4,[38,4],[\"click\",[30,0,[\"startLiveChat\"]]],null],[12],[1,\"\\n          💬\\n        \"],[13],[1,\"\\n        \"],[11,\"button\"],[24,0,\"emoji-button info\"],[24,\"data-bs-toggle\",\"tooltip\"],[24,\"data-bs-placement\",\"top\"],[24,\"title\",\"Play Game\"],[24,4,\"button\"],[4,[38,4],[\"click\",[30,0,[\"playGame\"]]],null],[12],[1,\"\\n          🎮\\n        \"],[13],[1,\"\\n\"],[41,[30,0,[\"isFriend\"]],[[[1,\"        \"],[11,\"button\"],[24,0,\"emoji-button info\"],[24,\"data-bs-toggle\",\"tooltip\"],[24,\"data-bs-placement\",\"top\"],[24,\"title\",\"Add Friend\"],[24,4,\"button\"],[4,[38,4],[\"click\",[28,[37,6],[[30,0,[\"addFriend\"]],\"remove\"],null]],null],[12],[1,\"\\n          ➖ \\n        \"],[13],[1,\"\\n\"]],[]],[[[1,\"        \"],[11,\"button\"],[24,0,\"emoji-button info\"],[24,\"data-bs-toggle\",\"tooltip\"],[24,\"data-bs-placement\",\"top\"],[24,\"title\",\"Add Friend\"],[24,4,\"button\"],[4,[38,4],[\"click\",[28,[37,6],[[30,0,[\"addFriend\"]],\"add\"],null]],null],[12],[1,\"\\n          ➕\\n        \"],[13],[1,\"\\n\"]],[]]],[41,[30,0,[\"isBlocked\"]],[[[1,\"        \"],[11,\"button\"],[24,0,\"emoji-button info\"],[24,\"data-bs-toggle\",\"tooltip\"],[24,\"data-bs-placement\",\"top\"],[24,\"title\",\"Block User\"],[24,4,\"button\"],[4,[38,4],[\"click\",[28,[37,6],[[30,0,[\"blockUser\"]],\"remove\"],null]],null],[12],[1,\"\\n          ✅ \\n        \"],[13],[1,\"\\n\"]],[]],[[[1,\"        \"],[11,\"button\"],[24,0,\"emoji-button info\"],[24,\"data-bs-toggle\",\"tooltip\"],[24,\"data-bs-placement\",\"top\"],[24,\"title\",\"Block User\"],[24,4,\"button\"],[4,[38,4],[\"click\",[28,[37,6],[[30,0,[\"blockUser\"]],\"add\"],null]],null],[12],[1,\"\\n          🚫\\n        \"],[13],[1,\"\\n\"]],[]]],[1,\"      \"],[13],[1,\"\\n      \"],[10,\"h2\"],[14,0,\"points\"],[12],[1,[30,0,[\"user\",\"selectedUser\",\"trophies\"]]],[1,\"🏆\"],[13],[1,\"\\n    \"],[13],[1,\"\\n\\n\"],[1,\"    \"],[10,0],[14,0,\"profile-details\"],[12],[1,\"\\n      \"],[8,[39,7],null,[[\"@user\"],[[30,0,[\"user\",\"selectedUser\"]]]],null],[1,\"\\n      \"],[10,\"h2\"],[14,0,\"info\"],[12],[1,\"Wins: \"],[1,[30,0,[\"user\",\"selectedUser\",\"wins\"]]],[13],[1,\"\\n    \"],[13],[1,\"\\n\\n    \"],[10,0],[14,0,\"profile-details\"],[12],[1,\"\\n\"],[41,[30,0,[\"isOnline\"]],[[[1,\"      \"],[10,\"h2\"],[14,0,\"info\"],[12],[1,\"🟢 online\"],[13],[1,\"\\n\"]],[]],[[[1,\"      \"],[10,\"h2\"],[14,0,\"info\"],[12],[1,\"🔴 offline\"],[13],[1,\"\\n\"]],[]]],[1,\"      \"],[10,\"h2\"],[14,0,\"info\"],[12],[1,\"Losses: \"],[1,[30,0,[\"user\",\"selectedUser\",\"losses\"]]],[13],[1,\"\\n    \"],[13],[1,\"\\n\\n  \"],[13],[1,\"\\n\"],[13]],[],false,[\"div\",\"button\",\"img\",\"h2\",\"on\",\"if\",\"fn\",\"modal-game-history\"]]",
     "moduleName": "myapp/components/profile-other.hbs",
     "isStrictMode": false
   });
@@ -1821,25 +1861,25 @@
     }
     get isFriend() {
       const friendsList = this.user.profile.friends || [];
-      return friendsList.includes(this.args.selectedUser.nickname);
+      return friendsList.includes(this.user.selectedUser.nickname);
     }
     get isBlocked() {
       const blockedList = this.user.profile.blocked || [];
-      return blockedList.includes(this.args.selectedUser.nickname);
+      return blockedList.includes(this.user.selectedUser.nickname);
     }
     startLiveChat() {
       console.log('Live chat started');
-      this.chat.updateInputValue('/' + this.args.selectedUser.nickname + ' ');
+      this.chat.updateInputValue('/' + this.user.selectedUser.nickname + ' ');
       this.chat.focusInput();
     }
     playGame() {
       console.log('Game initiated');
-      this.chat.updateInputValue('/*invite ' + this.args.selectedUser.nickname);
+      this.chat.updateInputValue('/*invite ' + this.user.selectedUser.nickname);
       this.chat.sendMessage();
     }
     addFriend(type) {
       if (type === "add") {
-        this.chat.updateInputValue('/*add ' + this.args.selectedUser.nickname);
+        this.chat.updateInputValue('/*add ' + this.user.selectedUser.nickname);
         this.chat.sendMessage();
       } else this.removeFriends();
     }
@@ -1853,7 +1893,7 @@
             Authorization: `Bearer ${this.session.data.access}`
           },
           body: JSON.stringify({
-            nickname: this.args.selectedUser.nickname,
+            nickname: this.user.selectedUser.nickname,
             type: 'remove'
           })
         });
@@ -1866,7 +1906,7 @@
       }
     }
     get isOnline() {
-      return this.args.selectedUser?.status === 'online';
+      return this.user.selectedUser?.status === 'online';
     }
     async blockUser(type) {
       const apiEndpoint = 'users/users/block-user/';
@@ -1878,7 +1918,7 @@
             'Content-Type': 'application/json'
           },
           body: JSON.stringify({
-            nickname: this.args.selectedUser.nickname,
+            nickname: this.user.selectedUser.nickname,
             type: type
           })
         });
@@ -1895,7 +1935,7 @@
     }
     onCloseClick() {
       console.log('Close clicked!');
-      this.args.selectUser(null);
+      this.user.selectUser(null);
     }
   }, _descriptor = _applyDecoratedDescriptor(_class.prototype, "chat", [_service.inject], {
     configurable: true,
@@ -2034,7 +2074,7 @@
     {{!-- Profile picture column (1 part) --}}
     <div class="col-5">
       
-      <User @user={{this.gameData.player_1}} @selectUser={{this.args.selectUser}}/>
+      <User @user={{this.gameData.player_1}} />
     </div>
   
     {{!-- Profile details column (3 parts) --}}
@@ -2045,14 +2085,14 @@
     {{/if}}
   
     <div class="col-5">
-      <User @user={{this.gameData.player_2}} @selectUser={{this.args.selectUser}}/>
+      <User @user={{this.gameData.player_2}} />
     </div>
   </div>
   
   */
   {
-    "id": "KPBK3yt+",
-    "block": "[[[10,0],[14,0,\"container-fluid row border\"],[12],[1,\"\\n\"],[1,\"  \"],[10,0],[14,0,\"col-5\"],[12],[1,\"\\n    \\n    \"],[8,[39,1],null,[[\"@user\",\"@selectUser\"],[[30,0,[\"gameData\",\"player_1\"]],[30,0,[\"args\",\"selectUser\"]]]],null],[1,\"\\n  \"],[13],[1,\"\\n\\n\"],[41,[30,0,[\"gameData\",\"player_1\"]],[[[1,\"  \"],[10,0],[14,0,\"col-2\"],[12],[1,\"\\n    \"],[10,0],[14,0,\"score center\"],[12],[1,[30,0,[\"gameData\",\"left_score\"]]],[1,\":\"],[1,[30,0,[\"gameData\",\"right_score\"]]],[13],[1,\"\\n  \"],[13],[1,\"\\n\"]],[]],null],[1,\"\\n  \"],[10,0],[14,0,\"col-5\"],[12],[1,\"\\n    \"],[8,[39,1],null,[[\"@user\",\"@selectUser\"],[[30,0,[\"gameData\",\"player_2\"]],[30,0,[\"args\",\"selectUser\"]]]],null],[1,\"\\n  \"],[13],[1,\"\\n\"],[13],[1,\"\\n\"]],[],false,[\"div\",\"user\",\"if\"]]",
+    "id": "BZIXLllK",
+    "block": "[[[10,0],[14,0,\"container-fluid row border\"],[12],[1,\"\\n\"],[1,\"  \"],[10,0],[14,0,\"col-5\"],[12],[1,\"\\n    \\n    \"],[8,[39,1],null,[[\"@user\"],[[30,0,[\"gameData\",\"player_1\"]]]],null],[1,\"\\n  \"],[13],[1,\"\\n\\n\"],[41,[30,0,[\"gameData\",\"player_1\"]],[[[1,\"  \"],[10,0],[14,0,\"col-2\"],[12],[1,\"\\n    \"],[10,0],[14,0,\"score center\"],[12],[1,[30,0,[\"gameData\",\"left_score\"]]],[1,\":\"],[1,[30,0,[\"gameData\",\"right_score\"]]],[13],[1,\"\\n  \"],[13],[1,\"\\n\"]],[]],null],[1,\"\\n  \"],[10,0],[14,0,\"col-5\"],[12],[1,\"\\n    \"],[8,[39,1],null,[[\"@user\"],[[30,0,[\"gameData\",\"player_2\"]]]],null],[1,\"\\n  \"],[13],[1,\"\\n\"],[13],[1,\"\\n\"]],[],false,[\"div\",\"user\",\"if\"]]",
     "moduleName": "myapp/components/scoreboard.hbs",
     "isStrictMode": false
   });
@@ -2329,14 +2369,14 @@
   </nav>
   <div class="scrollable-list middle-scroll">
       {{#each this.filteredUsers as |user|}}
-          <User @user={{user}} @selectUser={{this.args.selectUser}} />
+          <User @user={{user}} />
       {{/each}}
   </div>
   
   */
   {
-    "id": "5SaOV++T",
-    "block": "[[[10,\"nav\"],[14,0,\"navigation-bar\"],[12],[1,\"\\n    \"],[11,\"button\"],[24,0,\"nav-button\"],[24,4,\"button\"],[4,[38,2],[\"click\",[28,[37,3],[[30,0,[\"setFilter\"]],\"friends\"],null]],null],[12],[1,\"Friends\"],[13],[1,\"\\n    \"],[11,\"button\"],[24,0,\"nav-button\"],[24,4,\"button\"],[4,[38,2],[\"click\",[28,[37,3],[[30,0,[\"setFilter\"]],\"all\"],null]],null],[12],[1,\"All\"],[13],[1,\"\\n\"],[13],[1,\"\\n\"],[10,0],[14,0,\"scrollable-list middle-scroll\"],[12],[1,\"\\n\"],[42,[28,[37,6],[[28,[37,6],[[30,0,[\"filteredUsers\"]]],null]],null],null,[[[1,\"        \"],[8,[39,7],null,[[\"@user\",\"@selectUser\"],[[30,1],[30,0,[\"args\",\"selectUser\"]]]],null],[1,\"\\n\"]],[1]],null],[13],[1,\"\\n\"]],[\"user\"],false,[\"nav\",\"button\",\"on\",\"fn\",\"div\",\"each\",\"-track-array\",\"user\"]]",
+    "id": "uj6+BZAM",
+    "block": "[[[10,\"nav\"],[14,0,\"navigation-bar\"],[12],[1,\"\\n    \"],[11,\"button\"],[24,0,\"nav-button\"],[24,4,\"button\"],[4,[38,2],[\"click\",[28,[37,3],[[30,0,[\"setFilter\"]],\"friends\"],null]],null],[12],[1,\"Friends\"],[13],[1,\"\\n    \"],[11,\"button\"],[24,0,\"nav-button\"],[24,4,\"button\"],[4,[38,2],[\"click\",[28,[37,3],[[30,0,[\"setFilter\"]],\"all\"],null]],null],[12],[1,\"All\"],[13],[1,\"\\n\"],[13],[1,\"\\n\"],[10,0],[14,0,\"scrollable-list middle-scroll\"],[12],[1,\"\\n\"],[42,[28,[37,6],[[28,[37,6],[[30,0,[\"filteredUsers\"]]],null]],null],null,[[[1,\"        \"],[8,[39,7],null,[[\"@user\"],[[30,1]]],null],[1,\"\\n\"]],[1]],null],[13],[1,\"\\n\"]],[\"user\"],false,[\"nav\",\"button\",\"on\",\"fn\",\"div\",\"each\",\"-track-array\",\"user\"]]",
     "moduleName": "myapp/components/user-list.hbs",
     "isStrictMode": false
   });
@@ -2435,15 +2475,15 @@
   }), _applyDecoratedDescriptor(_class.prototype, "handleKeyDown", [_object.action], Object.getOwnPropertyDescriptor(_class.prototype, "handleKeyDown"), _class.prototype), _applyDecoratedDescriptor(_class.prototype, "fetchUsers", [_object.action], Object.getOwnPropertyDescriptor(_class.prototype, "fetchUsers"), _class.prototype), _class);
   (0, _component.setComponentTemplate)(__COLOCATED_TEMPLATE__, UserListComponent);
 });
-;define("myapp/components/user", ["exports", "@ember/component", "@glimmer/component", "@ember/object", "@glimmer/tracking", "@ember/template-factory"], function (_exports, _component, _component2, _object, _tracking, _templateFactory) {
+;define("myapp/components/user", ["exports", "@ember/component", "@glimmer/component", "@ember/object", "@glimmer/tracking", "@ember/service", "@ember/template-factory"], function (_exports, _component, _component2, _object, _tracking, _service, _templateFactory) {
   "use strict";
 
   Object.defineProperty(_exports, "__esModule", {
     value: true
   });
   _exports.default = void 0;
-  var _class, _descriptor;
-  0; //eaimeta@70e063a35619d71f0,"@glimmer/component",0,"@ember/object",0,"@glimmer/tracking",0,"@ember/template-factory",0,"@ember/component"eaimeta@70e063a35619d71f
+  var _class, _descriptor, _descriptor2;
+  0; //eaimeta@70e063a35619d71f0,"@glimmer/component",0,"@ember/object",0,"@glimmer/tracking",0,"@ember/service",0,"@ember/template-factory",0,"@ember/component"eaimeta@70e063a35619d71f
   function _initializerDefineProperty(e, i, r, l) { r && Object.defineProperty(e, i, { enumerable: r.enumerable, configurable: r.configurable, writable: r.writable, value: r.initializer ? r.initializer.call(l) : void 0 }); }
   function _defineProperty(e, r, t) { return (r = _toPropertyKey(r)) in e ? Object.defineProperty(e, r, { value: t, enumerable: !0, configurable: !0, writable: !0 }) : e[r] = t, e; }
   function _toPropertyKey(t) { var i = _toPrimitive(t, "string"); return "symbol" == typeof i ? i : i + ""; }
@@ -2476,11 +2516,12 @@
     constructor(...args) {
       super(...args);
       _initializerDefineProperty(this, "isActive", _descriptor, this);
+      _initializerDefineProperty(this, "user", _descriptor2, this);
     }
     select() {
       console.log('User clicked!');
       // Call the parent action passed via @selectUser
-      this.args.selectUser(this.args.user.nickname); // Passing the selected user to the parent action
+      this.user.selectUser(this.args.user.nickname); // Passing the selected user to the parent action
     }
     get isOnline() {
       return this.args.user?.status === 'online';
@@ -2492,6 +2533,11 @@
     initializer: function () {
       return false;
     }
+  }), _descriptor2 = _applyDecoratedDescriptor(_class.prototype, "user", [_service.inject], {
+    configurable: true,
+    enumerable: true,
+    writable: true,
+    initializer: null
   }), _applyDecoratedDescriptor(_class.prototype, "select", [_object.action], Object.getOwnPropertyDescriptor(_class.prototype, "select"), _class.prototype), _class);
   (0, _component.setComponentTemplate)(__COLOCATED_TEMPLATE__, UserCardComponent);
 });
@@ -2523,15 +2569,15 @@
   });
   0; //eaimeta@70e063a35619d71f0,"ember-resolver/container-debug-adapter"eaimeta@70e063a35619d71f
 });
-;define("myapp/controllers/application", ["exports", "@ember/controller", "@glimmer/tracking", "@ember/object", "@ember/service"], function (_exports, _controller, _tracking, _object, _service) {
+;define("myapp/controllers/application", ["exports", "@ember/controller", "@ember/service"], function (_exports, _controller, _service) {
   "use strict";
 
   Object.defineProperty(_exports, "__esModule", {
     value: true
   });
   _exports.default = void 0;
-  var _class, _descriptor, _descriptor2, _descriptor3, _descriptor4;
-  0; //eaimeta@70e063a35619d71f0,"@ember/controller",0,"@glimmer/tracking",0,"@ember/object",0,"@ember/service"eaimeta@70e063a35619d71f
+  var _class, _descriptor, _descriptor2, _descriptor3;
+  0; //eaimeta@70e063a35619d71f0,"@ember/controller",0,"@ember/service"eaimeta@70e063a35619d71f
   function _initializerDefineProperty(e, i, r, l) { r && Object.defineProperty(e, i, { enumerable: r.enumerable, configurable: r.configurable, writable: r.writable, value: r.initializer ? r.initializer.call(l) : void 0 }); }
   function _defineProperty(e, r, t) { return (r = _toPropertyKey(r)) in e ? Object.defineProperty(e, r, { value: t, enumerable: !0, configurable: !0, writable: !0 }) : e[r] = t, e; }
   function _toPropertyKey(t) { var i = _toPrimitive(t, "string"); return "symbol" == typeof i ? i : i + ""; }
@@ -2541,64 +2587,29 @@
   let ApplicationController = _exports.default = (_class = class ApplicationController extends _controller.default {
     constructor(...args) {
       super(...args);
-      _initializerDefineProperty(this, "selectedUser", _descriptor, this);
-      // Initially no user is selected
-      _initializerDefineProperty(this, "session", _descriptor2, this);
-      _initializerDefineProperty(this, "router", _descriptor3, this);
-      _initializerDefineProperty(this, "user", _descriptor4, this);
+      _initializerDefineProperty(this, "router", _descriptor, this);
+      _initializerDefineProperty(this, "user", _descriptor2, this);
+      _initializerDefineProperty(this, "session", _descriptor3, this);
     }
     get activeRoute() {
       return this.router.currentRouteName;
     }
-
-    // Action to handle the user selection
-    selectUser(nickname) {
-      if (nickname && nickname !== this.user.profile.nickname) this.fetchUserData(nickname);
-    }
-    async fetchUserData(nickname) {
-      try {
-        const response = await fetch('/users/users/profile-info/', {
-          method: 'POST',
-          headers: {
-            Authorization: `Bearer ${this.session.data.access}`,
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({
-            nickname
-          })
-        });
-        if (!response.ok) {
-          throw new Error('Failed to fetch user profile');
-        }
-        const data = await response.json();
-        this.selectedUser = data;
-      } catch (error) {
-        console.error('Error fetching user profile:', error);
-      }
-    }
-  }, _descriptor = _applyDecoratedDescriptor(_class.prototype, "selectedUser", [_tracking.tracked], {
-    configurable: true,
-    enumerable: true,
-    writable: true,
-    initializer: function () {
-      return null;
-    }
-  }), _descriptor2 = _applyDecoratedDescriptor(_class.prototype, "session", [_service.inject], {
+  }, _descriptor = _applyDecoratedDescriptor(_class.prototype, "router", [_service.inject], {
     configurable: true,
     enumerable: true,
     writable: true,
     initializer: null
-  }), _descriptor3 = _applyDecoratedDescriptor(_class.prototype, "router", [_service.inject], {
+  }), _descriptor2 = _applyDecoratedDescriptor(_class.prototype, "user", [_service.inject], {
     configurable: true,
     enumerable: true,
     writable: true,
     initializer: null
-  }), _descriptor4 = _applyDecoratedDescriptor(_class.prototype, "user", [_service.inject], {
+  }), _descriptor3 = _applyDecoratedDescriptor(_class.prototype, "session", [_service.inject], {
     configurable: true,
     enumerable: true,
     writable: true,
     initializer: null
-  }), _applyDecoratedDescriptor(_class.prototype, "selectUser", [_object.action], Object.getOwnPropertyDescriptor(_class.prototype, "selectUser"), _class.prototype), _class);
+  }), _class);
 });
 ;define("myapp/controllers/choose-game", ["exports", "@ember/controller", "@ember/object", "@ember/service", "@glimmer/tracking"], function (_exports, _controller, _object, _service, _tracking) {
   "use strict";
@@ -3928,7 +3939,7 @@
       });
       console.log('connect ...');
       const token = this.session.data.access;
-      const url = `wss://localhost/ws/chat/lobby/?token=${encodeURIComponent(token)}`;
+      const url = `wss://${window.location.hostname}/ws/chat/lobby/?token=${encodeURIComponent(token)}`;
       const socket = this.websockets.socketFor(url);
       socket.on('open', this.myOpenHandler, this);
       socket.on('message', this.myMessageHandler, this);
@@ -4400,7 +4411,7 @@
     }
     async connectToRoom(roomName) {
       const token = this.session.data.access;
-      const wsUrl = `wss://localhost/ws/pong-game/${roomName}/?token=${encodeURIComponent(token)}`;
+      const wsUrl = `wss://${window.location.hostname}/ws/pong-game/${roomName}/?token=${encodeURIComponent(token)}`;
       console.log('connect to:', wsUrl);
       if (this.socketRef) {
         console.log('disconnect');
@@ -4415,7 +4426,7 @@
     }
     async disconnectFromGame(roomName) {
       const token = this.session.data.access;
-      const wsUrl = `wss://localhost/ws/pong-game/${roomName}/?token=${encodeURIComponent(token)}`;
+      const wsUrl = `wss://${window.location.hostname}/ws/pong-game/${roomName}/?token=${encodeURIComponent(token)}`;
       console.log('websocket to close:', roomName);
       this.websockets.closeSocketFor(wsUrl);
       console.log('websocket closed', this.websockets.sockets);
@@ -4716,7 +4727,7 @@
     }
     async connectToLobby(tournamentName) {
       const token = this.session.data.access;
-      const wsUrl = `wss://localhost/ws/tournament/${tournamentName}/?token=${encodeURIComponent(token)}`;
+      const wsUrl = `wss://${window.location.hostname}/ws/tournament/${tournamentName}/?token=${encodeURIComponent(token)}`;
       if (this.socketRef) {
         console.log('disconnect');
         this.disconnectFromLobby(this.currentLobby);
@@ -4730,7 +4741,7 @@
     }
     async disconnectFromLobby(tournamentName) {
       const token = this.session.data.access;
-      const wsUrl = `wss://localhost/ws/tournament/${tournamentName}/?token=${encodeURIComponent(token)}`;
+      const wsUrl = `wss://${window.location.hostname}/ws/tournament/${tournamentName}/?token=${encodeURIComponent(token)}`;
       console.log('websocket to close:', tournamentName);
       this.websockets.closeSocketFor(wsUrl);
       console.log('websocket closed', this.websockets.sockets);
@@ -4973,7 +4984,7 @@
     value: true
   });
   _exports.default = void 0;
-  var _class, _descriptor, _descriptor2;
+  var _class, _descriptor, _descriptor2, _descriptor3;
   0; //eaimeta@70e063a35619d71f0,"@ember/service",0,"@glimmer/tracking",0,"@ember/service"eaimeta@70e063a35619d71f
   function _initializerDefineProperty(e, i, r, l) { r && Object.defineProperty(e, i, { enumerable: r.enumerable, configurable: r.configurable, writable: r.writable, value: r.initializer ? r.initializer.call(l) : void 0 }); }
   function _defineProperty(e, r, t) { return (r = _toPropertyKey(r)) in e ? Object.defineProperty(e, r, { value: t, enumerable: !0, configurable: !0, writable: !0 }) : e[r] = t, e; }
@@ -4982,11 +4993,14 @@
   function _applyDecoratedDescriptor(i, e, r, n, l) { var a = {}; return Object.keys(n).forEach(function (i) { a[i] = n[i]; }), a.enumerable = !!a.enumerable, a.configurable = !!a.configurable, ("value" in a || a.initializer) && (a.writable = !0), a = r.slice().reverse().reduce(function (r, n) { return n(i, e, r) || r; }, a), l && void 0 !== a.initializer && (a.value = a.initializer ? a.initializer.call(l) : void 0, a.initializer = void 0), void 0 === a.initializer ? (Object.defineProperty(i, e, a), null) : a; }
   function _initializerWarningHelper(r, e) { throw Error("Decorating class property failed. Please ensure that transform-class-properties is enabled and runs after the decorators transform."); }
   let UserService = _exports.default = (_class = class UserService extends _service.default {
+    // Initially no user is selected
+
     constructor() {
       super(...arguments);
       _initializerDefineProperty(this, "profile", _descriptor, this);
       // Track the current user profile
       _initializerDefineProperty(this, "session", _descriptor2, this);
+      _initializerDefineProperty(this, "selectedUser", _descriptor3, this);
       this.startFetchingProfile();
     }
 
@@ -4995,8 +5009,11 @@
      */
     startFetchingProfile() {
       this.intervalId = setInterval(() => {
-        this.fetchUserData(this.profile.nickname);
+        this.fetchUserData(this.profile.nickname, "ownProfile");
       }, 10000); // 10 seconds
+    }
+    selectUser(nickname) {
+      if (nickname && nickname !== this.profile.nickname) this.fetchUserData(nickname, "otherProfile");else if (!nickname) this.selectedUser = null;
     }
     setProfile(userData) {
       this.profile = userData; // Set user data in the service
@@ -5004,7 +5021,7 @@
     clearProfile() {
       this.profile = null; // Clear the user data (on logout)
     }
-    async fetchUserData(nickname) {
+    async fetchUserData(nickname, profile) {
       try {
         const response = await fetch('/users/users/profile-info/', {
           method: 'POST',
@@ -5020,7 +5037,8 @@
           throw new Error('Failed to fetch user profile');
         }
         const data = await response.json();
-        this.setProfile(data); // Store user data for use in the template
+        if (profile === "ownProfile") this.setProfile(data); // Store user data for use in the template
+        else this.selectedUser = data;
       } catch (error) {
         console.error('Error fetching user profile:', error);
       }
@@ -5037,6 +5055,13 @@
     enumerable: true,
     writable: true,
     initializer: null
+  }), _descriptor3 = _applyDecoratedDescriptor(_class.prototype, "selectedUser", [_tracking.tracked], {
+    configurable: true,
+    enumerable: true,
+    writable: true,
+    initializer: function () {
+      return null;
+    }
   }), _class);
 });
 ;define("myapp/services/websockets", ["exports", "ember-websockets/services/websockets"], function (_exports, _websockets) {
@@ -5072,8 +5097,8 @@
        <ProfileOwn />
       </div>
       <div class="col header">
-        {{#if this.selectedUser}}
-          <ProfileOther @selectedUser={{this.selectedUser}} @selectUser={{this.selectUser}}/>
+        {{#if this.user.selectedUser}}
+          <ProfileOther />
         {{else}}
           <TitleAnimation />
         {{/if}}
@@ -5087,7 +5112,7 @@
   		{{outlet}}
       </div>
       <div class="container-fluid col-3 middle">
-        <UserList @selectUser={{this.selectUser}}/>
+        <UserList/>
       </div>
     </div>
     <div class="container-fluid row">
@@ -5097,12 +5122,12 @@
               <LinkTo @route="tournament" class="nav-button">Tournament</LinkTo>
       </div>
       <div class="container-fluid col-6 footer">
-        <Scoreboard @selectUser={{this.selectUser}}/>
+        <Scoreboard />
       </div>
       <div class="container-fluid col-3 footer p-1">
         {{#if this.session.isAuthenticated}}
           {{#unless (eq this.activeRoute "chat")}}
-            <Chat @selectUser={{this.selectUser}}/>
+            <Chat />
           {{/unless}}
         {{/if}}
       </div>
@@ -5113,8 +5138,8 @@
   
   */
   {
-    "id": "PzzlzTYt",
-    "block": "[[[10,\"main\"],[12],[1,\"\\n\"],[1,[30,0,[\"isAuthenticated\"]]],[1,\"\\n\"],[10,0],[14,0,\"container-fluid body\"],[12],[1,\"\\n  \"],[10,0],[14,0,\"container-fluid row\"],[12],[1,\"\\n    \"],[10,0],[14,0,\"col header\"],[12],[1,\"\\n     \"],[8,[39,2],null,null,null],[1,\"\\n    \"],[13],[1,\"\\n    \"],[10,0],[14,0,\"col header\"],[12],[1,\"\\n\"],[41,[30,0,[\"selectedUser\"]],[[[1,\"        \"],[8,[39,4],null,[[\"@selectedUser\",\"@selectUser\"],[[30,0,[\"selectedUser\"]],[30,0,[\"selectUser\"]]]],null],[1,\"\\n\"]],[]],[[[1,\"        \"],[8,[39,5],null,null,null],[1,\"\\n\"]],[]]],[1,\"    \"],[13],[1,\"\\n  \"],[13],[1,\"\\n  \"],[10,0],[14,0,\"container-fluid row\"],[12],[1,\"\\n    \"],[10,0],[14,0,\"container-fluid col-3 middle\"],[12],[1,\"\\n        \"],[8,[39,6],null,null,null],[1,\"\\n    \"],[13],[1,\"\\n    \"],[10,0],[14,0,\"container-fluid col-6 middle custom-bg-black\"],[12],[1,\"\\n\\t\\t\"],[46,[28,[37,8],null,null],null,null,null],[1,\"\\n    \"],[13],[1,\"\\n    \"],[10,0],[14,0,\"container-fluid col-3 middle\"],[12],[1,\"\\n      \"],[8,[39,9],null,[[\"@selectUser\"],[[30,0,[\"selectUser\"]]]],null],[1,\"\\n    \"],[13],[1,\"\\n  \"],[13],[1,\"\\n  \"],[10,0],[14,0,\"container-fluid row\"],[12],[1,\"\\n    \"],[10,0],[14,0,\"container-fluid col-3 footer\"],[12],[1,\"\\n            \"],[8,[39,10],[[24,0,\"nav-button\"]],[[\"@route\"],[\"choose-game\"]],[[\"default\"],[[[[1,\"Game\"]],[]]]]],[1,\"\\n            \"],[8,[39,10],[[24,0,\"nav-button\"]],[[\"@route\"],[\"chat\"]],[[\"default\"],[[[[1,\"Chat\"]],[]]]]],[1,\"            \\n            \"],[8,[39,10],[[24,0,\"nav-button\"]],[[\"@route\"],[\"tournament\"]],[[\"default\"],[[[[1,\"Tournament\"]],[]]]]],[1,\"\\n    \"],[13],[1,\"\\n    \"],[10,0],[14,0,\"container-fluid col-6 footer\"],[12],[1,\"\\n      \"],[8,[39,11],null,[[\"@selectUser\"],[[30,0,[\"selectUser\"]]]],null],[1,\"\\n    \"],[13],[1,\"\\n    \"],[10,0],[14,0,\"container-fluid col-3 footer p-1\"],[12],[1,\"\\n\"],[41,[30,0,[\"session\",\"isAuthenticated\"]],[[[41,[51,[28,[37,13],[[30,0,[\"activeRoute\"]],\"chat\"],null]],[[[1,\"          \"],[8,[39,14],null,[[\"@selectUser\"],[[30,0,[\"selectUser\"]]]],null],[1,\"\\n\"]],[]],null]],[]],null],[1,\"    \"],[13],[1,\"\\n  \"],[13],[1,\"    \\n\"],[13],[1,\"\\n\\n\"],[13],[1,\"\\n\"]],[],false,[\"main\",\"div\",\"profile-own\",\"if\",\"profile-other\",\"title-animation\",\"tournament-list\",\"component\",\"-outlet\",\"user-list\",\"link-to\",\"scoreboard\",\"unless\",\"eq\",\"chat\"]]",
+    "id": "6gO9hcQm",
+    "block": "[[[10,\"main\"],[12],[1,\"\\n\"],[1,[30,0,[\"isAuthenticated\"]]],[1,\"\\n\"],[10,0],[14,0,\"container-fluid body\"],[12],[1,\"\\n  \"],[10,0],[14,0,\"container-fluid row\"],[12],[1,\"\\n    \"],[10,0],[14,0,\"col header\"],[12],[1,\"\\n     \"],[8,[39,2],null,null,null],[1,\"\\n    \"],[13],[1,\"\\n    \"],[10,0],[14,0,\"col header\"],[12],[1,\"\\n\"],[41,[30,0,[\"user\",\"selectedUser\"]],[[[1,\"        \"],[8,[39,4],null,null,null],[1,\"\\n\"]],[]],[[[1,\"        \"],[8,[39,5],null,null,null],[1,\"\\n\"]],[]]],[1,\"    \"],[13],[1,\"\\n  \"],[13],[1,\"\\n  \"],[10,0],[14,0,\"container-fluid row\"],[12],[1,\"\\n    \"],[10,0],[14,0,\"container-fluid col-3 middle\"],[12],[1,\"\\n        \"],[8,[39,6],null,null,null],[1,\"\\n    \"],[13],[1,\"\\n    \"],[10,0],[14,0,\"container-fluid col-6 middle custom-bg-black\"],[12],[1,\"\\n\\t\\t\"],[46,[28,[37,8],null,null],null,null,null],[1,\"\\n    \"],[13],[1,\"\\n    \"],[10,0],[14,0,\"container-fluid col-3 middle\"],[12],[1,\"\\n      \"],[8,[39,9],null,null,null],[1,\"\\n    \"],[13],[1,\"\\n  \"],[13],[1,\"\\n  \"],[10,0],[14,0,\"container-fluid row\"],[12],[1,\"\\n    \"],[10,0],[14,0,\"container-fluid col-3 footer\"],[12],[1,\"\\n            \"],[8,[39,10],[[24,0,\"nav-button\"]],[[\"@route\"],[\"choose-game\"]],[[\"default\"],[[[[1,\"Game\"]],[]]]]],[1,\"\\n            \"],[8,[39,10],[[24,0,\"nav-button\"]],[[\"@route\"],[\"chat\"]],[[\"default\"],[[[[1,\"Chat\"]],[]]]]],[1,\"            \\n            \"],[8,[39,10],[[24,0,\"nav-button\"]],[[\"@route\"],[\"tournament\"]],[[\"default\"],[[[[1,\"Tournament\"]],[]]]]],[1,\"\\n    \"],[13],[1,\"\\n    \"],[10,0],[14,0,\"container-fluid col-6 footer\"],[12],[1,\"\\n      \"],[8,[39,11],null,null,null],[1,\"\\n    \"],[13],[1,\"\\n    \"],[10,0],[14,0,\"container-fluid col-3 footer p-1\"],[12],[1,\"\\n\"],[41,[30,0,[\"session\",\"isAuthenticated\"]],[[[41,[51,[28,[37,13],[[30,0,[\"activeRoute\"]],\"chat\"],null]],[[[1,\"          \"],[8,[39,14],null,null,null],[1,\"\\n\"]],[]],null]],[]],null],[1,\"    \"],[13],[1,\"\\n  \"],[13],[1,\"    \\n\"],[13],[1,\"\\n\\n\"],[13],[1,\"\\n\"]],[],false,[\"main\",\"div\",\"profile-own\",\"if\",\"profile-other\",\"title-animation\",\"tournament-list\",\"component\",\"-outlet\",\"user-list\",\"link-to\",\"scoreboard\",\"unless\",\"eq\",\"chat\"]]",
     "moduleName": "myapp/templates/application.hbs",
     "isStrictMode": false
   });
