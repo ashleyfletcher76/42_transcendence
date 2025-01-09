@@ -2,6 +2,7 @@ from rest_framework import serializers
 from django.contrib.auth.models import User
 from django.contrib.auth.hashers import make_password
 from django.core.validators import RegexValidator, MinLengthValidator
+from .models import UserProfile
 
 class UserSerializer(serializers.ModelSerializer):
 	username = serializers.RegexField(
@@ -38,3 +39,33 @@ class UserSerializer(serializers.ModelSerializer):
 			password=make_password(validated_data["password"]),
 		)
 		return user
+
+class UserProfileSerializer(serializers.ModelSerializer):
+	friends = serializers.SerializerMethodField()
+	blocked_users = serializers.SerializerMethodField()
+
+	class Meta:
+		model = UserProfile
+		fields = [
+			'user', 'username', 'nickname', 'avatar',
+			'bio', 'friends', 'blocked_users',
+			'online', 'last_seen', 'game_active',
+			'tournament_name', 'game_name',
+		]
+
+	def get_friends(self, obj):
+		return list(obj.friends.values_list('nickname', flat=True))
+
+	def get_blocked_users(self, obj):
+		return list(obj.blocked_users.values_list('nickname', flat=True))
+
+class TwoFASerializer(serializers.ModelSerializer):
+	class meta:
+		model = UserProfile
+		fields = ['twofa_enabled', 'email']
+
+	def validate(self, data):
+		# validate email presence if 2FA is enabled
+		if data.get('twofa_enabled') and not data.get('email'):
+			raise serializers.ValidationError("Email is required to enable 2FA.")
+		return data

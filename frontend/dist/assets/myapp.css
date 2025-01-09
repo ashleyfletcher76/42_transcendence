@@ -90,10 +90,6 @@ label {
   text-align: left;
 }
 
-.badge {
-  text-decoration: none;
-}
-
 /* Button styling */
 .login {
   padding: 10px; /* Padding inside button */

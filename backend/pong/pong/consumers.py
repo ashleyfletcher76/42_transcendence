@@ -143,11 +143,18 @@ class GameConsumer(AsyncWebsocketConsumer):
     async def start_game(self, event):
         try:
             async with httpx.AsyncClient() as client:
-                response = await client.post(
-                    "http://auth-service:8000/users/tournament-active/",
-                    json={"token": self.token, "action_type": "start", "game_name": self.room_name}
-                )
+                url = "http://user-service:8000/users/tournament-active/"
+                headers = {
+                    "Authorization": f"Bearer {self.token}",
+                    "Content-Type": "application/json"
+                }
+                payload = {
+                    "action_type": "start",
+                    "game_name" : self.room_name
+                }
+                response = await client.post(url, headers=headers, json=payload)
             if response.status_code == 200:
+                print(response.json)
                 return response.json()
             elif response.status_code == 404:
                 print(f"Endpoint not found: {response.url}")
@@ -164,13 +171,19 @@ class GameConsumer(AsyncWebsocketConsumer):
 
     async def end_game(self, event):
         try:
+            print("end game info send")
+            url = "http://user-service:8000/users/tournament-active/"
+            headers = {
+                "Authorization": f"Bearer {self.token}",
+                "Content-Type": "application/json"
+            }
+            payload = {
+                "action_type": "end"
+            }
             async with httpx.AsyncClient() as client:
-                response = await client.post(
-                    "http://auth-service:8000/users/tournament-active/",
-                    json={"token": self.token, "action_type": "end"}
-                )
+                response = await client.post( url, headers=headers, json=payload )
             if response.status_code == 200:
-                # Process and return the response if successful
+                print(response.json)
                 return response.json()
             elif response.status_code == 404:
                 print(f"Endpoint not found: {response.url}")

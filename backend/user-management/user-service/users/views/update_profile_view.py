@@ -4,7 +4,7 @@ from rest_framework.response import Response
 from django.core.files.storage import default_storage
 from django.core.files.base import ContentFile
 from django.conf import settings
-# from datetime import timezone
+from django.core.validators import EmailValidator
 import json, re, os, uuid
 from django.db.models import Q
 from ..models import UserProfile
@@ -59,18 +59,35 @@ def publish_nickname_change(redis_client, old_nickname, new_nickname):
 	except Exception as e:
 		print(f"[ERROR] Failed to publish nickname change to Redis: {e}")
 
-# def publish_online_status_change(redis_client, nickname, online_status):
-# 	"""Publish the nickname change event to Redis"""
-# 	status_event = {
-# 		"action": "online_status_update",
-# 		"nickname": nickname,
-# 		"status": online_status
-# 	}
-# 	try:
-# 		redis_client.publish("user_service_updates", json.dumps(status_event))
-# 		print(f"[INFO] Published online status change event to Redis: {status_event}")
-# 	except Exception as e:
-# 		print(f"[ERROR] Failed to publish online status change to Redis: {e}")
+def validate_and_update_2fa(data, profile):
+	"""Validate and update 2FA auth settings"""
+	twofa_enabled = data.get("twofa_enabled")
+	email = data.get("email")
+
+	if not isinstance(twofa_enabled, bool):
+		raise ValueError("2FA auth must be a boolean.")
+
+	if twofa_enabled and not email:
+		raise ValueError("Email is required to enable 2FA auth.")
+
+	if email:
+		# validate the email
+		validator = EmailValidator()
+		try:
+			validator(email)
+		except Exception:
+			raise ValueError("Invalid email format.")
+
+	# update the fields in the profile
+	profile.twofa_enabled = twofa_enabled
+	if email:
+		profile.email = email
+
+	# return updated fields to keep track
+	updated_fields = ["twofa_enabled"]
+	if email:
+		updated_fields.append("email")
+	return updated_fields
 
 #######################################
 # ---------- MAIN FUNCTION ---------- #
@@ -108,6 +125,14 @@ def update_profile(request):
 			profile.avatar.name = update_avatar(new_avatar, user_directory, profile)
 			updated_fields.append("avatar")
 
+		#################
+		## 2FA feature ##
+		#################
+
+		twofa = data.get("twofa_enabled")
+		if twofa is not None:
+			updated_fields += validate_and_update_2fa(data, profile)
+
 		##########################
 		## update online status ##
 		##########################
@@ -120,8 +145,6 @@ def update_profile(request):
 				)
 			profile.online = new_online_status
 			updated_fields.append("online")
-			# publish the event only if the status changes
-			# publish_online_status_change(redis_client, profile.nickname, new_online_status)
 
 		## save profile info in database ##
 		if updated_fields:
