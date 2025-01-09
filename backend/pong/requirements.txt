@@ -13,3 +13,4 @@ django-cors-headers
 django-redis
 django-celery-beat
 requests>=2.26.0
+httpx
