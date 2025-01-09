@@ -14,6 +14,13 @@ class TournamentActive(APIView):
 		tournament_name = request.data.get('tournament_name')
 		action_type = request.data.get('action_type')
 
+		# validate that action_type is present
+		if not action_type:
+			return Response(
+				{"error": "'action_type' is required and must be either 'start' or 'end'."},
+				status=status.HTTP_400_BAD_REQUEST,
+			)
+
 		if action_type not in ["start", "end"]:
 			return Response(
 				{"error": "Invalid 'action_type'. Use 'start' or 'end'."},

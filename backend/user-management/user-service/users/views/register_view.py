@@ -15,5 +15,5 @@ class UserRegisterView(APIView):
 				{"message": "User created successfully"},
 				status=status.HTTP_201_CREATED,
 			)
-		print("[DEBUG] Failed because user already exists.")
+		print("[DEBUG] Registration failed:", serializer.errors)
 		return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

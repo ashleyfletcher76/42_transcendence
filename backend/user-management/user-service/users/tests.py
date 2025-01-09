@@ -383,3 +383,105 @@ class UserServiceTests(TestCase):
 		print(f"Final user count: {final_user_count}")
 		print("================================\n")
 		self.assertEqual(initial_user_count, final_user_count)
+
+######################################
+## Tournament Active Endpoint Tests ##
+######################################
+
+class TournamentActiveTests(TestCase):
+	def setUp(self):
+		"""Set up test environment, including test user and profile"""
+		self.user = User.objects.create_user(username="testuser", password="password")
+		self.user_profile = self.user.profile
+		self.client = APIClient()
+		self.client.login(username="testuser", password="password")
+		refresh = RefreshToken.for_user(self.user)
+		self.client.credentials(HTTP_AUTHORIZATION=f'Bearer {refresh.access_token}')
+
+	def tearDown(self):
+		"""Clean up test environment"""
+		UserProfile.objects.all().delete()
+		User.objects.all().delete()
+
+	def test_start_game_success(self):
+		"""Test successfully starting a game"""
+		url = "/users/tournament-active/"
+		payload = {"game_name": "PongMaster", "tournament_name": "Spring Championship", "action_type": "start"}
+		response = self.client.post(url, payload)
+
+		self.assertEqual(response.status_code, 200)
+		self.assertTrue(response.data["success"])
+		self.assertEqual(response.data["message"], "Game state updated successfully: start")
+		self.user_profile.refresh_from_db()
+		self.assertTrue(self.user_profile.game_active)
+		self.assertEqual(self.user_profile.game_name, "PongMaster")
+		self.assertEqual(self.user_profile.tournament_name, "Spring Championship")
+
+	def test_end_game_success(self):
+		"""Test successfully ending a game"""
+		self.user_profile.game_active = True
+		self.user_profile.game_name = "PongMaster"
+		self.user_profile.tournament_name = "Spring Championship"
+		self.user_profile.save()
+
+		url = "/users/tournament-active/"
+		payload = {"action_type": "end"}
+		response = self.client.post(url, payload)
+
+		self.assertEqual(response.status_code, 200)
+		self.assertTrue(response.data["success"])
+		self.assertEqual(response.data["message"], "Game state updated successfully: end")
+		self.user_profile.refresh_from_db()
+		self.assertFalse(self.user_profile.game_active)
+		self.assertIsNone(self.user_profile.game_name)
+		self.assertIsNone(self.user_profile.tournament_name)
+
+	def test_start_game_already_active(self):
+		"""Test attempting to start a new game when one is already active"""
+		self.user_profile.game_active = True
+		self.user_profile.game_name = "PongMaster"
+		self.user_profile.tournament_name = "Spring Championship"
+		self.user_profile.save()
+
+		url = "/users/tournament-active/"
+		payload = {"game_name": "AnotherGame", "action_type": "start"}
+		response = self.client.post(url, payload)
+
+		self.assertEqual(response.status_code, 400)
+		self.assertEqual(response.data["error"], "A game is already active. Please end current game and then retry.")
+
+	def test_start_game_missing_game_name(self):
+		"""Test starting a game without providing a game_name"""
+		url = "/users/tournament-active/"
+		payload = {"tournament_name": "Spring Championship", "action_type": "start"}
+		response = self.client.post(url, payload)
+
+		self.assertEqual(response.status_code, 400)
+		self.assertEqual(response.data["error"], "'game_name' is required when starting a game.")
+
+	def test_invalid_action_type(self):
+		"""Test providing an invalid action_type"""
+		url = "/users/tournament-active/"
+		payload = {"game_name": "PongMaster", "action_type": "pause"}
+		response = self.client.post(url, payload)
+
+		self.assertEqual(response.status_code, 400)
+		self.assertEqual(response.data["error"], "Invalid 'action_type'. Use 'start' or 'end'.")
+
+	def test_all_fields_missing(self):
+		"""Test sending a request with no fields provided"""
+		url = "/users/tournament-active/"
+		payload = {}
+		response = self.client.post(url, payload)
+
+		self.assertEqual(response.status_code, 400)
+		self.assertEqual(response.data["error"], "'action_type' is required and must be either 'start' or 'end'.")
+
+	# def test_invalid_field_types(self):
+	# 	"""Test sending invalid data types."""
+	# 	url = "/users/tournament-active/"
+	# 	payload = {"game_name": 123, "action_type": "start"}
+	# 	response = self.client.post(url, payload)
+
+	# 	self.assertEqual(response.status_code, 400)
+	# 	self.assertIn("At least 'game_name' and 'action_type' must be provided.", str(response.data))
