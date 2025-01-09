@@ -19,7 +19,7 @@ def check_game_status(request):
 		)
 	return Response(
 		{
-			"success": True,
+			"success": False,
 			"message": "User does not have an active game."
 		},
 		status=200,
