@@ -982,7 +982,7 @@
   
   <div class="scrollable-list chat" >
     {{#each this.filteredMessages as |message|}}
-      <Message @message={{message}} @ownNickname={{this.chat.user.profile.nickname}}/>
+      <Message @message={{message}} @ownNickname={{this.chat.user.profile.nickname}} @selectUser={{@selectUser}}/>
     {{/each}}
   </div>
   
@@ -1007,8 +1007,8 @@
   </div>
   */
   {
-    "id": "cHPyaJUo",
-    "block": "[[[10,0],[14,0,\"container-row chat-container\"],[12],[1,\"\\n\"],[10,0],[14,0,\"btn-group\"],[14,\"role\",\"group\"],[14,\"aria-label\",\"Basic checkbox toggle button group\"],[12],[1,\"\\n  \"],[11,\"input\"],[24,0,\"btn-check\"],[24,1,\"btncheck1\"],[24,\"autocomplete\",\"off\"],[16,\"checked\",[30,0,[\"showGeneral\"]]],[24,4,\"checkbox\"],[4,[38,2],[\"change\",[28,[37,3],[[30,0,[\"toggleCheckbox\"]],\"all\"],null]],null],[12],[13],[1,\"\\n  \"],[10,\"label\"],[14,0,\"btn btn-outline-secondary btn-sm\"],[14,\"for\",\"btncheck1\"],[12],[1,\"General\"],[13],[1,\"\\n\\n  \"],[11,\"input\"],[24,0,\"btn-check\"],[24,1,\"btncheck2\"],[24,\"autocomplete\",\"off\"],[16,\"checked\",[30,0,[\"showWhisper\"]]],[24,4,\"checkbox\"],[4,[38,2],[\"change\",[28,[37,3],[[30,0,[\"toggleCheckbox\"]],\"whisper\"],null]],null],[12],[13],[1,\"\\n  \"],[10,\"label\"],[14,0,\"btn btn-outline-secondary btn-sm\"],[14,\"for\",\"btncheck2\"],[12],[1,\"Whisper\"],[13],[1,\"\\n\\n  \"],[11,\"input\"],[24,0,\"btn-check\"],[24,1,\"btncheck3\"],[24,\"autocomplete\",\"off\"],[16,\"checked\",[30,0,[\"showTournament\"]]],[24,4,\"checkbox\"],[4,[38,2],[\"change\",[28,[37,3],[[30,0,[\"toggleCheckbox\"]],\"tournament\"],null]],null],[12],[13],[1,\"\\n  \"],[10,\"label\"],[14,0,\"btn btn-outline-secondary btn-sm\"],[14,\"for\",\"btncheck3\"],[12],[1,\"Tournament\"],[13],[1,\"\\n\\n  \"],[11,\"input\"],[24,0,\"btn-check\"],[24,1,\"btncheck4\"],[24,\"autocomplete\",\"off\"],[16,\"checked\",[30,0,[\"showSystem\"]]],[24,4,\"checkbox\"],[4,[38,2],[\"change\",[28,[37,3],[[30,0,[\"toggleCheckbox\"]],\"system\"],null]],null],[12],[13],[1,\"\\n  \"],[10,\"label\"],[14,0,\"btn btn-outline-secondary btn-sm\"],[14,\"for\",\"btncheck4\"],[12],[1,\"System\"],[13],[1,\"\\n\"],[13],[1,\"\\n\\n\"],[10,0],[14,0,\"scrollable-list chat\"],[12],[1,\"\\n\"],[42,[28,[37,6],[[28,[37,6],[[30,0,[\"filteredMessages\"]]],null]],null],null,[[[1,\"    \"],[8,[39,7],null,[[\"@message\",\"@ownNickname\"],[[30,1],[30,0,[\"chat\",\"user\",\"profile\",\"nickname\"]]]],null],[1,\"\\n\"]],[1]],null],[13],[1,\"\\n\\n\"],[10,0],[14,0,\"input-group\"],[12],[1,\"\\n  \"],[11,\"input\"],[24,0,\"form-control\"],[24,\"placeholder\",\"Put your message here\"],[16,5,[29,[\"color: \",[30,0,[\"chat\",\"inputColor\"]],\";\"]]],[24,\"aria-label\",\"Recipient's username\"],[24,\"aria-describedby\",\"basic-addon2\"],[16,2,[30,0,[\"chat\",\"messageInput\"]]],[24,4,\"text\"],[4,[38,2],[\"input\",[30,0,[\"updateInputValue\"]]],null],[4,[38,2],[\"keydown\",[30,0,[\"handleKeyDown\"]]],null],[4,[38,8],[[30,0,[\"setInputRef\"]]],null],[12],[13],[1,\"\\n  \"],[10,0],[14,0,\"input-group-append\"],[12],[1,\"\\n    \"],[11,\"button\"],[24,0,\"btn btn-outline-secondary\"],[24,4,\"button\"],[4,[38,2],[\"click\",[30,0,[\"sendMessage\"]]],null],[12],[1,\"Send\"],[13],[1,\"\\n  \"],[13],[1,\"\\n\"],[13],[1,\"\\n\"],[13]],[\"message\"],false,[\"div\",\"input\",\"on\",\"fn\",\"label\",\"each\",\"-track-array\",\"message\",\"did-insert\",\"button\"]]",
+    "id": "SIcf+KC/",
+    "block": "[[[10,0],[14,0,\"container-row chat-container\"],[12],[1,\"\\n\"],[10,0],[14,0,\"btn-group\"],[14,\"role\",\"group\"],[14,\"aria-label\",\"Basic checkbox toggle button group\"],[12],[1,\"\\n  \"],[11,\"input\"],[24,0,\"btn-check\"],[24,1,\"btncheck1\"],[24,\"autocomplete\",\"off\"],[16,\"checked\",[30,0,[\"showGeneral\"]]],[24,4,\"checkbox\"],[4,[38,2],[\"change\",[28,[37,3],[[30,0,[\"toggleCheckbox\"]],\"all\"],null]],null],[12],[13],[1,\"\\n  \"],[10,\"label\"],[14,0,\"btn btn-outline-secondary btn-sm\"],[14,\"for\",\"btncheck1\"],[12],[1,\"General\"],[13],[1,\"\\n\\n  \"],[11,\"input\"],[24,0,\"btn-check\"],[24,1,\"btncheck2\"],[24,\"autocomplete\",\"off\"],[16,\"checked\",[30,0,[\"showWhisper\"]]],[24,4,\"checkbox\"],[4,[38,2],[\"change\",[28,[37,3],[[30,0,[\"toggleCheckbox\"]],\"whisper\"],null]],null],[12],[13],[1,\"\\n  \"],[10,\"label\"],[14,0,\"btn btn-outline-secondary btn-sm\"],[14,\"for\",\"btncheck2\"],[12],[1,\"Whisper\"],[13],[1,\"\\n\\n  \"],[11,\"input\"],[24,0,\"btn-check\"],[24,1,\"btncheck3\"],[24,\"autocomplete\",\"off\"],[16,\"checked\",[30,0,[\"showTournament\"]]],[24,4,\"checkbox\"],[4,[38,2],[\"change\",[28,[37,3],[[30,0,[\"toggleCheckbox\"]],\"tournament\"],null]],null],[12],[13],[1,\"\\n  \"],[10,\"label\"],[14,0,\"btn btn-outline-secondary btn-sm\"],[14,\"for\",\"btncheck3\"],[12],[1,\"Tournament\"],[13],[1,\"\\n\\n  \"],[11,\"input\"],[24,0,\"btn-check\"],[24,1,\"btncheck4\"],[24,\"autocomplete\",\"off\"],[16,\"checked\",[30,0,[\"showSystem\"]]],[24,4,\"checkbox\"],[4,[38,2],[\"change\",[28,[37,3],[[30,0,[\"toggleCheckbox\"]],\"system\"],null]],null],[12],[13],[1,\"\\n  \"],[10,\"label\"],[14,0,\"btn btn-outline-secondary btn-sm\"],[14,\"for\",\"btncheck4\"],[12],[1,\"System\"],[13],[1,\"\\n\"],[13],[1,\"\\n\\n\"],[10,0],[14,0,\"scrollable-list chat\"],[12],[1,\"\\n\"],[42,[28,[37,6],[[28,[37,6],[[30,0,[\"filteredMessages\"]]],null]],null],null,[[[1,\"    \"],[8,[39,7],null,[[\"@message\",\"@ownNickname\",\"@selectUser\"],[[30,1],[30,0,[\"chat\",\"user\",\"profile\",\"nickname\"]],[30,2]]],null],[1,\"\\n\"]],[1]],null],[13],[1,\"\\n\\n\"],[10,0],[14,0,\"input-group\"],[12],[1,\"\\n  \"],[11,\"input\"],[24,0,\"form-control\"],[24,\"placeholder\",\"Put your message here\"],[16,5,[29,[\"color: \",[30,0,[\"chat\",\"inputColor\"]],\";\"]]],[24,\"aria-label\",\"Recipient's username\"],[24,\"aria-describedby\",\"basic-addon2\"],[16,2,[30,0,[\"chat\",\"messageInput\"]]],[24,4,\"text\"],[4,[38,2],[\"input\",[30,0,[\"updateInputValue\"]]],null],[4,[38,2],[\"keydown\",[30,0,[\"handleKeyDown\"]]],null],[4,[38,8],[[30,0,[\"setInputRef\"]]],null],[12],[13],[1,\"\\n  \"],[10,0],[14,0,\"input-group-append\"],[12],[1,\"\\n    \"],[11,\"button\"],[24,0,\"btn btn-outline-secondary\"],[24,4,\"button\"],[4,[38,2],[\"click\",[30,0,[\"sendMessage\"]]],null],[12],[1,\"Send\"],[13],[1,\"\\n  \"],[13],[1,\"\\n\"],[13],[1,\"\\n\"],[13]],[\"message\",\"@selectUser\"],false,[\"div\",\"input\",\"on\",\"fn\",\"label\",\"each\",\"-track-array\",\"message\",\"did-insert\",\"button\"]]",
     "moduleName": "myapp/components/chat.hbs",
     "isStrictMode": false
   });
@@ -1170,9 +1170,9 @@
   const __COLOCATED_TEMPLATE__ = (0, _templateFactory.createTemplateFactory)(
   /*
     {{#if (eq @message.type "tournament")}}
-    <div class="message-item message-tournament">[{{@message.from}}] {{@message.content}}</div>
+    <div class="message-item message-tournament"> <a href="#" class="badge bg-warning" style="color: rgb(24, 22, 22);" {{on "click" (fn this.select @message.from)}}>{{@message.from}}</a>  {{@message.content}}</div>
   {{else if (eq @message.type "whisper")}}
-    <div class="message-item message-whisper">[{{@message.from}}] {{@message.content}}</div>
+    <div class="message-item message-whisper"> <a href="#" class="badge bg-warning" style="color: rgb(24, 22, 22);" {{on "click" (fn this.select @message.from)}}>{{@message.from}}</a>  {{@message.content}}</div>
   {{else if (eq @message.type "add")}}
     {{#if (eq @message.from @ownNickname)}}
       <div class="alert alert-success p-2 mt-1 mb-1" role="alert">
@@ -1196,13 +1196,13 @@
       </div>
     {{/if}}
   {{else}}
-    <div class="message-item message-default">[{{@message.from}}] {{@message.content}}</div>
+    <div class="message-item message-default"> <a href="#" class="badge bg-warning" style="color: rgb(24, 22, 22);" {{on "click" (fn this.select @message.from)}}>{{@message.from}}</a>  {{@message.content}}</div>
   {{/if}}
   
   */
   {
-    "id": "qxcghq3o",
-    "block": "[[[41,[28,[37,1],[[30,1,[\"type\"]],\"tournament\"],null],[[[1,\"  \"],[10,0],[14,0,\"message-item message-tournament\"],[12],[1,\"[\"],[1,[30,1,[\"from\"]]],[1,\"] \"],[1,[30,1,[\"content\"]]],[13],[1,\"\\n\"]],[]],[[[41,[28,[37,1],[[30,1,[\"type\"]],\"whisper\"],null],[[[1,\"  \"],[10,0],[14,0,\"message-item message-whisper\"],[12],[1,\"[\"],[1,[30,1,[\"from\"]]],[1,\"] \"],[1,[30,1,[\"content\"]]],[13],[1,\"\\n\"]],[]],[[[41,[28,[37,1],[[30,1,[\"type\"]],\"add\"],null],[[[41,[28,[37,1],[[30,1,[\"from\"]],[30,2]],null],[[[1,\"    \"],[10,0],[14,0,\"alert alert-success p-2 mt-1 mb-1\"],[14,\"role\",\"alert\"],[12],[1,\"\\n      You sent a friend request to \"],[1,[30,1,[\"to\"]]],[1,\".\\n    \"],[13],[1,\"\\n\"]],[]],[[[1,\"    \"],[10,0],[14,0,\"alert alert-success p-2 mt-1 mb-1\"],[14,\"role\",\"alert\"],[12],[1,\"\\n      \"],[1,[30,1,[\"from\"]]],[1,\" wants to add you as a friend \\n      \"],[11,3],[24,6,\"#\"],[24,0,\"alert-link\"],[4,[38,4],[\"click\",[30,0,[\"acceptFriend\"]]],null],[12],[1,\"ACCEPT\"],[13],[1,\"\\n    \"],[13],[1,\"\\n\"]],[]]]],[]],[[[41,[28,[37,1],[[30,1,[\"type\"]],\"invite\"],null],[[[41,[28,[37,1],[[30,1,[\"from\"]],[30,2]],null],[[[1,\"    \"],[10,0],[14,0,\"alert alert-danger p-2 mt-1 mb-1\"],[14,\"role\",\"alert\"],[12],[1,\"\\n      You invited \"],[1,[30,1,[\"to\"]]],[1,\" to a game.\\n    \"],[13],[1,\"\\n\"]],[]],[[[1,\"    \"],[10,0],[14,0,\"alert alert-danger p-2 mt-1 mb-1\"],[14,\"role\",\"alert\"],[12],[1,\"\\n      \"],[1,[30,1,[\"from\"]]],[1,\" invited you to a game\\n      \"],[11,3],[24,6,\"#\"],[24,0,\"alert-link\"],[4,[38,4],[\"click\",[30,0,[\"acceptGame\"]]],null],[12],[1,\"PLAY\"],[13],[1,\"\\n    \"],[13],[1,\"\\n\"]],[]]]],[]],[[[1,\"  \"],[10,0],[14,0,\"message-item message-default\"],[12],[1,\"[\"],[1,[30,1,[\"from\"]]],[1,\"] \"],[1,[30,1,[\"content\"]]],[13],[1,\"\\n\"]],[]]]],[]]]],[]]]],[]]]],[\"@message\",\"@ownNickname\"],false,[\"if\",\"eq\",\"div\",\"a\",\"on\"]]",
+    "id": "CidlgxAS",
+    "block": "[[[41,[28,[37,1],[[30,1,[\"type\"]],\"tournament\"],null],[[[1,\"  \"],[10,0],[14,0,\"message-item message-tournament\"],[12],[1,\" \"],[11,3],[24,6,\"#\"],[24,0,\"badge bg-warning\"],[24,5,\"color: rgb(24, 22, 22);\"],[4,[38,4],[\"click\",[28,[37,5],[[30,0,[\"select\"]],[30,1,[\"from\"]]],null]],null],[12],[1,[30,1,[\"from\"]]],[13],[1,\"  \"],[1,[30,1,[\"content\"]]],[13],[1,\"\\n\"]],[]],[[[41,[28,[37,1],[[30,1,[\"type\"]],\"whisper\"],null],[[[1,\"  \"],[10,0],[14,0,\"message-item message-whisper\"],[12],[1,\" \"],[11,3],[24,6,\"#\"],[24,0,\"badge bg-warning\"],[24,5,\"color: rgb(24, 22, 22);\"],[4,[38,4],[\"click\",[28,[37,5],[[30,0,[\"select\"]],[30,1,[\"from\"]]],null]],null],[12],[1,[30,1,[\"from\"]]],[13],[1,\"  \"],[1,[30,1,[\"content\"]]],[13],[1,\"\\n\"]],[]],[[[41,[28,[37,1],[[30,1,[\"type\"]],\"add\"],null],[[[41,[28,[37,1],[[30,1,[\"from\"]],[30,2]],null],[[[1,\"    \"],[10,0],[14,0,\"alert alert-success p-2 mt-1 mb-1\"],[14,\"role\",\"alert\"],[12],[1,\"\\n      You sent a friend request to \"],[1,[30,1,[\"to\"]]],[1,\".\\n    \"],[13],[1,\"\\n\"]],[]],[[[1,\"    \"],[10,0],[14,0,\"alert alert-success p-2 mt-1 mb-1\"],[14,\"role\",\"alert\"],[12],[1,\"\\n      \"],[1,[30,1,[\"from\"]]],[1,\" wants to add you as a friend \\n      \"],[11,3],[24,6,\"#\"],[24,0,\"alert-link\"],[4,[38,4],[\"click\",[30,0,[\"acceptFriend\"]]],null],[12],[1,\"ACCEPT\"],[13],[1,\"\\n    \"],[13],[1,\"\\n\"]],[]]]],[]],[[[41,[28,[37,1],[[30,1,[\"type\"]],\"invite\"],null],[[[41,[28,[37,1],[[30,1,[\"from\"]],[30,2]],null],[[[1,\"    \"],[10,0],[14,0,\"alert alert-danger p-2 mt-1 mb-1\"],[14,\"role\",\"alert\"],[12],[1,\"\\n      You invited \"],[1,[30,1,[\"to\"]]],[1,\" to a game.\\n    \"],[13],[1,\"\\n\"]],[]],[[[1,\"    \"],[10,0],[14,0,\"alert alert-danger p-2 mt-1 mb-1\"],[14,\"role\",\"alert\"],[12],[1,\"\\n      \"],[1,[30,1,[\"from\"]]],[1,\" invited you to a game\\n      \"],[11,3],[24,6,\"#\"],[24,0,\"alert-link\"],[4,[38,4],[\"click\",[30,0,[\"acceptGame\"]]],null],[12],[1,\"PLAY\"],[13],[1,\"\\n    \"],[13],[1,\"\\n\"]],[]]]],[]],[[[1,\"  \"],[10,0],[14,0,\"message-item message-default\"],[12],[1,\" \"],[11,3],[24,6,\"#\"],[24,0,\"badge bg-warning\"],[24,5,\"color: rgb(24, 22, 22);\"],[4,[38,4],[\"click\",[28,[37,5],[[30,0,[\"select\"]],[30,1,[\"from\"]]],null]],null],[12],[1,[30,1,[\"from\"]]],[13],[1,\"  \"],[1,[30,1,[\"content\"]]],[13],[1,\"\\n\"]],[]]]],[]]]],[]]]],[]]]],[\"@message\",\"@ownNickname\"],false,[\"if\",\"eq\",\"div\",\"a\",\"on\",\"fn\"]]",
     "moduleName": "myapp/components/message.hbs",
     "isStrictMode": false
   });
@@ -1219,6 +1219,9 @@
       event.preventDefault();
       console.log(`${this.args.message.from} accepted as a friend!`);
       this.makeFriends();
+    }
+    select(user) {
+      this.args.selectUser(user); // Passing the selected user to the parent action
     }
     acceptGame(event) {
       event.preventDefault();
@@ -1304,7 +1307,7 @@
     enumerable: true,
     writable: true,
     initializer: null
-  }), _applyDecoratedDescriptor(_class.prototype, "acceptFriend", [_object.action], Object.getOwnPropertyDescriptor(_class.prototype, "acceptFriend"), _class.prototype), _applyDecoratedDescriptor(_class.prototype, "acceptGame", [_object.action], Object.getOwnPropertyDescriptor(_class.prototype, "acceptGame"), _class.prototype), _class);
+  }), _applyDecoratedDescriptor(_class.prototype, "acceptFriend", [_object.action], Object.getOwnPropertyDescriptor(_class.prototype, "acceptFriend"), _class.prototype), _applyDecoratedDescriptor(_class.prototype, "select", [_object.action], Object.getOwnPropertyDescriptor(_class.prototype, "select"), _class.prototype), _applyDecoratedDescriptor(_class.prototype, "acceptGame", [_object.action], Object.getOwnPropertyDescriptor(_class.prototype, "acceptGame"), _class.prototype), _class);
   (0, _component.setComponentTemplate)(__COLOCATED_TEMPLATE__, MessageComponent);
 });
 ;define("myapp/components/modal-game-history", ["exports", "@ember/component", "@glimmer/component", "@ember/object", "@glimmer/tracking", "@ember/service", "@ember/template-factory"], function (_exports, _component, _component2, _object, _tracking, _service, _templateFactory) {
@@ -2352,8 +2355,17 @@
         console.log('filter:', type);
       });
       this.startFetchingUsers();
+      this.disableArrowScrolling();
     }
-
+    disableArrowScrolling() {
+      window.addEventListener('keydown', this.handleKeyDown);
+    }
+    handleKeyDown(event) {
+      // Arrow keys: ArrowUp, ArrowDown, ArrowLeft, ArrowRight
+      if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(event.key)) {
+        event.preventDefault(); // Prevent scrolling
+      }
+    }
     /**
      * Start fetching tournaments every 10 seconds
      */
@@ -2391,6 +2403,7 @@
     }
     willDestroy() {
       super.willDestroy(...arguments);
+      window.removeEventListener('keydown', this.handleKeyDown);
       if (this.intervalId) {
         clearInterval(this.intervalId); // Clear the interval
       }
@@ -2419,7 +2432,7 @@
     enumerable: true,
     writable: true,
     initializer: null
-  }), _applyDecoratedDescriptor(_class.prototype, "fetchUsers", [_object.action], Object.getOwnPropertyDescriptor(_class.prototype, "fetchUsers"), _class.prototype), _class);
+  }), _applyDecoratedDescriptor(_class.prototype, "handleKeyDown", [_object.action], Object.getOwnPropertyDescriptor(_class.prototype, "handleKeyDown"), _class.prototype), _applyDecoratedDescriptor(_class.prototype, "fetchUsers", [_object.action], Object.getOwnPropertyDescriptor(_class.prototype, "fetchUsers"), _class.prototype), _class);
   (0, _component.setComponentTemplate)(__COLOCATED_TEMPLATE__, UserListComponent);
 });
 ;define("myapp/components/user", ["exports", "@ember/component", "@glimmer/component", "@ember/object", "@glimmer/tracking", "@ember/template-factory"], function (_exports, _component, _component2, _object, _tracking, _templateFactory) {
@@ -2467,7 +2480,7 @@
     select() {
       console.log('User clicked!');
       // Call the parent action passed via @selectUser
-      this.args.selectUser(this.args.user); // Passing the selected user to the parent action
+      this.args.selectUser(this.args.user.nickname); // Passing the selected user to the parent action
     }
     get isOnline() {
       return this.args.user?.status === 'online';
@@ -2539,9 +2552,8 @@
     }
 
     // Action to handle the user selection
-    selectUser(user) {
-      console.log('Selected User:', user);
-      if (user && user.nickname !== this.user.profile.nickname) this.fetchUserData(user.nickname);else this.selectedUser = null;
+    selectUser(nickname) {
+      if (nickname && nickname !== this.user.profile.nickname) this.fetchUserData(nickname);
     }
     async fetchUserData(nickname) {
       try {
@@ -3926,8 +3938,11 @@
     myOpenHandler(event) {
       console.log(`On open event has been called token: ${this.session.data.access}`);
     }
+    isBlocked(nickname) {
+      const blockedList = this.user.profile.blocked || [];
+      return blockedList.includes(nickname);
+    }
     myMessageHandler(event) {
-      console.log(`Message recieve: ${event.data}`);
       const newMessage = JSON.parse(event.data);
       if (newMessage.content.room_name) {
         if (this.user.profile.nickname !== newMessage.from) {
@@ -3936,8 +3951,7 @@
         }
         return;
       }
-      this.messages = [...this.messages, newMessage]; // Add the new message to the tracked array
-      console.log(newMessage.content);
+      if (!this.isBlocked(newMessage.from)) this.messages = [...this.messages, newMessage];
     }
     myCloseHandler(event) {
       console.log(`On close event has been called: ${event}`);
@@ -4273,6 +4287,7 @@
       let direction_p2 = '';
       let type_p1 = '';
       let type_p2 = '';
+      let action = '';
       if (this.keyStates[event.key]) {
         return; // Key is already released; no need to resend the event
       }
@@ -4303,13 +4318,20 @@
             type_p2 = 'start_move';
           } else return;
           break;
+        case ' ':
+        case 'Spacebar':
+          if (!this.keyStates.space) {
+            action = 'pause';
+          } else return;
+          break;
       }
       this.keyStates[event.key] = true;
       const data = {
         type_p1,
         direction_p1,
         type_p2,
-        direction_p2
+        direction_p2,
+        action
       };
       this.sendMessage(data);
     }
@@ -4318,6 +4340,7 @@
       let direction_p2 = '';
       let type_p1 = '';
       let type_p2 = '';
+      let action = '';
       if (!this.keyStates[event.key]) {
         return; // Key is already released; no need to resend the event
       }
@@ -4342,7 +4365,8 @@
         type_p1,
         direction_p1,
         type_p2,
-        direction_p2
+        direction_p2,
+        action
       };
       this.sendMessage(data);
     }
@@ -4473,6 +4497,7 @@
       return {
         ArrowUp: false,
         ArrowDown: false,
+        space: false,
         w: false,
         W: false,
         s: false,
@@ -5077,7 +5102,7 @@
       <div class="container-fluid col-3 footer p-1">
         {{#if this.session.isAuthenticated}}
           {{#unless (eq this.activeRoute "chat")}}
-            <Chat />
+            <Chat @selectUser={{this.selectUser}}/>
           {{/unless}}
         {{/if}}
       </div>
@@ -5088,8 +5113,8 @@
   
   */
   {
-    "id": "P7LwIg5B",
-    "block": "[[[10,\"main\"],[12],[1,\"\\n\"],[1,[30,0,[\"isAuthenticated\"]]],[1,\"\\n\"],[10,0],[14,0,\"container-fluid body\"],[12],[1,\"\\n  \"],[10,0],[14,0,\"container-fluid row\"],[12],[1,\"\\n    \"],[10,0],[14,0,\"col header\"],[12],[1,\"\\n     \"],[8,[39,2],null,null,null],[1,\"\\n    \"],[13],[1,\"\\n    \"],[10,0],[14,0,\"col header\"],[12],[1,\"\\n\"],[41,[30,0,[\"selectedUser\"]],[[[1,\"        \"],[8,[39,4],null,[[\"@selectedUser\",\"@selectUser\"],[[30,0,[\"selectedUser\"]],[30,0,[\"selectUser\"]]]],null],[1,\"\\n\"]],[]],[[[1,\"        \"],[8,[39,5],null,null,null],[1,\"\\n\"]],[]]],[1,\"    \"],[13],[1,\"\\n  \"],[13],[1,\"\\n  \"],[10,0],[14,0,\"container-fluid row\"],[12],[1,\"\\n    \"],[10,0],[14,0,\"container-fluid col-3 middle\"],[12],[1,\"\\n        \"],[8,[39,6],null,null,null],[1,\"\\n    \"],[13],[1,\"\\n    \"],[10,0],[14,0,\"container-fluid col-6 middle custom-bg-black\"],[12],[1,\"\\n\\t\\t\"],[46,[28,[37,8],null,null],null,null,null],[1,\"\\n    \"],[13],[1,\"\\n    \"],[10,0],[14,0,\"container-fluid col-3 middle\"],[12],[1,\"\\n      \"],[8,[39,9],null,[[\"@selectUser\"],[[30,0,[\"selectUser\"]]]],null],[1,\"\\n    \"],[13],[1,\"\\n  \"],[13],[1,\"\\n  \"],[10,0],[14,0,\"container-fluid row\"],[12],[1,\"\\n    \"],[10,0],[14,0,\"container-fluid col-3 footer\"],[12],[1,\"\\n            \"],[8,[39,10],[[24,0,\"nav-button\"]],[[\"@route\"],[\"choose-game\"]],[[\"default\"],[[[[1,\"Game\"]],[]]]]],[1,\"\\n            \"],[8,[39,10],[[24,0,\"nav-button\"]],[[\"@route\"],[\"chat\"]],[[\"default\"],[[[[1,\"Chat\"]],[]]]]],[1,\"            \\n            \"],[8,[39,10],[[24,0,\"nav-button\"]],[[\"@route\"],[\"tournament\"]],[[\"default\"],[[[[1,\"Tournament\"]],[]]]]],[1,\"\\n    \"],[13],[1,\"\\n    \"],[10,0],[14,0,\"container-fluid col-6 footer\"],[12],[1,\"\\n      \"],[8,[39,11],null,[[\"@selectUser\"],[[30,0,[\"selectUser\"]]]],null],[1,\"\\n    \"],[13],[1,\"\\n    \"],[10,0],[14,0,\"container-fluid col-3 footer p-1\"],[12],[1,\"\\n\"],[41,[30,0,[\"session\",\"isAuthenticated\"]],[[[41,[51,[28,[37,13],[[30,0,[\"activeRoute\"]],\"chat\"],null]],[[[1,\"          \"],[8,[39,14],null,null,null],[1,\"\\n\"]],[]],null]],[]],null],[1,\"    \"],[13],[1,\"\\n  \"],[13],[1,\"    \\n\"],[13],[1,\"\\n\\n\"],[13],[1,\"\\n\"]],[],false,[\"main\",\"div\",\"profile-own\",\"if\",\"profile-other\",\"title-animation\",\"tournament-list\",\"component\",\"-outlet\",\"user-list\",\"link-to\",\"scoreboard\",\"unless\",\"eq\",\"chat\"]]",
+    "id": "PzzlzTYt",
+    "block": "[[[10,\"main\"],[12],[1,\"\\n\"],[1,[30,0,[\"isAuthenticated\"]]],[1,\"\\n\"],[10,0],[14,0,\"container-fluid body\"],[12],[1,\"\\n  \"],[10,0],[14,0,\"container-fluid row\"],[12],[1,\"\\n    \"],[10,0],[14,0,\"col header\"],[12],[1,\"\\n     \"],[8,[39,2],null,null,null],[1,\"\\n    \"],[13],[1,\"\\n    \"],[10,0],[14,0,\"col header\"],[12],[1,\"\\n\"],[41,[30,0,[\"selectedUser\"]],[[[1,\"        \"],[8,[39,4],null,[[\"@selectedUser\",\"@selectUser\"],[[30,0,[\"selectedUser\"]],[30,0,[\"selectUser\"]]]],null],[1,\"\\n\"]],[]],[[[1,\"        \"],[8,[39,5],null,null,null],[1,\"\\n\"]],[]]],[1,\"    \"],[13],[1,\"\\n  \"],[13],[1,\"\\n  \"],[10,0],[14,0,\"container-fluid row\"],[12],[1,\"\\n    \"],[10,0],[14,0,\"container-fluid col-3 middle\"],[12],[1,\"\\n        \"],[8,[39,6],null,null,null],[1,\"\\n    \"],[13],[1,\"\\n    \"],[10,0],[14,0,\"container-fluid col-6 middle custom-bg-black\"],[12],[1,\"\\n\\t\\t\"],[46,[28,[37,8],null,null],null,null,null],[1,\"\\n    \"],[13],[1,\"\\n    \"],[10,0],[14,0,\"container-fluid col-3 middle\"],[12],[1,\"\\n      \"],[8,[39,9],null,[[\"@selectUser\"],[[30,0,[\"selectUser\"]]]],null],[1,\"\\n    \"],[13],[1,\"\\n  \"],[13],[1,\"\\n  \"],[10,0],[14,0,\"container-fluid row\"],[12],[1,\"\\n    \"],[10,0],[14,0,\"container-fluid col-3 footer\"],[12],[1,\"\\n            \"],[8,[39,10],[[24,0,\"nav-button\"]],[[\"@route\"],[\"choose-game\"]],[[\"default\"],[[[[1,\"Game\"]],[]]]]],[1,\"\\n            \"],[8,[39,10],[[24,0,\"nav-button\"]],[[\"@route\"],[\"chat\"]],[[\"default\"],[[[[1,\"Chat\"]],[]]]]],[1,\"            \\n            \"],[8,[39,10],[[24,0,\"nav-button\"]],[[\"@route\"],[\"tournament\"]],[[\"default\"],[[[[1,\"Tournament\"]],[]]]]],[1,\"\\n    \"],[13],[1,\"\\n    \"],[10,0],[14,0,\"container-fluid col-6 footer\"],[12],[1,\"\\n      \"],[8,[39,11],null,[[\"@selectUser\"],[[30,0,[\"selectUser\"]]]],null],[1,\"\\n    \"],[13],[1,\"\\n    \"],[10,0],[14,0,\"container-fluid col-3 footer p-1\"],[12],[1,\"\\n\"],[41,[30,0,[\"session\",\"isAuthenticated\"]],[[[41,[51,[28,[37,13],[[30,0,[\"activeRoute\"]],\"chat\"],null]],[[[1,\"          \"],[8,[39,14],null,[[\"@selectUser\"],[[30,0,[\"selectUser\"]]]],null],[1,\"\\n\"]],[]],null]],[]],null],[1,\"    \"],[13],[1,\"\\n  \"],[13],[1,\"    \\n\"],[13],[1,\"\\n\\n\"],[13],[1,\"\\n\"]],[],false,[\"main\",\"div\",\"profile-own\",\"if\",\"profile-other\",\"title-animation\",\"tournament-list\",\"component\",\"-outlet\",\"user-list\",\"link-to\",\"scoreboard\",\"unless\",\"eq\",\"chat\"]]",
     "moduleName": "myapp/templates/application.hbs",
     "isStrictMode": false
   });
