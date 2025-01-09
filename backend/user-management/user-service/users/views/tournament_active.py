@@ -41,5 +41,13 @@ class TournamentActive(APIView):
 		user_profile.save()
 
 		# serialize and return update profile
-		serializer = UserProfileSerializer(user_profile)
-		return Response(serializer.data, status=status.HTTP_200_OK)
+		# serializer = UserProfileSerializer(user_profile)
+		# return Response(serializer.data, status=status.HTTP_200_OK)
+
+		return Response(
+			{
+				"success": True,
+				"message": f"Game state updated successfully: {action_type}"
+			},
+			status=status.HTTP_200_OK
+		)

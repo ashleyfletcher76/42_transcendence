@@ -42,7 +42,7 @@ class UserSerializer(serializers.ModelSerializer):
 
 class UserProfileSerializer(serializers.ModelSerializer):
 	friends = serializers.SerializerMethodField()
-	blocker_users = serializers.SerializerMethodField()
+	blocked_users = serializers.SerializerMethodField()
 
 	class Meta:
 		model = UserProfile
@@ -54,7 +54,7 @@ class UserProfileSerializer(serializers.ModelSerializer):
 		]
 
 	def get_friends(self, obj):
-		return list(obj.friends.value_list('nickname', flat=True))
+		return list(obj.friends.values_list('nickname', flat=True))
 
 	def get_blocked_users(self, obj):
-		return list(obj.blocked_users.value_list('nickname', flat=True))
+		return list(obj.blocked_users.values_list('nickname', flat=True))
