@@ -1,4 +1,5 @@
 import json, requests, threading, redis
+import httpx
 import time
 import random
 from asyncio import sleep
@@ -47,6 +48,12 @@ class GameConsumer(AsyncWebsocketConsumer):
             self.game_task = asyncio.create_task(self.start_game_loop())
             if game["player2"] == "AI":
                 self.game_task = asyncio.create_task(self.start_game_loop_ai())
+            await self.channel_layer.group_send(
+                self.room_group_name,
+                {
+                    "type": "start_game"
+                }
+            )
 
 
     async def disconnect(self, close_code):
@@ -62,6 +69,12 @@ class GameConsumer(AsyncWebsocketConsumer):
             if (game["game_type"] == "remote"):
                 delete_game_state(self.room_name)
                 return
+            await self.channel_layer.group_send(
+                self.room_group_name,
+                {
+                    "type": "end_game"
+                }
+            )
                 
         set_game_state(self.room_name, game)
 
@@ -125,6 +138,56 @@ class GameConsumer(AsyncWebsocketConsumer):
             "winner" : game_state["winner"],
             "game_start_timer" : game_state["game_start_timer"],
         }))
+    
+
+    async def start_game(self, event):
+        try:
+            async with httpx.AsyncClient() as client:
+                response = await client.post(
+                    "http://auth-service:8000/users/tournament-active/",
+                    json={"token": self.token, "action_type": "start", "game_name": self.room_name}
+                )
+            if response.status_code == 200:
+                return response.json()
+            elif response.status_code == 404:
+                print(f"Endpoint not found: {response.url}")
+                return {"error": "Endpoint not found"}
+            else:
+                print(f"Request failed with status {response.status_code}: {response.text}")
+                return {"error": f"Request failed with status {response.status_code}"}
+        except httpx.RequestError as e:
+            print(f"HTTP request error: {str(e)}")
+            return {"error": "HTTP request failed"}
+        except Exception as e:
+            print(f"Unexpected error: {str(e)}")
+            return {"error": "An unexpected error occurred"}
+
+    async def end_game(self, event):
+        try:
+            async with httpx.AsyncClient() as client:
+                response = await client.post(
+                    "http://auth-service:8000/users/tournament-active/",
+                    json={"token": self.token, "action_type": "end"}
+                )
+            if response.status_code == 200:
+                # Process and return the response if successful
+                return response.json()
+            elif response.status_code == 404:
+                print(f"Endpoint not found: {response.url}")
+                return {"error": "Endpoint not found"}
+            else:
+                print(f"Request failed with status {response.status_code}: {response.text}")
+                return {"error": f"Request failed with status {response.status_code}"}
+        except httpx.RequestError as e:
+            print(f"HTTP request error: {str(e)}")
+            return {"error": "HTTP request failed"}
+        except Exception as e:
+            print(f"Unexpected error: {str(e)}")
+            return {"error": "An unexpected error occurred"}
+
+
+
+        
 
     async def start_game_loop(self):
         """
@@ -168,6 +231,12 @@ class GameConsumer(AsyncWebsocketConsumer):
                         "game_state": game,
                     }
                 )
+                await self.channel_layer.group_send(
+                    self.room_group_name,
+                    {
+                        "type": "end_game"
+                    }
+                )
                 break
     
     async def start_game_loop_ai(self):
@@ -207,7 +276,7 @@ class GameConsumer(AsyncWebsocketConsumer):
             else:
                 raise Exception("User authentication failed")
         except requests.RequestException as e:
-            raise Exception(f"Auth-service unreachable: {str(e)}")
+            print(f"Auth-service unreachable: {str(e)}")
 
     def get_jwt_from_headers(self, headers):
         for header in headers:
