@@ -47,7 +47,7 @@ class UserProfileSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = UserProfile
 		fields = [
-			'user', 'nickname', 'avatar',
+			'user', 'username', 'nickname', 'avatar',
 			'bio', 'friends', 'blocked_users',
 			'online', 'last_seen', 'game_active',
 			'tournament_name', 'game_name',

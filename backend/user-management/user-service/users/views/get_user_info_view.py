@@ -105,7 +105,10 @@ def get_profile_info(request):
 			"friends": friends,
 			"history": match_history.get("history", []),
 			"status": "online" if profile.online else "offline",
-			"last_seen": profile.last_seen
+			"last_seen": profile.last_seen,
+			"tournament_name": profile.tournament_name,
+			"game_name": profile.game_name,
+			"game_active": profile.game_active
 		}
 		return Response(profile_response, status=200)
 
