@@ -1,4 +1,4 @@
-
+import httpx
 import json, requests, threading, redis
 from asyncio import sleep
 import asyncio
@@ -76,6 +76,12 @@ class TournamentConsumer(AsyncWebsocketConsumer):
                 print("Cannot start the tournament: Admin check failed or not enough players")
                 return
             asyncio.create_task(self.start_tournament())
+            await self.channel_layer.group_send(
+                self.room_group_name,
+                {
+                    "type": "start_tournament_user_service",
+                }
+            )
 
 
 
@@ -187,6 +193,12 @@ class TournamentConsumer(AsyncWebsocketConsumer):
                 {
                     "type": "tournament_winner",
                     "winner" : active_players[0]["name"],
+                }
+            )
+            await self.channel_layer.group_send(
+                self.room_group_name,
+                {
+                    "type": "end_tournament_user_sercive"
                 }
             )
             await sleep(1)
@@ -430,7 +442,64 @@ class TournamentConsumer(AsyncWebsocketConsumer):
             "winner": winner
         }))
 
+    async def start_tournament_user_service(self, event):
+        try:
+            async with httpx.AsyncClient() as client:
+                url = "http://user-service:8000/users/tournament-active/"
+                headers = {
+                    "Authorization": f"Bearer {self.token}",
+                    "Content-Type": "application/json"
+                }
+                payload = {
+                    "action_type": "start",
+                    "tournament_name" : self.room_name
+                }
+                response = await client.post(url, headers=headers, json=payload)
+            if response.status_code == 200:
+                print(response.json)
+                return response.json()
+            elif response.status_code == 404:
+                print(f"Endpoint not found: {response.url}")
+                return {"error": "Endpoint not found"}
+            else:
+                print(f"Request failed with status {response.status_code}: {response.text}")
+                self.close(10001)
+                return {"error": f"Request failed with status {response.status_code}"}
+        except httpx.RequestError as e:
+            print(f"HTTP request error: {str(e)}")
+            return {"error": "HTTP request failed"}
+        except Exception as e:
+            print(f"Unexpected error: {str(e)}")
+            return {"error": "An unexpected error occurred"}
 
+    async def end_tournament_user_sercive(self, event):
+        try:
+            print("end game info send")
+            url = "http://user-service:8000/users/tournament-active/"
+            headers = {
+                "Authorization": f"Bearer {self.token}",
+                "Content-Type": "application/json"
+            }
+            payload = {
+                "action_type": "end_tournament"
+            }
+            async with httpx.AsyncClient() as client:
+                response = await client.post( url, headers=headers, json=payload )
+            if response.status_code == 200:
+                print(response.json)
+                return response.json()
+            elif response.status_code == 404:
+                print(f"Endpoint not found: {response.url}")
+                return {"error": "Endpoint not found"}
+            else:
+                print(f"Request failed with status {response.status_code}: {response.text}")
+                return {"error": f"Request failed with status {response.status_code}"}
+        except httpx.RequestError as e:
+            print(f"HTTP request error: {str(e)}")
+            return {"error": "HTTP request failed"}
+        except Exception as e:
+            print(f"Unexpected error: {str(e)}")
+            return {"error": "An unexpected error occurred"}
 
 
 

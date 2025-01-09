@@ -1,4 +1,5 @@
 import json, requests, threading, redis
+import httpx
 import time
 import random
 from asyncio import sleep
@@ -6,6 +7,7 @@ import asyncio
 from channels.generic.websocket import AsyncWebsocketConsumer
 from .utils.redis_helper import get_game_state, set_game_state, delete_game_state
 from .logic.game_logic import game_logic, move_right_paddle, move_left_paddle
+from .logic.ai import PongAI
 from .utils.match_history import upload_match_details
 
 
@@ -44,6 +46,14 @@ class GameConsumer(AsyncWebsocketConsumer):
         set_game_state(self.room_name, game)
         if game["connections"] == 2 or game["player2"] == "local" or game["player2"] == "AI":
             self.game_task = asyncio.create_task(self.start_game_loop())
+            if game["player2"] == "AI":
+                self.game_task = asyncio.create_task(self.start_game_loop_ai())
+            await self.channel_layer.group_send(
+                self.room_group_name,
+                {
+                    "type": "start_game"
+                }
+            )
 
 
     async def disconnect(self, close_code):
@@ -59,6 +69,12 @@ class GameConsumer(AsyncWebsocketConsumer):
             if (game["game_type"] == "remote"):
                 delete_game_state(self.room_name)
                 return
+            await self.channel_layer.group_send(
+                self.room_group_name,
+                {
+                    "type": "end_game"
+                }
+            )
                 
         set_game_state(self.room_name, game)
 
@@ -71,12 +87,17 @@ class GameConsumer(AsyncWebsocketConsumer):
             print(f"Error decoding JSON: {e}")
             return
 
+        action = data.get("action", "")
         t1 = data.get("type_p1", "")
         d1 = data.get("direction_p1", "")
         t2 = data.get("type_p2", "")
         d2 = data.get("direction_p2", "")
 
         game = get_game_state(self.room_name)
+        if action == "pause":
+            game["paused"] = not game["paused"]
+            set_game_state(self.room_name, game)
+            return
 
         if not game["paused"]:
             if t1 == "start_move":
@@ -117,6 +138,69 @@ class GameConsumer(AsyncWebsocketConsumer):
             "winner" : game_state["winner"],
             "game_start_timer" : game_state["game_start_timer"],
         }))
+    
+
+    async def start_game(self, event):
+        try:
+            async with httpx.AsyncClient() as client:
+                url = "http://user-service:8000/users/tournament-active/"
+                headers = {
+                    "Authorization": f"Bearer {self.token}",
+                    "Content-Type": "application/json"
+                }
+                payload = {
+                    "action_type": "start",
+                    "game_name" : self.room_name
+                }
+                response = await client.post(url, headers=headers, json=payload)
+            if response.status_code == 200:
+                print(response.json)
+                return response.json()
+            elif response.status_code == 404:
+                print(f"Endpoint not found: {response.url}")
+                return {"error": "Endpoint not found"}
+            else:
+                print(f"Request failed with status {response.status_code}: {response.text}")
+                return {"error": f"Request failed with status {response.status_code}"}
+        except httpx.RequestError as e:
+            print(f"HTTP request error: {str(e)}")
+            return {"error": "HTTP request failed"}
+        except Exception as e:
+            print(f"Unexpected error: {str(e)}")
+            return {"error": "An unexpected error occurred"}
+
+    async def end_game(self, event):
+        try:
+            print("end game info send")
+            url = "http://user-service:8000/users/tournament-active/"
+            headers = {
+                "Authorization": f"Bearer {self.token}",
+                "Content-Type": "application/json"
+            }
+            payload = {
+                "action_type": "end"
+            }
+            async with httpx.AsyncClient() as client:
+                response = await client.post( url, headers=headers, json=payload )
+            if response.status_code == 200:
+                print(response.json)
+                return response.json()
+            elif response.status_code == 404:
+                print(f"Endpoint not found: {response.url}")
+                return {"error": "Endpoint not found"}
+            else:
+                print(f"Request failed with status {response.status_code}: {response.text}")
+                return {"error": f"Request failed with status {response.status_code}"}
+        except httpx.RequestError as e:
+            print(f"HTTP request error: {str(e)}")
+            return {"error": "HTTP request failed"}
+        except Exception as e:
+            print(f"Unexpected error: {str(e)}")
+            return {"error": "An unexpected error occurred"}
+
+
+
+        
 
     async def start_game_loop(self):
         """
@@ -160,6 +244,35 @@ class GameConsumer(AsyncWebsocketConsumer):
                         "game_state": game,
                     }
                 )
+                await self.channel_layer.group_send(
+                    self.room_group_name,
+                    {
+                        "type": "end_game"
+                    }
+                )
+                break
+    
+    async def start_game_loop_ai(self):
+        ai_player = PongAI()
+        while True:
+            await sleep(1)
+            game = get_game_state(self.room_name)
+            if not game.get("paused"):
+                ai_move = ai_player.decide_move(
+                    ball_x=game["ball_x"],
+                    ball_y=game["ball_y"],
+                    ball_speed_x=game["ball_speed_x"],
+                    ball_speed_y=game["ball_speed_y"],
+                    paddle_y=game["right_paddle_y"]
+                )
+                if ai_move == "up":
+                    game["p2_paddle"] = "up"
+                elif ai_move == "down":
+                    game["p2_paddle"] = "down"
+                else:
+                    game["p2_paddle"] = ""
+                set_game_state(self.room_name, game)
+            if game.get("finished") or game.get("endloop"):
                 break
 
 
@@ -176,7 +289,7 @@ class GameConsumer(AsyncWebsocketConsumer):
             else:
                 raise Exception("User authentication failed")
         except requests.RequestException as e:
-            raise Exception(f"Auth-service unreachable: {str(e)}")
+            print(f"Auth-service unreachable: {str(e)}")
 
     def get_jwt_from_headers(self, headers):
         for header in headers:
@@ -202,4 +315,3 @@ class GameConsumer(AsyncWebsocketConsumer):
             right_score = game["right_score"]
         score = f"{left_score}-{right_score}"
         upload_match_details(self.nickname, self.user_id, opponent, result, score, self.token)
-    
