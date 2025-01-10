@@ -29,6 +29,11 @@ SECURE_CONTENT_TYPE_NOSNIFF = True
 # Enable the browser XSS protection
 SECURE_BROWSER_XSS_FILTER = True
 
+REDIS_HOST = os.environ.get("REDIS_HOST", "redis")
+REDIS_PORT = os.environ.get("REDIS_PORT", 6379)
+REDIS_DB = os.environ.get("REDIS_DB", 0)
+REDIS_URL = f"redis://{REDIS_HOST}:{REDIS_PORT}/{REDIS_DB}"
+
 
 # Application definition
 

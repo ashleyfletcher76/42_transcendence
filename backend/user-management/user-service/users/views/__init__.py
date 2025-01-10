@@ -2,6 +2,7 @@ from users.views.get_user_info_view import (
 	get_single_user_data,
 	get_profile_info,
 	get_profile_token,
+	check_2fa_status
 )
 from users.views.health_check_view import health_check
 from users.views.register_view import UserRegisterView

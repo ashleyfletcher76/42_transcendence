@@ -1,7 +1,7 @@
 from django.http import JsonResponse
 from django.contrib.auth import get_user_model
 from rest_framework.decorators import api_view, permission_classes
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.response import Response
 from ..models import UserProfile
 import requests
@@ -160,3 +160,59 @@ def get_all_profiles(request):
 
 	except Exception as e:
 		return Response({"error": str(e)}, status=500)
+
+@api_view(["POST"])
+@permission_classes([AllowAny])
+def check_2fa_status(request):
+	"""Check if user(username) has enabled 2FA"""
+	username = request.data.get("username")
+
+	if not username:
+		return Response(
+			{
+				"success": False,
+				"message": "Username is required."
+			},
+			status=400,
+		)
+
+	try:
+		# fetch users profile
+		user = User.objects.get(username=username)
+		profile = user.profile
+
+		if profile.twofa_enabled:
+			return Response(
+				{
+					"success": True,
+					"twofa_enabled": True,
+					"email": profile.email
+				},
+				status=200,
+			)
+		else:
+			return Response(
+				{
+					"success": True,
+					"twofa_enabled": False,
+					"email": None
+				},
+				status=200,
+			)
+	except User.DoesNotExist:
+		return Response(
+			{
+				"success": False,
+				"message": "User not found."
+			},
+			status=404,
+		)
+	except Exception as e:
+		print(f"[Error] Failed to retrieve 2FA status: {e}")
+		return Response(
+			{
+				"success": False,
+				"message": "An error occured while trying to retrieve 2FA status"
+			},
+			status=500,
+		)

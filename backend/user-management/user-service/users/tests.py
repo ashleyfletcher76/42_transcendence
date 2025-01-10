@@ -682,3 +682,26 @@ class EmailAndTwoFATests(TestCase):
 			self.assertEqual(self.user_profile.email, "valid@example.com")
 			self.assertFalse(self.user_profile.twofa_enabled)
 
+	def test_2fa_enabled(self):
+		"""Test 2FA is enabled and email is returned"""
+		self.profile.twofa_enabled = True
+		self.profile.email = "testuser@example.com"
+		self.profile.save()
+
+		response = self.client.get("/users/2fa-status/")
+		self.assertEqual(response.status_code, 200)
+		self.assertEqual(response.data["success"], True)
+		self.assertEqual(response.data["twofa_enabled"], True)
+		self.assertEqual(response.data["email"], "testuser@example.com")
+
+	def test_2fa_disabled(self):
+		"""Test 2FA is disabled and email is None"""
+		self.profile.twofa_enabled = False
+		self.profile.save()
+
+		response = self.client.get("/users/2fa-status/")
+		self.assertEqual(response.status_code, 200)
+		self.assertEqual(response.data["success"], True)
+		self.assertEqual(response.data["twofa_enabled"], False)
+		self.assertIsNone(response.data["email"])
+
