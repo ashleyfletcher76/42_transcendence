@@ -61,37 +61,67 @@ def publish_nickname_change(redis_client, old_nickname, new_nickname):
 
 def validate_and_update_2fa(data, profile):
 	"""Validate and update 2FA auth settings"""
-
+	updated_fields = []
 	try:
+		# extract fields from request data
 		twofa_enabled = data.get("twofa_enabled")
 		email = data.get("email")
 
-		if not isinstance(twofa_enabled, bool):
-			raise ValueError("2FA status must be a boolean.")
+		# convert `twofa_enabled` to boolean
+		if twofa_enabled in (None, "undefined", "null"):
+			print("[DEBUG] 2FA is not provided or is undefined/null. Skipping 2FA status update.")
+			twofa_enabled = profile.twofa_enabled
 
-		if twofa_enabled:  # Enabling 2FA
-			# check if an email is provided or already exists in the profile
-			if not email and not profile.email:
-				raise ValueError("Email is required to enable 2FA.")
+		if isinstance(twofa_enabled, str):
+			if twofa_enabled.lower() in ("true", "1"):
+				twofa_enabled = True
+			elif twofa_enabled.lower() in ("false", "0"):
+				twofa_enabled = False
+			else:
+				raise ValueError("2FA status must be a boolean.")
 
-			# if email is provided, validate and update it
-			if email:
-				validator = EmailValidator()
-				try:
-					validator(email)
-				except Exception:
-					raise ValueError("Invalid email format.")
-				profile.email = email
+		# handle 2FA updates
+		if twofa_enabled is not None:
+			if twofa_enabled and not profile.twofa_enabled:
+				if not email and not profile.email:
+					raise ValueError("Email is required to enable 2FA.")
+				if email:
+					validator = EmailValidator()
+					try:
+						validator(email)
+					except Exception:
+						raise ValueError("Invalid email format.")
+					profile.email = email
+					updated_fields.append("email")
+				profile.twofa_enabled = True
+				updated_fields.append("twofa_enabled")
+			elif not twofa_enabled and profile.twofa_enabled:
+				profile.twofa_enabled = False
+				updated_fields.append("twofa_enabled")
+			elif twofa_enabled and profile.twofa_enabled:
+				print("[DEBUG] 2FA is already enabled. Skipping state update.")
+				updated_fields.append("twofa_enabled")
 
-			profile.twofa_enabled = True
-		else:
-			profile.twofa_enabled = False
 
-		return ["Twofa_enabled"] + (["email"] if email else [])
+
+		# handle email updates
+		if email and email != profile.email:
+			validator = EmailValidator()
+			try:
+				validator(email)
+			except Exception:
+				raise ValueError("Invalid email format.")
+			profile.email = email
+			updated_fields.append("email")
+
+		# print(f"[DEBUG] validate_and_update_2fa -> twofa_enabled: {twofa_enabled}, email: {email}")
+		# print(f"[DEBUG] validate_and_update_2fa -> profile.twofa_enabled: {profile.twofa_enabled}, profile.email: {profile.email}")
+
+
+		return updated_fields
 	except ValueError as e:
 		print(f"[DEBUG] Validation error in 2FA: {e}")
 		raise
-
 
 #######################################
 # ---------- MAIN FUNCTION ---------- #
@@ -136,7 +166,8 @@ def update_profile(request):
 		#################
 
 		twofa = data.get("twofa_enabled")
-		if twofa is not None:
+		email = data.get("email")
+		if twofa not in (None, "undefined", "null") or email not in (None, "undefined", "null"):
 			updated_fields += validate_and_update_2fa(data, profile)
 
 		##########################
@@ -151,6 +182,10 @@ def update_profile(request):
 				)
 			profile.online = new_online_status
 			updated_fields.append("online")
+
+		# print(f"[DEBUG] update_profile -> data: {data}")
+		# print(f"[DEBUG] update_profile -> initial profile.twofa_enabled: {profile.twofa_enabled}, profile.email: {profile.email}")
+
 
 		## save profile info in database ##
 		if updated_fields:
@@ -171,7 +206,7 @@ def update_profile(request):
 		print(f"[DEBUG] No changes detected for user {user.username}")
 		return Response(
 			{"success": False, "message": "No changes detected in the request."},
-			status=400,
+			status=200,
 		)
 
 	except ValueError as e:

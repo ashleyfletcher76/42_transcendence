@@ -244,7 +244,7 @@ class UserServiceTests(TestCase):
 		payload = json.dumps({})
 		response = self.client.put(url, payload, content_type="application/json")
 
-		self.assertEqual(response.status_code, 400)
+		self.assertEqual(response.status_code, 200)
 		self.assertEqual(response.json()["success"], False)
 		self.assertEqual(response.json()["message"], "No changes detected in the request.")
 
@@ -500,13 +500,13 @@ class EmailAndTwoFATests(TestCase):
 		payload = {"twofa_enabled": True, "email": "testuser@example.com"}
 		response = self.client.put(url, json.dumps(payload), content_type="application/json")
 
-		print(f"[DEBUG] Response status code: {response.status_code}")
-		print(f"[DEBUG] Response data: {response.json()}")
+		# print(f"[DEBUG] Response status code: {response.status_code}")
+		# print(f"[DEBUG] Response data: {response.json()}")
 
 		# check the response
 		self.assertEqual(response.status_code, 200)
 		self.assertEqual(True, response.data["success"])
-		self.assertEqual("Twofa_enabled and email updated successfully.", response.data["message"])
+		self.assertEqual("Email and twofa_enabled updated successfully.", response.data["message"])
 
 		# check the database
 		self.user_profile.refresh_from_db()
@@ -519,8 +519,8 @@ class EmailAndTwoFATests(TestCase):
 		payload = {"twofa_enabled": True}
 		response = self.client.put(url, json.dumps(payload), content_type="application/json")
 
-		print(f"[DEBUG] Response status code: {response.status_code}")
-		print(f"[DEBUG] Response data: {response.json()}")
+		# print(f"[DEBUG] Response status code for 'test_enable_2fa_without_email': {response.status_code}")
+		# print(f"[DEBUG] Response data for 'test_enable_2fa_without_email': {response.json()}")
 
 		# check the response
 		self.assertEqual(response.status_code, 400)
@@ -531,7 +531,7 @@ class EmailAndTwoFATests(TestCase):
 		self.user_profile.refresh_from_db()
 		self.assertFalse(self.user_profile.twofa_enabled)
 
-	def test_enable_2fa_without_email_exisiting_true(self):
+	def test_enable_2fa_without_email_in_field_but_one_existing(self):
 		"""Test enabling 2FA without an email but an exisiting email exists"""
 
 		self.user_profile.email = "testuser@example.com"
@@ -541,8 +541,8 @@ class EmailAndTwoFATests(TestCase):
 		payload = {"twofa_enabled": True}
 		response = self.client.put(url, json.dumps(payload), content_type="application/json")
 
-		print(f"[DEBUG] Response status code: {response.status_code}")
-		print(f"[DEBUG] Response data: {response.json()}")
+		# print(f"[DEBUG] Response status code 'test_enable_2fa_without_email_in_field_but_one_existing': {response.status_code}")
+		# print(f"[DEBUG] Response data 'test_enable_2fa_without_email_in_field_but_one_existing': {response.json()}")
 
 		# check the response
 		self.assertEqual(response.status_code, 200)
@@ -560,8 +560,8 @@ class EmailAndTwoFATests(TestCase):
 		payload = {"twofa_enabled": True, "email": "testuser"}
 		response = self.client.put(url, json.dumps(payload), content_type="application/json")
 
-		print(f"[DEBUG] Response status code: {response.status_code}")
-		print(f"[DEBUG] Response data: {response.json()}")
+		# print(f"[DEBUG] Response status code: {response.status_code}")
+		# print(f"[DEBUG] Response data: {response.json()}")
 
 		# check the response
 		self.assertEqual(response.status_code, 400)
@@ -572,18 +572,18 @@ class EmailAndTwoFATests(TestCase):
 		self.user_profile.refresh_from_db()
 		self.assertFalse(self.user_profile.twofa_enabled)
 
-	def test_enable_2fa_without_any_fields(self):
-		"""Test enabling 2FA without any fields"""
+	def test_without_any_fields(self):
+		"""Test without any fields"""
 
 		url = "/users/update-profile/"
 		payload = {}
 		response = self.client.put(url, json.dumps(payload), content_type="application/json")
 
-		print(f"[DEBUG] Response status code: {response.status_code}")
-		print(f"[DEBUG] Response data: {response.json()}")
+		# print(f"[DEBUG] Response status code: {response.status_code}")
+		# print(f"[DEBUG] Response data: {response.json()}")
 
 		# check the response
-		self.assertEqual(response.status_code, 400)
+		self.assertEqual(response.status_code, 200)
 		self.assertEqual(response.data["success"], False)
 		self.assertEqual(response.data["message"], "No changes detected in the request.")
 
@@ -595,11 +595,14 @@ class EmailAndTwoFATests(TestCase):
 		"""Test disbaling 2FA"""
 
 		url = "/users/update-profile/"
+		self.user_profile.email = "testuser@example.com"
+		self.user_profile.twofa_enabled = True
+		self.user_profile.save()
 		payload = {"twofa_enabled": False}
 		response = self.client.put(url, json.dumps(payload), content_type="application/json")
 
-		print(f"[DEBUG] Response status code: {response.status_code}")
-		print(f"[DEBUG] Response data: {response.json()}")
+		# print(f"[DEBUG] Response status code: {response.status_code}")
+		# print(f"[DEBUG] Response data: {response.json()}")
 
 		# check the response
 		self.assertEqual(response.status_code, 200)
@@ -620,7 +623,7 @@ class EmailAndTwoFATests(TestCase):
 			"test@example.com' --",
 		]
 
-		# Set a valid email initially
+		# set a valid email initially
 		self.user_profile.email = "valid@example.com"
 		self.user_profile.twofa_enabled = False
 		self.user_profile.save()
@@ -630,20 +633,20 @@ class EmailAndTwoFATests(TestCase):
 			payload = {"twofa_enabled": True, "email": email}
 			response = self.client.put(url, json.dumps(payload), content_type="application/json")
 
-			# Debugging logs
+			# debugging logs
 			print(f"[DEBUG] SQL Injection Payload: {email}")
 			print(f"[DEBUG] Response status code: {response.status_code}")
 			print(f"[DEBUG] Response data: {response.json()}")
 
-			# Ensure the response rejects the payload
+			# ensure the response rejects the payload
 			self.assertEqual(response.status_code, 400)
 			self.assertEqual(response.data["success"], False)
 			self.assertEqual(response.data["message"], "Invalid email format.")
 
-			# Ensure no changes in the email field
+			# ensure no changes in the email field
 			self.user_profile.refresh_from_db()
-			self.assertEqual(self.user_profile.email, "valid@example.com")  # Email should remain unchanged
-			self.assertFalse(self.user_profile.twofa_enabled)  # 2FA should remain disabled
+			self.assertEqual(self.user_profile.email, "valid@example.com")
+			self.assertFalse(self.user_profile.twofa_enabled)
 
 	def test_sql_injection_2fa(self):
 		"""Test SQL injection attempts in the twofa_enabled field"""
@@ -654,7 +657,7 @@ class EmailAndTwoFATests(TestCase):
 			"' UNION SELECT * FROM users;",
 		]
 
-		# Set an email initially
+		# set an email initially
 		self.user_profile.email = "valid@example.com"
 		self.user_profile.twofa_enabled = False
 		self.user_profile.save()
@@ -664,18 +667,18 @@ class EmailAndTwoFATests(TestCase):
 			payload = {"twofa_enabled": twofa, "email": "valid@example.com"}
 			response = self.client.put(url, json.dumps(payload), content_type="application/json")
 
-			# Debugging logs
+			# debugging logs
 			print(f"[DEBUG] SQL Injection Payload: {twofa}")
 			print(f"[DEBUG] Response status code: {response.status_code}")
 			print(f"[DEBUG] Response data: {response.json()}")
 
-			# Ensure the response rejects the payload
+			# ensure the response rejects the payload
 			self.assertEqual(response.status_code, 400)
 			self.assertEqual(response.data["success"], False)
 			self.assertEqual(response.data["message"], "2FA status must be a boolean.")
 
-			# Ensure no changes in the database
+			# ensure no changes in the database
 			self.user_profile.refresh_from_db()
-			self.assertEqual(self.user_profile.email, "valid@example.com")  # Email should remain unchanged
-			self.assertFalse(self.user_profile.twofa_enabled)  # 2FA should remain disabled
+			self.assertEqual(self.user_profile.email, "valid@example.com")
+			self.assertFalse(self.user_profile.twofa_enabled)
 

@@ -70,7 +70,7 @@ class LogoutView(APIView):
 					{"error": "Refresh token is required."},
 					status=status.HTTP_400_BAD_REQUEST,
 				)
-			print(f"Refresh token: {refresh_token}")
+			# print(f"Refresh token: {refresh_token}")
 			# decode the refresh token
 			token = RefreshToken(refresh_token)
 			nickname = token.get("nickname")
