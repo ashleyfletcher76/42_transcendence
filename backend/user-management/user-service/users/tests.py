@@ -268,7 +268,7 @@ class UserServiceTests(TestCase):
 	#####################################
 
 	def test_sql_injection_username_attempts(self):
-		"""Test SQL injection attempts in username field."""
+		"""Test SQL injection attempts in username field"""
 		username_injection_payloads = [
 			{
 				"username": "user' OR '1'='1",
@@ -308,7 +308,7 @@ class UserServiceTests(TestCase):
 		self.assertEqual(initial_user_count, final_user_count)
 
 	def test_sql_injection_password_attempts(self):
-		"""Test SQL injection attempts in password field."""
+		"""Test SQL injection attempts in password field"""
 		password_injection_payloads = [
 			{
 				"username": "normaluser1",
@@ -336,8 +336,6 @@ class UserServiceTests(TestCase):
 			print(f"\nTesting password payload: {payload['password']}")
 			response = self.client.post(url, payload)
 			self.assertEqual(response.status_code, 400)
-			# Add your password validation error check here
-			# self.assertIn("Invalid password format", response.data["error"])
 
 		final_user_count = User.objects.count()
 		print(f"\nInitial user count: {initial_user_count}")
@@ -346,7 +344,7 @@ class UserServiceTests(TestCase):
 		self.assertEqual(initial_user_count, final_user_count)
 
 	def test_sql_injection_combined_attempts(self):
-		"""Test SQL injection attempts in both username and password fields."""
+		"""Test SQL injection attempts in both username and password fields"""
 		combined_injection_payloads = [
 			{
 				"username": "'; SELECT * FROM users; --",
@@ -611,3 +609,73 @@ class EmailAndTwoFATests(TestCase):
 		# check the database
 		self.user_profile.refresh_from_db()
 		self.assertFalse(self.user_profile.twofa_enabled)
+
+	def test_sql_injection_email(self):
+		"""Test SQL injection attempts in the email field"""
+
+		sql_injection_emails = [
+			"' OR '1'='1",
+			"test@example.com; DROP TABLE users;",
+			"' UNION SELECT * FROM users;",
+			"test@example.com' --",
+		]
+
+		# Set a valid email initially
+		self.user_profile.email = "valid@example.com"
+		self.user_profile.twofa_enabled = False
+		self.user_profile.save()
+
+		url = "/users/update-profile/"
+		for email in sql_injection_emails:
+			payload = {"twofa_enabled": True, "email": email}
+			response = self.client.put(url, json.dumps(payload), content_type="application/json")
+
+			# Debugging logs
+			print(f"[DEBUG] SQL Injection Payload: {email}")
+			print(f"[DEBUG] Response status code: {response.status_code}")
+			print(f"[DEBUG] Response data: {response.json()}")
+
+			# Ensure the response rejects the payload
+			self.assertEqual(response.status_code, 400)
+			self.assertEqual(response.data["success"], False)
+			self.assertEqual(response.data["message"], "Invalid email format.")
+
+			# Ensure no changes in the email field
+			self.user_profile.refresh_from_db()
+			self.assertEqual(self.user_profile.email, "valid@example.com")  # Email should remain unchanged
+			self.assertFalse(self.user_profile.twofa_enabled)  # 2FA should remain disabled
+
+	def test_sql_injection_2fa(self):
+		"""Test SQL injection attempts in the twofa_enabled field"""
+
+		sql_injection_twofa = [
+			"' OR '1'='1",
+			"TRUE; DROP TABLE users;",
+			"' UNION SELECT * FROM users;",
+		]
+
+		# Set an email initially
+		self.user_profile.email = "valid@example.com"
+		self.user_profile.twofa_enabled = False
+		self.user_profile.save()
+
+		url = "/users/update-profile/"
+		for twofa in sql_injection_twofa:
+			payload = {"twofa_enabled": twofa, "email": "valid@example.com"}
+			response = self.client.put(url, json.dumps(payload), content_type="application/json")
+
+			# Debugging logs
+			print(f"[DEBUG] SQL Injection Payload: {twofa}")
+			print(f"[DEBUG] Response status code: {response.status_code}")
+			print(f"[DEBUG] Response data: {response.json()}")
+
+			# Ensure the response rejects the payload
+			self.assertEqual(response.status_code, 400)
+			self.assertEqual(response.data["success"], False)
+			self.assertEqual(response.data["message"], "2FA status must be a boolean.")
+
+			# Ensure no changes in the database
+			self.user_profile.refresh_from_db()
+			self.assertEqual(self.user_profile.email, "valid@example.com")  # Email should remain unchanged
+			self.assertFalse(self.user_profile.twofa_enabled)  # 2FA should remain disabled
+
