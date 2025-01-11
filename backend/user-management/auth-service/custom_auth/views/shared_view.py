@@ -3,7 +3,7 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.response import Response
 from rest_framework import status
 
-def generate_tokens_and_status(self, user_data):
+def generate_tokens_and_status(user_data):
 	"""Generate the above items"""
 
 	user_id = user_data["user_id"]
