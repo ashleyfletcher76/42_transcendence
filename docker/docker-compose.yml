@@ -76,6 +76,8 @@ services:
       REDIS_HOST: "redis"
       REDIS_PORT: 6379
       REDIS_DB: 0
+      GMAIL_USER: ${GMAIL_USER}
+      GMAIL_APP_PASSWORD: ${GMAIL_APP_PASSWORD}
     networks:
       my_network:
     healthcheck:

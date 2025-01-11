@@ -14,7 +14,8 @@ from .views.get_user_info_view import (
 	get_profile_token,
 	get_profile_info,
 	get_all_profiles,
-	check_2fa_status
+	check_2fa_status,
+	get_single_user_data_without_token
 )
 
 urlpatterns = [
@@ -38,7 +39,8 @@ urlpatterns = [
 	path("tournament-active/", TournamentActive.as_view(), name="tournament-active"),
 	path("game-status/", check_game_status, name="game-status"),
 
-	path("2fa-status/", check_2fa_status, name="2fa-status")
+	path("2fa-status/", check_2fa_status, name="2fa-status"),
+	path("get-data-without-token/", get_single_user_data_without_token, name="get-data-without-token")
 ]
 
 # serve media files during development

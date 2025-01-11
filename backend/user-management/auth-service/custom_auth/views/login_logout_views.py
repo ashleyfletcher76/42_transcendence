@@ -5,6 +5,7 @@ from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated, AllowAny
 import requests
 from .redis_views import TwoFAService
+from .shared_view import generate_tokens_and_status
 
 class LoginView(APIView):
 	authentication_classes = []
@@ -56,8 +57,8 @@ class LoginView(APIView):
 			# generate and send code
 			email = twofa_data["email"]
 			twofa_code = TwoFAService.generate_2fa_code()
-			TwoFAService.store_2fa_code(username, twofa_code, ttl=300)
-			TwoFAService.send_2fa_code(email, twofa_code)
+			TwoFAService.store_2fa_code(username, twofa_code, ttl=600)
+			TwoFAService.send_2fa_code(username, email, twofa_code)
 
 			# inform frontend to request the 2FA code
 			return Response(
@@ -68,37 +69,9 @@ class LoginView(APIView):
 				status=status.HTTP_200_OK
 			)
 
-		# verifed, now extract
 		user_data = response.json()
-		user_id = user_data["user_id"]
-		nickname = user_data["nickname"]
-
-		refresh = RefreshToken()
-		refresh["user_id"] = user_id
-		refresh["nickname"] = nickname
-		access_token = refresh.access_token
-
-		# mark as online
-		update_url = f"http://user-service:8000/users/update-profile/"
-		update_response = requests.put(
-			update_url,
-			json={"nickname": nickname, "online_status": True},
-			headers={"Authorization": f"Bearer {access_token}"}
-		)
-
-		if update_response.status_code != 200:
-			print("Failed to update online status:", update_response.json())
-
-		print("Tokens created for user_id:", user_id)
-		return Response(
-			{
-				"refresh": str(refresh),
-				"access": str(access_token),
-				"user_id": user_id,
-				"nickname": nickname
-			},
-			status=status.HTTP_200_OK
-		)
+		tokens = generate_tokens_and_status(user_data)
+		return tokens
 
 class LogoutView(APIView):
 	permission_classes = [IsAuthenticated]

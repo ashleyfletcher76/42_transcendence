@@ -28,6 +28,25 @@ def get_single_user_data(request, user_id):
 		return Response({"error": "User not found"}, status=404)
 
 @api_view(['GET'])
+@permission_classes([AllowAny])
+def get_single_user_data_without_token(username):
+	try:
+		print(f"Recived request for username: {username}")
+		user = User.objects.get(username=username)
+		profile = user.profile
+
+		user_data = {
+			"user_id": user.id,
+			"username": user.username,
+			"nickname": profile.nickname,
+		}
+		print(f"Returning user data: {user_data}")
+		return Response(user_data, status=200)
+	except User.DoesNotExist:
+		print(f"Username {username} not found")
+		return Response({"error": "User not found"}, status=404)
+
+@api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def get_profile_token(request):
 	try:
