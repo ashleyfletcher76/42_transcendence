@@ -12,9 +12,12 @@ redis_client = redis.StrictRedis(
 	decode_responses=True,
 )
 
-def store_key(key, value, ttl=300):
-	"""Store a key-value pair in Redis with a time to live"""
-	redis_client.setex(key, ttl, value)
+def store_key(key, value, ttl=600):
+	"""Store a key-value pair in Redis with a time to live(ttl)"""
+	try:
+		redis_client.setex(key, ttl, value)
+	except redis.RedisError as e:
+		print(f"[ERROR] Failed to store key '{key}' in Redis: {e}")
 
 def get_key(key):
 	"""Retrieves a vlue from Redis by key"""
@@ -24,15 +27,15 @@ def delete_key(key):
 	"""Delete a key value pair from Redis"""
 	redis_client.delete(key)
 
-class TwoFAService:
+class TwoFAService():
 	@staticmethod
-	def generate_2fa_code(self):
+	def generate_2fa_code():
 		"""Generate a random 6-digit 2FA code"""
 		import random
 		return int(random.randint(100000, 999999))
 
 	@staticmethod
-	def send_2fa_code(self, email, code):
+	def send_2fa_code(email, code):
 		"""Send the 2FA code to the user's email"""
 		print("[DEBUG] Sending 2FA code to user's email")
 

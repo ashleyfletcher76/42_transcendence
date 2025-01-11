@@ -161,7 +161,7 @@ def get_all_profiles(request):
 	except Exception as e:
 		return Response({"error": str(e)}, status=500)
 
-@api_view(["POST"])
+@api_view(['POST'])
 @permission_classes([AllowAny])
 def check_2fa_status(request):
 	"""Check if user(username) has enabled 2FA"""

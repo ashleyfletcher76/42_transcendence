@@ -205,6 +205,36 @@ make rebuild-
 make exec-postgres_db
 ```
 
+* Check Redis for 2FA code
+* Input
+```bash
+docker exec -it redis sh
+```
+* Input
+```bash
+keys 2fa_code:*
+```
+- Response
+```plaintext
+"2fa_code:ash"
+```
+* Input
+```bash
+get 2fa_code:ash
+```
+- Response
+```plaintext
+"127702"
+```
+* Input
+```bash
+ttl 2fa_code:ash
+```
+- Response
+```plaintext
+(integer) 87
+```
+
 ### Simluating Live Chat
 
 ## Requirements

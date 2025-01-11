@@ -65,7 +65,7 @@ class LoginView(APIView):
 					"two_fa_required": True,
 					"message": "A 2FA code has been sent to your email."
 				},
-				status=status.HTTP_200_OKK
+				status=status.HTTP_200_OK
 			)
 
 		# verifed, now extract
