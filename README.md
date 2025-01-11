@@ -111,18 +111,9 @@ USER_SERVICE_DB=myuserdb
 USER_SERVICE_USER=myuser
 USER_SERVICE_PASSWORD=mypassword
 
-
-CHAT_SERVICE_DB=mychatdb
-CHAT_SERVICE_USER=mychatuser
-CHAT_SERVICE_PASSWORD=mychatpassword
-
-PONG_SERVICE_DB=mypongdb
-PONG_SERVICE_USER=myponguser
-PONG_SERVICE_PASSWORD=mypongpassword
-
-LOBBY_SERVICE_DB=mylobbydb
-LOBBY_SERVICE_USER=mylobbyuser
-LOBBY_SERVICE_PASSWORD=mylobbypassword
+MATCH_SERVICE_DB=mymatchdb
+MATCH_SERVICE_USER=mymatchuser
+MATCH_SERVICE_PASSWORD=mymatchpassword
 
 # Django superuser
 DJANGO_SUPERUSER_USERNAME=admin
@@ -131,6 +122,9 @@ DJANGO_SUPERUSER_PASSWORD=hello
 
 DJANGO_DEBUG=True
 DJANGO_SECRET_KEY=mysecret
+
+GMAIL_USER=ashleyfletcher.ux@gmail.com
+GMAIL_APP_PASSWORD=fqheexcrjgnzoked
 ```
 
 **Note**: All services use HTTPS for secure communication. If using self-signed certificates, use `-k` in `curl` commands or `--no-check` in `wscat` to bypass certificate verification.
