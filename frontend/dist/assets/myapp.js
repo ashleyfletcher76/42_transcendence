@@ -1530,8 +1530,8 @@
     openModal() {
       this.isModalOpen = true;
       this.newNickname = this.user.profile.nickname;
-      this.newEmail = this.user.profile.email;
-      this.twofa_enabled = this.user.profile.twofa_enabled;
+      this.newEmail = this.user.profile.two_fa_email;
+      this.twofa_enabled = this.user.profile.two_fa_enabled;
     }
     closeModal() {
       this.isModalOpen = false;
@@ -2698,7 +2698,7 @@
     value: true
   });
   _exports.default = void 0;
-  var _class, _descriptor, _descriptor2, _descriptor3, _descriptor4, _descriptor5, _descriptor6;
+  var _class, _descriptor, _descriptor2, _descriptor3, _descriptor4, _descriptor5, _descriptor6, _descriptor7;
   0; //eaimeta@70e063a35619d71f0,"@ember/controller",0,"@glimmer/tracking",0,"@ember/service",0,"@ember/object"eaimeta@70e063a35619d71f
   function _initializerDefineProperty(e, i, r, l) { r && Object.defineProperty(e, i, { enumerable: r.enumerable, configurable: r.configurable, writable: r.writable, value: r.initializer ? r.initializer.call(l) : void 0 }); }
   function _defineProperty(e, r, t) { return (r = _toPropertyKey(r)) in e ? Object.defineProperty(e, r, { value: t, enumerable: !0, configurable: !0, writable: !0 }) : e[r] = t, e; }
@@ -2715,16 +2715,35 @@
       _initializerDefineProperty(this, "username", _descriptor4, this);
       _initializerDefineProperty(this, "password", _descriptor5, this);
       _initializerDefineProperty(this, "error", _descriptor6, this);
+      _initializerDefineProperty(this, "twofaCode", _descriptor7, this);
     }
+    // Renamed to avoid conflict with the action
+
     update(attr, event) {
       this[attr] = event.target.value;
+    }
+    async submitTwofa(event) {
+      // Renamed from `twofa` to `submitTwofa`
+      event.preventDefault();
+      try {
+        await this.session.send_twofa(this.username, this.twofaCode // Updated to match the renamed tracked property
+        );
+        if (this.session.isAuthenticated) {
+          this.fetchUserData('');
+          this.router.transitionTo('choose-game');
+        }
+      } catch (error) {
+        this.error = error;
+      }
     }
     async login(event) {
       event.preventDefault();
       try {
         await this.session.authenticate(this.username, this.password);
-        this.fetchUserData('');
-        this.router.transitionTo('choose-game');
+        if (this.session.isAuthenticated) {
+          this.fetchUserData('');
+          this.router.transitionTo('choose-game');
+        }
       } catch (error) {
         this.error = error;
       }
@@ -2806,7 +2825,12 @@
     enumerable: true,
     writable: true,
     initializer: null
-  }), _applyDecoratedDescriptor(_class.prototype, "update", [_object.action], Object.getOwnPropertyDescriptor(_class.prototype, "update"), _class.prototype), _applyDecoratedDescriptor(_class.prototype, "login", [_object.action], Object.getOwnPropertyDescriptor(_class.prototype, "login"), _class.prototype), _applyDecoratedDescriptor(_class.prototype, "register", [_object.action], Object.getOwnPropertyDescriptor(_class.prototype, "register"), _class.prototype), _class);
+  }), _descriptor7 = _applyDecoratedDescriptor(_class.prototype, "twofaCode", [_tracking.tracked], {
+    configurable: true,
+    enumerable: true,
+    writable: true,
+    initializer: null
+  }), _applyDecoratedDescriptor(_class.prototype, "update", [_object.action], Object.getOwnPropertyDescriptor(_class.prototype, "update"), _class.prototype), _applyDecoratedDescriptor(_class.prototype, "submitTwofa", [_object.action], Object.getOwnPropertyDescriptor(_class.prototype, "submitTwofa"), _class.prototype), _applyDecoratedDescriptor(_class.prototype, "login", [_object.action], Object.getOwnPropertyDescriptor(_class.prototype, "login"), _class.prototype), _applyDecoratedDescriptor(_class.prototype, "register", [_object.action], Object.getOwnPropertyDescriptor(_class.prototype, "register"), _class.prototype), _class);
 });
 ;define("myapp/controllers/tournament", ["exports", "@ember/controller", "@ember/service"], function (_exports, _controller, _service) {
   "use strict";
@@ -4554,7 +4578,7 @@
     value: true
   });
   _exports.default = void 0;
-  var _class, _descriptor, _descriptor2, _descriptor3, _descriptor4, _descriptor5;
+  var _class, _descriptor, _descriptor2, _descriptor3, _descriptor4, _descriptor5, _descriptor6;
   0; //eaimeta@70e063a35619d71f0,"@ember/service",0,"@glimmer/tracking",0,"@ember/service"eaimeta@70e063a35619d71f
   function _initializerDefineProperty(e, i, r, l) { r && Object.defineProperty(e, i, { enumerable: r.enumerable, configurable: r.configurable, writable: r.writable, value: r.initializer ? r.initializer.call(l) : void 0 }); }
   function _defineProperty(e, r, t) { return (r = _toPropertyKey(r)) in e ? Object.defineProperty(e, r, { value: t, enumerable: !0, configurable: !0, writable: !0 }) : e[r] = t, e; }
@@ -4570,6 +4594,7 @@
       _initializerDefineProperty(this, "Initialized", _descriptor3, this);
       _initializerDefineProperty(this, "router", _descriptor4, this);
       _initializerDefineProperty(this, "chat", _descriptor5, this);
+      _initializerDefineProperty(this, "twofa", _descriptor6, this);
     }
     requireAuthentication(type, route) {
       if (type === 'transition') this.router.transitionTo(route);
@@ -4589,9 +4614,29 @@
       if (response.ok) {
         // Await the response.json() to get the actual data
         this.data = await response.json();
-
-        // Now you can safely access this.data
-        console.log("access:", this.data.access);
+        if (this.data.two_fa_required) {
+          this.twofa = true;
+        } else this.isAuthenticated = true;
+      } else {
+        let error = await response.text();
+        throw new Error(error);
+      }
+    }
+    async send_twofa(username, code) {
+      //let response = await fetch('/api/token.json', {
+      let response = await fetch('/auth/auth/validate-2fa/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          username,
+          code
+        })
+      });
+      if (response.ok) {
+        // Await the response.json() to get the actual data
+        this.data = await response.json();
         this.isAuthenticated = true;
       } else {
         let error = await response.text();
@@ -4648,6 +4693,13 @@
     enumerable: true,
     writable: true,
     initializer: null
+  }), _descriptor6 = _applyDecoratedDescriptor(_class.prototype, "twofa", [_tracking.tracked], {
+    configurable: true,
+    enumerable: true,
+    writable: true,
+    initializer: function () {
+      return false;
+    }
   }), _class);
 });
 ;define("myapp/services/socket-io", ["exports", "ember-websockets/services/socket-io"], function (_exports, _socketIo) {
@@ -5232,6 +5284,13 @@
     <div class="overlay">
     <div class="overlay-content">
       <form {{on "submit" this.login}}>
+        {{#if this.session.twofa}}
+          <div class="login-field">
+          <label>2FA-Code:</label>
+          <input type="text" name="twofa" {{on "change" (fn this.update "twofaCode")}} />
+          <button type="button" class="nav-button" {{on "click" this.submitTwofa}}>Authenticate</button>
+        </div>
+        {{else}}
         <div class="login-field">
           <label>Username:</label>
           <input type="text" name="username" {{on "change" (fn this.update "username")}} />
@@ -5244,6 +5303,7 @@
         
         <button class="login" type="submit">Login</button>
         <button type="button" class="register-button" {{on "click" this.register}}>Register</button>
+        {{/if}}
       </form>
   
       {{#if this.error}}
@@ -5254,8 +5314,8 @@
   
   */
   {
-    "id": "d723lvpa",
-    "block": "[[[10,0],[14,0,\"overlay\"],[12],[1,\"\\n  \"],[10,0],[14,0,\"overlay-content\"],[12],[1,\"\\n    \"],[11,\"form\"],[4,[38,2],[\"submit\",[30,0,[\"login\"]]],null],[12],[1,\"\\n      \"],[10,0],[14,0,\"login-field\"],[12],[1,\"\\n        \"],[10,\"label\"],[12],[1,\"Username:\"],[13],[1,\"\\n        \"],[11,\"input\"],[24,3,\"username\"],[24,4,\"text\"],[4,[38,2],[\"change\",[28,[37,5],[[30,0,[\"update\"]],\"username\"],null]],null],[12],[13],[1,\"\\n      \"],[13],[1,\"\\n\\n      \"],[10,0],[14,0,\"login-field\"],[12],[1,\"\\n      \"],[10,\"label\"],[12],[1,\"Password:\"],[13],[1,\"\\n      \"],[11,\"input\"],[24,3,\"password\"],[24,4,\"password\"],[4,[38,2],[\"change\",[28,[37,5],[[30,0,[\"update\"]],\"password\"],null]],null],[12],[13],[1,\"\\n      \"],[13],[1,\"\\n      \\n      \"],[10,\"button\"],[14,0,\"login\"],[14,4,\"submit\"],[12],[1,\"Login\"],[13],[1,\"\\n      \"],[11,\"button\"],[24,0,\"register-button\"],[24,4,\"button\"],[4,[38,2],[\"click\",[30,0,[\"register\"]]],null],[12],[1,\"Register\"],[13],[1,\"\\n    \"],[13],[1,\"\\n\\n\"],[41,[30,0,[\"error\"]],[[[1,\"      \"],[10,2],[12],[10,\"strong\"],[12],[1,[30,0,[\"error\"]]],[13],[13],[1,\"\\n\"]],[]],null],[1,\"  \"],[13],[1,\"\\n\"],[13],[1,\"\\n\"]],[],false,[\"div\",\"form\",\"on\",\"label\",\"input\",\"fn\",\"button\",\"if\",\"p\",\"strong\"]]",
+    "id": "19sPXF5N",
+    "block": "[[[10,0],[14,0,\"overlay\"],[12],[1,\"\\n  \"],[10,0],[14,0,\"overlay-content\"],[12],[1,\"\\n    \"],[11,\"form\"],[4,[38,2],[\"submit\",[30,0,[\"login\"]]],null],[12],[1,\"\\n\"],[41,[30,0,[\"session\",\"twofa\"]],[[[1,\"        \"],[10,0],[14,0,\"login-field\"],[12],[1,\"\\n        \"],[10,\"label\"],[12],[1,\"2FA-Code:\"],[13],[1,\"\\n        \"],[11,\"input\"],[24,3,\"twofa\"],[24,4,\"text\"],[4,[38,2],[\"change\",[28,[37,6],[[30,0,[\"update\"]],\"twofaCode\"],null]],null],[12],[13],[1,\"\\n        \"],[11,\"button\"],[24,0,\"nav-button\"],[24,4,\"button\"],[4,[38,2],[\"click\",[30,0,[\"submitTwofa\"]]],null],[12],[1,\"Authenticate\"],[13],[1,\"\\n      \"],[13],[1,\"\\n\"]],[]],[[[1,\"      \"],[10,0],[14,0,\"login-field\"],[12],[1,\"\\n        \"],[10,\"label\"],[12],[1,\"Username:\"],[13],[1,\"\\n        \"],[11,\"input\"],[24,3,\"username\"],[24,4,\"text\"],[4,[38,2],[\"change\",[28,[37,6],[[30,0,[\"update\"]],\"username\"],null]],null],[12],[13],[1,\"\\n      \"],[13],[1,\"\\n\\n      \"],[10,0],[14,0,\"login-field\"],[12],[1,\"\\n      \"],[10,\"label\"],[12],[1,\"Password:\"],[13],[1,\"\\n      \"],[11,\"input\"],[24,3,\"password\"],[24,4,\"password\"],[4,[38,2],[\"change\",[28,[37,6],[[30,0,[\"update\"]],\"password\"],null]],null],[12],[13],[1,\"\\n      \"],[13],[1,\"\\n      \\n      \"],[10,\"button\"],[14,0,\"login\"],[14,4,\"submit\"],[12],[1,\"Login\"],[13],[1,\"\\n      \"],[11,\"button\"],[24,0,\"register-button\"],[24,4,\"button\"],[4,[38,2],[\"click\",[30,0,[\"register\"]]],null],[12],[1,\"Register\"],[13],[1,\"\\n\"]],[]]],[1,\"    \"],[13],[1,\"\\n\\n\"],[41,[30,0,[\"error\"]],[[[1,\"      \"],[10,2],[12],[10,\"strong\"],[12],[1,[30,0,[\"error\"]]],[13],[13],[1,\"\\n\"]],[]],null],[1,\"  \"],[13],[1,\"\\n\"],[13],[1,\"\\n\"]],[],false,[\"div\",\"form\",\"on\",\"if\",\"label\",\"input\",\"fn\",\"button\",\"p\",\"strong\"]]",
     "moduleName": "myapp/templates/login.hbs",
     "isStrictMode": false
   });
