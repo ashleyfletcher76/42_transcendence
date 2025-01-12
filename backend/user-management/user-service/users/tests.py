@@ -1,5 +1,5 @@
 from django.test import TestCase
-from rest_framework.test import APIClient
+from rest_framework.test import APIClient, APITestCase
 from django.contrib.auth.models import User
 from .models import UserProfile
 from rest_framework_simplejwt.tokens import RefreshToken
@@ -385,7 +385,7 @@ class UserServiceTests(TestCase):
 ## Tournament Active Endpoint Tests ##
 ######################################
 
-class TournamentActiveTests(TestCase):
+class TournamentActiveTests(APITestCase):
 	def setUp(self):
 		"""Set up test environment, including test user and profile"""
 		self.user = User.objects.create_user(username="testuser", password="password")
@@ -408,9 +408,10 @@ class TournamentActiveTests(TestCase):
 
 		self.assertEqual(response.status_code, 200)
 		self.assertTrue(response.data["success"])
-		self.assertEqual(response.data["message"], "Game state updated successfully: start")
+		self.assertEqual(response.data["message"], "Start completed successfully.")
 		self.user_profile.refresh_from_db()
 		self.assertTrue(self.user_profile.game_active)
+		self.assertTrue(self.user_profile.tournament_active)
 		self.assertEqual(self.user_profile.game_name, "PongMaster")
 		self.assertEqual(self.user_profile.tournament_name, "Spring Championship")
 
@@ -422,15 +423,31 @@ class TournamentActiveTests(TestCase):
 		self.user_profile.save()
 
 		url = "/users/tournament-active/"
-		payload = {"action_type": "end"}
+		payload = {"action_type": "end_game"}
 		response = self.client.post(url, payload)
 
 		self.assertEqual(response.status_code, 200)
 		self.assertTrue(response.data["success"])
-		self.assertEqual(response.data["message"], "Game state updated successfully: end")
+		self.assertEqual(response.data["message"], "End game completed successfully.")
 		self.user_profile.refresh_from_db()
 		self.assertFalse(self.user_profile.game_active)
 		self.assertIsNone(self.user_profile.game_name)
+
+	def test_end_tournament_success(self):
+		"""Test successfully ending a tournament"""
+		self.user_profile.tournament_active = True
+		self.user_profile.tournament_name = "Spring Championship"
+		self.user_profile.save()
+
+		url = "/users/tournament-active/"
+		payload = {"action_type": "end_tournament"}
+		response = self.client.post(url, payload)
+
+		self.assertEqual(response.status_code, 200)
+		self.assertTrue(response.data["success"])
+		self.assertEqual(response.data["message"], "End tournament completed successfully.")
+		self.user_profile.refresh_from_db()
+		self.assertFalse(self.user_profile.tournament_active)
 		self.assertIsNone(self.user_profile.tournament_name)
 
 	def test_start_game_already_active(self):
@@ -445,7 +462,7 @@ class TournamentActiveTests(TestCase):
 		response = self.client.post(url, payload)
 
 		self.assertEqual(response.status_code, 400)
-		self.assertEqual(response.data["error"], "A game is already active. Please end current game and then retry.")
+		self.assertEqual(response.data["error"], "A game is already active. Please end the current game before starting a new one.")
 
 	def test_start_game_missing_game_name(self):
 		"""Test starting a game without providing a game_name"""
@@ -453,8 +470,10 @@ class TournamentActiveTests(TestCase):
 		payload = {"tournament_name": "Spring Championship", "action_type": "start"}
 		response = self.client.post(url, payload)
 
-		self.assertEqual(response.status_code, 400)
-		self.assertEqual(response.data["error"], "'game_name' is required when starting a game.")
+		self.assertEqual(response.status_code, 200)
+		self.assertTrue(response.data["success"])
+		self.assertEqual(response.data["message"], "Start completed successfully.")
+
 
 	def test_invalid_action_type(self):
 		"""Test providing an invalid action_type"""
@@ -463,7 +482,7 @@ class TournamentActiveTests(TestCase):
 		response = self.client.post(url, payload)
 
 		self.assertEqual(response.status_code, 400)
-		self.assertEqual(response.data["error"], "Invalid 'action_type'. Use 'start' or 'end'.")
+		self.assertEqual(response.data["error"], "'action_type' must be 'start', 'end_game', or 'end_tournament'.")
 
 	def test_all_fields_missing(self):
 		"""Test sending a request with no fields provided"""
@@ -472,7 +491,7 @@ class TournamentActiveTests(TestCase):
 		response = self.client.post(url, payload)
 
 		self.assertEqual(response.status_code, 400)
-		self.assertEqual(response.data["error"], "'action_type' is required and must be either 'start' or 'end'.")
+		self.assertEqual(response.data["error"], "'action_type' must be 'start', 'end_game', or 'end_tournament'.")
 
 
 class EmailAndTwoFATests(TestCase):
@@ -684,11 +703,16 @@ class EmailAndTwoFATests(TestCase):
 
 	def test_2fa_enabled(self):
 		"""Test 2FA is enabled and email is returned"""
-		self.profile.twofa_enabled = True
-		self.profile.email = "testuser@example.com"
-		self.profile.save()
+		self.user_profile.twofa_enabled = True
+		self.user_profile.email = "testuser@example.com"
+		self.user_profile.save()
 
-		response = self.client.get("/users/2fa-status/")
+		response = self.client.post(
+			"/users/2fa-status/",
+			{"username": "testuser"},
+			format="json"
+		)
+
 		self.assertEqual(response.status_code, 200)
 		self.assertEqual(response.data["success"], True)
 		self.assertEqual(response.data["twofa_enabled"], True)
@@ -696,10 +720,13 @@ class EmailAndTwoFATests(TestCase):
 
 	def test_2fa_disabled(self):
 		"""Test 2FA is disabled and email is None"""
-		self.profile.twofa_enabled = False
-		self.profile.save()
 
-		response = self.client.get("/users/2fa-status/")
+		response = self.client.post(
+			"/users/2fa-status/",
+			{"username": "testuser"},
+			format="json"
+		)
+
 		self.assertEqual(response.status_code, 200)
 		self.assertEqual(response.data["success"], True)
 		self.assertEqual(response.data["twofa_enabled"], False)

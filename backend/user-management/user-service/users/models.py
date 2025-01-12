@@ -35,6 +35,7 @@ class UserProfile(models.Model):
 	#########################
 
 	game_active = models.BooleanField(default=False)
+	tournament_active = models.BooleanField(default=False)
 	tournament_name = models.CharField(max_length=100, blank=True, null=True)
 	game_name = models.CharField(max_length=100, blank=True, null=True)
 
