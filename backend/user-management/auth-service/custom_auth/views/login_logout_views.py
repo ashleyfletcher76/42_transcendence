@@ -56,9 +56,33 @@ class LoginView(APIView):
 		if twofa_data["twofa_enabled"] == True:
 			# generate and send code
 			email = twofa_data["email"]
+			if email is None:
+				print(f"[ERROR] Email is missing in 2FA data for username: {username}")
+				return Response(
+					{"error": "No email found in the 'twofa_data"},
+					status=status.HTTP_400_BAD_REQUEST,
+				)
+			# generate 2FA code
 			twofa_code = TwoFAService.generate_2fa_code()
-			TwoFAService.store_2fa_code(username, twofa_code, ttl=600)
-			TwoFAService.send_2fa_code(username, email, twofa_code)
+			if not twofa_code:
+				return Response(
+					{"error": "Failed to generate 2FA code. Please try again later."},
+					status=status.HTTP_500_INTERNAL_SERVER_ERROR,
+				)
+
+			# store 2FA code in Redis
+			if not TwoFAService.store_2fa_code(username, twofa_code, ttl=600):
+				return Response(
+					{"error": "Failed to store 2FA code. Please try again later."},
+					status=status.HTTP_500_INTERNAL_SERVER_ERROR,
+				)
+
+			# send 2FA code via email
+			if not TwoFAService.send_2fa_code(username, email, twofa_code):
+				return Response(
+					{"error": "Failed to send 2FA email. Please try again later."},
+					status=status.HTTP_500_INTERNAL_SERVER_ERROR,
+				)
 
 			# inform frontend to request the 2FA code
 			return Response(

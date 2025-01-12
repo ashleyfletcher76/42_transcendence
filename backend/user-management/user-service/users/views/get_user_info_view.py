@@ -29,7 +29,16 @@ def get_single_user_data(request, user_id):
 
 @api_view(['GET'])
 @permission_classes([AllowAny])
-def get_single_user_data_without_token(username):
+def get_single_user_data_without_token(request):
+	# extract username from query params
+	username = request.query_params.get('username')
+
+	if not username:
+		return Response(
+			{"error": "Username query parameter is required"},
+			status=400
+		)
+	
 	try:
 		print(f"Recived request for username: {username}")
 		user = User.objects.get(username=username)

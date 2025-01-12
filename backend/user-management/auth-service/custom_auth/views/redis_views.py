@@ -36,8 +36,12 @@ class TwoFAService():
 	@staticmethod
 	def generate_2fa_code():
 		"""Generate a random 6-digit 2FA code"""
-		import random
-		return int(random.randint(100000, 999999))
+		try:
+			import random
+			return int(random.randint(100000, 999999))
+		except Exception as e:
+			print(f"[ERROR] Failed to generate 2FA code: {e}")
+			return None
 
 	@staticmethod
 	def send_2fa_code(username, email, code):
@@ -68,14 +72,21 @@ class TwoFAService():
 				server.sendmail(sender_email, email, message.as_string())
 
 			print(f"2FA email sent successfully to {email}")
+			return True
 		except Exception as e:
 			print(f"[ERROR] Failed to send 2FA email: {e}")
+			return False
 
 	@staticmethod
-	def store_2fa_code(username, code, ttl=300):
+	def store_2fa_code(username, code, ttl=600):
 		"""Store the 2FA code in Redis"""
 		key = f"2fa_code:{username}"
-		store_key(key, code, ttl)
+		try:
+			store_key(key, code, ttl)
+			return True
+		except Exception as e:
+			print(f"[ERROR] Failed to store 2FA code in Redis for '{username}': {e}")
+			return False
 
 	@staticmethod
 	def validate_2fa_code(username, code):
