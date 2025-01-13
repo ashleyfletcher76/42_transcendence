@@ -86,7 +86,6 @@ class GameConsumer(AsyncWebsocketConsumer):
         except json.JSONDecodeError as e:
             print(f"Error decoding JSON: {e}")
             return
-
         action = data.get("action", "")
         t1 = data.get("type_p1", "")
         d1 = data.get("direction_p1", "")
@@ -178,7 +177,7 @@ class GameConsumer(AsyncWebsocketConsumer):
                 "Content-Type": "application/json"
             }
             payload = {
-                "action_type": "end"
+                "action_type": "end_game"
             }
             async with httpx.AsyncClient() as client:
                 response = await client.post( url, headers=headers, json=payload )
@@ -258,19 +257,13 @@ class GameConsumer(AsyncWebsocketConsumer):
             await sleep(1)
             game = get_game_state(self.room_name)
             if not game.get("paused"):
-                ai_move = ai_player.decide_move(
+                game["predict_ai"], game["ai_mode"] = ai_player.decide_move(
                     ball_x=game["ball_x"],
                     ball_y=game["ball_y"],
                     ball_speed_x=game["ball_speed_x"],
                     ball_speed_y=game["ball_speed_y"],
-                    paddle_y=game["right_paddle_y"]
+                    left_score=game["left_score"]
                 )
-                if ai_move == "up":
-                    game["p2_paddle"] = "up"
-                elif ai_move == "down":
-                    game["p2_paddle"] = "down"
-                else:
-                    game["p2_paddle"] = ""
                 set_game_state(self.room_name, game)
             if game.get("finished") or game.get("endloop"):
                 break
