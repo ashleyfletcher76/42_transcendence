@@ -14,8 +14,20 @@ export default class UserListComponent extends Component {
   constructor() {
     super(...arguments);
     this.startFetchingUsers();
+    this.disableArrowScrolling();
   }
 
+  disableArrowScrolling() {
+    window.addEventListener('keydown', this.handleKeyDown);
+  }
+
+  @action
+  handleKeyDown(event) {
+    // Arrow keys: ArrowUp, ArrowDown, ArrowLeft, ArrowRight
+    if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(event.key)) {
+      event.preventDefault(); // Prevent scrolling
+    }
+  }
   /**
    * Start fetching tournaments every 10 seconds
    */
@@ -64,6 +76,7 @@ export default class UserListComponent extends Component {
 
   willDestroy() {
     super.willDestroy(...arguments);
+    window.removeEventListener('keydown', this.handleKeyDown);
     if (this.intervalId) {
       clearInterval(this.intervalId); // Clear the interval
     }

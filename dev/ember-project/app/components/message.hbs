@@ -1,7 +1,7 @@
 {{#if (eq @message.type "tournament")}}
-  <div class="message-item message-tournament">[{{@message.from}}] {{@message.content}}</div>
+  <div class="message-item message-tournament"> <a href="#" class="badge bg-warning" style="color: rgb(24, 22, 22);" {{on "click" (fn this.select @message.from)}}>{{@message.from}}</a>  {{@message.content}}</div>
 {{else if (eq @message.type "whisper")}}
-  <div class="message-item message-whisper">[{{@message.from}}] {{@message.content}}</div>
+  <div class="message-item message-whisper"> <a href="#" class="badge bg-warning" style="color: rgb(24, 22, 22);" {{on "click" (fn this.select @message.from)}}>{{@message.from}}</a>  {{@message.content}}</div>
 {{else if (eq @message.type "add")}}
   {{#if (eq @message.from @ownNickname)}}
     <div class="alert alert-success p-2 mt-1 mb-1" role="alert">
@@ -25,5 +25,5 @@
     </div>
   {{/if}}
 {{else}}
-  <div class="message-item message-default">[{{@message.from}}] {{@message.content}}</div>
+  <div class="message-item message-default"> <a href="#" class="badge bg-warning" style="color: rgb(24, 22, 22);" {{on "click" (fn this.select @message.from)}}>{{@message.from}}</a>  {{@message.content}}</div>
 {{/if}}

@@ -4,6 +4,6 @@
 </nav>
 <div class="scrollable-list middle-scroll">
     {{#each this.filteredUsers as |user|}}
-        <User @user={{user}} @selectUser={{this.args.selectUser}} />
+        <User @user={{user}} />
     {{/each}}
 </div>

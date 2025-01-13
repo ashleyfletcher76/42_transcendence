@@ -5,6 +5,8 @@ import { inject as service } from '@ember/service';
 export default class UserService extends Service {
   @tracked profile = null; // Track the current user profile
   @service session;
+  @service gameData;
+  @tracked selectedUser = null; // Initially no user is selected
 
   constructor() {
     super(...arguments);
@@ -16,8 +18,15 @@ export default class UserService extends Service {
    */
   startFetchingProfile() {
     this.intervalId = setInterval(() => {
-      this.fetchUserData(this.profile.nickname);
+      this.fetchUserData(this.profile.nickname, "ownProfile");
     }, 10000); // 10 seconds
+  }
+
+  selectUser(nickname) {
+    if (nickname && nickname !== this.profile.nickname)
+      this.fetchUserData(nickname, "otherProfile");
+    else if (!nickname)
+      this.selectedUser = null;
   }
 
   setProfile(userData) {
@@ -28,7 +37,7 @@ export default class UserService extends Service {
     this.profile = null; // Clear the user data (on logout)
   }
 
-  async fetchUserData(nickname) {
+  async fetchUserData(nickname, profile) {
     try {
       const response = await fetch('/users/users/profile-info/', {
         method: 'POST',
@@ -43,7 +52,10 @@ export default class UserService extends Service {
         throw new Error('Failed to fetch user profile');
       }
       const data = await response.json();
-      this.setProfile(data); // Store user data for use in the template
+      if (profile === "ownProfile")
+        this.setProfile(data); // Store user data for use in the template
+      else
+        this.selectedUser= data;
     } catch (error) {
       console.error('Error fetching user profile:', error);
     }

@@ -9,25 +9,25 @@ export default class ProfileOtherComponent extends Component {
 
   get isFriend() {
       const friendsList = this.user.profile.friends || [];
-      return friendsList.includes(this.args.selectedUser.nickname);
+      return friendsList.includes(this.user.selectedUser.nickname);
   }
 
   get isBlocked() {
     const blockedList = this.user.profile.blocked || [];
-    return blockedList.includes(this.args.selectedUser.nickname);
+    return blockedList.includes(this.user.selectedUser.nickname);
   }
 
   @action
   startLiveChat() {
     console.log('Live chat started');
-    this.chat.updateInputValue('/' + this.args.selectedUser.nickname + ' ');
+    this.chat.updateInputValue('/' + this.user.selectedUser.nickname + ' ');
     this.chat.focusInput();
   }
 
   @action
   playGame() {
     console.log('Game initiated');
-    this.chat.updateInputValue('/*invite ' + this.args.selectedUser.nickname);
+    this.chat.updateInputValue('/*invite ' + this.user.selectedUser.nickname);
     this.chat.sendMessage();
   }
 
@@ -35,7 +35,7 @@ export default class ProfileOtherComponent extends Component {
   addFriend(type) {
     if (type === "add")
     {
-      this.chat.updateInputValue('/*add ' + this.args.selectedUser.nickname);
+      this.chat.updateInputValue('/*add ' + this.user.selectedUser.nickname);
       this.chat.sendMessage();
     }
     else
@@ -53,7 +53,7 @@ export default class ProfileOtherComponent extends Component {
           Authorization: `Bearer ${this.session.data.access}`,
         },
         body: JSON.stringify({
-          nickname: this.args.selectedUser.nickname,
+          nickname: this.user.selectedUser.nickname,
           type: 'remove',
         }),
       });
@@ -68,7 +68,7 @@ export default class ProfileOtherComponent extends Component {
   }
 
   get isOnline() {
-    return this.args.selectedUser?.status === 'online';
+    return this.user.selectedUser?.status === 'online';
   }
 
   @action
@@ -83,7 +83,7 @@ export default class ProfileOtherComponent extends Component {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          nickname: this.args.selectedUser.nickname,
+          nickname: this.user.selectedUser.nickname,
           type: type,
         }),
       });
@@ -104,6 +104,6 @@ export default class ProfileOtherComponent extends Component {
   @action
   onCloseClick() {
     console.log('Close clicked!');
-    this.args.selectUser(null);
+    this.user.selectUser(null);
   }
 }

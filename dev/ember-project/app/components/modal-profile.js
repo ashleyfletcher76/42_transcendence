@@ -6,6 +6,8 @@ import { inject as service } from '@ember/service';
 export default class ModalProfileComponent extends Component {
   @tracked isModalOpen = false;
   @tracked newNickname;
+  @tracked newEmail;
+  @tracked twofa_enabled;
   @tracked newAvatar = null; // Track the selected avatar file
   @tracked error;
 
@@ -16,6 +18,8 @@ export default class ModalProfileComponent extends Component {
   openModal() {
     this.isModalOpen = true;
     this.newNickname = this.user.profile.nickname;
+    this.newEmail = this.user.profile.two_fa_email;
+    this.twofa_enabled = this.user.profile.two_fa_enabled;
   }
 
   @action
@@ -24,8 +28,18 @@ export default class ModalProfileComponent extends Component {
   }
 
   @action
+  toggle2fa() {
+    this.twofa_enabled = !this.twofa_enabled;
+  }
+
+  @action
   updateNewNickname(event) {
     this.newNickname = event.target.value;
+  }
+
+  @action
+  updateNewEmail(event) {
+    this.newEmail = event.target.value;
   }
 
   @action
@@ -43,6 +57,8 @@ export default class ModalProfileComponent extends Component {
   async updateProfile() {
       const formData = new FormData();
       formData.append('nickname', this.newNickname);
+      formData.append('email', this.newEmail);
+      formData.append('twofa_enabled', this.twofa_enabled);
 
       if (this.newAvatar) {
         formData.append('avatar', this.newAvatar); // Append the avatar file

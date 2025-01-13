@@ -11,6 +11,7 @@ export default class LoginController extends Controller {
   @tracked username;
   @tracked password;
   @tracked error;
+  @tracked twofaCode; // Renamed to avoid conflict with the action
 
   @action
   update(attr, event) {
@@ -18,16 +19,35 @@ export default class LoginController extends Controller {
   }
 
   @action
-  async login(event) {
+  async submitTwofa(event) { // Renamed from `twofa` to `submitTwofa`
     event.preventDefault();
 
+    try {
+      await this.session.send_twofa(
+        this.username,
+        this.twofaCode, // Updated to match the renamed tracked property
+      );
+      if (this.session.isAuthenticated) {
+        this.fetchUserData('');
+        this.router.transitionTo('choose-game');
+      }
+    } catch (error) {
+      this.error = error;
+    }
+  }
+
+  @action
+  async login(event) {
+    event.preventDefault();
     try {
       await this.session.authenticate(
         this.username,
         this.password,
       );
-      this.fetchUserData('');
-      this.router.transitionTo('choose-game');
+      if (this.session.isAuthenticated) {
+        this.fetchUserData('');
+        this.router.transitionTo('choose-game');
+      }
     } catch (error) {
       this.error = error;
     }
@@ -56,7 +76,6 @@ export default class LoginController extends Controller {
         this.username,
         this.password,
       );
-      this.fetchUserData('');
       this.router.transitionTo('choose-game');
     } catch (error) {
       this.error = error.message || 'An error occurred during registration';

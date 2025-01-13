@@ -14,6 +14,7 @@ export default class PongGameService extends Service {
   @tracked keyStates = {
     ArrowUp: false,
     ArrowDown: false,
+    space: false,
     w: false,
     W: false,
     s: false,
@@ -53,6 +54,7 @@ export default class PongGameService extends Service {
     let direction_p2 = '';
     let type_p1 = '';
     let type_p2 = '';
+    let action = '';
 
     if (this.keyStates[event.key]) {
       return; // Key is already released; no need to resend the event
@@ -85,6 +87,12 @@ export default class PongGameService extends Service {
           type_p2 = 'start_move';
         } else return;
         break;
+      case ' ':
+      case 'Spacebar':
+        if (!this.keyStates.space) {
+          action = 'pause';
+        } else return;
+        break;
     }
 
     this.keyStates[event.key] = true;
@@ -94,6 +102,7 @@ export default class PongGameService extends Service {
       direction_p1,
       type_p2,
       direction_p2,
+      action,
     };
     this.sendMessage(data);
   }
@@ -103,6 +112,7 @@ export default class PongGameService extends Service {
     let direction_p2 = '';
     let type_p1 = '';
     let type_p2 = '';
+    let action = '';
 
     if (!this.keyStates[event.key]) {
       return; // Key is already released; no need to resend the event
@@ -132,6 +142,7 @@ export default class PongGameService extends Service {
       direction_p1,
       type_p2,
       direction_p2,
+      action,
     };
     this.sendMessage(data);
   }
@@ -167,8 +178,9 @@ export default class PongGameService extends Service {
   }
 
   async connectToRoom(roomName) {
+    console.log("testsss")
     const token = this.session.data.access;
-    const wsUrl = `wss://localhost/ws/pong-game/${roomName}/?token=${encodeURIComponent(token)}`;
+    const wsUrl = `wss://${window.location.hostname}/ws/pong-game/${roomName}/?token=${encodeURIComponent(token)}`;
     console.log('connect to:', wsUrl);
     if (this.socketRef) {
       console.log('disconnect');
@@ -184,7 +196,7 @@ export default class PongGameService extends Service {
 
   async disconnectFromGame(roomName) {
     const token = this.session.data.access;
-    const wsUrl = `wss://localhost/ws/pong-game/${roomName}/?token=${encodeURIComponent(token)}`;
+    const wsUrl = `wss://${window.location.hostname}/ws/pong-game/${roomName}/?token=${encodeURIComponent(token)}`;
     console.log('websocket to close:', roomName);
     this.websockets.closeSocketFor(wsUrl);
     console.log('websocket closed', this.websockets.sockets);

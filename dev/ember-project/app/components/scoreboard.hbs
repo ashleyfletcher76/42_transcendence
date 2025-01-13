@@ -2,7 +2,7 @@
   {{!-- Profile picture column (1 part) --}}
   <div class="col-5">
     
-    <User @user={{this.gameData.player_1}} @selectUser={{this.args.selectUser}}/>
+    <User @user={{this.gameData.player_1}} />
   </div>
 
   {{!-- Profile details column (3 parts) --}}
@@ -13,6 +13,6 @@
   {{/if}}
 
   <div class="col-5">
-    <User @user={{this.gameData.player_2}} @selectUser={{this.args.selectUser}}/>
+    <User @user={{this.gameData.player_2}} />
   </div>
 </div>

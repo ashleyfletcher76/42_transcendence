@@ -43,7 +43,7 @@ export default class ChatService extends Service {
     // Initialize the WebSocket connection
     console.log('connect ...');
     const token = this.session.data.access;
-    const url = `wss://localhost/ws/chat/lobby/?token=${encodeURIComponent(token)}`;
+    const url = `wss://${window.location.hostname}/ws/chat/lobby/?token=${encodeURIComponent(token)}`;
     const socket = this.websockets.socketFor(url);
 
     socket.on('open', this.myOpenHandler, this);
@@ -59,8 +59,12 @@ export default class ChatService extends Service {
     );
   }
 
+  isBlocked(nickname) {
+    const blockedList = this.user.profile.blocked || [];
+    return blockedList.includes(nickname);
+  }
+
   myMessageHandler(event) {
-    console.log(`Message recieve: ${event.data}`);
     const newMessage = JSON.parse(event.data);
     if (newMessage.content.room_name) {
       if (this.user.profile.nickname !== newMessage.from) {
@@ -69,8 +73,9 @@ export default class ChatService extends Service {
       }
       return;
     }
-    this.messages = [...this.messages, newMessage]; // Add the new message to the tracked array
-    console.log(newMessage.content);
+
+    if (!this.isBlocked(newMessage.from))
+      this.messages = [...this.messages, newMessage];
   }
 
   myCloseHandler(event) {

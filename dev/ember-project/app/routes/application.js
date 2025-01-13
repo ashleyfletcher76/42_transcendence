@@ -9,4 +9,5 @@ export default class ApplicationRoute extends Route {
       await this.session.setup();
     }
   }
+
 }

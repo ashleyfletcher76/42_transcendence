@@ -17,6 +17,11 @@ export default class MessageComponent extends Component {
   }
 
   @action
+  select(user) {
+      this.user.selectUser(user); // Passing the selected user to the parent action
+  }
+
+  @action
   acceptGame(event) {
     event.preventDefault();
     console.log(`${this.args.message.from} accepted game`);

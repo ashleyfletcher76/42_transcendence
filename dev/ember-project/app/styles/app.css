@@ -90,6 +90,14 @@ label {
   text-align: left;
 }
 
+.custom-checkbox {
+  width: 20px;
+}
+
+.badge {
+  text-decoration: none;
+}
+
 /* Button styling */
 .login {
   padding: 10px; /* Padding inside button */

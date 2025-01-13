@@ -21,7 +21,7 @@ export default class TournamentService extends Service {
   @action
   async connectToLobby(tournamentName) {
     const token = this.session.data.access;
-    const wsUrl = `wss://localhost/ws/tournament/${tournamentName}/?token=${encodeURIComponent(token)}`;
+    const wsUrl = `wss://${window.location.hostname}/ws/tournament/${tournamentName}/?token=${encodeURIComponent(token)}`;
     if (this.socketRef) {
       console.log('disconnect');
       this.disconnectFromLobby(this.currentLobby);
@@ -37,7 +37,7 @@ export default class TournamentService extends Service {
   @action
   async disconnectFromLobby(tournamentName) {
     const token = this.session.data.access;
-    const wsUrl = `wss://localhost/ws/tournament/${tournamentName}/?token=${encodeURIComponent(token)}`;
+    const wsUrl = `wss://${window.location.hostname}/ws/tournament/${tournamentName}/?token=${encodeURIComponent(token)}`;
     console.log('websocket to close:', tournamentName);
     this.websockets.closeSocketFor(wsUrl);
     console.log('websocket closed', this.websockets.sockets);

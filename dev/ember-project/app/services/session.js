@@ -7,6 +7,8 @@ export default class SessionService extends Service {
     @tracked data;
     @tracked Initialized;
     @service router;
+    @service chat;
+    @tracked twofa = false;
 
     requireAuthentication(type, route)
     {
@@ -29,22 +31,60 @@ export default class SessionService extends Service {
         if (response.ok) {
             // Await the response.json() to get the actual data
             this.data = await response.json();
-        
-            // Now you can safely access this.data
-            console.log("access:", this.data.access);
-            this.isAuthenticated = true;
+            if(this.data.two_fa_required)
+            {
+              this.twofa = true;
+            }
+            else
+             this.isAuthenticated = true;
         } else {
           let error = await response.text();
           throw new Error(error);
         }
       }
 
-      invalidate()
+      async send_twofa(username, code) {
+        //let response = await fetch('/api/token.json', {
+        let response = await fetch('/auth/auth/validate-2fa/', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            username,
+            code,
+          }),
+        });
+        if (response.ok) {
+            // Await the response.json() to get the actual data
+            this.data = await response.json();
+             this.isAuthenticated = true;
+        } else {
+          let error = await response.text();
+          throw new Error(error);
+        }
+      }
+
+      async invalidate()
       {
-        this.isAuthenticated = false;
-        this.data = null;
-        this.Initialized = false;
-        this.router.transitionTo('login');
+        await this.logout();
+        window.location.reload();
+        
+      }
+
+      async logout() {
+        //let response = await fetch('/api/token.json', {
+        
+        let response = await fetch('/auth/auth/logout/', {
+          method: 'POST',
+        headers: {
+          Authorization: `Bearer ${this.data.access}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          refresh_token: this.data.refresh,
+        }),
+        });
       }
 
       prohibitAuthentication(route)

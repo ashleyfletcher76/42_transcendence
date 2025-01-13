@@ -7,8 +7,8 @@
      <ProfileOwn />
     </div>
     <div class="col header">
-      {{#if this.selectedUser}}
-        <ProfileOther @selectedUser={{this.selectedUser}} @selectUser={{this.selectUser}}/>
+      {{#if this.user.selectedUser}}
+        <ProfileOther />
       {{else}}
         <TitleAnimation />
       {{/if}}
@@ -22,7 +22,7 @@
 		{{outlet}}
     </div>
     <div class="container-fluid col-3 middle">
-      <UserList @selectUser={{this.selectUser}}/>
+      <UserList/>
     </div>
   </div>
   <div class="container-fluid row">
@@ -32,7 +32,7 @@
             <LinkTo @route="tournament" class="nav-button">Tournament</LinkTo>
     </div>
     <div class="container-fluid col-6 footer">
-      <Scoreboard @selectUser={{this.selectUser}}/>
+      <Scoreboard />
     </div>
     <div class="container-fluid col-3 footer p-1">
       {{#if this.session.isAuthenticated}}

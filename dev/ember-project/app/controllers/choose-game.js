@@ -11,6 +11,7 @@ export default class ChooseGameController extends Controller {
 
   @action
   chooseGame(gameType) {
+    console.log("test");
     this.gameData.waiting = true;
     this.createRoom(gameType);
   }
