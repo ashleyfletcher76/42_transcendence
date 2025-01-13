@@ -38,7 +38,7 @@ def get_single_user_data_without_token(request):
 			{"error": "Username query parameter is required"},
 			status=400
 		)
-	
+
 	try:
 		print(f"Recived request for username: {username}")
 		user = User.objects.get(username=username)
@@ -136,7 +136,10 @@ def get_profile_info(request):
 			"last_seen": profile.last_seen,
 			"tournament_name": profile.tournament_name,
 			"game_name": profile.game_name,
-			"game_active": profile.game_active
+			"game_active": profile.game_active,
+			"two_fa_enabled": profile.twofa_enabled,
+			"two_fa_email": profile.email
+
 		}
 		return Response(profile_response, status=200)
 
