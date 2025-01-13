@@ -46,7 +46,6 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
-    # "chat.middleware.DebugTokenMiddleware",  # Added middleware for debugging token
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
@@ -93,30 +92,6 @@ DATABASES = {
         'NAME': ':memory:'
     }
 }
-
-# DATABASES = {
-#     "default": {
-#         "ENGINE": "django.db.backends.postgresql",
-#         "NAME": os.environ.get("CHAT_SERVICE_DB"),
-#         "USER": os.environ.get("CHAT_SERVICE_USER"),
-#         "PASSWORD": os.environ.get("CHAT_SERVICE_PASSWORD"),
-#         "HOST": "chat-db",
-#         "PORT": "5432",
-#         "OPTIONS": {},
-#     }
-# }
-
-# # Overwrite the database settings when running tests
-# if "test" in sys.argv:
-#     DATABASES["default"] = {
-#         "ENGINE": "django.db.backends.postgresql",
-#         "NAME": "test_" + os.environ.get("CHAT_SERVICE_DB"),
-#         "USER": os.environ.get("CHAT_SERVICE_USER"),
-#         "PASSWORD": os.environ.get("CHAT_SERVICE_PASSWORD"),
-#         "HOST": "chat-db",
-#         "PORT": "5432",
-#         "OPTIONS": {},
-#     }
 
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": (

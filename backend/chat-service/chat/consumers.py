@@ -224,9 +224,13 @@ class ChatConsumer(AsyncWebsocketConsumer):
 				consumer.channel_name, {"type": "chat_message", "data": data}
 			)
 
+from chat.redis_client import cleanup_redis
+
 # signal handlers
 def handle_shutdown(signum, frame):
+	print("[INFO] Shutdown signal received, cleaning up...")
 	cleanup_redis()
+	should_stop.set()
 
 
 signal.signal(signal.SIGTERM, handle_shutdown)

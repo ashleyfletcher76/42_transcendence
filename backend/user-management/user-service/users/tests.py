@@ -1,10 +1,9 @@
 from django.test import TestCase
-from rest_framework.test import APIClient
+from rest_framework.test import APIClient, APITestCase
 from django.contrib.auth.models import User
 from .models import UserProfile
 from rest_framework_simplejwt.tokens import RefreshToken
 import json
-
 
 class UserServiceTests(TestCase):
 	def setUp(self):
@@ -245,7 +244,7 @@ class UserServiceTests(TestCase):
 		payload = json.dumps({})
 		response = self.client.put(url, payload, content_type="application/json")
 
-		self.assertEqual(response.status_code, 400)
+		self.assertEqual(response.status_code, 200)
 		self.assertEqual(response.json()["success"], False)
 		self.assertEqual(response.json()["message"], "No changes detected in the request.")
 
@@ -269,7 +268,7 @@ class UserServiceTests(TestCase):
 	#####################################
 
 	def test_sql_injection_username_attempts(self):
-		"""Test SQL injection attempts in username field."""
+		"""Test SQL injection attempts in username field"""
 		username_injection_payloads = [
 			{
 				"username": "user' OR '1'='1",
@@ -309,7 +308,7 @@ class UserServiceTests(TestCase):
 		self.assertEqual(initial_user_count, final_user_count)
 
 	def test_sql_injection_password_attempts(self):
-		"""Test SQL injection attempts in password field."""
+		"""Test SQL injection attempts in password field"""
 		password_injection_payloads = [
 			{
 				"username": "normaluser1",
@@ -337,8 +336,6 @@ class UserServiceTests(TestCase):
 			print(f"\nTesting password payload: {payload['password']}")
 			response = self.client.post(url, payload)
 			self.assertEqual(response.status_code, 400)
-			# Add your password validation error check here
-			# self.assertIn("Invalid password format", response.data["error"])
 
 		final_user_count = User.objects.count()
 		print(f"\nInitial user count: {initial_user_count}")
@@ -347,7 +344,7 @@ class UserServiceTests(TestCase):
 		self.assertEqual(initial_user_count, final_user_count)
 
 	def test_sql_injection_combined_attempts(self):
-		"""Test SQL injection attempts in both username and password fields."""
+		"""Test SQL injection attempts in both username and password fields"""
 		combined_injection_payloads = [
 			{
 				"username": "'; SELECT * FROM users; --",
@@ -388,7 +385,7 @@ class UserServiceTests(TestCase):
 ## Tournament Active Endpoint Tests ##
 ######################################
 
-class TournamentActiveTests(TestCase):
+class TournamentActiveTests(APITestCase):
 	def setUp(self):
 		"""Set up test environment, including test user and profile"""
 		self.user = User.objects.create_user(username="testuser", password="password")
@@ -411,9 +408,10 @@ class TournamentActiveTests(TestCase):
 
 		self.assertEqual(response.status_code, 200)
 		self.assertTrue(response.data["success"])
-		self.assertEqual(response.data["message"], "Game state updated successfully: start")
+		self.assertEqual(response.data["message"], "Start completed successfully.")
 		self.user_profile.refresh_from_db()
 		self.assertTrue(self.user_profile.game_active)
+		self.assertTrue(self.user_profile.tournament_active)
 		self.assertEqual(self.user_profile.game_name, "PongMaster")
 		self.assertEqual(self.user_profile.tournament_name, "Spring Championship")
 
@@ -425,15 +423,31 @@ class TournamentActiveTests(TestCase):
 		self.user_profile.save()
 
 		url = "/users/tournament-active/"
-		payload = {"action_type": "end"}
+		payload = {"action_type": "end_game"}
 		response = self.client.post(url, payload)
 
 		self.assertEqual(response.status_code, 200)
 		self.assertTrue(response.data["success"])
-		self.assertEqual(response.data["message"], "Game state updated successfully: end")
+		self.assertEqual(response.data["message"], "End game completed successfully.")
 		self.user_profile.refresh_from_db()
 		self.assertFalse(self.user_profile.game_active)
 		self.assertIsNone(self.user_profile.game_name)
+
+	def test_end_tournament_success(self):
+		"""Test successfully ending a tournament"""
+		self.user_profile.tournament_active = True
+		self.user_profile.tournament_name = "Spring Championship"
+		self.user_profile.save()
+
+		url = "/users/tournament-active/"
+		payload = {"action_type": "end_tournament"}
+		response = self.client.post(url, payload)
+
+		self.assertEqual(response.status_code, 200)
+		self.assertTrue(response.data["success"])
+		self.assertEqual(response.data["message"], "End tournament completed successfully.")
+		self.user_profile.refresh_from_db()
+		self.assertFalse(self.user_profile.tournament_active)
 		self.assertIsNone(self.user_profile.tournament_name)
 
 	def test_start_game_already_active(self):
@@ -448,7 +462,7 @@ class TournamentActiveTests(TestCase):
 		response = self.client.post(url, payload)
 
 		self.assertEqual(response.status_code, 400)
-		self.assertEqual(response.data["error"], "A game is already active. Please end current game and then retry.")
+		self.assertEqual(response.data["error"], "A game is already active. Please end the current game before starting a new one.")
 
 	def test_start_game_missing_game_name(self):
 		"""Test starting a game without providing a game_name"""
@@ -456,8 +470,10 @@ class TournamentActiveTests(TestCase):
 		payload = {"tournament_name": "Spring Championship", "action_type": "start"}
 		response = self.client.post(url, payload)
 
-		self.assertEqual(response.status_code, 400)
-		self.assertEqual(response.data["error"], "'game_name' is required when starting a game.")
+		self.assertEqual(response.status_code, 200)
+		self.assertTrue(response.data["success"])
+		self.assertEqual(response.data["message"], "Start completed successfully.")
+
 
 	def test_invalid_action_type(self):
 		"""Test providing an invalid action_type"""
@@ -466,7 +482,7 @@ class TournamentActiveTests(TestCase):
 		response = self.client.post(url, payload)
 
 		self.assertEqual(response.status_code, 400)
-		self.assertEqual(response.data["error"], "Invalid 'action_type'. Use 'start' or 'end'.")
+		self.assertEqual(response.data["error"], "'action_type' must be 'start', 'end_game', or 'end_tournament'.")
 
 	def test_all_fields_missing(self):
 		"""Test sending a request with no fields provided"""
@@ -475,13 +491,244 @@ class TournamentActiveTests(TestCase):
 		response = self.client.post(url, payload)
 
 		self.assertEqual(response.status_code, 400)
-		self.assertEqual(response.data["error"], "'action_type' is required and must be either 'start' or 'end'.")
+		self.assertEqual(response.data["error"], "'action_type' must be 'start', 'end_game', or 'end_tournament'.")
 
-	# def test_invalid_field_types(self):
-	# 	"""Test sending invalid data types."""
-	# 	url = "/users/tournament-active/"
-	# 	payload = {"game_name": 123, "action_type": "start"}
-	# 	response = self.client.post(url, payload)
 
-	# 	self.assertEqual(response.status_code, 400)
-	# 	self.assertIn("At least 'game_name' and 'action_type' must be provided.", str(response.data))
+class EmailAndTwoFATests(TestCase):
+	def setUp(self):
+		"""Set up test environment, including test user and profile"""
+		self.user = User.objects.create_user(username="testuser", password="password")
+		self.user_profile = self.user.profile
+		self.client = APIClient()
+		self.client.login(username="testuser", password="password")
+		refresh = RefreshToken.for_user(self.user)
+		self.client.credentials(HTTP_AUTHORIZATION=f'Bearer {refresh.access_token}')
+
+	def tearDown(self):
+		"""Clean up test environment"""
+		UserProfile.objects.all().delete()
+		User.objects.all().delete()
+
+	#################################
+	## EMAIL AND 2FA FUNCTIONALITY ##
+	#################################
+
+	def test_enable_2fa_with_email(self):
+		"""Test enabling 2FA with a valid email"""
+		url = "/users/update-profile/"
+		payload = {"twofa_enabled": True, "email": "testuser@example.com"}
+		response = self.client.put(url, json.dumps(payload), content_type="application/json")
+
+		# print(f"[DEBUG] Response status code: {response.status_code}")
+		# print(f"[DEBUG] Response data: {response.json()}")
+
+		# check the response
+		self.assertEqual(response.status_code, 200)
+		self.assertEqual(True, response.data["success"])
+		self.assertEqual("Email and twofa_enabled updated successfully.", response.data["message"])
+
+		# check the database
+		self.user_profile.refresh_from_db()
+		self.assertTrue(self.user_profile.twofa_enabled)
+		self.assertEqual(self.user_profile.email, "testuser@example.com")
+
+	def test_enable_2fa_without_email(self):
+		"""Test enabling 2FA without a valid email"""
+		url = "/users/update-profile/"
+		payload = {"twofa_enabled": True}
+		response = self.client.put(url, json.dumps(payload), content_type="application/json")
+
+		# print(f"[DEBUG] Response status code for 'test_enable_2fa_without_email': {response.status_code}")
+		# print(f"[DEBUG] Response data for 'test_enable_2fa_without_email': {response.json()}")
+
+		# check the response
+		self.assertEqual(response.status_code, 400)
+		self.assertEqual(False, response.data["success"])
+		self.assertEqual("Email is required to enable 2FA.", response.data["message"])
+
+		# check the database
+		self.user_profile.refresh_from_db()
+		self.assertFalse(self.user_profile.twofa_enabled)
+
+	def test_enable_2fa_without_email_in_field_but_one_existing(self):
+		"""Test enabling 2FA without an email but an exisiting email exists"""
+
+		self.user_profile.email = "testuser@example.com"
+		self.user_profile.save()
+
+		url = "/users/update-profile/"
+		payload = {"twofa_enabled": True}
+		response = self.client.put(url, json.dumps(payload), content_type="application/json")
+
+		# print(f"[DEBUG] Response status code 'test_enable_2fa_without_email_in_field_but_one_existing': {response.status_code}")
+		# print(f"[DEBUG] Response data 'test_enable_2fa_without_email_in_field_but_one_existing': {response.json()}")
+
+		# check the response
+		self.assertEqual(response.status_code, 200)
+		self.assertEqual(response.data["success"], True)
+		self.assertEqual(response.data["message"], "Twofa_enabled updated successfully.")
+
+		# check the database
+		self.user_profile.refresh_from_db()
+		self.assertTrue(self.user_profile.twofa_enabled)
+
+	def test_enable_2fa_with_invalid_email(self):
+		"""Test enabling 2FA without an invalid email"""
+
+		url = "/users/update-profile/"
+		payload = {"twofa_enabled": True, "email": "testuser"}
+		response = self.client.put(url, json.dumps(payload), content_type="application/json")
+
+		# print(f"[DEBUG] Response status code: {response.status_code}")
+		# print(f"[DEBUG] Response data: {response.json()}")
+
+		# check the response
+		self.assertEqual(response.status_code, 400)
+		self.assertEqual(response.data["success"], False)
+		self.assertEqual(response.data["message"], "Invalid email format.")
+
+		# check the database
+		self.user_profile.refresh_from_db()
+		self.assertFalse(self.user_profile.twofa_enabled)
+
+	def test_without_any_fields(self):
+		"""Test without any fields"""
+
+		url = "/users/update-profile/"
+		payload = {}
+		response = self.client.put(url, json.dumps(payload), content_type="application/json")
+
+		# print(f"[DEBUG] Response status code: {response.status_code}")
+		# print(f"[DEBUG] Response data: {response.json()}")
+
+		# check the response
+		self.assertEqual(response.status_code, 200)
+		self.assertEqual(response.data["success"], False)
+		self.assertEqual(response.data["message"], "No changes detected in the request.")
+
+		# check the database
+		self.user_profile.refresh_from_db()
+		self.assertFalse(self.user_profile.twofa_enabled)
+
+	def test_disable_2fa(self):
+		"""Test disbaling 2FA"""
+
+		url = "/users/update-profile/"
+		self.user_profile.email = "testuser@example.com"
+		self.user_profile.twofa_enabled = True
+		self.user_profile.save()
+		payload = {"twofa_enabled": False}
+		response = self.client.put(url, json.dumps(payload), content_type="application/json")
+
+		# print(f"[DEBUG] Response status code: {response.status_code}")
+		# print(f"[DEBUG] Response data: {response.json()}")
+
+		# check the response
+		self.assertEqual(response.status_code, 200)
+		self.assertEqual(response.data["success"], True)
+		self.assertEqual(response.data["message"], "Twofa_enabled updated successfully.")
+
+		# check the database
+		self.user_profile.refresh_from_db()
+		self.assertFalse(self.user_profile.twofa_enabled)
+
+	def test_sql_injection_email(self):
+		"""Test SQL injection attempts in the email field"""
+
+		sql_injection_emails = [
+			"' OR '1'='1",
+			"test@example.com; DROP TABLE users;",
+			"' UNION SELECT * FROM users;",
+			"test@example.com' --",
+		]
+
+		# set a valid email initially
+		self.user_profile.email = "valid@example.com"
+		self.user_profile.twofa_enabled = False
+		self.user_profile.save()
+
+		url = "/users/update-profile/"
+		for email in sql_injection_emails:
+			payload = {"twofa_enabled": True, "email": email}
+			response = self.client.put(url, json.dumps(payload), content_type="application/json")
+
+			# debugging logs
+			print(f"[DEBUG] SQL Injection Payload: {email}")
+			print(f"[DEBUG] Response status code: {response.status_code}")
+			print(f"[DEBUG] Response data: {response.json()}")
+
+			# ensure the response rejects the payload
+			self.assertEqual(response.status_code, 400)
+			self.assertEqual(response.data["success"], False)
+			self.assertEqual(response.data["message"], "Invalid email format.")
+
+			# ensure no changes in the email field
+			self.user_profile.refresh_from_db()
+			self.assertEqual(self.user_profile.email, "valid@example.com")
+			self.assertFalse(self.user_profile.twofa_enabled)
+
+	def test_sql_injection_2fa(self):
+		"""Test SQL injection attempts in the twofa_enabled field"""
+
+		sql_injection_twofa = [
+			"' OR '1'='1",
+			"TRUE; DROP TABLE users;",
+			"' UNION SELECT * FROM users;",
+		]
+
+		# set an email initially
+		self.user_profile.email = "valid@example.com"
+		self.user_profile.twofa_enabled = False
+		self.user_profile.save()
+
+		url = "/users/update-profile/"
+		for twofa in sql_injection_twofa:
+			payload = {"twofa_enabled": twofa, "email": "valid@example.com"}
+			response = self.client.put(url, json.dumps(payload), content_type="application/json")
+
+			# debugging logs
+			print(f"[DEBUG] SQL Injection Payload: {twofa}")
+			print(f"[DEBUG] Response status code: {response.status_code}")
+			print(f"[DEBUG] Response data: {response.json()}")
+
+			# ensure the response rejects the payload
+			self.assertEqual(response.status_code, 400)
+			self.assertEqual(response.data["success"], False)
+			self.assertEqual(response.data["message"], "2FA status must be a boolean.")
+
+			# ensure no changes in the database
+			self.user_profile.refresh_from_db()
+			self.assertEqual(self.user_profile.email, "valid@example.com")
+			self.assertFalse(self.user_profile.twofa_enabled)
+
+	def test_2fa_enabled(self):
+		"""Test 2FA is enabled and email is returned"""
+		self.user_profile.twofa_enabled = True
+		self.user_profile.email = "testuser@example.com"
+		self.user_profile.save()
+
+		response = self.client.post(
+			"/users/2fa-status/",
+			{"username": "testuser"},
+			format="json"
+		)
+
+		self.assertEqual(response.status_code, 200)
+		self.assertEqual(response.data["success"], True)
+		self.assertEqual(response.data["twofa_enabled"], True)
+		self.assertEqual(response.data["email"], "testuser@example.com")
+
+	def test_2fa_disabled(self):
+		"""Test 2FA is disabled and email is None"""
+
+		response = self.client.post(
+			"/users/2fa-status/",
+			{"username": "testuser"},
+			format="json"
+		)
+
+		self.assertEqual(response.status_code, 200)
+		self.assertEqual(response.data["success"], True)
+		self.assertEqual(response.data["twofa_enabled"], False)
+		self.assertIsNone(response.data["email"])
+

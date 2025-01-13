@@ -1,7 +1,7 @@
-BALL_RADIUS = 0.02  # 2% of game width
-PADDLE_WIDTH = 0.016*2  # 1.6% of game width
-PADDLE_HEIGHT = 0.2  # 20% of game height
-PADDLE_DISTANCE = 0.016*2  # Same as paddle width
+BALL_RADIUS = 0.02
+PADDLE_WIDTH = 0.016*2
+PADDLE_HEIGHT = 0.2
+PADDLE_DISTANCE = 0.016*2
 SCREEN_DISTANCE = PADDLE_WIDTH + PADDLE_DISTANCE + BALL_RADIUS
 END_SCORE = 5
 SPEED_PADDLE = 0.05
@@ -11,6 +11,8 @@ SPEED_INCREMENT = 0.001
 
 
 def game_logic(game):
+    if game["player2"] == "AI":
+        update_ai(game)
 
     game["ball_x"] += game["ball_speed_x"]
     game["ball_y"] += game["ball_speed_y"]
@@ -47,10 +49,18 @@ def end_game(game):
 
 
 def update_ai(game):
-    if game["ball_y"] < game["right_paddle_y"]:
-        move_right_paddle(game, -1)
-    elif game["ball_y"] > game["right_paddle_y"]:
-        move_right_paddle(game, 1)
+    if not game["player2"] == "AI":
+        return
+
+    predicted_position = game["predict_ai"]
+    paddle_center = game["right_paddle_y"] + PADDLE_HEIGHT / 2
+
+    if abs(predicted_position - paddle_center) <= SPEED_PADDLE:
+        game["p2_paddle"] = ""
+    elif paddle_center < predicted_position:
+        game["p2_paddle"] = "down"
+    else:
+        game["p2_paddle"] = "up"
 
 
 def move_right_paddle(game, direction):
@@ -64,7 +74,7 @@ def move_left_paddle(game, direction):
 
 
 def handle_paddle_hit(game, side):
-    game["ball_speed_x"] *= -1  # Reverse ball's horizontal direction
+    game["ball_speed_x"] *= -1
 
     paddle_center = game[f"{side}_paddle_y"]
     ball_center = game["ball_y"]
@@ -84,7 +94,6 @@ def handle_paddle_hit(game, side):
         game["ball_speed_x"] += movement_speed_boost if game["ball_speed_x"] > 0 else -movement_speed_boost
         game["ball_speed_y"] += movement_speed_boost if game["ball_speed_y"] > 0 else -movement_speed_boost
     else:
-        # Regular speed increment
         game["ball_speed_x"] += SPEED_INCREMENT if game["ball_speed_x"] > 0 else -SPEED_INCREMENT
         game["ball_speed_y"] += SPEED_INCREMENT if game["ball_speed_y"] > 0 else -SPEED_INCREMENT
 

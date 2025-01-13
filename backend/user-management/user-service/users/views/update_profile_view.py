@@ -61,33 +61,67 @@ def publish_nickname_change(redis_client, old_nickname, new_nickname):
 
 def validate_and_update_2fa(data, profile):
 	"""Validate and update 2FA auth settings"""
-	twofa_enabled = data.get("twofa_enabled")
-	email = data.get("email")
+	updated_fields = []
+	try:
+		# extract fields from request data
+		twofa_enabled = data.get("twofa_enabled")
+		email = data.get("email")
 
-	if not isinstance(twofa_enabled, bool):
-		raise ValueError("2FA auth must be a boolean.")
+		# convert `twofa_enabled` to boolean
+		if twofa_enabled in (None, "undefined", "null"):
+			print("[DEBUG] 2FA is not provided or is undefined/null. Skipping 2FA status update.")
+			twofa_enabled = profile.twofa_enabled
 
-	if twofa_enabled and not email:
-		raise ValueError("Email is required to enable 2FA auth.")
+		if isinstance(twofa_enabled, str):
+			if twofa_enabled.lower() in ("true", "1"):
+				twofa_enabled = True
+			elif twofa_enabled.lower() in ("false", "0"):
+				twofa_enabled = False
+			else:
+				raise ValueError("2FA status must be a boolean.")
 
-	if email:
-		# validate the email
-		validator = EmailValidator()
-		try:
-			validator(email)
-		except Exception:
-			raise ValueError("Invalid email format.")
+		# handle 2FA updates
+		if twofa_enabled is not None:
+			if twofa_enabled and not profile.twofa_enabled:
+				if not email and not profile.email:
+					raise ValueError("Email is required to enable 2FA.")
+				if email:
+					validator = EmailValidator()
+					try:
+						validator(email)
+					except Exception:
+						raise ValueError("Invalid email format.")
+					profile.email = email
+					updated_fields.append("email")
+				profile.twofa_enabled = True
+				updated_fields.append("twofa_enabled")
+			elif not twofa_enabled and profile.twofa_enabled:
+				profile.twofa_enabled = False
+				updated_fields.append("twofa_enabled")
+			elif twofa_enabled and profile.twofa_enabled:
+				print("[DEBUG] 2FA is already enabled. Skipping state update.")
+				updated_fields.append("twofa_enabled")
 
-	# update the fields in the profile
-	profile.twofa_enabled = twofa_enabled
-	if email:
-		profile.email = email
 
-	# return updated fields to keep track
-	updated_fields = ["twofa_enabled"]
-	if email:
-		updated_fields.append("email")
-	return updated_fields
+
+		# handle email updates
+		if email and email != profile.email:
+			validator = EmailValidator()
+			try:
+				validator(email)
+			except Exception:
+				raise ValueError("Invalid email format.")
+			profile.email = email
+			updated_fields.append("email")
+
+		# print(f"[DEBUG] validate_and_update_2fa -> twofa_enabled: {twofa_enabled}, email: {email}")
+		# print(f"[DEBUG] validate_and_update_2fa -> profile.twofa_enabled: {profile.twofa_enabled}, profile.email: {profile.email}")
+
+
+		return updated_fields
+	except ValueError as e:
+		print(f"[DEBUG] Validation error in 2FA: {e}")
+		raise
 
 #######################################
 # ---------- MAIN FUNCTION ---------- #
@@ -103,6 +137,8 @@ def update_profile(request):
 
 	updated_fields = []
 	old_nickname = profile.nickname
+
+	print(f"[DEBUG] Received request data: {data}")
 
 	try:
 		#####################
@@ -130,7 +166,8 @@ def update_profile(request):
 		#################
 
 		twofa = data.get("twofa_enabled")
-		if twofa is not None:
+		email = data.get("email")
+		if twofa not in (None, "undefined", "null") or email not in (None, "undefined", "null"):
 			updated_fields += validate_and_update_2fa(data, profile)
 
 		##########################
@@ -146,12 +183,17 @@ def update_profile(request):
 			profile.online = new_online_status
 			updated_fields.append("online")
 
+		# print(f"[DEBUG] update_profile -> data: {data}")
+		# print(f"[DEBUG] update_profile -> initial profile.twofa_enabled: {profile.twofa_enabled}, profile.email: {profile.email}")
+
+
 		## save profile info in database ##
 		if updated_fields:
 			profile.save()
 
 			## generate response for successful updates ##
 			updated_fields_str = " and ".join(updated_fields)
+			print(f"[DEBUG] Updated fields: {updated_fields}")
 			return Response(
 				{
 					"success": True,
@@ -161,15 +203,17 @@ def update_profile(request):
 			)
 
 		## no updates detected, no event published ##
+		print(f"[DEBUG] No changes detected for user {user.username}")
 		return Response(
 			{"success": False, "message": "No changes detected in the request."},
-			status=400,
+			status=200,
 		)
 
 	except ValueError as e:
+		print(f"[DEBUG] Validation error: {e}")
 		return Response({"success": False, "message": str(e)}, status=400)
 
 	except Exception as e:
-		print(f"[ERROR] {e}")
+		print(f"[ERROR] Unexpected error: {e}")
 		return Response({"success": False, "message": "An error occurred."}, status=500)
 

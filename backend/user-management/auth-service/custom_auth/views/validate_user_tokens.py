@@ -61,14 +61,19 @@ class ValidateTokenView(BaseTokenView):
 			response = self.call_user_service(verification_url)
 			# check if the response from the user-service indicates success
 			if response.status_code == 200:
-				return Response({"detail": "Token is valid", "user_id": user_id}, status=status.HTTP_200_OK)
+				return Response(
+					{"detail": "Token is valid", "user_id": user_id},
+					status=status.HTTP_200_OK
+				)
 			else:
 				return Response({"error": "User not found"}, status=status.HTTP_404_NOT_FOUND)
 		except AuthenticationFailed as e:
 			return Response({"detail": str(e)}, status=status.HTTP_401_UNAUTHORIZED)
 		except Exception as e:
-			return Response({"error": "Service error occurred"}, status=status.HTTP_503_SERVICE_UNAVAILABLE)
-
+			return Response(
+				{"error": "Service error occurred"},
+				status=status.HTTP_503_SERVICE_UNAVAILABLE
+			)
 
 #############################################################
 ## This view retrieves user details based on a valid token ##
@@ -94,7 +99,10 @@ class GetUserFromTokenView(BaseTokenView):
 			try:
 				user_data = response.json()
 			except ValueError:
-				return Response({"error": "Malformed response from user-service"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+				return Response(
+					{"error": "Malformed response from user-service"},
+					status=status.HTTP_500_INTERNAL_SERVER_ERROR
+				)
 
 			return Response(user_data, status=status.HTTP_200_OK)
 		except AuthenticationFailed as e:

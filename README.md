@@ -111,18 +111,9 @@ USER_SERVICE_DB=myuserdb
 USER_SERVICE_USER=myuser
 USER_SERVICE_PASSWORD=mypassword
 
-
-CHAT_SERVICE_DB=mychatdb
-CHAT_SERVICE_USER=mychatuser
-CHAT_SERVICE_PASSWORD=mychatpassword
-
-PONG_SERVICE_DB=mypongdb
-PONG_SERVICE_USER=myponguser
-PONG_SERVICE_PASSWORD=mypongpassword
-
-LOBBY_SERVICE_DB=mylobbydb
-LOBBY_SERVICE_USER=mylobbyuser
-LOBBY_SERVICE_PASSWORD=mylobbypassword
+MATCH_SERVICE_DB=mymatchdb
+MATCH_SERVICE_USER=mymatchuser
+MATCH_SERVICE_PASSWORD=mymatchpassword
 
 # Django superuser
 DJANGO_SUPERUSER_USERNAME=admin
@@ -131,6 +122,9 @@ DJANGO_SUPERUSER_PASSWORD=hello
 
 DJANGO_DEBUG=True
 DJANGO_SECRET_KEY=mysecret
+
+GMAIL_USER=ashleyfletcher.ux@gmail.com
+GMAIL_APP_PASSWORD=fqheexcrjgnzoked
 ```
 
 **Note**: All services use HTTPS for secure communication. If using self-signed certificates, use `-k` in `curl` commands or `--no-check` in `wscat` to bypass certificate verification.
@@ -203,6 +197,36 @@ make rebuild-
 * Similary to previous make logs and rebuild, that can be specific to containers, we can also do the same with entering a container, just write the container name following the "-"
 ```bash
 make exec-postgres_db
+```
+
+* Check Redis for 2FA code
+* Input
+```bash
+docker exec -it redis sh
+```
+* Input
+```bash
+keys 2fa_code:*
+```
+- Response
+```plaintext
+"2fa_code:ash"
+```
+* Input
+```bash
+get 2fa_code:ash
+```
+- Response
+```plaintext
+"127702"
+```
+* Input
+```bash
+ttl 2fa_code:ash
+```
+- Response
+```plaintext
+(integer) 87
 ```
 
 ### Simluating Live Chat
