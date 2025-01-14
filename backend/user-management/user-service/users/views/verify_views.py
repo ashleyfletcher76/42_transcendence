@@ -6,13 +6,29 @@ from django.views import View
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import AllowAny
 
+from cryptography.fernet import Fernet
+from django.conf import settings
+
+cipher = Fernet(settings.SHARED_SECRET.encode())
+
 User = get_user_model()
 
 @api_view(['POST'])
 @permission_classes([AllowAny])
 def verify_user(request):
 	username = request.data.get("username")
-	password = request.data.get("password")
+	encypted_password = request.data.get("password")
+
+	if not username or not encypted_password:
+		return Response(
+			{"error": "Username and password are required."},
+			status=status.HTTP_400_BAD_REQUEST
+		)
+
+	try:
+		password = cipher.decrypt(encypted_password.encode()).decode()
+	except Exception as e:
+		return Response({"error": "Invalid ecnryption."}, status=status.HTTP_400_BAD_REQUEST)
 	user = authenticate(username=username, password=password)
 	if user:
 		# fetch user info
