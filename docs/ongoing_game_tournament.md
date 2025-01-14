@@ -53,4 +53,4 @@ If the user already has an active tournament_name, an error will be sent indicat
 }
 
 # Description:
-This action deletes the tournament_name for the user, indicating that the tournament has ended.
+This action deletes the tournament_name for the user, indicating that the tournament has ended.1

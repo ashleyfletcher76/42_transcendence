@@ -68,7 +68,6 @@ class GameConsumer(AsyncWebsocketConsumer):
             game["endloop"] = True
             if (game["game_type"] == "remote"):
                 delete_game_state(self.room_name)
-                return
             await self.channel_layer.group_send(
                 self.room_group_name,
                 {
@@ -210,6 +209,7 @@ class GameConsumer(AsyncWebsocketConsumer):
             await sleep(1 / 50)
             game = get_game_state(self.room_name)
 
+
             if not game["paused"]:
                 if game["p1_paddle"] == "up":
                     move_left_paddle(game, -1)
@@ -223,7 +223,8 @@ class GameConsumer(AsyncWebsocketConsumer):
             else:
                 time_diff = time.time() - timer
                 game["game_start_timer"] = int(max(0, 3 - time_diff))
-                if game["game_start_timer"] <= 0:
+                if game["game_start_timer"] < 0:
+                    game["game_start_timer"] = 0
                     game["paused"] = False
 
             set_game_state(self.room_name, game)
