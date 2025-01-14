@@ -125,6 +125,8 @@ DJANGO_SECRET_KEY=mysecret
 
 GMAIL_USER=ashleyfletcher.ux@gmail.com
 GMAIL_APP_PASSWORD=fqheexcrjgnzoked
+
+SHARED_SECRET=rV3YyB4MvFJcJHEIlyv3eLZ9oOE13yfwO-Pp9Uo2NF8=
 ```
 
 **Note**: All services use HTTPS for secure communication. If using self-signed certificates, use `-k` in `curl` commands or `--no-check` in `wscat` to bypass certificate verification.
