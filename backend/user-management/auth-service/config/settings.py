@@ -37,6 +37,8 @@ REDIS_URL = f"redis://{REDIS_HOST}:{REDIS_PORT}/{REDIS_DB}"
 GMAIL_USER = os.getenv("GMAIL_USER")
 GMAIL_APP_PASSWORD = os.getenv("GMAIL_APP_PASSWORD")
 
+SHARED_SECRET = os.environ.get("SHARED_SECRET")
+
 # Application definition
 
 INSTALLED_APPS = [

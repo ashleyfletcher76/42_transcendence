@@ -2,10 +2,16 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.views import APIView
-from rest_framework.permissions import IsAuthenticated, AllowAny
+from rest_framework.permissions import IsAuthenticated
 import requests
 from .redis_views import TwoFAService
 from .shared_view import generate_tokens_and_status
+
+from cryptography.fernet import Fernet
+from django.conf import settings
+
+
+cipher = Fernet(settings.SHARED_SECRET.encode())
 
 class LoginView(APIView):
 	authentication_classes = []
@@ -15,9 +21,17 @@ class LoginView(APIView):
 		username = request.data.get("username")
 		password = request.data.get("password")
 
+		if not username or not password:
+			return Response(
+				{"error": "Username and password are required."},
+				status=status.HTTP_400_BAD_REQUEST
+			)
+
+		encrypted_password = cipher.encrypt(password.encode()).decode()
+
 		# send verification to user-service
 		verification_url = "http://user-service:8000/users/verify/"
-		response = requests.post(verification_url, json={"username": username, "password": password})
+		response = requests.post(verification_url, json={"username": username, "password": encrypted_password})
 
 		print("Verification Status Code:", response.status_code)
 		print("Verification Response JSON:", response.json())

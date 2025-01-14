@@ -78,6 +78,7 @@ services:
       REDIS_DB: 0
       GMAIL_USER: ${GMAIL_USER}
       GMAIL_APP_PASSWORD: ${GMAIL_APP_PASSWORD}
+      SHARED_SECRET: ${SHARED_SECRET}
     networks:
       my_network:
     healthcheck:
@@ -104,6 +105,7 @@ services:
       DJANGO_SUPERUSER_USERNAME: ${DJANGO_SUPERUSER_USERNAME}
       DJANGO_SUPERUSER_EMAIL: ${DJANGO_SUPERUSER_EMAIL}
       DJANGO_SUPERUSER_PASSWORD: ${DJANGO_SUPERUSER_PASSWORD}
+      SHARED_SECRET: ${SHARED_SECRET}
     networks:
       my_network:
     healthcheck:
@@ -173,8 +175,6 @@ services:
 
   pong-game:
     build: ./../backend/pong
-    volumes:
-      - ./../backend/pong:/app
     container_name: pong
     environment:
       DJANGO_SECRET_KEY: ${DJANGO_SECRET_KEY}
@@ -200,8 +200,6 @@ services:
 
   lobby:
     build: ./../backend/lobby
-    volumes:
-      - ./../backend/lobby:/app
     container_name: lobby
     environment:
       DJANGO_SECRET_KEY: ${DJANGO_SECRET_KEY}

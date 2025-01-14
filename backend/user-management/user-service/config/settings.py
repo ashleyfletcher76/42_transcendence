@@ -36,6 +36,8 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 REDIS_URL = "redis://redis:6379"
 
+SHARED_SECRET = os.environ.get("SHARED_SECRET")
+
 # Application definition
 
 INSTALLED_APPS = [
