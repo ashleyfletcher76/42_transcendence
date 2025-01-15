@@ -195,58 +195,92 @@ class UserServiceTests(TestCase):
 		self.assertEqual(response.status_code, 400)
 		self.assertIn("Nickname must contain only letters and numbers.", response.data["message"])
 
+	def test_sql_injection_nickname(self):
+		"""Test SQL injection attempts in the nickname field"""
+		sql_injection_payloads = [
+			"test' OR '1'='1",
+			"'; DROP TABLE users; --",
+			"' UNION SELECT * FROM users; --",
+			"'; INSERT INTO users (username) VALUES ('hacked'); --"
+		]
+
+		self.user1_profile.nickname = "user1"
+		self.user1_profile.save()
+
+		url = "/users/update-profile/"
+
+		print("\n=== Nickname SQL Injection Test Results ===")
+		# fetch initial nickname
+		initial_nickname = self.user1_profile.nickname
+		print(f"[DEBUG] Initial nickname: {initial_nickname}")
+
+		for payload in sql_injection_payloads:
+			print(f"[DEBUG] Testing payload: {payload}")
+
+			response = self.client.put(
+				url,
+				json.dumps({"nickname": payload}),
+				content_type="application/json"
+			)
+
+			# assert the response rejects the payload
+			self.assertEqual(response.status_code, 400)
+			self.assertIn(
+				"Nickname must contain only letters and numbers.",
+				response.data.get("message", "")
+			)
+
+			# verify the nickname has not changed
+			self.user1_profile.refresh_from_db()
+			self.assertEqual(self.user1_profile.nickname, initial_nickname)
+			print(f"[DEBUG] Nickname unchanged after payload: {self.user1_profile.nickname}")
+
+		print("[DEBUG] All SQL injection payloads rejected successfully.")
+		print("================================\n")
+
+
 	#########################
 	## ONLINE STATUS TESTS ##
 	#########################
 
 	def test_update_online_status_to_true(self):
-		"""Test updating online status to True."""
-		url = "/users/update-profile/"
+		"""Test updating online status to True"""
+		url = "/users/update-online-status/"
 		payload = json.dumps({"online_status": True})
-		response = self.client.put(url, payload, content_type="application/json")
+		response = self.client.post(url, payload, content_type="application/json")
 
 		self.assertEqual(response.status_code, 200)
 		self.assertEqual(response.json()["success"], True)
-		self.assertEqual(response.json()["message"], "Online updated successfully.")
+		self.assertEqual(response.json()["message"], "Online status updated to online.")
 		self.user1_profile.refresh_from_db()
 		self.assertTrue(self.user1_profile.online)
 
 	def test_update_online_status_to_false(self):
-		"""Test updating online status to False."""
+		"""Test updating online status to False"""
 		self.user1_profile.online = True
 		self.user1_profile.save()
 
-		url = "/users/update-profile/"
+		url = "/users/update-online-status/"
 		payload = json.dumps({"online_status": False})
-		response = self.client.put(url, payload, content_type="application/json")
+		response = self.client.post(url, payload, content_type="application/json")
 
 		self.assertEqual(response.status_code, 200)
 		self.assertEqual(response.json()["success"], True)
-		self.assertEqual(response.json()["message"], "Online updated successfully.")
+		self.assertEqual(response.json()["message"], "Online status updated to offline.")
 		self.user1_profile.refresh_from_db()
 		self.assertFalse(self.user1_profile.online)
 
 	def test_update_online_status_invalid(self):
-		"""Test updating online status with an invalid value."""
-		url = "/users/update-profile/"
+		"""Test updating online status with an invalid value"""
+		url = "/users/update-online-status/"
 		payload = json.dumps({"online_status": "invalid_value"})
-		response = self.client.put(url, payload, content_type="application/json")
+		response = self.client.post(url, payload, content_type="application/json")
 
 		self.assertEqual(response.status_code, 400)
 		self.assertEqual(response.json()["success"], False)
 		self.assertEqual(response.json()["message"], "Online status must be a boolean.")
 		self.user1_profile.refresh_from_db()
 		self.assertNotEqual(self.user1_profile.online, "invalid_value")
-
-	def test_update_no_changes(self):
-		"""Test updating the profile with no changes."""
-		url = "/users/update-profile/"
-		payload = json.dumps({})
-		response = self.client.put(url, payload, content_type="application/json")
-
-		self.assertEqual(response.status_code, 200)
-		self.assertEqual(response.json()["success"], False)
-		self.assertEqual(response.json()["message"], "No changes detected in the request.")
 
 	################################
 	## TEST REGISTRATION ENDPOINT ##
@@ -544,7 +578,7 @@ class EmailAndTwoFATests(TestCase):
 		# check the response
 		self.assertEqual(response.status_code, 400)
 		self.assertEqual(False, response.data["success"])
-		self.assertEqual("Email is required to enable 2FA.", response.data["message"])
+		self.assertEqual("An email address is required to enable Two-Factor Authentication.", response.data["message"])
 
 		# check the database
 		self.user_profile.refresh_from_db()

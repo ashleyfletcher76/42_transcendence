@@ -95,6 +95,13 @@ def update_profile(request):
 		elif new_twofa.lower() in ("false", "0"):
 			new_twofa = False
 
+	# check the values to be one of these
+	if new_twofa not in [True, False, None]:
+		return Response(
+			{"success": False, "message": "2FA status must be a boolean."},
+			status=400
+		)
+
 	no_changes_detected = (
 		(new_nickname == old_nickname or not new_nickname) and
 		(new_email == old_email or not new_email) and
@@ -107,7 +114,7 @@ def update_profile(request):
 		return Response(
 			{
 				"success": False,
-				"message": "No changes detected."
+				"message": "No changes detected in the request."
 			},
 			status=200
 		)

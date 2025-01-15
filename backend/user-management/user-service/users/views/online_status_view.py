@@ -19,11 +19,19 @@ def update_online_status(request):
 			)
 
 		if isinstance(online_status, str):
+			if online_status.lower() not in ("true", "false", "1", "0"):
+				return Response(
+					{"success": False, "message": "Online status must be a boolean."},
+					status=400
+				)
 			online_status = online_status.lower() in ("true", "1")
 
 		if not isinstance(online_status, bool):
 			return Response(
-				{"success": False, "message": "online_status must be a boolean value."},
+				{
+					"success": False,
+					"message": "Online status must be a boolean."
+				},
 				status=400
 			)
 
@@ -43,6 +51,9 @@ def update_online_status(request):
 		# catch any unexpected errors
 		print(f"[ERROR] Failed to update online status: {e}")
 		return Response(
-			{"success": False, "message": "An error occurred while updating online status."},
+			{
+				"success": False,
+				"message": "An error occurred while updating online status."
+			},
 			status=500,
 		)

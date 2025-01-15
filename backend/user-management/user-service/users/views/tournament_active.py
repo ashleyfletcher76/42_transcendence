@@ -14,6 +14,8 @@ class TournamentActive(APIView):
 		tournament_name = request.data.get('tournament_name')
 		action_type = request.data.get('action_type')
 
+		# print(f"-------- Action_type: {action_type} -----------")
+
 		# validate action_type
 		if action_type not in ["start", "end_game", "end_tournament"]:
 			return Response(
@@ -61,10 +63,10 @@ class TournamentActive(APIView):
 			user_profile.tournament_active = False
 			user_profile.tournament_name = None
 
-		# Save updates
+		# save updates
 		user_profile.save()
 
-		# Return success response
+		# return success response
 		return Response(
 			{
 				"success": True,

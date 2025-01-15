@@ -81,21 +81,22 @@ def get_profile_token(request):
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def get_profile_info(request):
+
 	try:
 		# extract nickname from request
 		data = request.data
-		nickname = data.get("nickname", "").strip()
+		nickname = data.get("nickname")
 
-		if nickname:
+		if not nickname or nickname.strip() == "":
+			user = request.user
+		else:
+			nickname = nickname.strip()
 			user = User.objects.filter(profile__nickname=nickname).first()
 			if not user:
 				return Response(
 					{"error": "User with given nickname not found."},
 					status=404
 				)
-		else:
-			# fetch from requester
-			user = request.user
 
 		# retrieve profile details
 		profile = user.profile
@@ -119,6 +120,8 @@ def get_profile_info(request):
 				match_history = {"error": "Could not fetch match history"}
 		except requests.RequestException as e:
 			match_history = {"error": str(e)}
+
+		# print(f"------------- Game Active: {profile.game_active} -------------")
 
 		# response
 		profile_response = {
