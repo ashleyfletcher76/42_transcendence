@@ -6,7 +6,7 @@ from asyncio import sleep
 import asyncio
 from channels.generic.websocket import AsyncWebsocketConsumer
 from .utils.redis_helper import get_game_state, set_game_state, delete_game_state
-from .logic.game_logic import game_logic, move_right_paddle, move_left_paddle, end_game_logic
+from .logic.game_logic import game_logic, move_right_paddle, move_left_paddle
 from .logic.ai import PongAI
 from .utils.match_history import upload_match_details, end_game
 
@@ -42,7 +42,7 @@ class GameConsumer(AsyncWebsocketConsumer):
         game = get_game_state(self.room_name)
         print(game)
         if game["started"]:
-            print(f"Reconnentcttion for {self.nickname}")
+            print(f"Reconnentction for {self.nickname}")
             game["connections"] += 1
             if game["player1"] == self.nickname:
                 game["p1_connected"] = True
@@ -52,9 +52,11 @@ class GameConsumer(AsyncWebsocketConsumer):
             if game["player1"] == self.nickname:
                 game["player1_token"] = self.token
                 game["p1_connected"] = True
+                game["player1_id"] = self.user_id
             elif game["player2"] == self.nickname:
                 game["player2_token"] = self.token
                 game["p2_connected"] = True
+                game["player2_id"] = self.user_id
             if "connections" not in game:
                 game["connections"] = 0
             game["connections"] += 1
@@ -73,18 +75,22 @@ class GameConsumer(AsyncWebsocketConsumer):
 
 
     async def disconnect(self, close_code):
-
-        await self.channel_layer.group_discard(
-            self.room_group_name,
-            self.channel_name
-        )
-        game = get_game_state(self.room_name)
-        game["connections"] -= 1
-        set_game_state(self.room_name, game)
-        if game["started"] and game["connections"] != 0:
-            await self.handle_disconnect()
-        if (game["connections"] == 0):
-            await self.handle_end_game()
+        if not hasattr(self, "disconnected") or not self.disconnected:
+            self.disconnected = True
+            await self.channel_layer.group_discard(
+                self.room_group_name,
+                self.channel_name
+            )
+            game = get_game_state(self.room_name)
+            game["connections"] -= 1
+            print(f"game connections = {game["connections"]} player = {self.nickname}")
+            set_game_state(self.room_name, game)
+            if game["started"] and game["connections"] > 0:
+                print("handle_disconnect")
+                await self.handle_disconnect()
+            elif game["connections"] == 0:
+                print("handle_end_game")
+                await self.handle_end_game()
 
     async def receive(self, text_data):
         try:
@@ -128,23 +134,26 @@ class GameConsumer(AsyncWebsocketConsumer):
 
 
     async def game_update(self, event):
-        game_state = event["game_state"]
-
-        await self.send(text_data=json.dumps({
-            "room_name" : game_state["room_name"],
-            "player1" : game_state["player1"],
-            "player2" : game_state["player2"],
-            "ball_x" : game_state["ball_x"],
-            "ball_y" : game_state["ball_y"],
-            "ball_speed_x" : game_state["ball_speed_x"],
-            "ball_speed_y" : game_state["ball_speed_y"],
-            "left_paddle_y" : game_state["left_paddle_y"],
-            "right_paddle_y" : game_state["right_paddle_y"],
-            "left_score" : game_state["left_score"],
-            "right_score" : game_state["right_score"],
-            "winner" : game_state["winner"],
-            "game_start_timer" : game_state["game_start_timer"],
-        }))
+        try:
+            game_state = event["game_state"]
+            await self.send(text_data=json.dumps({
+                "room_name" : game_state["room_name"],
+                "player1" : game_state["player1"],
+                "player2" : game_state["player2"],
+                "ball_x" : game_state["ball_x"],
+                "ball_y" : game_state["ball_y"],
+                "ball_speed_x" : game_state["ball_speed_x"],
+                "ball_speed_y" : game_state["ball_speed_y"],
+                "left_paddle_y" : game_state["left_paddle_y"],
+                "right_paddle_y" : game_state["right_paddle_y"],
+                "left_score" : game_state["left_score"],
+                "right_score" : game_state["right_score"],
+                "winner" : game_state["winner"],
+                "game_start_timer" : game_state["game_start_timer"],
+            }))
+        except RuntimeError as e:
+            if "websocket.send" in str(e):
+                print(f"Attempted to send on a closed WebSocket: {e}")
     
 
     async def start_game(self, event):
@@ -185,21 +194,23 @@ class GameConsumer(AsyncWebsocketConsumer):
         if game["player2"] == self.nickname:
             game["p2_connected"] = False
         set_game_state(self.room_name, game)
-        self.disconnection_task = asyncio.create_task(self.disconnection_task())
 
-    async def disconnection_task(self):
-        await sleep(15)
+        if hasattr(self, "disconnection_task") and not self.disconnection_task.done():
+            self.disconnection_task.cancel()
+
+        self.disconnection_task = asyncio.create_task(self._disconnection_handler())
+
+    async def _disconnection_handler(self):
+        await asyncio.sleep(15)
         game = get_game_state(self.room_name)
-        if game["player1"] == self.nickname:
-            if not game["p1_connected"]:
-                game["winner"] = game["player2"]
-                game["paused"] = True
-                game["finished"] = True
-        if game["player2"] == self.nickname:
-            if not game["p2_connected"]:
-                game["winner"] = game["player1"]
-                game["paused"] = True
-                game["finished"] = True
+        if game["player1"] == self.nickname and not game["p1_connected"]:
+            game["winner"] = game["player2"]
+            game["paused"] = True
+            game["finished"] = True
+        if game["player2"] == self.nickname and not game["p2_connected"]:
+            game["winner"] = game["player1"]
+            game["paused"] = True
+            game["finished"] = True
         set_game_state(self.room_name, game)
 
     async def handle_end_game(self):
@@ -207,7 +218,13 @@ class GameConsumer(AsyncWebsocketConsumer):
         if game["game_type"] == "remote" and game["player2"] == "remote":
             delete_game_state(self.room_name)
             return
-        game["winner"] = random.choice([game["player1"], game["player2"]])
+        winner = game["player1"] if game["left_score"] > game["right_score"] else game["player2"]
+        if game["left_score"] == game["right_score"]:
+            winner = random.choice([game["player1"], game["player2"]])
+        game["winner"] = winner
+        game["paused"] = True
+        game["finished"] = True
+        print(f"{game["finished"]} == game finished")
         set_game_state(self.room_name, game)
 
         
@@ -217,6 +234,7 @@ class GameConsumer(AsyncWebsocketConsumer):
         Start a loop that runs at ~50 FPS to update and broadcast the game state.
         """
         timer = time.time()
+        timer_flag = True
         while True:
             await sleep(1 / 50)
             game = get_game_state(self.room_name)
@@ -235,12 +253,11 @@ class GameConsumer(AsyncWebsocketConsumer):
             else:
                 time_diff = time.time() - timer
                 game["game_start_timer"] = int(max(0, 3 - time_diff))
-                if game["game_start_timer"] < 0:
-                    game["game_start_timer"] = 0
+                if game["game_start_timer"] <= 0 and timer_flag:
+                    timer_flag = False
                     game["paused"] = False
 
             set_game_state(self.room_name, game)
-
             await self.channel_layer.group_send(
                 self.room_group_name,
                 {
@@ -248,21 +265,16 @@ class GameConsumer(AsyncWebsocketConsumer):
                     "game_state": game,
                 }
             )
-            if game.get("finished") or game.get("endloop"):
-                await self.channel_layer.group_send(
-                    self.room_group_name,
-                    {
-                        "type": "game_stat",
-                        "game_state": game,
-                    }
-                )
+            if game.get("finished"):
+                print("end game functions starts here")
                 if game["player1_token"] != "":
-                    print("end_game send for player 1")
+                    self.game_stat_send(game, game["player1"], game["player1_id"], game["player1_token"])
                     await end_game(game["player1_token"])
                 if game["player2_token"] != "":
-                    print("end_game send for player 2")
                     await end_game(game["player2_token"])
+                    self.game_stat_send(game, game["player2"], game["player2_id"], game["player2_token"])
                 break
+
     
     async def start_game_loop_ai(self):
         ai_player = PongAI()
@@ -278,7 +290,7 @@ class GameConsumer(AsyncWebsocketConsumer):
                     left_score=game["left_score"]
                 )
                 set_game_state(self.room_name, game)
-            if game.get("finished") or game.get("endloop"):
+            if game.get("finished"):
                 break
 
 
@@ -303,15 +315,11 @@ class GameConsumer(AsyncWebsocketConsumer):
                 return header[1].decode("utf-8").split("Bearer ")[-1]
         return None
     
-    async def game_stat(self, event):
-        game = event["game_state"]
-        self.game_stat_send(game)
-    
-    def game_stat_send(self, game):
+    def game_stat_send(self, game, nickname, id, token):
         if game["game_type"] == "tournament":
             return
-        opponent = game["player2"] if self.nickname == game["player1"] else game["player1"]
-        if game["winner"] == self.nickname:
+        opponent = game["player2"] if nickname == game["player1"] else game["player1"]
+        if game["winner"] == nickname:
             result = "win"
             left_score = max(game["left_score"], game["right_score"])
             right_score = min(game["left_score"], game["right_score"])
@@ -320,4 +328,4 @@ class GameConsumer(AsyncWebsocketConsumer):
             left_score = game["left_score"]
             right_score = game["right_score"]
         score = f"{left_score}-{right_score}"
-        upload_match_details(self.nickname, self.user_id, opponent, result, score, self.token)
+        upload_match_details(nickname, id, opponent, result, score, token)
