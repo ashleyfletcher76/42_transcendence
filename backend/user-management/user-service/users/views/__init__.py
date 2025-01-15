@@ -13,3 +13,4 @@ from users.views.block_user_view import BlockUserView
 from users.views.update_profile_view import update_profile
 from users.views.tournament_active import TournamentActive
 from users.views.game_status_view import check_game_status
+from users.views.online_status_view import update_online_status

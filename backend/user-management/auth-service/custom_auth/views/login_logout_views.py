@@ -138,10 +138,10 @@ class LogoutView(APIView):
 			access_token = auth_header.split(" ")[1]
 
 			# mark as offline
-			update_url = f"http://user-service:8000/users/update-profile/"
-			updated_response = requests.put(
+			update_url = f"http://user-service:8000/users/update-online-status/"
+			updated_response = requests.post(
 				update_url,
-				json={"nickname": nickname, "online_status": False},
+				json={"online_status": False},
 				headers={"Authorization": f"Bearer {access_token}"}
 			)
 

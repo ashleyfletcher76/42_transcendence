@@ -15,10 +15,10 @@ def generate_tokens_and_status(user_data):
 	access_token = refresh.access_token
 
 	# mark as online
-	update_url = f"http://user-service:8000/users/update-profile/"
-	update_response = requests.put(
+	update_url = f"http://user-service:8000/users/update-online-status/"
+	update_response = requests.post(
 		update_url,
-		json={"nickname": nickname, "online_status": True},
+		json={"online_status": True},
 		headers={"Authorization": f"Bearer {access_token}"}
 	)
 

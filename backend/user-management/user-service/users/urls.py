@@ -9,6 +9,7 @@ from .views.verify_views import verify_user, UserExistsView
 from .views.update_profile_view import update_profile
 from .views.tournament_active import TournamentActive
 from .views.game_status_view import check_game_status
+from .views.online_status_view import update_online_status
 from .views.get_user_info_view import (
 	get_single_user_data,
 	get_profile_token,
@@ -30,6 +31,7 @@ urlpatterns = [
 	path("profile-info/", get_profile_info, name="get-profile-info"),
 	path("profile-list/", get_all_profiles, name="get-all-profiles"),
 	path("update-profile/", update_profile, name="update-profiles"),
+	path("update-online-status/", update_online_status, name="update-online-status"),
 
 	path("get-single-user-data/<int:user_id>/", get_single_user_data, name="get-single-user-data"),
 
