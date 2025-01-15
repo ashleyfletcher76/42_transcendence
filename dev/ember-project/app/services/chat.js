@@ -142,6 +142,11 @@ export default class ChatService extends Service {
   }
 
   sendGameAccept(data, user) {
+    console.log("asdas");
+    this.messages = this.messages.filter(
+      message => !(message.type === "invite" && message.from === user)
+    );
+    console.log(this.messages);
     this.socketRef.send(
       JSON.stringify({
         type: 'invite',

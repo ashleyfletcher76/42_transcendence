@@ -16,8 +16,8 @@ export default class GameDataService extends Service {
 
   async reconnect(data) {
     const roomData = {
-      player1: data?.player_1 || null,
-      player2: data?.player_2 || null,
+      player1: data?.player1 || null,
+      player2: data?.player2 || null,
       room_name: data?.room_name || null,
     };
     this.setGameData("reconnect", roomData);
@@ -28,7 +28,6 @@ export default class GameDataService extends Service {
     this.roomData = roomData;
 
     this.pongGame.winner = null;
-    // Fetch user data for player_1 and player_2 asynchronously
     if (roomData.player1 !== 'AI' && roomData.player1 !== 'local')
       this.player_1 = await this.fetchUserData(roomData.player1);
     else if (roomData.player1 !== 'local')
