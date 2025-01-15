@@ -42,7 +42,6 @@ async def end_game(token):
                 print(response.json)
                 return response.json()
             elif response.status_code == 404:
-                print(f"Endpoint not found: {response.url}")
                 return {"error": "Endpoint not found"}
             else:
                 print(f"Request failed with status {response.status_code}: {response.text}")
