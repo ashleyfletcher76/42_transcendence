@@ -89,8 +89,8 @@ def get_profile_info(request):
 
 		if not nickname or nickname.strip() == "":
 			user = request.user
-			# if nickname.strip() == "":
-			show_game_active = True
+			if nickname.strip() == "":
+				show_game_active = True
 		else:
 			nickname = nickname.strip()
 			user = User.objects.filter(profile__nickname=nickname).first()
