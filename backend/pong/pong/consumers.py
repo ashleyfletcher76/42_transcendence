@@ -6,14 +6,14 @@ from asyncio import sleep
 import asyncio
 from channels.generic.websocket import AsyncWebsocketConsumer
 from .utils.redis_helper import get_game_state, set_game_state, delete_game_state
-from .logic.game_logic import game_logic, move_right_paddle, move_left_paddle
+from .logic.game_logic import game_logic, move_right_paddle, move_left_paddle, end_game_logic
 from .logic.ai import PongAI
-from .utils.match_history import upload_match_details
+from .utils.match_history import upload_match_details, end_game
 
 
 class GameConsumer(AsyncWebsocketConsumer):
     async def connect(self):
-        
+
         self.room_name = self.scope['url_route']['kwargs']['room_name']
         self.room_group_name = f'game_{self.room_name}'
 
@@ -40,42 +40,51 @@ class GameConsumer(AsyncWebsocketConsumer):
         await self.accept()
 
         game = get_game_state(self.room_name)
-        if "connections" not in game:
-            game["connections"] = 0
-        game["connections"] += 1
+        print(game)
+        if game["started"]:
+            print(f"Reconnentcttion for {self.nickname}")
+            game["connections"] += 1
+            if game["player1"] == self.nickname:
+                game["p1_connected"] = True
+            elif game["player2"] == self.nickname:
+                game["p2_connected"] = True
+        else:
+            if game["player1"] == self.nickname:
+                game["player1_token"] = self.token
+                game["p1_connected"] = True
+            elif game["player2"] == self.nickname:
+                game["player2_token"] = self.token
+                game["p2_connected"] = True
+            if "connections" not in game:
+                game["connections"] = 0
+            game["connections"] += 1
+            if game["connections"] == 2 or game["player2"] == "local" or game["player2"] == "AI":
+                game["started"] = True
+                self.game_task = asyncio.create_task(self.start_game_loop())
+                if game["player2"] == "AI":
+                    self.ai_task = asyncio.create_task(self.start_game_loop_ai())
+                await self.channel_layer.group_send(
+                    self.room_group_name,
+                    {
+                        "type": "start_game"
+                    }
+                )
         set_game_state(self.room_name, game)
-        if game["connections"] == 2 or game["player2"] == "local" or game["player2"] == "AI":
-            self.game_task = asyncio.create_task(self.start_game_loop())
-            if game["player2"] == "AI":
-                self.game_task = asyncio.create_task(self.start_game_loop_ai())
-            await self.channel_layer.group_send(
-                self.room_group_name,
-                {
-                    "type": "start_game"
-                }
-            )
 
 
     async def disconnect(self, close_code):
+
         await self.channel_layer.group_discard(
             self.room_group_name,
             self.channel_name
         )
-
         game = get_game_state(self.room_name)
         game["connections"] -= 1
-        if (game["connections"] == 0):
-            game["endloop"] = True
-            if (game["game_type"] == "remote"):
-                delete_game_state(self.room_name)
-            await self.channel_layer.group_send(
-                self.room_group_name,
-                {
-                    "type": "end_game"
-                }
-            )
-                
         set_game_state(self.room_name, game)
+        if game["started"] and game["connections"] != 0:
+            await self.handle_disconnect()
+        if (game["connections"] == 0):
+            await self.handle_end_game()
 
     async def receive(self, text_data):
         try:
@@ -167,36 +176,39 @@ class GameConsumer(AsyncWebsocketConsumer):
             print(f"Unexpected error: {str(e)}")
             return {"error": "An unexpected error occurred"}
 
-    async def end_game(self, event):
-        try:
-            print("end game info send")
-            url = "http://user-service:8000/users/tournament-active/"
-            headers = {
-                "Authorization": f"Bearer {self.token}",
-                "Content-Type": "application/json"
-            }
-            payload = {
-                "action_type": "end_game"
-            }
-            async with httpx.AsyncClient() as client:
-                response = await client.post( url, headers=headers, json=payload )
-            if response.status_code == 200:
-                print(response.json)
-                return response.json()
-            elif response.status_code == 404:
-                print(f"Endpoint not found: {response.url}")
-                return {"error": "Endpoint not found"}
-            else:
-                print(f"Request failed with status {response.status_code}: {response.text}")
-                return {"error": f"Request failed with status {response.status_code}"}
-        except httpx.RequestError as e:
-            print(f"HTTP request error: {str(e)}")
-            return {"error": "HTTP request failed"}
-        except Exception as e:
-            print(f"Unexpected error: {str(e)}")
-            return {"error": "An unexpected error occurred"}
 
+    async def handle_disconnect(self):
+        game = get_game_state(self.room_name)
+        game["paused"] = True
+        if game["player1"] == self.nickname:
+            game["p1_connected"] = False
+        if game["player2"] == self.nickname:
+            game["p2_connected"] = False
+        set_game_state(self.room_name, game)
+        self.disconnection_task = asyncio.create_task(self.disconnection_task())
 
+    async def disconnection_task(self):
+        await sleep(15)
+        game = get_game_state(self.room_name)
+        if game["player1"] == self.nickname:
+            if not game["p1_connected"]:
+                game["winner"] = game["player2"]
+                game["paused"] = True
+                game["finished"] = True
+        if game["player2"] == self.nickname:
+            if not game["p2_connected"]:
+                game["winner"] = game["player1"]
+                game["paused"] = True
+                game["finished"] = True
+        set_game_state(self.room_name, game)
+
+    async def handle_end_game(self):
+        game = get_game_state(self.room_name)
+        if game["game_type"] == "remote" and game["player2"] == "remote":
+            delete_game_state(self.room_name)
+            return
+        game["winner"] = random.choice([game["player1"], game["player2"]])
+        set_game_state(self.room_name, game)
 
         
 
@@ -244,12 +256,12 @@ class GameConsumer(AsyncWebsocketConsumer):
                         "game_state": game,
                     }
                 )
-                await self.channel_layer.group_send(
-                    self.room_group_name,
-                    {
-                        "type": "end_game"
-                    }
-                )
+                if game["player1_token"] != "":
+                    print("end_game send for player 1")
+                    await end_game(game["player1_token"])
+                if game["player2_token"] != "":
+                    print("end_game send for player 2")
+                    await end_game(game["player2_token"])
                 break
     
     async def start_game_loop_ai(self):

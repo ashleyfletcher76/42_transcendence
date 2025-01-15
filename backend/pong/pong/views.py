@@ -90,9 +90,12 @@ def create_room(request):
             "right_score" : 0,
             "player1" : player_1,
             "player2" : player_2,
+            "p1_connected" : False,
+            "p2_connected" : False,
             "predict_ai" : 0,
             "ai_mode" : 0,
             "paused" : True,
+            "started" : False,
             "game_type" : game_type,
             "game_start_timer" : 4,
             "creation_time" : time.time(),
@@ -103,6 +106,8 @@ def create_room(request):
             "p2_paddle" : "",
             "endloop" : False,
             "winner" : "",
+            "player1_token": "",
+            "player2_token": ""
         }
 
         set_game_state(room_name, game_state)
