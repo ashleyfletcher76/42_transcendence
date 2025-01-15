@@ -49,11 +49,10 @@
   const __COLOCATED_TEMPLATE__ = (0, _templateFactory.createTemplateFactory)(
   /*
     <div class="ball" style={{this.ballStyle}}></div>
-  
   */
   {
-    "id": "ftKo66ND",
-    "block": "[[[10,0],[14,0,\"ball\"],[15,5,[30,0,[\"ballStyle\"]]],[12],[13],[1,\"\\n\"]],[],false,[\"div\"]]",
+    "id": "QmPNUz27",
+    "block": "[[[10,0],[14,0,\"ball\"],[15,5,[30,0,[\"ballStyle\"]]],[12],[13]],[],false,[\"div\"]]",
     "moduleName": "myapp/components/ball.hbs",
     "isStrictMode": false
   });
@@ -966,49 +965,44 @@
   const __COLOCATED_TEMPLATE__ = (0, _templateFactory.createTemplateFactory)(
   /*
     <div class="container-row chat-container">
-  <div class="btn-group" role="group" aria-label="Basic checkbox toggle button group">
-    <input type="checkbox" class="btn-check" id="btncheck1" autocomplete="off" checked={{this.showGeneral}} {{on "change" (fn this.toggleCheckbox "all")}}>
-    <label class="btn btn-outline-secondary btn-sm" for="btncheck1">General</label>
+    <div class="btn-group" role="group" aria-label="Basic checkbox toggle button group">
+      <input type="checkbox" class="btn-check" id="btncheck1" autocomplete="off" checked={{this.showGeneral}}
+        {{on "change" (fn this.toggleCheckbox "all" )}}>
+      <label class="btn btn-outline-secondary btn-sm" for="btncheck1">General</label>
   
-    <input type="checkbox" class="btn-check" id="btncheck2" autocomplete="off" checked={{this.showWhisper}} {{on "change" (fn this.toggleCheckbox "whisper")}}>
-    <label class="btn btn-outline-secondary btn-sm" for="btncheck2">Whisper</label>
+      <input type="checkbox" class="btn-check" id="btncheck2" autocomplete="off" checked={{this.showWhisper}}
+        {{on "change" (fn this.toggleCheckbox "whisper" )}}>
+      <label class="btn btn-outline-secondary btn-sm" for="btncheck2">Whisper</label>
   
-    <input type="checkbox" class="btn-check" id="btncheck3" autocomplete="off" checked={{this.showTournament}} {{on "change" (fn this.toggleCheckbox "tournament")}}>
-    <label class="btn btn-outline-secondary btn-sm" for="btncheck3">Tournament</label>
+      <input type="checkbox" class="btn-check" id="btncheck3" autocomplete="off" checked={{this.showTournament}}
+        {{on "change" (fn this.toggleCheckbox "tournament" )}}>
+      <label class="btn btn-outline-secondary btn-sm" for="btncheck3">Tournament</label>
   
-    <input type="checkbox" class="btn-check" id="btncheck4" autocomplete="off" checked={{this.showSystem}} {{on "change" (fn this.toggleCheckbox "system")}}>
-    <label class="btn btn-outline-secondary btn-sm" for="btncheck4">System</label>
-  </div>
-  
-  <div class="scrollable-list chat" >
-    {{#each this.filteredMessages as |message|}}
-      <Message @message={{message}} @ownNickname={{this.chat.user.profile.nickname}}/>
-    {{/each}}
-  </div>
-  
-  {{!-- Corrected template --}}
-  <div class="input-group">
-    <input
-      type="text"
-      class="form-control"
-      placeholder="Put your message here"
-      style="color: {{this.chat.inputColor}};"
-      aria-label="Recipient's username"
-      aria-describedby="basic-addon2"
-      value={{this.chat.messageInput}}
-      {{on "input" this.updateInputValue}}
-      {{on "keydown" this.handleKeyDown}}
-      {{did-insert this.setInputRef}}
-    >
-    <div class="input-group-append">
-      <button class="btn btn-outline-secondary" type="button" {{on "click" this.sendMessage}}>Send</button>
+      <input type="checkbox" class="btn-check" id="btncheck4" autocomplete="off" checked={{this.showSystem}} {{on "change"
+        (fn this.toggleCheckbox "system" )}}>
+      <label class="btn btn-outline-secondary btn-sm" for="btncheck4">System</label>
     </div>
-  </div>
+  
+    <div class="scrollable-list chat">
+      {{#each this.filteredMessages as |message|}}
+      <Message @message={{message}} @ownNickname={{this.chat.user.profile.nickname}} />
+      {{/each}}
+    </div>
+  
+    {{!-- Corrected template --}}
+    <div class="input-group">
+      <input type="text" class="form-control" placeholder="Put your message here" style="color: {{this.chat.inputColor}};"
+        aria-label="Recipient's username" aria-describedby="basic-addon2" value={{this.chat.messageInput}} {{on "input"
+        this.updateInputValue}} {{on "keydown" this.handleKeyDown}} {{did-insert this.setInputRef}}>
+      <div class="input-group-append">
+        <button class="btn btn-outline-secondary" type="button" {{on "click" this.sendMessage}}>Send</button>
+      </div>
+    </div>
   </div>
   */
   {
-    "id": "cHPyaJUo",
-    "block": "[[[10,0],[14,0,\"container-row chat-container\"],[12],[1,\"\\n\"],[10,0],[14,0,\"btn-group\"],[14,\"role\",\"group\"],[14,\"aria-label\",\"Basic checkbox toggle button group\"],[12],[1,\"\\n  \"],[11,\"input\"],[24,0,\"btn-check\"],[24,1,\"btncheck1\"],[24,\"autocomplete\",\"off\"],[16,\"checked\",[30,0,[\"showGeneral\"]]],[24,4,\"checkbox\"],[4,[38,2],[\"change\",[28,[37,3],[[30,0,[\"toggleCheckbox\"]],\"all\"],null]],null],[12],[13],[1,\"\\n  \"],[10,\"label\"],[14,0,\"btn btn-outline-secondary btn-sm\"],[14,\"for\",\"btncheck1\"],[12],[1,\"General\"],[13],[1,\"\\n\\n  \"],[11,\"input\"],[24,0,\"btn-check\"],[24,1,\"btncheck2\"],[24,\"autocomplete\",\"off\"],[16,\"checked\",[30,0,[\"showWhisper\"]]],[24,4,\"checkbox\"],[4,[38,2],[\"change\",[28,[37,3],[[30,0,[\"toggleCheckbox\"]],\"whisper\"],null]],null],[12],[13],[1,\"\\n  \"],[10,\"label\"],[14,0,\"btn btn-outline-secondary btn-sm\"],[14,\"for\",\"btncheck2\"],[12],[1,\"Whisper\"],[13],[1,\"\\n\\n  \"],[11,\"input\"],[24,0,\"btn-check\"],[24,1,\"btncheck3\"],[24,\"autocomplete\",\"off\"],[16,\"checked\",[30,0,[\"showTournament\"]]],[24,4,\"checkbox\"],[4,[38,2],[\"change\",[28,[37,3],[[30,0,[\"toggleCheckbox\"]],\"tournament\"],null]],null],[12],[13],[1,\"\\n  \"],[10,\"label\"],[14,0,\"btn btn-outline-secondary btn-sm\"],[14,\"for\",\"btncheck3\"],[12],[1,\"Tournament\"],[13],[1,\"\\n\\n  \"],[11,\"input\"],[24,0,\"btn-check\"],[24,1,\"btncheck4\"],[24,\"autocomplete\",\"off\"],[16,\"checked\",[30,0,[\"showSystem\"]]],[24,4,\"checkbox\"],[4,[38,2],[\"change\",[28,[37,3],[[30,0,[\"toggleCheckbox\"]],\"system\"],null]],null],[12],[13],[1,\"\\n  \"],[10,\"label\"],[14,0,\"btn btn-outline-secondary btn-sm\"],[14,\"for\",\"btncheck4\"],[12],[1,\"System\"],[13],[1,\"\\n\"],[13],[1,\"\\n\\n\"],[10,0],[14,0,\"scrollable-list chat\"],[12],[1,\"\\n\"],[42,[28,[37,6],[[28,[37,6],[[30,0,[\"filteredMessages\"]]],null]],null],null,[[[1,\"    \"],[8,[39,7],null,[[\"@message\",\"@ownNickname\"],[[30,1],[30,0,[\"chat\",\"user\",\"profile\",\"nickname\"]]]],null],[1,\"\\n\"]],[1]],null],[13],[1,\"\\n\\n\"],[10,0],[14,0,\"input-group\"],[12],[1,\"\\n  \"],[11,\"input\"],[24,0,\"form-control\"],[24,\"placeholder\",\"Put your message here\"],[16,5,[29,[\"color: \",[30,0,[\"chat\",\"inputColor\"]],\";\"]]],[24,\"aria-label\",\"Recipient's username\"],[24,\"aria-describedby\",\"basic-addon2\"],[16,2,[30,0,[\"chat\",\"messageInput\"]]],[24,4,\"text\"],[4,[38,2],[\"input\",[30,0,[\"updateInputValue\"]]],null],[4,[38,2],[\"keydown\",[30,0,[\"handleKeyDown\"]]],null],[4,[38,8],[[30,0,[\"setInputRef\"]]],null],[12],[13],[1,\"\\n  \"],[10,0],[14,0,\"input-group-append\"],[12],[1,\"\\n    \"],[11,\"button\"],[24,0,\"btn btn-outline-secondary\"],[24,4,\"button\"],[4,[38,2],[\"click\",[30,0,[\"sendMessage\"]]],null],[12],[1,\"Send\"],[13],[1,\"\\n  \"],[13],[1,\"\\n\"],[13],[1,\"\\n\"],[13]],[\"message\"],false,[\"div\",\"input\",\"on\",\"fn\",\"label\",\"each\",\"-track-array\",\"message\",\"did-insert\",\"button\"]]",
+    "id": "f4HjJWEm",
+    "block": "[[[10,0],[14,0,\"container-row chat-container\"],[12],[1,\"\\n  \"],[10,0],[14,0,\"btn-group\"],[14,\"role\",\"group\"],[14,\"aria-label\",\"Basic checkbox toggle button group\"],[12],[1,\"\\n    \"],[11,\"input\"],[24,0,\"btn-check\"],[24,1,\"btncheck1\"],[24,\"autocomplete\",\"off\"],[16,\"checked\",[30,0,[\"showGeneral\"]]],[24,4,\"checkbox\"],[4,[38,2],[\"change\",[28,[37,3],[[30,0,[\"toggleCheckbox\"]],\"all\"],null]],null],[12],[13],[1,\"\\n    \"],[10,\"label\"],[14,0,\"btn btn-outline-secondary btn-sm\"],[14,\"for\",\"btncheck1\"],[12],[1,\"General\"],[13],[1,\"\\n\\n    \"],[11,\"input\"],[24,0,\"btn-check\"],[24,1,\"btncheck2\"],[24,\"autocomplete\",\"off\"],[16,\"checked\",[30,0,[\"showWhisper\"]]],[24,4,\"checkbox\"],[4,[38,2],[\"change\",[28,[37,3],[[30,0,[\"toggleCheckbox\"]],\"whisper\"],null]],null],[12],[13],[1,\"\\n    \"],[10,\"label\"],[14,0,\"btn btn-outline-secondary btn-sm\"],[14,\"for\",\"btncheck2\"],[12],[1,\"Whisper\"],[13],[1,\"\\n\\n    \"],[11,\"input\"],[24,0,\"btn-check\"],[24,1,\"btncheck3\"],[24,\"autocomplete\",\"off\"],[16,\"checked\",[30,0,[\"showTournament\"]]],[24,4,\"checkbox\"],[4,[38,2],[\"change\",[28,[37,3],[[30,0,[\"toggleCheckbox\"]],\"tournament\"],null]],null],[12],[13],[1,\"\\n    \"],[10,\"label\"],[14,0,\"btn btn-outline-secondary btn-sm\"],[14,\"for\",\"btncheck3\"],[12],[1,\"Tournament\"],[13],[1,\"\\n\\n    \"],[11,\"input\"],[24,0,\"btn-check\"],[24,1,\"btncheck4\"],[24,\"autocomplete\",\"off\"],[16,\"checked\",[30,0,[\"showSystem\"]]],[24,4,\"checkbox\"],[4,[38,2],[\"change\",[28,[37,3],[[30,0,[\"toggleCheckbox\"]],\"system\"],null]],null],[12],[13],[1,\"\\n    \"],[10,\"label\"],[14,0,\"btn btn-outline-secondary btn-sm\"],[14,\"for\",\"btncheck4\"],[12],[1,\"System\"],[13],[1,\"\\n  \"],[13],[1,\"\\n\\n  \"],[10,0],[14,0,\"scrollable-list chat\"],[12],[1,\"\\n\"],[42,[28,[37,6],[[28,[37,6],[[30,0,[\"filteredMessages\"]]],null]],null],null,[[[1,\"    \"],[8,[39,7],null,[[\"@message\",\"@ownNickname\"],[[30,1],[30,0,[\"chat\",\"user\",\"profile\",\"nickname\"]]]],null],[1,\"\\n\"]],[1]],null],[1,\"  \"],[13],[1,\"\\n\\n\"],[1,\"  \"],[10,0],[14,0,\"input-group\"],[12],[1,\"\\n    \"],[11,\"input\"],[24,0,\"form-control\"],[24,\"placeholder\",\"Put your message here\"],[16,5,[29,[\"color: \",[30,0,[\"chat\",\"inputColor\"]],\";\"]]],[24,\"aria-label\",\"Recipient's username\"],[24,\"aria-describedby\",\"basic-addon2\"],[16,2,[30,0,[\"chat\",\"messageInput\"]]],[24,4,\"text\"],[4,[38,2],[\"input\",[30,0,[\"updateInputValue\"]]],null],[4,[38,2],[\"keydown\",[30,0,[\"handleKeyDown\"]]],null],[4,[38,8],[[30,0,[\"setInputRef\"]]],null],[12],[13],[1,\"\\n    \"],[10,0],[14,0,\"input-group-append\"],[12],[1,\"\\n      \"],[11,\"button\"],[24,0,\"btn btn-outline-secondary\"],[24,4,\"button\"],[4,[38,2],[\"click\",[30,0,[\"sendMessage\"]]],null],[12],[1,\"Send\"],[13],[1,\"\\n    \"],[13],[1,\"\\n  \"],[13],[1,\"\\n\"],[13]],[\"message\"],false,[\"div\",\"input\",\"on\",\"fn\",\"label\",\"each\",\"-track-array\",\"message\",\"did-insert\",\"button\"]]",
     "moduleName": "myapp/components/chat.hbs",
     "isStrictMode": false
   });
@@ -1142,11 +1136,10 @@
     </div>
   
   </div>
-  
   */
   {
-    "id": "64fbmYXU",
-    "block": "[[[10,0],[14,0,\"history-item row m-1\"],[12],[1,\"\\n\\n  \"],[10,0],[14,0,\"col-12 mb-0 mt-1 pb-0\"],[12],[1,\"\\n    \"],[10,0],[14,0,\"date\"],[12],[1,[30,1,[\"date\"]]],[13],[1,\"\\n  \"],[13],[1,\"\\n\"],[1,\"  \"],[10,0],[14,0,\"col-5\"],[12],[1,\"\\n    \"],[10,0],[14,0,\"user-card m-0 mb-1\"],[14,\"role\",\"button\"],[15,\"onclick\",[30,0,[\"select\"]]],[12],[1,\"\\n      \"],[10,0],[14,0,\"profile-details\"],[12],[1,\"\\n        \"],[10,\"h2\"],[14,0,\"info\"],[12],[1,[30,1,[\"user\"]]],[13],[1,\"\\n      \"],[13],[1,\"\\n    \"],[13],[1,\"\\n  \"],[13],[1,\"\\n\\n\"],[1,\"  \"],[10,0],[14,0,\"col-2\"],[12],[1,\"\\n    \"],[10,0],[14,0,\"score history center\"],[12],[1,[30,1,[\"score\"]]],[13],[1,\"\\n  \"],[13],[1,\"\\n\\n  \"],[10,0],[14,0,\"col-5\"],[12],[1,\"\\n    \"],[10,0],[14,0,\"user-card m-0 mb-1\"],[14,\"role\",\"button\"],[15,\"onclick\",[30,0,[\"select\"]]],[12],[1,\"\\n      \"],[10,0],[14,0,\"profile-details\"],[12],[1,\"\\n        \"],[10,\"h2\"],[14,0,\"info\"],[12],[1,[30,1,[\"opponent\"]]],[13],[1,\"\\n      \"],[13],[1,\"\\n    \"],[13],[1,\"\\n  \"],[13],[1,\"\\n\\n\"],[13],[1,\"\\n\"]],[\"@game\"],false,[\"div\",\"h2\"]]",
+    "id": "GK6hYLn7",
+    "block": "[[[10,0],[14,0,\"history-item row m-1\"],[12],[1,\"\\n\\n  \"],[10,0],[14,0,\"col-12 mb-0 mt-1 pb-0\"],[12],[1,\"\\n    \"],[10,0],[14,0,\"date\"],[12],[1,[30,1,[\"date\"]]],[13],[1,\"\\n  \"],[13],[1,\"\\n\"],[1,\"  \"],[10,0],[14,0,\"col-5\"],[12],[1,\"\\n    \"],[10,0],[14,0,\"user-card m-0 mb-1\"],[14,\"role\",\"button\"],[15,\"onclick\",[30,0,[\"select\"]]],[12],[1,\"\\n      \"],[10,0],[14,0,\"profile-details\"],[12],[1,\"\\n        \"],[10,\"h2\"],[14,0,\"info\"],[12],[1,[30,1,[\"user\"]]],[13],[1,\"\\n      \"],[13],[1,\"\\n    \"],[13],[1,\"\\n  \"],[13],[1,\"\\n\\n\"],[1,\"  \"],[10,0],[14,0,\"col-2\"],[12],[1,\"\\n    \"],[10,0],[14,0,\"score history center\"],[12],[1,[30,1,[\"score\"]]],[13],[1,\"\\n  \"],[13],[1,\"\\n\\n  \"],[10,0],[14,0,\"col-5\"],[12],[1,\"\\n    \"],[10,0],[14,0,\"user-card m-0 mb-1\"],[14,\"role\",\"button\"],[15,\"onclick\",[30,0,[\"select\"]]],[12],[1,\"\\n      \"],[10,0],[14,0,\"profile-details\"],[12],[1,\"\\n        \"],[10,\"h2\"],[14,0,\"info\"],[12],[1,[30,1,[\"opponent\"]]],[13],[1,\"\\n      \"],[13],[1,\"\\n    \"],[13],[1,\"\\n  \"],[13],[1,\"\\n\\n\"],[13]],[\"@game\"],false,[\"div\",\"h2\"]]",
     "moduleName": "myapp/components/history-item.hbs",
     "isStrictMode": false
   });
@@ -1170,39 +1163,41 @@
   const __COLOCATED_TEMPLATE__ = (0, _templateFactory.createTemplateFactory)(
   /*
     {{#if (eq @message.type "tournament")}}
-    <div class="message-item message-tournament"> <a href="#" class="badge bg-warning" style="color: rgb(24, 22, 22);" {{on "click" (fn this.select @message.from)}}>{{@message.from}}</a>  {{@message.content}}</div>
+  <div class="message-item message-tournament"> <a href="#" class="badge bg-warning" style="color: rgb(24, 22, 22);"
+      {{on "click" (fn this.select @message.from)}}>{{@message.from}}</a> {{@message.content}}</div>
   {{else if (eq @message.type "whisper")}}
-    <div class="message-item message-whisper"> <a href="#" class="badge bg-warning" style="color: rgb(24, 22, 22);" {{on "click" (fn this.select @message.from)}}>{{@message.from}}</a>  {{@message.content}}</div>
+  <div class="message-item message-whisper"> <a href="#" class="badge bg-warning" style="color: rgb(24, 22, 22);"
+      {{on "click" (fn this.select @message.from)}}>{{@message.from}}</a> {{@message.content}}</div>
   {{else if (eq @message.type "add")}}
     {{#if (eq @message.from @ownNickname)}}
-      <div class="alert alert-success p-2 mt-1 mb-1" role="alert">
-        You sent a friend request to {{@message.to}}.
-      </div>
+    <div class="alert alert-success p-2 mt-1 mb-1" role="alert">
+      You sent a friend request to {{@message.to}}.
+    </div>
     {{else}}
-      <div class="alert alert-success p-2 mt-1 mb-1" role="alert">
-        {{@message.from}} wants to add you as a friend 
-        <a href="#" class="alert-link" {{on "click" this.acceptFriend}}>ACCEPT</a>
-      </div>
+    <div class="alert alert-success p-2 mt-1 mb-1" role="alert">
+      {{@message.from}} wants to add you as a friend
+      <a href="#" class="alert-link" {{on "click" this.acceptFriend}}>ACCEPT</a>
+    </div>
     {{/if}}
   {{else if (eq @message.type "invite")}}
     {{#if (eq @message.from @ownNickname)}}
-      <div class="alert alert-danger p-2 mt-1 mb-1" role="alert">
-        You invited {{@message.to}} to a game.
-      </div>
+    <div class="alert alert-danger p-2 mt-1 mb-1" role="alert">
+      You invited {{@message.to}} to a game.
+    </div>
     {{else}}
-      <div class="alert alert-danger p-2 mt-1 mb-1" role="alert">
-        {{@message.from}} invited you to a game
-        <a href="#" class="alert-link" {{on "click" this.acceptGame}}>PLAY</a>
-      </div>
+    <div class="alert alert-danger p-2 mt-1 mb-1" role="alert">
+      {{@message.from}} invited you to a game
+      <a href="#" class="alert-link" {{on "click" this.acceptGame}}>PLAY</a>
+    </div>
     {{/if}}
   {{else}}
-    <div class="message-item message-default"> <a href="#" class="badge bg-warning" style="color: rgb(24, 22, 22);" {{on "click" (fn this.select @message.from)}}>{{@message.from}}</a>  {{@message.content}}</div>
+  <div class="message-item message-default"> <a href="#" class="badge bg-warning" style="color: rgb(24, 22, 22);"
+      {{on "click" (fn this.select @message.from)}}>{{@message.from}}</a> {{@message.content}}</div>
   {{/if}}
-  
   */
   {
-    "id": "CidlgxAS",
-    "block": "[[[41,[28,[37,1],[[30,1,[\"type\"]],\"tournament\"],null],[[[1,\"  \"],[10,0],[14,0,\"message-item message-tournament\"],[12],[1,\" \"],[11,3],[24,6,\"#\"],[24,0,\"badge bg-warning\"],[24,5,\"color: rgb(24, 22, 22);\"],[4,[38,4],[\"click\",[28,[37,5],[[30,0,[\"select\"]],[30,1,[\"from\"]]],null]],null],[12],[1,[30,1,[\"from\"]]],[13],[1,\"  \"],[1,[30,1,[\"content\"]]],[13],[1,\"\\n\"]],[]],[[[41,[28,[37,1],[[30,1,[\"type\"]],\"whisper\"],null],[[[1,\"  \"],[10,0],[14,0,\"message-item message-whisper\"],[12],[1,\" \"],[11,3],[24,6,\"#\"],[24,0,\"badge bg-warning\"],[24,5,\"color: rgb(24, 22, 22);\"],[4,[38,4],[\"click\",[28,[37,5],[[30,0,[\"select\"]],[30,1,[\"from\"]]],null]],null],[12],[1,[30,1,[\"from\"]]],[13],[1,\"  \"],[1,[30,1,[\"content\"]]],[13],[1,\"\\n\"]],[]],[[[41,[28,[37,1],[[30,1,[\"type\"]],\"add\"],null],[[[41,[28,[37,1],[[30,1,[\"from\"]],[30,2]],null],[[[1,\"    \"],[10,0],[14,0,\"alert alert-success p-2 mt-1 mb-1\"],[14,\"role\",\"alert\"],[12],[1,\"\\n      You sent a friend request to \"],[1,[30,1,[\"to\"]]],[1,\".\\n    \"],[13],[1,\"\\n\"]],[]],[[[1,\"    \"],[10,0],[14,0,\"alert alert-success p-2 mt-1 mb-1\"],[14,\"role\",\"alert\"],[12],[1,\"\\n      \"],[1,[30,1,[\"from\"]]],[1,\" wants to add you as a friend \\n      \"],[11,3],[24,6,\"#\"],[24,0,\"alert-link\"],[4,[38,4],[\"click\",[30,0,[\"acceptFriend\"]]],null],[12],[1,\"ACCEPT\"],[13],[1,\"\\n    \"],[13],[1,\"\\n\"]],[]]]],[]],[[[41,[28,[37,1],[[30,1,[\"type\"]],\"invite\"],null],[[[41,[28,[37,1],[[30,1,[\"from\"]],[30,2]],null],[[[1,\"    \"],[10,0],[14,0,\"alert alert-danger p-2 mt-1 mb-1\"],[14,\"role\",\"alert\"],[12],[1,\"\\n      You invited \"],[1,[30,1,[\"to\"]]],[1,\" to a game.\\n    \"],[13],[1,\"\\n\"]],[]],[[[1,\"    \"],[10,0],[14,0,\"alert alert-danger p-2 mt-1 mb-1\"],[14,\"role\",\"alert\"],[12],[1,\"\\n      \"],[1,[30,1,[\"from\"]]],[1,\" invited you to a game\\n      \"],[11,3],[24,6,\"#\"],[24,0,\"alert-link\"],[4,[38,4],[\"click\",[30,0,[\"acceptGame\"]]],null],[12],[1,\"PLAY\"],[13],[1,\"\\n    \"],[13],[1,\"\\n\"]],[]]]],[]],[[[1,\"  \"],[10,0],[14,0,\"message-item message-default\"],[12],[1,\" \"],[11,3],[24,6,\"#\"],[24,0,\"badge bg-warning\"],[24,5,\"color: rgb(24, 22, 22);\"],[4,[38,4],[\"click\",[28,[37,5],[[30,0,[\"select\"]],[30,1,[\"from\"]]],null]],null],[12],[1,[30,1,[\"from\"]]],[13],[1,\"  \"],[1,[30,1,[\"content\"]]],[13],[1,\"\\n\"]],[]]]],[]]]],[]]]],[]]]],[\"@message\",\"@ownNickname\"],false,[\"if\",\"eq\",\"div\",\"a\",\"on\",\"fn\"]]",
+    "id": "u9fTlrnY",
+    "block": "[[[41,[28,[37,1],[[30,1,[\"type\"]],\"tournament\"],null],[[[10,0],[14,0,\"message-item message-tournament\"],[12],[1,\" \"],[11,3],[24,6,\"#\"],[24,0,\"badge bg-warning\"],[24,5,\"color: rgb(24, 22, 22);\"],[4,[38,4],[\"click\",[28,[37,5],[[30,0,[\"select\"]],[30,1,[\"from\"]]],null]],null],[12],[1,[30,1,[\"from\"]]],[13],[1,\" \"],[1,[30,1,[\"content\"]]],[13],[1,\"\\n\"]],[]],[[[41,[28,[37,1],[[30,1,[\"type\"]],\"whisper\"],null],[[[10,0],[14,0,\"message-item message-whisper\"],[12],[1,\" \"],[11,3],[24,6,\"#\"],[24,0,\"badge bg-warning\"],[24,5,\"color: rgb(24, 22, 22);\"],[4,[38,4],[\"click\",[28,[37,5],[[30,0,[\"select\"]],[30,1,[\"from\"]]],null]],null],[12],[1,[30,1,[\"from\"]]],[13],[1,\" \"],[1,[30,1,[\"content\"]]],[13],[1,\"\\n\"]],[]],[[[41,[28,[37,1],[[30,1,[\"type\"]],\"add\"],null],[[[41,[28,[37,1],[[30,1,[\"from\"]],[30,2]],null],[[[1,\"  \"],[10,0],[14,0,\"alert alert-success p-2 mt-1 mb-1\"],[14,\"role\",\"alert\"],[12],[1,\"\\n    You sent a friend request to \"],[1,[30,1,[\"to\"]]],[1,\".\\n  \"],[13],[1,\"\\n\"]],[]],[[[1,\"  \"],[10,0],[14,0,\"alert alert-success p-2 mt-1 mb-1\"],[14,\"role\",\"alert\"],[12],[1,\"\\n    \"],[1,[30,1,[\"from\"]]],[1,\" wants to add you as a friend\\n    \"],[11,3],[24,6,\"#\"],[24,0,\"alert-link\"],[4,[38,4],[\"click\",[30,0,[\"acceptFriend\"]]],null],[12],[1,\"ACCEPT\"],[13],[1,\"\\n  \"],[13],[1,\"\\n\"]],[]]]],[]],[[[41,[28,[37,1],[[30,1,[\"type\"]],\"invite\"],null],[[[41,[28,[37,1],[[30,1,[\"from\"]],[30,2]],null],[[[1,\"  \"],[10,0],[14,0,\"alert alert-danger p-2 mt-1 mb-1\"],[14,\"role\",\"alert\"],[12],[1,\"\\n    You invited \"],[1,[30,1,[\"to\"]]],[1,\" to a game.\\n  \"],[13],[1,\"\\n\"]],[]],[[[1,\"  \"],[10,0],[14,0,\"alert alert-danger p-2 mt-1 mb-1\"],[14,\"role\",\"alert\"],[12],[1,\"\\n    \"],[1,[30,1,[\"from\"]]],[1,\" invited you to a game\\n    \"],[11,3],[24,6,\"#\"],[24,0,\"alert-link\"],[4,[38,4],[\"click\",[30,0,[\"acceptGame\"]]],null],[12],[1,\"PLAY\"],[13],[1,\"\\n  \"],[13],[1,\"\\n\"]],[]]]],[]],[[[10,0],[14,0,\"message-item message-default\"],[12],[1,\" \"],[11,3],[24,6,\"#\"],[24,0,\"badge bg-warning\"],[24,5,\"color: rgb(24, 22, 22);\"],[4,[38,4],[\"click\",[28,[37,5],[[30,0,[\"select\"]],[30,1,[\"from\"]]],null]],null],[12],[1,[30,1,[\"from\"]]],[13],[1,\" \"],[1,[30,1,[\"content\"]]],[13],[1,\"\\n\"]],[]]]],[]]]],[]]]],[]]]],[\"@message\",\"@ownNickname\"],false,[\"if\",\"eq\",\"div\",\"a\",\"on\",\"fn\"]]",
     "moduleName": "myapp/components/message.hbs",
     "isStrictMode": false
   });
@@ -1217,7 +1212,7 @@
     }
     acceptFriend(event) {
       event.preventDefault();
-      console.log(`${this.args.message.from} accepted as a friend!`);
+      ////console.log(`${this.args.message.from} accepted as a friend!`);
       this.makeFriends();
     }
     select(user) {
@@ -1225,7 +1220,7 @@
     }
     acceptGame(event) {
       event.preventDefault();
-      console.log(`${this.args.message.from} accepted game`);
+      //console.log(`${this.args.message.from} accepted game`);
       this.createPrivateRoom('private');
     }
     async createPrivateRoom(gameType) {
@@ -1248,9 +1243,9 @@
         const data = await response.json();
         if (data.room_name) {
           if (data.player2 != 'remote') this.gameData.waiting = false;
-          console.log('data:', data);
+          //console.log('data:', data);
           this.gameData.setGameData(gameType, data);
-          console.log('gameData:', this.gameData.roomData.room_name);
+          //console.log('gameData:', this.gameData.roomData.room_name);
           this.chat.sendGameAccept(data, this.args.message.from);
           this.router.transitionTo('pong-game');
         }
@@ -1277,7 +1272,7 @@
           throw new Error(errorData.message || 'Failed to add friend');
         }
         const result = await response.json();
-        console.log(result.message);
+        //console.log(result.message);
       } catch (error) {
         console.error('Error adding friend:', error.message);
       }
@@ -1328,13 +1323,10 @@
   const __COLOCATED_TEMPLATE__ = (0, _templateFactory.createTemplateFactory)(
   /*
     <button class="btn btn-success p-1 mb-1" type="button" {{on "click" this.openModal}}>
-            Games: {{@user.games_total}}
+    Games: {{@user.games_total}}
   </button>
   
-  <BsModal
-    @open={{this.isModalOpen}}
-    as |modal|
-  >
+  <BsModal @open={{this.isModalOpen}} as |modal|>
     <modal.header style="background-color: #706363;">
       <h4 class="score history center">
         Match History
@@ -1343,24 +1335,23 @@
   
     <modal.body style="background-color: #706363;">
       <div class="container-fluid row" style="height: 50vh; overflow-y: auto; margin: 0; padding: 0;">
-          <div class="scrollable-list history-scroll">
-      
-            {{#each this.games as |game|}}
-              <HistoryItem @game={{game}} />
-            {{/each}}
+        <div class="scrollable-list history-scroll">
   
-          </div>
+          {{#each this.games as |game|}}
+          <HistoryItem @game={{game}} />
+          {{/each}}
+  
+        </div>
       </div>
-      
-      
+  
+  
     </modal.body>
   
   </BsModal>
-  
   */
   {
-    "id": "IN6hm9iT",
-    "block": "[[[11,\"button\"],[24,0,\"btn btn-success p-1 mb-1\"],[24,4,\"button\"],[4,[38,1],[\"click\",[30,0,[\"openModal\"]]],null],[12],[1,\"\\n          Games: \"],[1,[30,1,[\"games_total\"]]],[1,\"\\n\"],[13],[1,\"\\n\\n\"],[8,[39,2],null,[[\"@open\"],[[30,0,[\"isModalOpen\"]]]],[[\"default\"],[[[[1,\"\\n  \"],[8,[30,2,[\"header\"]],[[24,5,\"background-color: #706363;\"]],null,[[\"default\"],[[[[1,\"\\n    \"],[10,\"h4\"],[14,0,\"score history center\"],[12],[1,\"\\n      Match History\\n    \"],[13],[1,\"\\n  \"]],[]]]]],[1,\"\\n\\n  \"],[8,[30,2,[\"body\"]],[[24,5,\"background-color: #706363;\"]],null,[[\"default\"],[[[[1,\"\\n    \"],[10,0],[14,0,\"container-fluid row\"],[14,5,\"height: 50vh; overflow-y: auto; margin: 0; padding: 0;\"],[12],[1,\"\\n        \"],[10,0],[14,0,\"scrollable-list history-scroll\"],[12],[1,\"\\n    \\n\"],[42,[28,[37,6],[[28,[37,6],[[30,0,[\"games\"]]],null]],null],null,[[[1,\"            \"],[8,[39,7],null,[[\"@game\"],[[30,3]]],null],[1,\"\\n\"]],[3]],null],[1,\"\\n        \"],[13],[1,\"\\n    \"],[13],[1,\"\\n    \\n    \\n  \"]],[]]]]],[1,\"\\n\\n\"]],[2]]]]],[1,\"\\n\"]],[\"@user\",\"modal\",\"game\"],false,[\"button\",\"on\",\"bs-modal\",\"h4\",\"div\",\"each\",\"-track-array\",\"history-item\"]]",
+    "id": "AWo0S13V",
+    "block": "[[[11,\"button\"],[24,0,\"btn btn-success p-1 mb-1\"],[24,4,\"button\"],[4,[38,1],[\"click\",[30,0,[\"openModal\"]]],null],[12],[1,\"\\n  Games: \"],[1,[30,1,[\"games_total\"]]],[1,\"\\n\"],[13],[1,\"\\n\\n\"],[8,[39,2],null,[[\"@open\"],[[30,0,[\"isModalOpen\"]]]],[[\"default\"],[[[[1,\"\\n  \"],[8,[30,2,[\"header\"]],[[24,5,\"background-color: #706363;\"]],null,[[\"default\"],[[[[1,\"\\n    \"],[10,\"h4\"],[14,0,\"score history center\"],[12],[1,\"\\n      Match History\\n    \"],[13],[1,\"\\n  \"]],[]]]]],[1,\"\\n\\n  \"],[8,[30,2,[\"body\"]],[[24,5,\"background-color: #706363;\"]],null,[[\"default\"],[[[[1,\"\\n    \"],[10,0],[14,0,\"container-fluid row\"],[14,5,\"height: 50vh; overflow-y: auto; margin: 0; padding: 0;\"],[12],[1,\"\\n      \"],[10,0],[14,0,\"scrollable-list history-scroll\"],[12],[1,\"\\n\\n\"],[42,[28,[37,6],[[28,[37,6],[[30,0,[\"games\"]]],null]],null],null,[[[1,\"        \"],[8,[39,7],null,[[\"@game\"],[[30,3]]],null],[1,\"\\n\"]],[3]],null],[1,\"\\n      \"],[13],[1,\"\\n    \"],[13],[1,\"\\n\\n\\n  \"]],[]]]]],[1,\"\\n\\n\"]],[2]]]]]],[\"@user\",\"modal\",\"game\"],false,[\"button\",\"on\",\"bs-modal\",\"h4\",\"div\",\"each\",\"-track-array\",\"history-item\"]]",
     "moduleName": "myapp/components/modal-game-history.hbs",
     "isStrictMode": false
   });
@@ -1375,10 +1366,10 @@
       _initializerDefineProperty(this, "session", _descriptor5, this);
     }
     openModal() {
-      //console.log(this.args.user);
+      ////console.log(this.args.user);
       this.parseHistory(this.args.user.history);
       this.isModalOpen = true;
-      //console.log(this.games);
+      ////console.log(this.games);
     }
     parseHistory(history) {
       this.games = history.map(game => ({
@@ -1448,54 +1439,34 @@
     Edit Profile
   </button>
   
-  <BsModal
-    @open={{this.isModalOpen}}
-    as |modal|
-  >
+  <BsModal @open={{this.isModalOpen}} as |modal|>
     <modal.header style="background-color: #706363;">
       <h4 class="modal-title">
         Edit Profile
       </h4>
     </modal.header>
     <modal.body style="background-color: #706363;">
-      <div class="form-group" >
+      <div class="form-group">
         <label>Choose Avatar:</label>
-        <input 
-          type="file" 
-          class="form-control"
-          style="background-color: #706363;"
-          placeholder="Choose Avatar" 
-          {{on "change" this.updateAvatar}}
-        >
+        <input type="file" class="form-control" style="background-color: #706363;" placeholder="Choose Avatar"
+          {{on "change" this.updateAvatar}}>
         <small>This is the visible Avatar on this Site</small>
       </div>
   
-      <div class="form-group mt-3" >
+      <div class="form-group mt-3">
         <label>Nickname:</label>
-        <input 
-          type="name" 
-          class="form-control"
-          style="background-color: #706363;"
-          value={{this.newNickname}}
-          {{on "input" this.updateNewNickname}}
-        >
+        <input type="name" class="form-control" style="background-color: #706363;" value={{this.newNickname}} {{on "input"
+          this.updateNewNickname}}>
         <small>This is the visible Name on this Site</small>
       </div>
   
-      <div class="form-group mt-3" >
+      <div class="form-group mt-3">
         <label>E-Mail:</label>
-        <input 
-          type="name" 
-          class="form-control"
-          style="background-color: #706363;"
-          value={{this.newEmail}}
-          {{on "input" this.updateNewEmail}}
-        >
-        <input type="checkbox" 
-         aria-label="Checkbox for following text input" 
-         checked={{this.twofa_enabled}} 
-         {{on "change" this.toggle2fa}}>
-        <small>Enable Email for 2-FA</small>  
+        <input type="name" class="form-control" style="background-color: #706363;" value={{this.newEmail}} {{on "input"
+          this.updateNewEmail}}>
+        <input type="checkbox" aria-label="Checkbox for following text input" checked={{this.twofa_enabled}} {{on "change"
+          this.toggle2fa}}>
+        <small>Enable Email for 2-FA</small>
       </div>
   
   
@@ -1506,11 +1477,10 @@
       <BsButton @type="success" @onClick={{this.submit}}>Save</BsButton>
     </modal.footer>
   </BsModal>
-  
   */
   {
-    "id": "GO6oCuHH",
-    "block": "[[[11,\"button\"],[24,0,\"btn btn-primary\"],[24,4,\"button\"],[4,[38,1],[\"click\",[30,0,[\"openModal\"]]],null],[12],[1,\"\\n  Edit Profile\\n\"],[13],[1,\"\\n\\n\"],[8,[39,2],null,[[\"@open\"],[[30,0,[\"isModalOpen\"]]]],[[\"default\"],[[[[1,\"\\n  \"],[8,[30,1,[\"header\"]],[[24,5,\"background-color: #706363;\"]],null,[[\"default\"],[[[[1,\"\\n    \"],[10,\"h4\"],[14,0,\"modal-title\"],[12],[1,\"\\n      Edit Profile\\n    \"],[13],[1,\"\\n  \"]],[]]]]],[1,\"\\n  \"],[8,[30,1,[\"body\"]],[[24,5,\"background-color: #706363;\"]],null,[[\"default\"],[[[[1,\"\\n    \"],[10,0],[14,0,\"form-group\"],[12],[1,\"\\n      \"],[10,\"label\"],[12],[1,\"Choose Avatar:\"],[13],[1,\"\\n      \"],[11,\"input\"],[24,0,\"form-control\"],[24,5,\"background-color: #706363;\"],[24,\"placeholder\",\"Choose Avatar\"],[24,4,\"file\"],[4,[38,1],[\"change\",[30,0,[\"updateAvatar\"]]],null],[12],[13],[1,\"\\n      \"],[10,\"small\"],[12],[1,\"This is the visible Avatar on this Site\"],[13],[1,\"\\n    \"],[13],[1,\"\\n\\n    \"],[10,0],[14,0,\"form-group mt-3\"],[12],[1,\"\\n      \"],[10,\"label\"],[12],[1,\"Nickname:\"],[13],[1,\"\\n      \"],[11,\"input\"],[24,0,\"form-control\"],[24,5,\"background-color: #706363;\"],[16,2,[30,0,[\"newNickname\"]]],[24,4,\"name\"],[4,[38,1],[\"input\",[30,0,[\"updateNewNickname\"]]],null],[12],[13],[1,\"\\n      \"],[10,\"small\"],[12],[1,\"This is the visible Name on this Site\"],[13],[1,\"\\n    \"],[13],[1,\"\\n\\n    \"],[10,0],[14,0,\"form-group mt-3\"],[12],[1,\"\\n      \"],[10,\"label\"],[12],[1,\"E-Mail:\"],[13],[1,\"\\n      \"],[11,\"input\"],[24,0,\"form-control\"],[24,5,\"background-color: #706363;\"],[16,2,[30,0,[\"newEmail\"]]],[24,4,\"name\"],[4,[38,1],[\"input\",[30,0,[\"updateNewEmail\"]]],null],[12],[13],[1,\"\\n      \"],[11,\"input\"],[24,\"aria-label\",\"Checkbox for following text input\"],[16,\"checked\",[30,0,[\"twofa_enabled\"]]],[24,4,\"checkbox\"],[4,[38,1],[\"change\",[30,0,[\"toggle2fa\"]]],null],[12],[13],[1,\"\\n      \"],[10,\"small\"],[12],[1,\"Enable Email for 2-FA\"],[13],[1,\"  \\n    \"],[13],[1,\"\\n\\n\\n  \"]],[]]]]],[1,\"\\n  \"],[8,[30,1,[\"footer\"]],[[24,5,\"background-color: #706363;\"]],null,[[\"default\"],[[[[1,\"\\n    \"],[10,\"label\"],[14,0,\"ERROR\"],[12],[1,[30,0,[\"error\"]]],[13],[1,\"\\n    \"],[8,[39,8],null,[[\"@onClick\"],[[30,1,[\"close\"]]]],[[\"default\"],[[[[1,\"Cancel\"]],[]]]]],[1,\"\\n    \"],[8,[39,8],null,[[\"@type\",\"@onClick\"],[\"success\",[30,0,[\"submit\"]]]],[[\"default\"],[[[[1,\"Save\"]],[]]]]],[1,\"\\n  \"]],[]]]]],[1,\"\\n\"]],[1]]]]],[1,\"\\n\"]],[\"modal\"],false,[\"button\",\"on\",\"bs-modal\",\"h4\",\"div\",\"label\",\"input\",\"small\",\"bs-button\"]]",
+    "id": "TPjCEAyU",
+    "block": "[[[11,\"button\"],[24,0,\"btn btn-primary\"],[24,4,\"button\"],[4,[38,1],[\"click\",[30,0,[\"openModal\"]]],null],[12],[1,\"\\n  Edit Profile\\n\"],[13],[1,\"\\n\\n\"],[8,[39,2],null,[[\"@open\"],[[30,0,[\"isModalOpen\"]]]],[[\"default\"],[[[[1,\"\\n  \"],[8,[30,1,[\"header\"]],[[24,5,\"background-color: #706363;\"]],null,[[\"default\"],[[[[1,\"\\n    \"],[10,\"h4\"],[14,0,\"modal-title\"],[12],[1,\"\\n      Edit Profile\\n    \"],[13],[1,\"\\n  \"]],[]]]]],[1,\"\\n  \"],[8,[30,1,[\"body\"]],[[24,5,\"background-color: #706363;\"]],null,[[\"default\"],[[[[1,\"\\n    \"],[10,0],[14,0,\"form-group\"],[12],[1,\"\\n      \"],[10,\"label\"],[12],[1,\"Choose Avatar:\"],[13],[1,\"\\n      \"],[11,\"input\"],[24,0,\"form-control\"],[24,5,\"background-color: #706363;\"],[24,\"placeholder\",\"Choose Avatar\"],[24,4,\"file\"],[4,[38,1],[\"change\",[30,0,[\"updateAvatar\"]]],null],[12],[13],[1,\"\\n      \"],[10,\"small\"],[12],[1,\"This is the visible Avatar on this Site\"],[13],[1,\"\\n    \"],[13],[1,\"\\n\\n    \"],[10,0],[14,0,\"form-group mt-3\"],[12],[1,\"\\n      \"],[10,\"label\"],[12],[1,\"Nickname:\"],[13],[1,\"\\n      \"],[11,\"input\"],[24,0,\"form-control\"],[24,5,\"background-color: #706363;\"],[16,2,[30,0,[\"newNickname\"]]],[24,4,\"name\"],[4,[38,1],[\"input\",[30,0,[\"updateNewNickname\"]]],null],[12],[13],[1,\"\\n      \"],[10,\"small\"],[12],[1,\"This is the visible Name on this Site\"],[13],[1,\"\\n    \"],[13],[1,\"\\n\\n    \"],[10,0],[14,0,\"form-group mt-3\"],[12],[1,\"\\n      \"],[10,\"label\"],[12],[1,\"E-Mail:\"],[13],[1,\"\\n      \"],[11,\"input\"],[24,0,\"form-control\"],[24,5,\"background-color: #706363;\"],[16,2,[30,0,[\"newEmail\"]]],[24,4,\"name\"],[4,[38,1],[\"input\",[30,0,[\"updateNewEmail\"]]],null],[12],[13],[1,\"\\n      \"],[11,\"input\"],[24,\"aria-label\",\"Checkbox for following text input\"],[16,\"checked\",[30,0,[\"twofa_enabled\"]]],[24,4,\"checkbox\"],[4,[38,1],[\"change\",[30,0,[\"toggle2fa\"]]],null],[12],[13],[1,\"\\n      \"],[10,\"small\"],[12],[1,\"Enable Email for 2-FA\"],[13],[1,\"\\n    \"],[13],[1,\"\\n\\n\\n  \"]],[]]]]],[1,\"\\n  \"],[8,[30,1,[\"footer\"]],[[24,5,\"background-color: #706363;\"]],null,[[\"default\"],[[[[1,\"\\n    \"],[10,\"label\"],[14,0,\"ERROR\"],[12],[1,[30,0,[\"error\"]]],[13],[1,\"\\n    \"],[8,[39,8],null,[[\"@onClick\"],[[30,1,[\"close\"]]]],[[\"default\"],[[[[1,\"Cancel\"]],[]]]]],[1,\"\\n    \"],[8,[39,8],null,[[\"@type\",\"@onClick\"],[\"success\",[30,0,[\"submit\"]]]],[[\"default\"],[[[[1,\"Save\"]],[]]]]],[1,\"\\n  \"]],[]]]]],[1,\"\\n\"]],[1]]]]]],[\"modal\"],false,[\"button\",\"on\",\"bs-modal\",\"h4\",\"div\",\"label\",\"input\",\"small\",\"bs-button\"]]",
     "moduleName": "myapp/components/modal-profile.hbs",
     "isStrictMode": false
   });
@@ -1634,11 +1604,10 @@
       <button class="nav-button" type="button" {{on "click" (fn this.onLeaveClick @creator)}}>Friends</button>
       <button class="nav-button" type="button" {{on "click" (fn this.onLeaveClick @creator)}}>All</button>
   </nav>
-  
   */
   {
-    "id": "MDPLvbWF",
-    "block": "[[[10,\"nav\"],[14,0,\"navigation-bar\"],[12],[1,\"\\n    \"],[11,\"button\"],[24,0,\"nav-button\"],[24,4,\"button\"],[4,[38,2],[\"click\",[28,[37,3],[[30,0,[\"onLeaveClick\"]],[30,1]],null]],null],[12],[1,\"Friends\"],[13],[1,\"\\n    \"],[11,\"button\"],[24,0,\"nav-button\"],[24,4,\"button\"],[4,[38,2],[\"click\",[28,[37,3],[[30,0,[\"onLeaveClick\"]],[30,1]],null]],null],[12],[1,\"All\"],[13],[1,\"\\n\"],[13],[1,\"\\n\"]],[\"@creator\"],false,[\"nav\",\"button\",\"on\",\"fn\"]]",
+    "id": "+S6zvfO0",
+    "block": "[[[10,\"nav\"],[14,0,\"navigation-bar\"],[12],[1,\"\\n    \"],[11,\"button\"],[24,0,\"nav-button\"],[24,4,\"button\"],[4,[38,2],[\"click\",[28,[37,3],[[30,0,[\"onLeaveClick\"]],[30,1]],null]],null],[12],[1,\"Friends\"],[13],[1,\"\\n    \"],[11,\"button\"],[24,0,\"nav-button\"],[24,4,\"button\"],[4,[38,2],[\"click\",[28,[37,3],[[30,0,[\"onLeaveClick\"]],[30,1]],null]],null],[12],[1,\"All\"],[13],[1,\"\\n\"],[13]],[\"@creator\"],false,[\"nav\",\"button\",\"on\",\"fn\"]]",
     "moduleName": "myapp/components/navigation-bar.hbs",
     "isStrictMode": false
   });
@@ -1655,11 +1624,10 @@
   const __COLOCATED_TEMPLATE__ = (0, _templateFactory.createTemplateFactory)(
   /*
     <div class="paddle {{this.args.side}}" style={{this.paddleStyle}}></div>
-  
   */
   {
-    "id": "S8zvLVaU",
-    "block": "[[[10,0],[15,0,[29,[\"paddle \",[30,0,[\"args\",\"side\"]]]]],[15,5,[30,0,[\"paddleStyle\"]]],[12],[13],[1,\"\\n\"]],[],false,[\"div\"]]",
+    "id": "5IxILk4X",
+    "block": "[[[10,0],[15,0,[29,[\"paddle \",[30,0,[\"args\",\"side\"]]]]],[15,5,[30,0,[\"paddleStyle\"]]],[12],[13]],[],false,[\"div\"]]",
     "moduleName": "myapp/components/paddle.hbs",
     "isStrictMode": false
   });
@@ -1694,45 +1662,44 @@
     <div class="pong-game">
     {{#if this.gameData.waiting}}
     <div class="waiting-container d-flex flex-column align-items-center">
-    <!-- Row for the text and spinner -->
-    <div class="d-flex align-items-center">
-      <h2 class="white mb-0">Waiting for Player</h2>
-      <div class="spinner-border text-light ms-3" role="status">
-        <span class="visually-hidden"></span>
+      <!-- Row for the text and spinner -->
+      <div class="d-flex align-items-center">
+        <h2 class="white mb-0">Waiting for Player</h2>
+        <div class="spinner-border text-light ms-3" role="status">
+          <span class="visually-hidden"></span>
+        </div>
+      </div>
+      <!-- Row for the Leave button -->
+      <div class="game-buttons mt-5">
+        <button type="button" class="btn btn-danger" {{on "click" this.leaveGame}}>Leave</button>
       </div>
     </div>
-    <!-- Row for the Leave button -->
-    <div class="game-buttons mt-5">
-      <button type="button" class="btn btn-danger" {{on "click" this.leaveGame}}>Leave</button>
-    </div>
-  </div>
   
   
   
     {{else}}
-      {{#if this.pongGame.winner}}
-      <div class="waiting-container d-flex flex-column align-items-center">
-        <h1 class="white">Winner: {{this.pongGame.winner}}</h1>
+    {{#if this.pongGame.winner}}
+    <div class="waiting-container d-flex flex-column align-items-center">
+      <h1 class="white">Winner: {{this.pongGame.winner}}</h1>
       <div class="game-buttons mt-5">
-      <button type="button" class="btn btn-danger" {{on "click" this.leaveGame}}>Leave</button>
+        <button type="button" class="btn btn-danger" {{on "click" this.leaveGame}}>Leave</button>
+      </div>
     </div>
-  </div>
-      {{else}}
-        {{#if (not-eq this.pongGame.status 0)}}
-          <h1 class="white">{{this.pongGame.status}}</h1>
-        {{else}}
-          <Ball @positionX={{this.pongGame.ballPositionX}} @positionY={{this.pongGame.ballPositionY}} />
-        {{/if}}
-        <Paddle @position={{this.pongGame.leftPaddlePosition}} @side="paddle-left" />
-        <Paddle @position={{this.pongGame.rightPaddlePosition}} @side="paddle-right" />
-      {{/if}}
+    {{else}}
+    {{#if (not-eq this.pongGame.status 0)}}
+    <h1 class="white">{{this.pongGame.status}}</h1>
+    {{else}}
+    <Ball @positionX={{this.pongGame.ballPositionX}} @positionY={{this.pongGame.ballPositionY}} />
+    {{/if}}
+    <Paddle @position={{this.pongGame.leftPaddlePosition}} @side="paddle-left" />
+    <Paddle @position={{this.pongGame.rightPaddlePosition}} @side="paddle-right" />
+    {{/if}}
     {{/if}}
   </div>
-  
   */
   {
-    "id": "8rWfYOPe",
-    "block": "[[[10,0],[14,0,\"pong-game\"],[12],[1,\"\\n\"],[41,[30,0,[\"gameData\",\"waiting\"]],[[[1,\"  \"],[10,0],[14,0,\"waiting-container d-flex flex-column align-items-center\"],[12],[1,\"\\n  \"],[3,\" Row for the text and spinner \"],[1,\"\\n  \"],[10,0],[14,0,\"d-flex align-items-center\"],[12],[1,\"\\n    \"],[10,\"h2\"],[14,0,\"white mb-0\"],[12],[1,\"Waiting for Player\"],[13],[1,\"\\n    \"],[10,0],[14,0,\"spinner-border text-light ms-3\"],[14,\"role\",\"status\"],[12],[1,\"\\n      \"],[10,1],[14,0,\"visually-hidden\"],[12],[13],[1,\"\\n    \"],[13],[1,\"\\n  \"],[13],[1,\"\\n  \"],[3,\" Row for the Leave button \"],[1,\"\\n  \"],[10,0],[14,0,\"game-buttons mt-5\"],[12],[1,\"\\n    \"],[11,\"button\"],[24,0,\"btn btn-danger\"],[24,4,\"button\"],[4,[38,5],[\"click\",[30,0,[\"leaveGame\"]]],null],[12],[1,\"Leave\"],[13],[1,\"\\n  \"],[13],[1,\"\\n\"],[13],[1,\"\\n\\n\\n\\n\"]],[]],[[[41,[30,0,[\"pongGame\",\"winner\"]],[[[1,\"    \"],[10,0],[14,0,\"waiting-container d-flex flex-column align-items-center\"],[12],[1,\"\\n      \"],[10,\"h1\"],[14,0,\"white\"],[12],[1,\"Winner: \"],[1,[30,0,[\"pongGame\",\"winner\"]]],[13],[1,\"\\n    \"],[10,0],[14,0,\"game-buttons mt-5\"],[12],[1,\"\\n    \"],[11,\"button\"],[24,0,\"btn btn-danger\"],[24,4,\"button\"],[4,[38,5],[\"click\",[30,0,[\"leaveGame\"]]],null],[12],[1,\"Leave\"],[13],[1,\"\\n  \"],[13],[1,\"\\n\"],[13],[1,\"\\n\"]],[]],[[[41,[28,[37,7],[[30,0,[\"pongGame\",\"status\"]],0],null],[[[1,\"        \"],[10,\"h1\"],[14,0,\"white\"],[12],[1,[30,0,[\"pongGame\",\"status\"]]],[13],[1,\"\\n\"]],[]],[[[1,\"        \"],[8,[39,8],null,[[\"@positionX\",\"@positionY\"],[[30,0,[\"pongGame\",\"ballPositionX\"]],[30,0,[\"pongGame\",\"ballPositionY\"]]]],null],[1,\"\\n\"]],[]]],[1,\"      \"],[8,[39,9],null,[[\"@position\",\"@side\"],[[30,0,[\"pongGame\",\"leftPaddlePosition\"]],\"paddle-left\"]],null],[1,\"\\n      \"],[8,[39,9],null,[[\"@position\",\"@side\"],[[30,0,[\"pongGame\",\"rightPaddlePosition\"]],\"paddle-right\"]],null],[1,\"\\n\"]],[]]]],[]]],[13],[1,\"\\n\"]],[],false,[\"div\",\"if\",\"h2\",\"span\",\"button\",\"on\",\"h1\",\"not-eq\",\"ball\",\"paddle\"]]",
+    "id": "u0MF8W8g",
+    "block": "[[[10,0],[14,0,\"pong-game\"],[12],[1,\"\\n\"],[41,[30,0,[\"gameData\",\"waiting\"]],[[[1,\"  \"],[10,0],[14,0,\"waiting-container d-flex flex-column align-items-center\"],[12],[1,\"\\n    \"],[3,\" Row for the text and spinner \"],[1,\"\\n    \"],[10,0],[14,0,\"d-flex align-items-center\"],[12],[1,\"\\n      \"],[10,\"h2\"],[14,0,\"white mb-0\"],[12],[1,\"Waiting for Player\"],[13],[1,\"\\n      \"],[10,0],[14,0,\"spinner-border text-light ms-3\"],[14,\"role\",\"status\"],[12],[1,\"\\n        \"],[10,1],[14,0,\"visually-hidden\"],[12],[13],[1,\"\\n      \"],[13],[1,\"\\n    \"],[13],[1,\"\\n    \"],[3,\" Row for the Leave button \"],[1,\"\\n    \"],[10,0],[14,0,\"game-buttons mt-5\"],[12],[1,\"\\n      \"],[11,\"button\"],[24,0,\"btn btn-danger\"],[24,4,\"button\"],[4,[38,5],[\"click\",[30,0,[\"leaveGame\"]]],null],[12],[1,\"Leave\"],[13],[1,\"\\n    \"],[13],[1,\"\\n  \"],[13],[1,\"\\n\\n\\n\\n\"]],[]],[[[41,[30,0,[\"pongGame\",\"winner\"]],[[[1,\"  \"],[10,0],[14,0,\"waiting-container d-flex flex-column align-items-center\"],[12],[1,\"\\n    \"],[10,\"h1\"],[14,0,\"white\"],[12],[1,\"Winner: \"],[1,[30,0,[\"pongGame\",\"winner\"]]],[13],[1,\"\\n    \"],[10,0],[14,0,\"game-buttons mt-5\"],[12],[1,\"\\n      \"],[11,\"button\"],[24,0,\"btn btn-danger\"],[24,4,\"button\"],[4,[38,5],[\"click\",[30,0,[\"leaveGame\"]]],null],[12],[1,\"Leave\"],[13],[1,\"\\n    \"],[13],[1,\"\\n  \"],[13],[1,\"\\n\"]],[]],[[[41,[28,[37,7],[[30,0,[\"pongGame\",\"status\"]],0],null],[[[1,\"  \"],[10,\"h1\"],[14,0,\"white\"],[12],[1,[30,0,[\"pongGame\",\"status\"]]],[13],[1,\"\\n\"]],[]],[[[1,\"  \"],[8,[39,8],null,[[\"@positionX\",\"@positionY\"],[[30,0,[\"pongGame\",\"ballPositionX\"]],[30,0,[\"pongGame\",\"ballPositionY\"]]]],null],[1,\"\\n\"]],[]]],[1,\"  \"],[8,[39,9],null,[[\"@position\",\"@side\"],[[30,0,[\"pongGame\",\"leftPaddlePosition\"]],\"paddle-left\"]],null],[1,\"\\n  \"],[8,[39,9],null,[[\"@position\",\"@side\"],[[30,0,[\"pongGame\",\"rightPaddlePosition\"]],\"paddle-right\"]],null],[1,\"\\n\"]],[]]]],[]]],[13]],[],false,[\"div\",\"if\",\"h2\",\"span\",\"button\",\"on\",\"h1\",\"not-eq\",\"ball\",\"paddle\"]]",
     "moduleName": "myapp/components/pong-game.hbs",
     "isStrictMode": false
   });
@@ -1786,7 +1753,8 @@
     {{!-- Profile picture column (1 part) --}}
     <div class="col center no-padding position-relative">
       <button type="button" class="btn-close top-left" onclick={{this.onCloseClick}}></button>
-      <img src="https://localhost/users/users{{this.user.selectedUser.avatar}}/" alt="Profile Picture" class="profile-pic" />
+      <img src="https://localhost/users/users{{this.user.selectedUser.avatar}}/" alt="Profile Picture"
+        class="profile-pic" />
     </div>
   
     {{!-- Profile details column (3 parts) --}}
@@ -1805,23 +1773,23 @@
           </button>
           {{#if this.isFriend}}
           <button class="emoji-button info" data-bs-toggle="tooltip" data-bs-placement="top" title="Add Friend"
-            type="button" {{on "click" (fn this.addFriend "remove")}}>
-            ➖ 
+            type="button" {{on "click" (fn this.addFriend "remove" )}}>
+            ➖
           </button>
           {{else}}
           <button class="emoji-button info" data-bs-toggle="tooltip" data-bs-placement="top" title="Add Friend"
-            type="button" {{on "click" (fn this.addFriend "add")}}>
+            type="button" {{on "click" (fn this.addFriend "add" )}}>
             ➕
           </button>
           {{/if}}
           {{#if this.isBlocked}}
           <button class="emoji-button info" data-bs-toggle="tooltip" data-bs-placement="top" title="Block User"
-            type="button" {{on "click" (fn this.blockUser "remove")}}>
-            ✅ 
+            type="button" {{on "click" (fn this.blockUser "remove" )}}>
+            ✅
           </button>
           {{else}}
           <button class="emoji-button info" data-bs-toggle="tooltip" data-bs-placement="top" title="Block User"
-            type="button" {{on "click" (fn this.blockUser "add")}}>
+            type="button" {{on "click" (fn this.blockUser "add" )}}>
             🚫
           </button>
           {{/if}}
@@ -1831,7 +1799,7 @@
   
       {{!-- Second row of profile details --}}
       <div class="profile-details">
-        <ModalGameHistory @user={{this.user.selectedUser}}/>
+        <ModalGameHistory @user={{this.user.selectedUser}} />
         <h2 class="info">Wins: {{this.user.selectedUser.wins}}</h2>
       </div>
   
@@ -1848,8 +1816,8 @@
   </div>
   */
   {
-    "id": "of/h9TNc",
-    "block": "[[[10,0],[14,0,\"container-fluid row fill p-2\"],[12],[1,\"\\n\"],[1,\"  \"],[10,0],[14,0,\"col center no-padding position-relative\"],[12],[1,\"\\n    \"],[10,\"button\"],[14,0,\"btn-close top-left\"],[15,\"onclick\",[30,0,[\"onCloseClick\"]]],[14,4,\"button\"],[12],[13],[1,\"\\n    \"],[10,\"img\"],[15,\"src\",[29,[\"https://localhost/users/users\",[30,0,[\"user\",\"selectedUser\",\"avatar\"]],\"/\"]]],[14,\"alt\",\"Profile Picture\"],[14,0,\"profile-pic\"],[12],[13],[1,\"\\n  \"],[13],[1,\"\\n\\n\"],[1,\"  \"],[10,0],[14,0,\"col-10\"],[12],[1,\"\\n\"],[1,\"    \"],[10,0],[14,0,\"profile-details\"],[12],[1,\"\\n      \"],[10,\"h2\"],[14,0,\"name\"],[12],[1,[30,0,[\"user\",\"selectedUser\",\"nickname\"]]],[13],[1,\"\\n      \"],[10,0],[14,0,\"actions\"],[12],[1,\"\\n        \"],[11,\"button\"],[24,0,\"emoji-button info\"],[24,\"data-bs-toggle\",\"tooltip\"],[24,\"data-bs-placement\",\"top\"],[24,\"title\",\"Live Chat\"],[24,4,\"button\"],[4,[38,4],[\"click\",[30,0,[\"startLiveChat\"]]],null],[12],[1,\"\\n          💬\\n        \"],[13],[1,\"\\n        \"],[11,\"button\"],[24,0,\"emoji-button info\"],[24,\"data-bs-toggle\",\"tooltip\"],[24,\"data-bs-placement\",\"top\"],[24,\"title\",\"Play Game\"],[24,4,\"button\"],[4,[38,4],[\"click\",[30,0,[\"playGame\"]]],null],[12],[1,\"\\n          🎮\\n        \"],[13],[1,\"\\n\"],[41,[30,0,[\"isFriend\"]],[[[1,\"        \"],[11,\"button\"],[24,0,\"emoji-button info\"],[24,\"data-bs-toggle\",\"tooltip\"],[24,\"data-bs-placement\",\"top\"],[24,\"title\",\"Add Friend\"],[24,4,\"button\"],[4,[38,4],[\"click\",[28,[37,6],[[30,0,[\"addFriend\"]],\"remove\"],null]],null],[12],[1,\"\\n          ➖ \\n        \"],[13],[1,\"\\n\"]],[]],[[[1,\"        \"],[11,\"button\"],[24,0,\"emoji-button info\"],[24,\"data-bs-toggle\",\"tooltip\"],[24,\"data-bs-placement\",\"top\"],[24,\"title\",\"Add Friend\"],[24,4,\"button\"],[4,[38,4],[\"click\",[28,[37,6],[[30,0,[\"addFriend\"]],\"add\"],null]],null],[12],[1,\"\\n          ➕\\n        \"],[13],[1,\"\\n\"]],[]]],[41,[30,0,[\"isBlocked\"]],[[[1,\"        \"],[11,\"button\"],[24,0,\"emoji-button info\"],[24,\"data-bs-toggle\",\"tooltip\"],[24,\"data-bs-placement\",\"top\"],[24,\"title\",\"Block User\"],[24,4,\"button\"],[4,[38,4],[\"click\",[28,[37,6],[[30,0,[\"blockUser\"]],\"remove\"],null]],null],[12],[1,\"\\n          ✅ \\n        \"],[13],[1,\"\\n\"]],[]],[[[1,\"        \"],[11,\"button\"],[24,0,\"emoji-button info\"],[24,\"data-bs-toggle\",\"tooltip\"],[24,\"data-bs-placement\",\"top\"],[24,\"title\",\"Block User\"],[24,4,\"button\"],[4,[38,4],[\"click\",[28,[37,6],[[30,0,[\"blockUser\"]],\"add\"],null]],null],[12],[1,\"\\n          🚫\\n        \"],[13],[1,\"\\n\"]],[]]],[1,\"      \"],[13],[1,\"\\n      \"],[10,\"h2\"],[14,0,\"points\"],[12],[1,[30,0,[\"user\",\"selectedUser\",\"trophies\"]]],[1,\"🏆\"],[13],[1,\"\\n    \"],[13],[1,\"\\n\\n\"],[1,\"    \"],[10,0],[14,0,\"profile-details\"],[12],[1,\"\\n      \"],[8,[39,7],null,[[\"@user\"],[[30,0,[\"user\",\"selectedUser\"]]]],null],[1,\"\\n      \"],[10,\"h2\"],[14,0,\"info\"],[12],[1,\"Wins: \"],[1,[30,0,[\"user\",\"selectedUser\",\"wins\"]]],[13],[1,\"\\n    \"],[13],[1,\"\\n\\n    \"],[10,0],[14,0,\"profile-details\"],[12],[1,\"\\n\"],[41,[30,0,[\"isOnline\"]],[[[1,\"      \"],[10,\"h2\"],[14,0,\"info\"],[12],[1,\"🟢 online\"],[13],[1,\"\\n\"]],[]],[[[1,\"      \"],[10,\"h2\"],[14,0,\"info\"],[12],[1,\"🔴 offline\"],[13],[1,\"\\n\"]],[]]],[1,\"      \"],[10,\"h2\"],[14,0,\"info\"],[12],[1,\"Losses: \"],[1,[30,0,[\"user\",\"selectedUser\",\"losses\"]]],[13],[1,\"\\n    \"],[13],[1,\"\\n\\n  \"],[13],[1,\"\\n\"],[13]],[],false,[\"div\",\"button\",\"img\",\"h2\",\"on\",\"if\",\"fn\",\"modal-game-history\"]]",
+    "id": "RExrS/eW",
+    "block": "[[[10,0],[14,0,\"container-fluid row fill p-2\"],[12],[1,\"\\n\"],[1,\"  \"],[10,0],[14,0,\"col center no-padding position-relative\"],[12],[1,\"\\n    \"],[10,\"button\"],[14,0,\"btn-close top-left\"],[15,\"onclick\",[30,0,[\"onCloseClick\"]]],[14,4,\"button\"],[12],[13],[1,\"\\n    \"],[10,\"img\"],[15,\"src\",[29,[\"https://localhost/users/users\",[30,0,[\"user\",\"selectedUser\",\"avatar\"]],\"/\"]]],[14,\"alt\",\"Profile Picture\"],[14,0,\"profile-pic\"],[12],[13],[1,\"\\n  \"],[13],[1,\"\\n\\n\"],[1,\"  \"],[10,0],[14,0,\"col-10\"],[12],[1,\"\\n\"],[1,\"    \"],[10,0],[14,0,\"profile-details\"],[12],[1,\"\\n      \"],[10,\"h2\"],[14,0,\"name\"],[12],[1,[30,0,[\"user\",\"selectedUser\",\"nickname\"]]],[13],[1,\"\\n      \"],[10,0],[14,0,\"actions\"],[12],[1,\"\\n        \"],[11,\"button\"],[24,0,\"emoji-button info\"],[24,\"data-bs-toggle\",\"tooltip\"],[24,\"data-bs-placement\",\"top\"],[24,\"title\",\"Live Chat\"],[24,4,\"button\"],[4,[38,4],[\"click\",[30,0,[\"startLiveChat\"]]],null],[12],[1,\"\\n          💬\\n        \"],[13],[1,\"\\n        \"],[11,\"button\"],[24,0,\"emoji-button info\"],[24,\"data-bs-toggle\",\"tooltip\"],[24,\"data-bs-placement\",\"top\"],[24,\"title\",\"Play Game\"],[24,4,\"button\"],[4,[38,4],[\"click\",[30,0,[\"playGame\"]]],null],[12],[1,\"\\n          🎮\\n        \"],[13],[1,\"\\n\"],[41,[30,0,[\"isFriend\"]],[[[1,\"        \"],[11,\"button\"],[24,0,\"emoji-button info\"],[24,\"data-bs-toggle\",\"tooltip\"],[24,\"data-bs-placement\",\"top\"],[24,\"title\",\"Add Friend\"],[24,4,\"button\"],[4,[38,4],[\"click\",[28,[37,6],[[30,0,[\"addFriend\"]],\"remove\"],null]],null],[12],[1,\"\\n          ➖\\n        \"],[13],[1,\"\\n\"]],[]],[[[1,\"        \"],[11,\"button\"],[24,0,\"emoji-button info\"],[24,\"data-bs-toggle\",\"tooltip\"],[24,\"data-bs-placement\",\"top\"],[24,\"title\",\"Add Friend\"],[24,4,\"button\"],[4,[38,4],[\"click\",[28,[37,6],[[30,0,[\"addFriend\"]],\"add\"],null]],null],[12],[1,\"\\n          ➕\\n        \"],[13],[1,\"\\n\"]],[]]],[41,[30,0,[\"isBlocked\"]],[[[1,\"        \"],[11,\"button\"],[24,0,\"emoji-button info\"],[24,\"data-bs-toggle\",\"tooltip\"],[24,\"data-bs-placement\",\"top\"],[24,\"title\",\"Block User\"],[24,4,\"button\"],[4,[38,4],[\"click\",[28,[37,6],[[30,0,[\"blockUser\"]],\"remove\"],null]],null],[12],[1,\"\\n          ✅\\n        \"],[13],[1,\"\\n\"]],[]],[[[1,\"        \"],[11,\"button\"],[24,0,\"emoji-button info\"],[24,\"data-bs-toggle\",\"tooltip\"],[24,\"data-bs-placement\",\"top\"],[24,\"title\",\"Block User\"],[24,4,\"button\"],[4,[38,4],[\"click\",[28,[37,6],[[30,0,[\"blockUser\"]],\"add\"],null]],null],[12],[1,\"\\n          🚫\\n        \"],[13],[1,\"\\n\"]],[]]],[1,\"      \"],[13],[1,\"\\n      \"],[10,\"h2\"],[14,0,\"points\"],[12],[1,[30,0,[\"user\",\"selectedUser\",\"trophies\"]]],[1,\"🏆\"],[13],[1,\"\\n    \"],[13],[1,\"\\n\\n\"],[1,\"    \"],[10,0],[14,0,\"profile-details\"],[12],[1,\"\\n      \"],[8,[39,7],null,[[\"@user\"],[[30,0,[\"user\",\"selectedUser\"]]]],null],[1,\"\\n      \"],[10,\"h2\"],[14,0,\"info\"],[12],[1,\"Wins: \"],[1,[30,0,[\"user\",\"selectedUser\",\"wins\"]]],[13],[1,\"\\n    \"],[13],[1,\"\\n\\n    \"],[10,0],[14,0,\"profile-details\"],[12],[1,\"\\n\"],[41,[30,0,[\"isOnline\"]],[[[1,\"      \"],[10,\"h2\"],[14,0,\"info\"],[12],[1,\"🟢 online\"],[13],[1,\"\\n\"]],[]],[[[1,\"      \"],[10,\"h2\"],[14,0,\"info\"],[12],[1,\"🔴 offline\"],[13],[1,\"\\n\"]],[]]],[1,\"      \"],[10,\"h2\"],[14,0,\"info\"],[12],[1,\"Losses: \"],[1,[30,0,[\"user\",\"selectedUser\",\"losses\"]]],[13],[1,\"\\n    \"],[13],[1,\"\\n\\n  \"],[13],[1,\"\\n\"],[13]],[],false,[\"div\",\"button\",\"img\",\"h2\",\"on\",\"if\",\"fn\",\"modal-game-history\"]]",
     "moduleName": "myapp/components/profile-other.hbs",
     "isStrictMode": false
   });
@@ -1869,12 +1837,12 @@
       return blockedList.includes(this.user.selectedUser.nickname);
     }
     startLiveChat() {
-      console.log('Live chat started');
+      //console.log('Live chat started');
       this.chat.updateInputValue('/' + this.user.selectedUser.nickname + ' ');
       this.chat.focusInput();
     }
     playGame() {
-      console.log('Game initiated');
+      //console.log('Game initiated');
       this.chat.updateInputValue('/*invite ' + this.user.selectedUser.nickname);
       this.chat.sendMessage();
     }
@@ -1928,14 +1896,14 @@
           throw new Error(errorData.message || 'Failed to block user');
         }
         const result = await response.json();
-        console.log(result.message);
+        //console.log(result.message);
       } catch (error) {
         console.error('Error blocking user:', error.message);
         throw error;
       }
     }
     onCloseClick() {
-      console.log('Close clicked!');
+      //console.log('Close clicked!');
       this.user.selectUser(null);
     }
   }, _descriptor = _applyDecoratedDescriptor(_class.prototype, "chat", [_service.inject], {
@@ -1984,39 +1952,37 @@
       {{!-- First row of profile details --}}
       <div class="profile-details">
         {{#if this.isAuthenticated}}
-          {{#if this.user.profile}} {{!-- Access the user directly from the service --}}
-            <h2 class="name">{{this.user.profile.nickname}}</h2>
-            <ModalProfile/>
-          {{else}}
-            <p>Loading user...</p> {{!-- Or another fallback message --}}
-          {{/if}}
-          <button class="logout-button" type="button" {{on "click" this.logout}}>Logout</button>
+        {{#if this.user.profile}} {{!-- Access the user directly from the service --}}
+        <h2 class="name">{{this.user.profile.nickname}}</h2>
+        <ModalProfile />
+        {{else}}
+        <p>Loading user...</p> {{!-- Or another fallback message --}}
+        {{/if}}
+        <button class="logout-button" type="button" {{on "click" this.logout}}>Logout</button>
         {{/if}}
         <h2 class="points info">{{this.user.profile.trophies}} 🏆</h2>
       </div>
   
       {{!-- Second row of profile details --}}
       <div class="profile-details">
-        <ModalGameHistory @user={{this.user.profile}}/>
+        <ModalGameHistory @user={{this.user.profile}} />
         <h2 class="info">Wins: {{this.user.profile.wins}}</h2>
       </div>
   
       <div class="profile-details">
-        {{#if this.isOnline}} 
-          <h2 class="info">🟢 online</h2>
+        {{#if this.isOnline}}
+        <h2 class="info">🟢 online</h2>
         {{else}}
-          <h2 class="info">🔴 offline</h2>
+        <h2 class="info">🔴 offline</h2>
         {{/if}}
         <h2 class="info">Losses: {{this.user.profile.losses}}</h2>
       </div>
     </div>
   </div>
-  
-  
   */
   {
-    "id": "bw1NpvAp",
-    "block": "[[[10,0],[14,0,\"container-fluid row fill p-2\"],[12],[1,\"\\n\"],[1,\"  \"],[10,0],[14,0,\"col center\"],[12],[1,\"\\n    \"],[10,\"img\"],[15,\"src\",[29,[\"https://localhost/users/users\",[30,0,[\"user\",\"profile\",\"avatar\"]],\"/\"]]],[14,\"alt\",\"Profile Picture\"],[14,0,\"profile-pic\"],[12],[13],[1,\"\\n  \"],[13],[1,\"\\n\\n\"],[1,\"  \"],[10,0],[14,0,\"col-10\"],[12],[1,\"\\n\"],[1,\"    \"],[10,0],[14,0,\"profile-details\"],[12],[1,\"\\n\"],[41,[30,0,[\"isAuthenticated\"]],[[[1,\"        \"],[41,[30,0,[\"user\",\"profile\"]],[[[1,\" \"],[1,\"\\n          \"],[10,\"h2\"],[14,0,\"name\"],[12],[1,[30,0,[\"user\",\"profile\",\"nickname\"]]],[13],[1,\"\\n          \"],[8,[39,4],null,null,null],[1,\"\\n\"]],[]],[[[1,\"          \"],[10,2],[12],[1,\"Loading user...\"],[13],[1,\" \"],[1,\"\\n\"]],[]]],[1,\"        \"],[11,\"button\"],[24,0,\"logout-button\"],[24,4,\"button\"],[4,[38,7],[\"click\",[30,0,[\"logout\"]]],null],[12],[1,\"Logout\"],[13],[1,\"\\n\"]],[]],null],[1,\"      \"],[10,\"h2\"],[14,0,\"points info\"],[12],[1,[30,0,[\"user\",\"profile\",\"trophies\"]]],[1,\" 🏆\"],[13],[1,\"\\n    \"],[13],[1,\"\\n\\n\"],[1,\"    \"],[10,0],[14,0,\"profile-details\"],[12],[1,\"\\n      \"],[8,[39,8],null,[[\"@user\"],[[30,0,[\"user\",\"profile\"]]]],null],[1,\"\\n      \"],[10,\"h2\"],[14,0,\"info\"],[12],[1,\"Wins: \"],[1,[30,0,[\"user\",\"profile\",\"wins\"]]],[13],[1,\"\\n    \"],[13],[1,\"\\n\\n    \"],[10,0],[14,0,\"profile-details\"],[12],[1,\"\\n\"],[41,[30,0,[\"isOnline\"]],[[[1,\"        \"],[10,\"h2\"],[14,0,\"info\"],[12],[1,\"🟢 online\"],[13],[1,\"\\n\"]],[]],[[[1,\"        \"],[10,\"h2\"],[14,0,\"info\"],[12],[1,\"🔴 offline\"],[13],[1,\"\\n\"]],[]]],[1,\"      \"],[10,\"h2\"],[14,0,\"info\"],[12],[1,\"Losses: \"],[1,[30,0,[\"user\",\"profile\",\"losses\"]]],[13],[1,\"\\n    \"],[13],[1,\"\\n  \"],[13],[1,\"\\n\"],[13],[1,\"\\n\\n\"]],[],false,[\"div\",\"img\",\"if\",\"h2\",\"modal-profile\",\"p\",\"button\",\"on\",\"modal-game-history\"]]",
+    "id": "LdKYzV9d",
+    "block": "[[[10,0],[14,0,\"container-fluid row fill p-2\"],[12],[1,\"\\n\"],[1,\"  \"],[10,0],[14,0,\"col center\"],[12],[1,\"\\n    \"],[10,\"img\"],[15,\"src\",[29,[\"https://localhost/users/users\",[30,0,[\"user\",\"profile\",\"avatar\"]],\"/\"]]],[14,\"alt\",\"Profile Picture\"],[14,0,\"profile-pic\"],[12],[13],[1,\"\\n  \"],[13],[1,\"\\n\\n\"],[1,\"  \"],[10,0],[14,0,\"col-10\"],[12],[1,\"\\n\"],[1,\"    \"],[10,0],[14,0,\"profile-details\"],[12],[1,\"\\n\"],[41,[30,0,[\"isAuthenticated\"]],[[[1,\"      \"],[41,[30,0,[\"user\",\"profile\"]],[[[1,\" \"],[1,\"\\n      \"],[10,\"h2\"],[14,0,\"name\"],[12],[1,[30,0,[\"user\",\"profile\",\"nickname\"]]],[13],[1,\"\\n      \"],[8,[39,4],null,null,null],[1,\"\\n\"]],[]],[[[1,\"      \"],[10,2],[12],[1,\"Loading user...\"],[13],[1,\" \"],[1,\"\\n\"]],[]]],[1,\"      \"],[11,\"button\"],[24,0,\"logout-button\"],[24,4,\"button\"],[4,[38,7],[\"click\",[30,0,[\"logout\"]]],null],[12],[1,\"Logout\"],[13],[1,\"\\n\"]],[]],null],[1,\"      \"],[10,\"h2\"],[14,0,\"points info\"],[12],[1,[30,0,[\"user\",\"profile\",\"trophies\"]]],[1,\" 🏆\"],[13],[1,\"\\n    \"],[13],[1,\"\\n\\n\"],[1,\"    \"],[10,0],[14,0,\"profile-details\"],[12],[1,\"\\n      \"],[8,[39,8],null,[[\"@user\"],[[30,0,[\"user\",\"profile\"]]]],null],[1,\"\\n      \"],[10,\"h2\"],[14,0,\"info\"],[12],[1,\"Wins: \"],[1,[30,0,[\"user\",\"profile\",\"wins\"]]],[13],[1,\"\\n    \"],[13],[1,\"\\n\\n    \"],[10,0],[14,0,\"profile-details\"],[12],[1,\"\\n\"],[41,[30,0,[\"isOnline\"]],[[[1,\"      \"],[10,\"h2\"],[14,0,\"info\"],[12],[1,\"🟢 online\"],[13],[1,\"\\n\"]],[]],[[[1,\"      \"],[10,\"h2\"],[14,0,\"info\"],[12],[1,\"🔴 offline\"],[13],[1,\"\\n\"]],[]]],[1,\"      \"],[10,\"h2\"],[14,0,\"info\"],[12],[1,\"Losses: \"],[1,[30,0,[\"user\",\"profile\",\"losses\"]]],[13],[1,\"\\n    \"],[13],[1,\"\\n  \"],[13],[1,\"\\n\"],[13]],[],false,[\"div\",\"img\",\"if\",\"h2\",\"modal-profile\",\"p\",\"button\",\"on\",\"modal-game-history\"]]",
     "moduleName": "myapp/components/profile-own.hbs",
     "isStrictMode": false
   });
@@ -2074,7 +2040,7 @@
     <div class="container-fluid row border">
     {{!-- Profile picture column (1 part) --}}
     <div class="col-5">
-      
+  
       <User @user={{this.gameData.player_1}} />
     </div>
   
@@ -2089,11 +2055,10 @@
       <User @user={{this.gameData.player_2}} />
     </div>
   </div>
-  
   */
   {
-    "id": "BZIXLllK",
-    "block": "[[[10,0],[14,0,\"container-fluid row border\"],[12],[1,\"\\n\"],[1,\"  \"],[10,0],[14,0,\"col-5\"],[12],[1,\"\\n    \\n    \"],[8,[39,1],null,[[\"@user\"],[[30,0,[\"gameData\",\"player_1\"]]]],null],[1,\"\\n  \"],[13],[1,\"\\n\\n\"],[41,[30,0,[\"gameData\",\"player_1\"]],[[[1,\"  \"],[10,0],[14,0,\"col-2\"],[12],[1,\"\\n    \"],[10,0],[14,0,\"score center\"],[12],[1,[30,0,[\"gameData\",\"left_score\"]]],[1,\":\"],[1,[30,0,[\"gameData\",\"right_score\"]]],[13],[1,\"\\n  \"],[13],[1,\"\\n\"]],[]],null],[1,\"\\n  \"],[10,0],[14,0,\"col-5\"],[12],[1,\"\\n    \"],[8,[39,1],null,[[\"@user\"],[[30,0,[\"gameData\",\"player_2\"]]]],null],[1,\"\\n  \"],[13],[1,\"\\n\"],[13],[1,\"\\n\"]],[],false,[\"div\",\"user\",\"if\"]]",
+    "id": "vJtOHn2B",
+    "block": "[[[10,0],[14,0,\"container-fluid row border\"],[12],[1,\"\\n\"],[1,\"  \"],[10,0],[14,0,\"col-5\"],[12],[1,\"\\n\\n    \"],[8,[39,1],null,[[\"@user\"],[[30,0,[\"gameData\",\"player_1\"]]]],null],[1,\"\\n  \"],[13],[1,\"\\n\\n\"],[41,[30,0,[\"gameData\",\"player_1\"]],[[[1,\"  \"],[10,0],[14,0,\"col-2\"],[12],[1,\"\\n    \"],[10,0],[14,0,\"score center\"],[12],[1,[30,0,[\"gameData\",\"left_score\"]]],[1,\":\"],[1,[30,0,[\"gameData\",\"right_score\"]]],[13],[1,\"\\n  \"],[13],[1,\"\\n\"]],[]],null],[1,\"\\n  \"],[10,0],[14,0,\"col-5\"],[12],[1,\"\\n    \"],[8,[39,1],null,[[\"@user\"],[[30,0,[\"gameData\",\"player_2\"]]]],null],[1,\"\\n  \"],[13],[1,\"\\n\"],[13]],[],false,[\"div\",\"user\",\"if\"]]",
     "moduleName": "myapp/components/scoreboard.hbs",
     "isStrictMode": false
   });
@@ -2133,11 +2098,10 @@
      <span style="--i:8">nc</span>
      <span style="--i:8">e</span>
   </div>
-  
   */
   {
-    "id": "l+mNLrgS",
-    "block": "[[[10,0],[14,0,\"waviy\"],[12],[1,\"\\n   \"],[10,1],[14,5,\"--i:1\"],[12],[1,\"4\"],[13],[1,\"\\n   \"],[10,1],[14,5,\"--i:2\"],[12],[1,\"2\"],[13],[1,\"\\n   \"],[10,1],[14,5,\"--i:3\"],[12],[1,\"_\"],[13],[1,\"\\n   \"],[10,1],[14,5,\"--i:4\"],[12],[1,\"tr\"],[13],[1,\"\\n   \"],[10,1],[14,5,\"--i:5\"],[12],[1,\"a\"],[13],[1,\"\\n   \"],[10,1],[14,5,\"--i:6\"],[12],[1,\"s\"],[13],[1,\"\\n   \"],[10,1],[14,5,\"--i:7\"],[12],[1,\"cen\"],[13],[1,\"\\n   \"],[10,1],[14,5,\"--i:8\"],[12],[1,\"d\"],[13],[1,\"\\n   \"],[10,1],[14,5,\"--i:8\"],[12],[1,\"e\"],[13],[1,\"\\n   \"],[10,1],[14,5,\"--i:8\"],[12],[1,\"nc\"],[13],[1,\"\\n   \"],[10,1],[14,5,\"--i:8\"],[12],[1,\"e\"],[13],[1,\"\\n\"],[13],[1,\"\\n\"]],[],false,[\"div\",\"span\"]]",
+    "id": "mVC57yox",
+    "block": "[[[10,0],[14,0,\"waviy\"],[12],[1,\"\\n   \"],[10,1],[14,5,\"--i:1\"],[12],[1,\"4\"],[13],[1,\"\\n   \"],[10,1],[14,5,\"--i:2\"],[12],[1,\"2\"],[13],[1,\"\\n   \"],[10,1],[14,5,\"--i:3\"],[12],[1,\"_\"],[13],[1,\"\\n   \"],[10,1],[14,5,\"--i:4\"],[12],[1,\"tr\"],[13],[1,\"\\n   \"],[10,1],[14,5,\"--i:5\"],[12],[1,\"a\"],[13],[1,\"\\n   \"],[10,1],[14,5,\"--i:6\"],[12],[1,\"s\"],[13],[1,\"\\n   \"],[10,1],[14,5,\"--i:7\"],[12],[1,\"cen\"],[13],[1,\"\\n   \"],[10,1],[14,5,\"--i:8\"],[12],[1,\"d\"],[13],[1,\"\\n   \"],[10,1],[14,5,\"--i:8\"],[12],[1,\"e\"],[13],[1,\"\\n   \"],[10,1],[14,5,\"--i:8\"],[12],[1,\"nc\"],[13],[1,\"\\n   \"],[10,1],[14,5,\"--i:8\"],[12],[1,\"e\"],[13],[1,\"\\n\"],[13]],[],false,[\"div\",\"span\"]]",
     "moduleName": "myapp/components/title-animation.hbs",
     "isStrictMode": false
   });
@@ -2161,19 +2125,20 @@
   const __COLOCATED_TEMPLATE__ = (0, _templateFactory.createTemplateFactory)(
   /*
     <div class="user-card">
-          <p class="mb-0"><h2 class="info">{{@creator}}'s</h2>
-          <h3 class="tournament-info">Tournament</h3></p>
-          <div class="actions left">
-              <button class="tournament-button join" {{on "click" (fn this.onJoinClick @creator)}} type="button">Join</button>
-              <button class="tournament-button" {{on "click" (fn this.onLeaveClick @creator)}} type="button">Leave</button>
-          </div>
-          <h2 class="points info">👥 {{@current_players}}/{{@max_players}}</h2>
+      <p class="mb-0">
+      <h2 class="info">{{@creator}}'s</h2>
+      <h3 class="tournament-info">Tournament</h3>
+      </p>
+      <div class="actions left">
+          <button class="tournament-button join" {{on "click" (fn this.onJoinClick @creator)}} type="button">Join</button>
+          <button class="tournament-button" {{on "click" (fn this.onLeaveClick @creator)}} type="button">Leave</button>
+      </div>
+      <h2 class="points info">👥 {{@current_players}}/{{@max_players}}</h2>
   </div>
-  
   */
   {
-    "id": "l+X2ycFG",
-    "block": "[[[10,0],[14,0,\"user-card\"],[12],[1,\"\\n        \"],[10,2],[14,0,\"mb-0\"],[12],[10,\"h2\"],[14,0,\"info\"],[12],[1,[30,1]],[1,\"'s\"],[13],[1,\"\\n        \"],[10,\"h3\"],[14,0,\"tournament-info\"],[12],[1,\"Tournament\"],[13],[13],[1,\"\\n        \"],[10,0],[14,0,\"actions left\"],[12],[1,\"\\n            \"],[11,\"button\"],[24,0,\"tournament-button join\"],[24,4,\"button\"],[4,[38,5],[\"click\",[28,[37,6],[[30,0,[\"onJoinClick\"]],[30,1]],null]],null],[12],[1,\"Join\"],[13],[1,\"\\n            \"],[11,\"button\"],[24,0,\"tournament-button\"],[24,4,\"button\"],[4,[38,5],[\"click\",[28,[37,6],[[30,0,[\"onLeaveClick\"]],[30,1]],null]],null],[12],[1,\"Leave\"],[13],[1,\"\\n        \"],[13],[1,\"\\n        \"],[10,\"h2\"],[14,0,\"points info\"],[12],[1,\"👥 \"],[1,[30,2]],[1,\"/\"],[1,[30,3]],[13],[1,\"\\n\"],[13],[1,\"\\n\"]],[\"@creator\",\"@current_players\",\"@max_players\"],false,[\"div\",\"p\",\"h2\",\"h3\",\"button\",\"on\",\"fn\"]]",
+    "id": "R+8OlvcY",
+    "block": "[[[10,0],[14,0,\"user-card\"],[12],[1,\"\\n    \"],[10,2],[14,0,\"mb-0\"],[12],[1,\"\\n    \"],[10,\"h2\"],[14,0,\"info\"],[12],[1,[30,1]],[1,\"'s\"],[13],[1,\"\\n    \"],[10,\"h3\"],[14,0,\"tournament-info\"],[12],[1,\"Tournament\"],[13],[1,\"\\n    \"],[13],[1,\"\\n    \"],[10,0],[14,0,\"actions left\"],[12],[1,\"\\n        \"],[11,\"button\"],[24,0,\"tournament-button join\"],[24,4,\"button\"],[4,[38,5],[\"click\",[28,[37,6],[[30,0,[\"onJoinClick\"]],[30,1]],null]],null],[12],[1,\"Join\"],[13],[1,\"\\n        \"],[11,\"button\"],[24,0,\"tournament-button\"],[24,4,\"button\"],[4,[38,5],[\"click\",[28,[37,6],[[30,0,[\"onLeaveClick\"]],[30,1]],null]],null],[12],[1,\"Leave\"],[13],[1,\"\\n    \"],[13],[1,\"\\n    \"],[10,\"h2\"],[14,0,\"points info\"],[12],[1,\"👥 \"],[1,[30,2]],[1,\"/\"],[1,[30,3]],[13],[1,\"\\n\"],[13]],[\"@creator\",\"@current_players\",\"@max_players\"],false,[\"div\",\"p\",\"h2\",\"h3\",\"button\",\"on\",\"fn\"]]",
     "moduleName": "myapp/components/tournament-item.hbs",
     "isStrictMode": false
   });
@@ -2184,11 +2149,11 @@
       _initializerDefineProperty(this, "user", _descriptor2, this);
     }
     onJoinClick(creator) {
-      console.log('Join clicked!', creator);
+      //console.log('Join clicked!', creator);
       this.tournament.connectToLobby(creator);
     }
     onLeaveClick(creator) {
-      console.log('Leave clicked!', creator);
+      //console.log('Leave clicked!', creator);
       this.tournament.disconnectFromLobby(creator);
     }
   }, _descriptor = _applyDecoratedDescriptor(_class.prototype, "tournament", [_service.inject], {
@@ -2227,14 +2192,13 @@
   </nav>
   <div class="scrollable-list middle-scroll">
       {{#each this.tournaments as |tournament|}}
-          <TournamentItem @creator={{tournament.name}} @current_players={{tournament.num_players}} @max_players="10"/>
+      <TournamentItem @creator={{tournament.name}} @current_players={{tournament.num_players}} @max_players="10" />
       {{/each}}
   </div>
-  
   */
   {
-    "id": "169tmhqw",
-    "block": "[[[10,\"nav\"],[14,0,\"navigation-bar\"],[12],[1,\"\\n    \"],[10,\"h1\"],[14,0,\"white\"],[12],[1,\"Tournaments\"],[13],[1,\"\\n    \"],[10,\"button\"],[14,0,\"tournament-button update\"],[15,\"onclick\",[30,0,[\"fetchTournaments\"]]],[14,4,\"button\"],[12],[1,\"↻\"],[13],[1,\"\\n\"],[13],[1,\"\\n\"],[10,0],[14,0,\"scrollable-list middle-scroll\"],[12],[1,\"\\n\"],[42,[28,[37,5],[[28,[37,5],[[30,0,[\"tournaments\"]]],null]],null],null,[[[1,\"        \"],[8,[39,6],null,[[\"@creator\",\"@current_players\",\"@max_players\"],[[30,1,[\"name\"]],[30,1,[\"num_players\"]],\"10\"]],null],[1,\"\\n\"]],[1]],null],[13],[1,\"\\n\"]],[\"tournament\"],false,[\"nav\",\"h1\",\"button\",\"div\",\"each\",\"-track-array\",\"tournament-item\"]]",
+    "id": "epLpP53r",
+    "block": "[[[10,\"nav\"],[14,0,\"navigation-bar\"],[12],[1,\"\\n    \"],[10,\"h1\"],[14,0,\"white\"],[12],[1,\"Tournaments\"],[13],[1,\"\\n    \"],[10,\"button\"],[14,0,\"tournament-button update\"],[15,\"onclick\",[30,0,[\"fetchTournaments\"]]],[14,4,\"button\"],[12],[1,\"↻\"],[13],[1,\"\\n\"],[13],[1,\"\\n\"],[10,0],[14,0,\"scrollable-list middle-scroll\"],[12],[1,\"\\n\"],[42,[28,[37,5],[[28,[37,5],[[30,0,[\"tournaments\"]]],null]],null],null,[[[1,\"    \"],[8,[39,6],null,[[\"@creator\",\"@current_players\",\"@max_players\"],[[30,1,[\"name\"]],[30,1,[\"num_players\"]],\"10\"]],null],[1,\"\\n\"]],[1]],null],[13]],[\"tournament\"],false,[\"nav\",\"h1\",\"button\",\"div\",\"each\",\"-track-array\",\"tournament-item\"]]",
     "moduleName": "myapp/components/tournament-list.hbs",
     "isStrictMode": false
   });
@@ -2263,21 +2227,23 @@
      * Fetch tournaments from the API
      */
     async fetchTournaments() {
-      try {
-        const response = await fetch('/lobby/list/', {
-          method: 'GET',
-          headers: {
-            Authorization: `Bearer ${this.session.data.access}`,
-            'Content-Type': 'application/json'
+      if (this.session.isAuthenticated) {
+        try {
+          const response = await fetch('/lobby/list/', {
+            method: 'GET',
+            headers: {
+              Authorization: `Bearer ${this.session.data.access}`,
+              'Content-Type': 'application/json'
+            }
+          });
+          if (!response.ok) {
+            throw new Error('Failed to fetch lobby list');
           }
-        });
-        if (!response.ok) {
-          throw new Error('Failed to fetch lobby list');
+          const data = await response.json();
+          this.tournaments = data.tournaments;
+        } catch (error) {
+          console.error('Error fetching tournaments:', error);
         }
-        const data = await response.json();
-        this.tournaments = data.tournaments;
-      } catch (error) {
-        console.error('Error fetching tournaments:', error);
       }
     }
 
@@ -2324,13 +2290,13 @@
   /*
     <div class="scrollable-list middle-scroll">
       {{#each this.tournament.currentPlayers as |user|}}
-          <User @user={{user}} @selectUser={{null}} />
+      <User @user={{user}} @selectUser={{null}} />
       {{/each}}
   </div>
   */
   {
-    "id": "P2DdJXcY",
-    "block": "[[[10,0],[14,0,\"scrollable-list middle-scroll\"],[12],[1,\"\\n\"],[42,[28,[37,2],[[28,[37,2],[[30,0,[\"tournament\",\"currentPlayers\"]]],null]],null],null,[[[1,\"        \"],[8,[39,3],null,[[\"@user\",\"@selectUser\"],[[30,1],null]],null],[1,\"\\n\"]],[1]],null],[13]],[\"user\"],false,[\"div\",\"each\",\"-track-array\",\"user\"]]",
+    "id": "xsficPD5",
+    "block": "[[[10,0],[14,0,\"scrollable-list middle-scroll\"],[12],[1,\"\\n\"],[42,[28,[37,2],[[28,[37,2],[[30,0,[\"tournament\",\"currentPlayers\"]]],null]],null],null,[[[1,\"    \"],[8,[39,3],null,[[\"@user\",\"@selectUser\"],[[30,1],null]],null],[1,\"\\n\"]],[1]],null],[13]],[\"user\"],false,[\"div\",\"each\",\"-track-array\",\"user\"]]",
     "moduleName": "myapp/components/user-list-tournament.hbs",
     "isStrictMode": false
   });
@@ -2365,19 +2331,18 @@
   const __COLOCATED_TEMPLATE__ = (0, _templateFactory.createTemplateFactory)(
   /*
     <nav class="navigation-bar">
-      <button class="nav-button" type="button" {{on "click" (fn this.setFilter "friends")}}>Friends</button>
-      <button class="nav-button" type="button" {{on "click" (fn this.setFilter "all")}}>All</button>
+      <button class="nav-button" type="button" {{on "click" (fn this.setFilter "friends" )}}>Friends</button>
+      <button class="nav-button" type="button" {{on "click" (fn this.setFilter "all" )}}>All</button>
   </nav>
   <div class="scrollable-list middle-scroll">
       {{#each this.filteredUsers as |user|}}
-          <User @user={{user}} />
+      <User @user={{user}} />
       {{/each}}
   </div>
-  
   */
   {
-    "id": "uj6+BZAM",
-    "block": "[[[10,\"nav\"],[14,0,\"navigation-bar\"],[12],[1,\"\\n    \"],[11,\"button\"],[24,0,\"nav-button\"],[24,4,\"button\"],[4,[38,2],[\"click\",[28,[37,3],[[30,0,[\"setFilter\"]],\"friends\"],null]],null],[12],[1,\"Friends\"],[13],[1,\"\\n    \"],[11,\"button\"],[24,0,\"nav-button\"],[24,4,\"button\"],[4,[38,2],[\"click\",[28,[37,3],[[30,0,[\"setFilter\"]],\"all\"],null]],null],[12],[1,\"All\"],[13],[1,\"\\n\"],[13],[1,\"\\n\"],[10,0],[14,0,\"scrollable-list middle-scroll\"],[12],[1,\"\\n\"],[42,[28,[37,6],[[28,[37,6],[[30,0,[\"filteredUsers\"]]],null]],null],null,[[[1,\"        \"],[8,[39,7],null,[[\"@user\"],[[30,1]]],null],[1,\"\\n\"]],[1]],null],[13],[1,\"\\n\"]],[\"user\"],false,[\"nav\",\"button\",\"on\",\"fn\",\"div\",\"each\",\"-track-array\",\"user\"]]",
+    "id": "ACSyW/ia",
+    "block": "[[[10,\"nav\"],[14,0,\"navigation-bar\"],[12],[1,\"\\n    \"],[11,\"button\"],[24,0,\"nav-button\"],[24,4,\"button\"],[4,[38,2],[\"click\",[28,[37,3],[[30,0,[\"setFilter\"]],\"friends\"],null]],null],[12],[1,\"Friends\"],[13],[1,\"\\n    \"],[11,\"button\"],[24,0,\"nav-button\"],[24,4,\"button\"],[4,[38,2],[\"click\",[28,[37,3],[[30,0,[\"setFilter\"]],\"all\"],null]],null],[12],[1,\"All\"],[13],[1,\"\\n\"],[13],[1,\"\\n\"],[10,0],[14,0,\"scrollable-list middle-scroll\"],[12],[1,\"\\n\"],[42,[28,[37,6],[[28,[37,6],[[30,0,[\"filteredUsers\"]]],null]],null],null,[[[1,\"    \"],[8,[39,7],null,[[\"@user\"],[[30,1]]],null],[1,\"\\n\"]],[1]],null],[13]],[\"user\"],false,[\"nav\",\"button\",\"on\",\"fn\",\"div\",\"each\",\"-track-array\",\"user\"]]",
     "moduleName": "myapp/components/user-list.hbs",
     "isStrictMode": false
   });
@@ -2393,7 +2358,7 @@
       _defineProperty(this, "intervalId", null);
       _defineProperty(this, "setFilter", type => {
         this.filter = type;
-        console.log('filter:', type);
+        //console.log('filter:', type);
       });
       this.startFetchingUsers();
       this.disableArrowScrolling();
@@ -2426,20 +2391,22 @@
       return this.users;
     }
     async fetchUsers() {
-      try {
-        const response = await fetch('/users/users/profile-list/', {
-          method: 'GET',
-          headers: {
-            Authorization: `Bearer ${this.session.data.access}`,
-            'Content-Type': 'application/json'
+      if (this.session.isAuthenticated) {
+        try {
+          const response = await fetch('/users/users/profile-list/', {
+            method: 'GET',
+            headers: {
+              Authorization: `Bearer ${this.session.data.access}`,
+              'Content-Type': 'application/json'
+            }
+          });
+          if (!response.ok) {
+            throw new Error('Network response was not ok');
           }
-        });
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
+          this.users = await response.json();
+        } catch (error) {
+          console.error('Failed to fetch users:', error);
         }
-        this.users = await response.json();
-      } catch (error) {
-        console.error('Failed to fetch users:', error);
       }
     }
     willDestroy() {
@@ -2493,23 +2460,23 @@
   function _initializerWarningHelper(r, e) { throw Error("Decorating class property failed. Please ensure that transform-class-properties is enabled and runs after the decorators transform."); }
   const __COLOCATED_TEMPLATE__ = (0, _templateFactory.createTemplateFactory)(
   /*
-    {{#if @user}} 
-      <div class="user-card" role="button" onclick={{this.select}}>
-          <img src="https://localhost/users/users{{@user.avatar}}/" alt="Profile Picture" class="user-pic user" />
-          <div class="profile-details">
-              {{#if this.isOnline}} 
-              <h2 class="info">{{@user.nickname}} 🟢</h2>
-              {{else}}
-              <h2 class="info">{{@user.nickname}} 🔴</h2>
-              {{/if}}
-              <h2 class="points info">{{@user.trophies}} 🏆</h2>        
-          </div>
+    {{#if @user}}
+  <div class="user-card" role="button" onclick={{this.select}}>
+      <img src="https://localhost/users/users{{@user.avatar}}/" alt="Profile Picture" class="user-pic user" />
+      <div class="profile-details">
+          {{#if this.isOnline}}
+          <h2 class="info">{{@user.nickname}} 🟢</h2>
+          {{else}}
+          <h2 class="info">{{@user.nickname}} 🔴</h2>
+          {{/if}}
+          <h2 class="points info">{{@user.trophies}} 🏆</h2>
       </div>
+  </div>
   {{/if}}
   */
   {
-    "id": "fJ1pTaim",
-    "block": "[[[41,[30,1],[[[1,\"    \"],[10,0],[14,0,\"user-card\"],[14,\"role\",\"button\"],[15,\"onclick\",[30,0,[\"select\"]]],[12],[1,\"\\n        \"],[10,\"img\"],[15,\"src\",[29,[\"https://localhost/users/users\",[30,1,[\"avatar\"]],\"/\"]]],[14,\"alt\",\"Profile Picture\"],[14,0,\"user-pic user\"],[12],[13],[1,\"\\n        \"],[10,0],[14,0,\"profile-details\"],[12],[1,\"\\n\"],[41,[30,0,[\"isOnline\"]],[[[1,\"            \"],[10,\"h2\"],[14,0,\"info\"],[12],[1,[30,1,[\"nickname\"]]],[1,\" 🟢\"],[13],[1,\"\\n\"]],[]],[[[1,\"            \"],[10,\"h2\"],[14,0,\"info\"],[12],[1,[30,1,[\"nickname\"]]],[1,\" 🔴\"],[13],[1,\"\\n\"]],[]]],[1,\"            \"],[10,\"h2\"],[14,0,\"points info\"],[12],[1,[30,1,[\"trophies\"]]],[1,\" 🏆\"],[13],[1,\"        \\n        \"],[13],[1,\"\\n    \"],[13],[1,\"\\n\"]],[]],null]],[\"@user\"],false,[\"if\",\"div\",\"img\",\"h2\"]]",
+    "id": "x/5vA9xy",
+    "block": "[[[41,[30,1],[[[10,0],[14,0,\"user-card\"],[14,\"role\",\"button\"],[15,\"onclick\",[30,0,[\"select\"]]],[12],[1,\"\\n    \"],[10,\"img\"],[15,\"src\",[29,[\"https://localhost/users/users\",[30,1,[\"avatar\"]],\"/\"]]],[14,\"alt\",\"Profile Picture\"],[14,0,\"user-pic user\"],[12],[13],[1,\"\\n    \"],[10,0],[14,0,\"profile-details\"],[12],[1,\"\\n\"],[41,[30,0,[\"isOnline\"]],[[[1,\"        \"],[10,\"h2\"],[14,0,\"info\"],[12],[1,[30,1,[\"nickname\"]]],[1,\" 🟢\"],[13],[1,\"\\n\"]],[]],[[[1,\"        \"],[10,\"h2\"],[14,0,\"info\"],[12],[1,[30,1,[\"nickname\"]]],[1,\" 🔴\"],[13],[1,\"\\n\"]],[]]],[1,\"        \"],[10,\"h2\"],[14,0,\"points info\"],[12],[1,[30,1,[\"trophies\"]]],[1,\" 🏆\"],[13],[1,\"\\n    \"],[13],[1,\"\\n\"],[13],[1,\"\\n\"]],[]],null]],[\"@user\"],false,[\"if\",\"div\",\"img\",\"h2\"]]",
     "moduleName": "myapp/components/user.hbs",
     "isStrictMode": false
   });
@@ -2520,7 +2487,7 @@
       _initializerDefineProperty(this, "user", _descriptor2, this);
     }
     select() {
-      console.log('User clicked!');
+      //console.log('User clicked!');
       // Call the parent action passed via @selectUser
       this.user.selectUser(this.args.user.nickname); // Passing the selected user to the parent action
     }
@@ -2661,9 +2628,9 @@
         const data = await response.json();
         if (data.room_name) {
           if (data.player2 != 'remote') this.gameData.waiting = false;
-          console.log('data:', data);
+          //console.log('data:', data);
           this.gameData.setGameData(gameType, data);
-          console.log('gameData:', this.gameData.roomData.room_name);
+          //console.log('gameData:', this.gameData.roomData.room_name);
           this.router.transitionTo('pong-game');
         }
       } catch (error) {
@@ -2791,9 +2758,9 @@
           throw new Error('Failed to fetch user profile');
         }
         const data = await response.json();
-        console.log(data);
+        //console.log(data);
         this.user.setProfile(data); // Store user data for use in the template
-        console.log(this.user.profile);
+        //console.log(this.user.profile);
       } catch (error) {
         console.error('Error fetching user profile:', error);
       }
@@ -3962,6 +3929,7 @@
       super(...arguments);
 
       // Initialize the WebSocket connection
+      //console.log('connect ...');
       _initializerDefineProperty(this, "messages", _descriptor, this);
       // Track incoming messages
       _initializerDefineProperty(this, "messageInput", _descriptor2, this);
@@ -3985,7 +3953,6 @@
         whisper: 'rgb(255 49 255)',
         system: 'rgb(130 140 55)'
       });
-      console.log('connect ...');
       const token = this.session.data.access;
       const url = `wss://${window.location.hostname}/ws/chat/lobby/?token=${encodeURIComponent(token)}`;
       const socket = this.websockets.socketFor(url);
@@ -3994,9 +3961,7 @@
       socket.on('close', this.myCloseHandler, this);
       this.socketRef = socket;
     }
-    myOpenHandler(event) {
-      console.log(`On open event has been called token: ${this.session.data.access}`);
-    }
+    myOpenHandler(event) {}
     isBlocked(nickname) {
       const blockedList = this.user.profile.blocked || [];
       return blockedList.includes(nickname);
@@ -4013,7 +3978,7 @@
       if (!this.isBlocked(newMessage.from)) this.messages = [...this.messages, newMessage];
     }
     myCloseHandler(event) {
-      console.log(`On close event has been called: ${event}`);
+      //console.log(`On close event has been called: ${event}`);
     }
     updateInputValue(input) {
       this.messageInput = input; // Update the tracked input value
@@ -4053,7 +4018,7 @@
         };
         this.tournament.sendMessage(data);
       } else if (messageContent && this.to_user !== this.user.profile.nickname) {
-        console.log(messageContent);
+        //console.log(messageContent);
         this.socketRef.send(JSON.stringify({
           type: this.type,
           from: this.user.profile.nickname,
@@ -4065,6 +4030,9 @@
       if (this.type === 'all') this.messageInput = '';else this.messageInput = this.words[0] + ' ';
     }
     sendGameAccept(data, user) {
+      //console.log("asdas");
+      this.messages = this.messages.filter(message => !(message.type === "invite" && message.from === user));
+      //console.log(this.messages);
       this.socketRef.send(JSON.stringify({
         type: 'invite',
         from: this.user.profile.nickname,
@@ -4156,8 +4124,8 @@
     }
     async reconnect(data) {
       const roomData = {
-        player1: data?.player_1 || null,
-        player2: data?.player_2 || null,
+        player1: data?.player1 || null,
+        player2: data?.player2 || null,
         room_name: data?.room_name || null
       };
       this.setGameData("reconnect", roomData);
@@ -4166,7 +4134,6 @@
       this.gameType = gameType;
       this.roomData = roomData;
       this.pongGame.winner = null;
-      // Fetch user data for player_1 and player_2 asynchronously
       if (roomData.player1 !== 'AI' && roomData.player1 !== 'local') this.player_1 = await this.fetchUserData(roomData.player1);else if (roomData.player1 !== 'local') this.player_1 = {
         nickname: 'Computer',
         avatar: '/media/default_photo/default_photo.png',
@@ -4198,7 +4165,7 @@
       this.player_2 = null;
     }
     async setPlayer2(nickname) {
-      console.log('setPlayer2', nickname);
+      //console.log('setPlayer2', nickname);
       this.player_2 = await this.fetchUserData(nickname);
       this.waiting = false;
     }
@@ -4449,7 +4416,7 @@
       if (this.winner && !this.winnerSend) {
         this.winnerSend = true;
         if (this.tournament.currentLobby) {
-          console.log('trans to tournament');
+          //console.log('trans to tournament');
           //if (this.winner !== this.user.profile.nickname)
           //  this.tournament.playerInTournament = false;
           this.router.transitionTo('tournament');
@@ -4466,12 +4433,12 @@
       super.willDestroy();
     }
     async connectToRoom(roomName) {
-      console.log("testsss");
+      //console.log("testsss")
       const token = this.session.data.access;
       const wsUrl = `wss://${window.location.hostname}/ws/pong-game/${roomName}/?token=${encodeURIComponent(token)}`;
-      console.log('connect to:', wsUrl);
+      //console.log('connect to:', wsUrl);
       if (this.socketRef) {
-        console.log('disconnect');
+        //console.log('disconnect');
         this.disconnectFromGame(roomName);
       }
       const socket = this.websockets.socketFor(wsUrl);
@@ -4484,9 +4451,9 @@
     async disconnectFromGame(roomName) {
       const token = this.session.data.access;
       const wsUrl = `wss://${window.location.hostname}/ws/pong-game/${roomName}/?token=${encodeURIComponent(token)}`;
-      console.log('websocket to close:', roomName);
+      //console.log('websocket to close:', roomName);
       this.websockets.closeSocketFor(wsUrl);
-      console.log('websocket closed', this.websockets.sockets);
+      //console.log('websocket closed', this.websockets.sockets);
 
       // Remove event handlers
       this.socketRef.off('open', this.onOpen, this);
@@ -4498,17 +4465,18 @@
       this.gameData.clearGameData();
     }
     onMessage(event) {
-      console.log('WebSocket message received:', event.data);
+      //console.log('WebSocket message received:', event.data);
       const parsedMessage = JSON.parse(event.data);
+      //console.log("t1", this.gameData.roomData);
       if (!this.gameData.roomData) this.gameData.reconnect(parsedMessage);else if (this.gameData.waiting) this.gameData.setPlayer2(parsedMessage.player2);
       this.updateGameState(parsedMessage);
     }
     onClose(event) {
-      console.log('close:', event);
+      //console.log('close:', event);
     }
     sendMessage(data) {
       if (this.socketRef) {
-        console.log('WebSocket message send:', JSON.stringify(data));
+        //console.log('WebSocket message send:', JSON.stringify(data));
         this.socketRef.send(JSON.stringify(data));
       } else {
         console.error('WebSocket is not connected.');
@@ -4811,7 +4779,7 @@
       const token = this.session.data.access;
       const wsUrl = `wss://${window.location.hostname}/ws/tournament/${tournamentName}/?token=${encodeURIComponent(token)}`;
       if (this.socketRef) {
-        console.log('disconnect');
+        //console.log('disconnect');
         this.disconnectFromLobby(this.currentLobby);
       }
       const socket = this.websockets.socketFor(wsUrl);
@@ -4824,9 +4792,9 @@
     async disconnectFromLobby(tournamentName) {
       const token = this.session.data.access;
       const wsUrl = `wss://${window.location.hostname}/ws/tournament/${tournamentName}/?token=${encodeURIComponent(token)}`;
-      console.log('websocket to close:', tournamentName);
+      //console.log('websocket to close:', tournamentName);
       this.websockets.closeSocketFor(wsUrl);
-      console.log('websocket closed', this.websockets.sockets);
+      //console.log('websocket closed', this.websockets.sockets);
 
       // Remove event handlers
       this.socketRef.off('open', this.onOpen, this);
@@ -4844,7 +4812,7 @@
     }
     sendMessage(data) {
       if (this.socketRef) {
-        console.log('WebSocket message send:', JSON.stringify(data));
+        //console.log('WebSocket message send:', JSON.stringify(data));
         this.socketRef.send(JSON.stringify(data));
       } else {
         console.error('WebSocket is not connected.');
@@ -4855,7 +4823,7 @@
       this.playerInTournament = true;
     }
     onMessage(event) {
-      console.log('WebSocket message received:', event.data);
+      //console.log('WebSocket message received:', event.data);
       const parsedMessage = JSON.parse(event.data);
       switch (parsedMessage.type) {
         case 'create':
@@ -4958,7 +4926,8 @@
     handleTournamentWinner(parsedMessage) {}
     onClose(event) {
       this.disconnectFromLobby(this.tournamentName);
-      console.log('onClose event triggered:', event);
+
+      //console.log('onClose event triggered:', event);
       //		this.currentLobby = null;
       //		this.player_in_tournament = false;
       //		this.currentPlayers = [];
@@ -5105,25 +5074,27 @@
       this.profile = null; // Clear the user data (on logout)
     }
     async fetchUserData(nickname, profile) {
-      try {
-        const response = await fetch('/users/users/profile-info/', {
-          method: 'POST',
-          headers: {
-            Authorization: `Bearer ${this.session.data.access}`,
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({
-            nickname
-          })
-        });
-        if (!response.ok) {
-          throw new Error('Failed to fetch user profile');
+      if (this.session.isAuthenticated) {
+        try {
+          const response = await fetch('/users/users/profile-info/', {
+            method: 'POST',
+            headers: {
+              Authorization: `Bearer ${this.session.data.access}`,
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+              nickname
+            })
+          });
+          if (!response.ok) {
+            throw new Error('Failed to fetch user profile');
+          }
+          const data = await response.json();
+          if (profile === "ownProfile") this.setProfile(data); // Store user data for use in the template
+          else this.selectedUser = data;
+        } catch (error) {
+          console.error('Error fetching user profile:', error);
         }
-        const data = await response.json();
-        if (profile === "ownProfile") this.setProfile(data); // Store user data for use in the template
-        else this.selectedUser = data;
-      } catch (error) {
-        console.error('Error fetching user profile:', error);
       }
     }
   }, _descriptor = _applyDecoratedDescriptor(_class.prototype, "profile", [_tracking.tracked], {
