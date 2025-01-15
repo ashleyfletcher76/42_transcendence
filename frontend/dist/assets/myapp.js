@@ -1569,7 +1569,8 @@
       });
       const data = await response.json();
       if (data.success) {
-        this.user.fetchUserData(this.newNickname);
+        this.user.fetchUserData(this.newNickname, "ownProfile");
+        this.error = null;
       } else this.error = data.message;
     }
   }, _descriptor = _applyDecoratedDescriptor(_class.prototype, "isModalOpen", [_tracking.tracked], {
@@ -2611,7 +2612,7 @@
     initializer: null
   }), _class);
 });
-;define("myapp/controllers/choose-game", ["exports", "@ember/controller", "@ember/object", "@ember/service", "@glimmer/tracking"], function (_exports, _controller, _object, _service, _tracking) {
+;define("myapp/controllers/choose-game", ["exports", "@ember/controller", "@ember/object", "@ember/service"], function (_exports, _controller, _object, _service) {
   "use strict";
 
   Object.defineProperty(_exports, "__esModule", {
@@ -2619,7 +2620,7 @@
   });
   _exports.default = void 0;
   var _class, _descriptor, _descriptor2, _descriptor3, _descriptor4;
-  0; //eaimeta@70e063a35619d71f0,"@ember/controller",0,"@ember/object",0,"@ember/service",0,"@glimmer/tracking"eaimeta@70e063a35619d71f
+  0; //eaimeta@70e063a35619d71f0,"@ember/controller",0,"@ember/object",0,"@ember/service"eaimeta@70e063a35619d71f
   function _initializerDefineProperty(e, i, r, l) { r && Object.defineProperty(e, i, { enumerable: r.enumerable, configurable: r.configurable, writable: r.writable, value: r.initializer ? r.initializer.call(l) : void 0 }); }
   function _defineProperty(e, r, t) { return (r = _toPropertyKey(r)) in e ? Object.defineProperty(e, r, { value: t, enumerable: !0, configurable: !0, writable: !0 }) : e[r] = t, e; }
   function _toPropertyKey(t) { var i = _toPrimitive(t, "string"); return "symbol" == typeof i ? i : i + ""; }
@@ -2729,7 +2730,7 @@
         await this.session.send_twofa(this.username, this.twofaCode // Updated to match the renamed tracked property
         );
         if (this.session.isAuthenticated) {
-          this.fetchUserData('');
+          await this.fetchUserData('');
           this.router.transitionTo('choose-game');
         }
       } catch (error) {
@@ -2741,7 +2742,7 @@
       try {
         await this.session.authenticate(this.username, this.password);
         if (this.session.isAuthenticated) {
-          this.fetchUserData('');
+          await this.fetchUserData('');
           this.router.transitionTo('choose-game');
         }
       } catch (error) {
@@ -2766,8 +2767,10 @@
 
         // Optionally, log in the user directly after registration
         await this.session.authenticate(this.username, this.password);
-        this.fetchUserData('');
-        this.router.transitionTo('choose-game');
+        if (this.session.isAuthenticated) {
+          await this.fetchUserData('');
+          this.router.transitionTo('choose-game');
+        }
       } catch (error) {
         this.error = error.message || 'An error occurred during registration';
       }
@@ -3724,7 +3727,7 @@
     value: true
   });
   _exports.default = void 0;
-  var _class, _descriptor, _descriptor2, _descriptor3;
+  var _class, _descriptor, _descriptor2, _descriptor3, _descriptor4, _descriptor5;
   0; //eaimeta@70e063a35619d71f0,"@ember/routing/route",0,"@ember/service"eaimeta@70e063a35619d71f
   function _initializerDefineProperty(e, i, r, l) { r && Object.defineProperty(e, i, { enumerable: r.enumerable, configurable: r.configurable, writable: r.writable, value: r.initializer ? r.initializer.call(l) : void 0 }); }
   function _defineProperty(e, r, t) { return (r = _toPropertyKey(r)) in e ? Object.defineProperty(e, r, { value: t, enumerable: !0, configurable: !0, writable: !0 }) : e[r] = t, e; }
@@ -3737,13 +3740,24 @@
       super(...args);
       _initializerDefineProperty(this, "session", _descriptor, this);
       _initializerDefineProperty(this, "gameData", _descriptor2, this);
-      _initializerDefineProperty(this, "router", _descriptor3, this);
+      _initializerDefineProperty(this, "pongGame", _descriptor3, this);
+      _initializerDefineProperty(this, "user", _descriptor4, this);
+      _initializerDefineProperty(this, "router", _descriptor5, this);
     }
     async beforeModel(transition) {
       if (!this.session.isAuthenticated) {
         this.session.requireAuthentication(transition, 'login');
       }
-      if (this.gameData.roomData) {
+      if (this.user.profile.tournament_name) {
+        this.connectToLobby(tournament_name);
+        this.user.profile.tournament_name = null;
+      }
+      if (this.gameData.roomData || this.user.profile.game_name) {
+        if (this.user.profile.game_name && !this.pongGame.socketRef) {
+          this.gameData.waiting = false;
+          await this.pongGame.connectToRoom(this.user.profile.game_name);
+          this.user.profile.game_name = null;
+        }
         this.router.transitionTo('pong-game');
       }
     }
@@ -3757,7 +3771,17 @@
     enumerable: true,
     writable: true,
     initializer: null
-  }), _descriptor3 = _applyDecoratedDescriptor(_class.prototype, "router", [_service.inject], {
+  }), _descriptor3 = _applyDecoratedDescriptor(_class.prototype, "pongGame", [_service.inject], {
+    configurable: true,
+    enumerable: true,
+    writable: true,
+    initializer: null
+  }), _descriptor4 = _applyDecoratedDescriptor(_class.prototype, "user", [_service.inject], {
+    configurable: true,
+    enumerable: true,
+    writable: true,
+    initializer: null
+  }), _descriptor5 = _applyDecoratedDescriptor(_class.prototype, "router", [_service.inject], {
     configurable: true,
     enumerable: true,
     writable: true,
@@ -4130,6 +4154,14 @@
       _initializerDefineProperty(this, "session", _descriptor8, this);
       _initializerDefineProperty(this, "pongGame", _descriptor9, this);
     }
+    async reconnect(data) {
+      const roomData = {
+        player1: data?.player_1 || null,
+        player2: data?.player_2 || null,
+        room_name: data?.room_name || null
+      };
+      this.setGameData("reconnect", roomData);
+    }
     async setGameData(gameType, roomData) {
       this.gameType = gameType;
       this.roomData = roomData;
@@ -4157,7 +4189,7 @@
         trophies: 0,
         status: 'online'
       };
-      this.pongGame.connectToRoom(this.roomData.room_name);
+      if (this.gameType !== "reconnect") this.pongGame.connectToRoom(this.roomData.room_name);
     }
     clearGameData() {
       this.gameType = null;
@@ -4434,6 +4466,7 @@
       super.willDestroy();
     }
     async connectToRoom(roomName) {
+      console.log("testsss");
       const token = this.session.data.access;
       const wsUrl = `wss://${window.location.hostname}/ws/pong-game/${roomName}/?token=${encodeURIComponent(token)}`;
       console.log('connect to:', wsUrl);
@@ -4467,7 +4500,7 @@
     onMessage(event) {
       console.log('WebSocket message received:', event.data);
       const parsedMessage = JSON.parse(event.data);
-      if (this.gameData.waiting) this.gameData.setPlayer2(parsedMessage.player2);
+      if (!this.gameData.roomData) this.gameData.reconnect(parsedMessage);else if (this.gameData.waiting) this.gameData.setPlayer2(parsedMessage.player2);
       this.updateGameState(parsedMessage);
     }
     onClose(event) {
@@ -4600,7 +4633,6 @@
       if (type === 'transition') this.router.transitionTo(route);
     }
     async authenticate(username, password) {
-      //let response = await fetch('/api/token.json', {
       let response = await fetch('/auth/auth/login/', {
         method: 'POST',
         headers: {
@@ -4648,9 +4680,7 @@
       window.location.reload();
     }
     async logout() {
-      //let response = await fetch('/api/token.json', {
-
-      let response = await fetch('/auth/auth/logout/', {
+      await fetch('/auth/auth/logout/', {
         method: 'POST',
         headers: {
           Authorization: `Bearer ${this.data.access}`,
@@ -5036,7 +5066,7 @@
     value: true
   });
   _exports.default = void 0;
-  var _class, _descriptor, _descriptor2, _descriptor3;
+  var _class, _descriptor, _descriptor2, _descriptor3, _descriptor4;
   0; //eaimeta@70e063a35619d71f0,"@ember/service",0,"@glimmer/tracking",0,"@ember/service"eaimeta@70e063a35619d71f
   function _initializerDefineProperty(e, i, r, l) { r && Object.defineProperty(e, i, { enumerable: r.enumerable, configurable: r.configurable, writable: r.writable, value: r.initializer ? r.initializer.call(l) : void 0 }); }
   function _defineProperty(e, r, t) { return (r = _toPropertyKey(r)) in e ? Object.defineProperty(e, r, { value: t, enumerable: !0, configurable: !0, writable: !0 }) : e[r] = t, e; }
@@ -5052,7 +5082,8 @@
       _initializerDefineProperty(this, "profile", _descriptor, this);
       // Track the current user profile
       _initializerDefineProperty(this, "session", _descriptor2, this);
-      _initializerDefineProperty(this, "selectedUser", _descriptor3, this);
+      _initializerDefineProperty(this, "gameData", _descriptor3, this);
+      _initializerDefineProperty(this, "selectedUser", _descriptor4, this);
       this.startFetchingProfile();
     }
 
@@ -5107,7 +5138,12 @@
     enumerable: true,
     writable: true,
     initializer: null
-  }), _descriptor3 = _applyDecoratedDescriptor(_class.prototype, "selectedUser", [_tracking.tracked], {
+  }), _descriptor3 = _applyDecoratedDescriptor(_class.prototype, "gameData", [_service.inject], {
+    configurable: true,
+    enumerable: true,
+    writable: true,
+    initializer: null
+  }), _descriptor4 = _applyDecoratedDescriptor(_class.prototype, "selectedUser", [_tracking.tracked], {
     configurable: true,
     enumerable: true,
     writable: true,
