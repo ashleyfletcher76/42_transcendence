@@ -39,10 +39,10 @@ def game_logic(game):
         reset_ball(game)
 
     if game["right_score"] == END_SCORE or game["left_score"] == END_SCORE:
-        end_game(game)
+        end_game_logic(game)
 
 
-def end_game(game):
+def end_game_logic(game):
     game["winner"] = game["player1"] if game["left_score"] == END_SCORE else game["player2"]
     game["paused"] = True
     game["finished"] = True
