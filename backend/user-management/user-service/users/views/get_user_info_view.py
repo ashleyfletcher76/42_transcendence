@@ -89,6 +89,8 @@ def get_profile_info(request):
 
 		if not nickname or nickname.strip() == "":
 			user = request.user
+			# if nickname.strip() == "":
+			show_game_active = True
 		else:
 			nickname = nickname.strip()
 			user = User.objects.filter(profile__nickname=nickname).first()
@@ -97,6 +99,7 @@ def get_profile_info(request):
 					{"error": "User with given nickname not found."},
 					status=404
 				)
+			show_game_active = False
 
 		# retrieve profile details
 		profile = user.profile
@@ -138,8 +141,8 @@ def get_profile_info(request):
 			"status": "online" if profile.online else "offline",
 			"last_seen": profile.last_seen,
 			"tournament_name": profile.tournament_name,
-			"game_name": profile.game_name,
-			"game_active": profile.game_active,
+			"game_name": profile.game_name if show_game_active else None,
+			"game_active": profile.game_active if show_game_active else None,
 			"two_fa_enabled": profile.twofa_enabled,
 			"two_fa_email": profile.email
 
