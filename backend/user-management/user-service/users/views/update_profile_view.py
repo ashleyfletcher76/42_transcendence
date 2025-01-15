@@ -5,6 +5,7 @@ from django.core.files.storage import default_storage
 from django.core.files.base import ContentFile
 from django.conf import settings
 from django.core.validators import EmailValidator
+from django.core.exceptions import ValidationError
 import json, re, os, uuid
 from django.db.models import Q
 from ..models import UserProfile
@@ -105,6 +106,7 @@ def validate_and_update_2fa(data, profile):
 
 
 		# handle email updates
+		print(f"[DEBUG] ----- Email -----> {email}")
 		if email and email != profile.email:
 			validator = EmailValidator()
 			try:
@@ -126,6 +128,118 @@ def validate_and_update_2fa(data, profile):
 #######################################
 # ---------- MAIN FUNCTION ---------- #
 #######################################
+
+# @api_view(['PUT'])
+# @permission_classes([IsAuthenticated])
+# def update_profile(request):
+# 	user = request.user
+# 	profile = user.profile
+# 	data = request.data
+# 	redis_client = get_redis_client()
+
+# 	updated_fields = []
+# 	errors = {}
+# 	old_nickname = profile.nickname
+
+# 	#####################
+# 	## Update Nickname ##
+# 	#####################
+# 	try:
+# 		new_nickname = data.get("nickname")
+# 		if new_nickname and new_nickname != profile.nickname:
+# 			validate_nickname(new_nickname)
+# 			profile.nickname = new_nickname
+# 			updated_fields.append("nickname")
+# 			publish_nickname_change(redis_client, old_nickname, new_nickname)
+# 			print(f"New nickname ==== {new_nickname}")
+# 			print(f"Nickname ==== {profile.nickname}")
+# 	except ValueError as e:
+# 		errors["nickname"] = str(e)
+
+# 	###################
+# 	## Update Avatar ##
+# 	###################
+# 	try:
+# 		new_avatar = request.FILES.get("avatar")
+# 		if new_avatar:
+# 			user_directory = os.path.join(settings.MEDIA_ROOT, "avatars", user.username)
+# 			profile.avatar.name = update_avatar(new_avatar, user_directory, profile)
+# 			updated_fields.append("avatar")
+# 	except ValueError as e:
+# 		errors["avatar"] = str(e)
+
+# 	##########################
+# 	## Update Online Status ##
+# 	##########################
+# 	try:
+# 		new_online_status = data.get("online_status")
+# 		if new_online_status is not None:
+# 			if not isinstance(new_online_status, bool):
+# 				errors["online_status"] = "Online status must be a boolean."
+# 			else:
+# 				profile.online = new_online_status
+# 				updated_fields.append("online")
+# 	except ValueError as e:
+# 		errors["online_status"] = str(e)
+
+# 	#################
+# 	## Update 2FA ##
+# 	#################
+# 	twofa = data.get("twofa_enabled")
+# 	email = data.get("email")
+# 	try:
+# 		if twofa is not None and twofa != profile.twofa_enabled:
+# 			if twofa:  # Enabling 2FA
+# 				if not profile.email and not email:
+# 					raise ValueError("Email is required to enable Two-Factor Authentication.")
+
+# 				# Validate email if provided
+# 				if email and email != profile.email:
+# 					validator = EmailValidator()
+# 					try:
+# 						validator(email)  # Validate email format
+# 						profile.email = email
+# 						updated_fields.append("email")
+# 					except ValidationError as e:
+# 						errors["email"] = e.messages[0]  # Add validation error to errors
+
+# 				profile.twofa_enabled = True  # Enable 2FA
+# 				updated_fields.append("twofa_enabled")
+# 			else:  # Disabling 2FA
+# 				profile.twofa_enabled = False
+# 				updated_fields.append("twofa_enabled")
+# 	except ValueError as e:
+# 		errors["twofa_enabled"] = str(e)
+
+# 	##################
+# 	## Update Email ##
+# 	##################
+# 	try:
+# 		if email and email != profile.email:
+# 			validator = EmailValidator()
+# 			try:
+# 				validator(email)
+# 				profile.email = email
+# 				updated_fields.append("email")
+# 			except ValidationError as e:
+# 				errors["email"] = e.messages[0]
+# 	except Exception as e:
+# 		errors["email"] = str(e)
+
+# 	# Save profile if updates were made
+# 	if updated_fields:
+# 		print("Nickname saved ------------------")
+# 		profile.save()
+
+# 	# Generate the response
+# 	response_data = {
+# 		"success": bool(updated_fields),
+# 		"message": f"{', '.join(updated_fields).capitalize()} updated successfully." if updated_fields else "No changes detected.",
+# 		"errors": errors,
+# 	}
+# 	return Response(response_data, status=200 if updated_fields else 400)
+
+
 
 @api_view(['PUT'])
 @permission_classes([IsAuthenticated])
@@ -167,6 +281,15 @@ def update_profile(request):
 
 		twofa = data.get("twofa_enabled")
 		email = data.get("email")
+		check_diff = profile.twofa_enabled
+		check_email = profile.email
+		if twofa is not check_diff:
+			if check_email is None:
+				return Response(
+					{""}
+				)
+		# if "twofa_"
+		print(f"[DEBUG] Email: {email} ---- 2FA: {twofa} --- new_avatar: {new_avatar} ----- nickname: {new_nickname}")
 		if twofa not in (None, "undefined", "null") or email not in (None, "undefined", "null"):
 			updated_fields += validate_and_update_2fa(data, profile)
 
