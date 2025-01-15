@@ -48,6 +48,7 @@ class GameConsumer(AsyncWebsocketConsumer):
                 game["p1_connected"] = True
             elif game["player2"] == self.nickname:
                 game["p2_connected"] = True
+            game["paused_d"] = False
         else:
             if game["player1"] == self.nickname:
                 game["player1_token"] = self.token
@@ -193,6 +194,7 @@ class GameConsumer(AsyncWebsocketConsumer):
             game["p1_connected"] = False
         if game["player2"] == self.nickname:
             game["p2_connected"] = False
+        game["paused_d"] = True
         set_game_state(self.room_name, game)
 
         if hasattr(self, "disconnection_task") and not self.disconnection_task.done():
@@ -205,11 +207,9 @@ class GameConsumer(AsyncWebsocketConsumer):
         game = get_game_state(self.room_name)
         if game["player1"] == self.nickname and not game["p1_connected"]:
             game["winner"] = game["player2"]
-            game["paused"] = True
             game["finished"] = True
         if game["player2"] == self.nickname and not game["p2_connected"]:
             game["winner"] = game["player1"]
-            game["paused"] = True
             game["finished"] = True
         set_game_state(self.room_name, game)
 
@@ -239,8 +239,7 @@ class GameConsumer(AsyncWebsocketConsumer):
             await sleep(1 / 50)
             game = get_game_state(self.room_name)
 
-
-            if not game["paused"]:
+            if not game.get("paused") and not game.get("paused_d"):
                 if game["p1_paddle"] == "up":
                     move_left_paddle(game, -1)
                 if game["p1_paddle"] == "down":
@@ -266,13 +265,12 @@ class GameConsumer(AsyncWebsocketConsumer):
                 }
             )
             if game.get("finished"):
-                print("end game functions starts here")
                 if game["player1_token"] != "":
                     self.game_stat_send(game, game["player1"], game["player1_id"], game["player1_token"])
                     await end_game(game["player1_token"])
                 if game["player2_token"] != "":
-                    await end_game(game["player2_token"])
                     self.game_stat_send(game, game["player2"], game["player2_id"], game["player2_token"])
+                    await end_game(game["player2_token"])
                 break
 
     
@@ -281,7 +279,7 @@ class GameConsumer(AsyncWebsocketConsumer):
         while True:
             await sleep(1)
             game = get_game_state(self.room_name)
-            if not game.get("paused"):
+            if not game.get("paused") and not game.get("paused_d"):
                 game["predict_ai"], game["ai_mode"] = ai_player.decide_move(
                     ball_x=game["ball_x"],
                     ball_y=game["ball_y"],

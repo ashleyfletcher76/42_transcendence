@@ -97,6 +97,7 @@ def create_room(request):
             "predict_ai" : 0,
             "ai_mode" : 0,
             "paused" : True,
+            "paused_d" : False,
             "started" : False,
             "game_type" : game_type,
             "game_start_timer" : 4,
