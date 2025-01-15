@@ -90,6 +90,8 @@ def create_room(request):
             "right_score" : 0,
             "player1" : player_1,
             "player2" : player_2,
+            "player1_id" : 0,
+            "player2_id" : 0,
             "p1_connected" : False,
             "p2_connected" : False,
             "predict_ai" : 0,
