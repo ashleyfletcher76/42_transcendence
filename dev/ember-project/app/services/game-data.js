@@ -14,6 +14,15 @@ export default class GameDataService extends Service {
   @service session;
   @service pongGame;
 
+  async reconnect(data) {
+    const roomData = {
+      player1: data?.player_1 || null,
+      player2: data?.player_2 || null,
+      room_name: data?.room_name || null,
+    };
+    this.setGameData("reconnect", roomData);
+  }
+
   async setGameData(gameType, roomData) {
     this.gameType = gameType;
     this.roomData = roomData;
@@ -52,7 +61,8 @@ export default class GameDataService extends Service {
         trophies: 0,
         status: 'online',
       };
-    this.pongGame.connectToRoom(this.roomData.room_name);
+    if (this.gameType !== "reconnect")
+      this.pongGame.connectToRoom(this.roomData.room_name);
   }
 
   clearGameData() {

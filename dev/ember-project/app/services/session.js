@@ -17,7 +17,6 @@ export default class SessionService extends Service {
     }
 
     async authenticate(username, password) {
-        //let response = await fetch('/api/token.json', {
         let response = await fetch('/auth/auth/login/', {
           method: 'POST',
           headers: {
@@ -69,13 +68,10 @@ export default class SessionService extends Service {
       {
         await this.logout();
         window.location.reload();
-        
       }
 
       async logout() {
-        //let response = await fetch('/api/token.json', {
-        
-        let response = await fetch('/auth/auth/logout/', {
+        await fetch('/auth/auth/logout/', {
           method: 'POST',
         headers: {
           Authorization: `Bearer ${this.data.access}`,

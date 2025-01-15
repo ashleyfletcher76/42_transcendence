@@ -75,10 +75,10 @@ export default class ModalProfileComponent extends Component {
       const data = await response.json();
 
       if (data.success) {
-        this.user.fetchUserData(this.newNickname);
+        this.user.fetchUserData(this.newNickname, "ownProfile");
+        this.error = null;
       }
       else
         this.error = data.message;
-  
   }
 }

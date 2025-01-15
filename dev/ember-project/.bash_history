@@ -93,3 +93,5 @@ ember generate service session
 exit
 npm install
 exit
+npm install
+exit

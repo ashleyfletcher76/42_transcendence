@@ -1,7 +1,6 @@
 import Controller from '@ember/controller';
 import { action } from '@ember/object';
 import { inject as service } from '@ember/service';
-import { tracked } from '@glimmer/tracking';
 
 export default class ChooseGameController extends Controller {
   @service router;
@@ -11,7 +10,6 @@ export default class ChooseGameController extends Controller {
 
   @action
   chooseGame(gameType) {
-    console.log("test");
     this.gameData.waiting = true;
     this.createRoom(gameType);
   }
@@ -38,7 +36,8 @@ export default class ChooseGameController extends Controller {
       const data = await response.json();
 
       if (data.room_name) {
-        if (data.player2 != 'remote') this.gameData.waiting = false;
+        if (data.player2 != 'remote') 
+          this.gameData.waiting = false;
         console.log('data:', data);
         this.gameData.setGameData(gameType, data);
         console.log('gameData:', this.gameData.roomData.room_name);

@@ -28,7 +28,7 @@ export default class LoginController extends Controller {
         this.twofaCode, // Updated to match the renamed tracked property
       );
       if (this.session.isAuthenticated) {
-        this.fetchUserData('');
+        await this.fetchUserData('');
         this.router.transitionTo('choose-game');
       }
     } catch (error) {
@@ -45,7 +45,7 @@ export default class LoginController extends Controller {
         this.password,
       );
       if (this.session.isAuthenticated) {
-        this.fetchUserData('');
+        await this.fetchUserData('');
         this.router.transitionTo('choose-game');
       }
     } catch (error) {
@@ -76,7 +76,10 @@ export default class LoginController extends Controller {
         this.username,
         this.password,
       );
-      this.router.transitionTo('choose-game');
+      if (this.session.isAuthenticated) {
+        await this.fetchUserData('');
+        this.router.transitionTo('choose-game');
+      }
     } catch (error) {
       this.error = error.message || 'An error occurred during registration';
     }

@@ -4,6 +4,7 @@ import { inject as service } from '@ember/service';
 export default class ChooseGameRoute extends Route {
   @service session;
   @service gameData;
+  @service pongGame;
   @service user;
   @service router;
 
@@ -11,12 +12,17 @@ export default class ChooseGameRoute extends Route {
     if (!this.session.isAuthenticated) {
       this.session.requireAuthentication(transition, 'login');
     }
-    console.log("tetsst");
-    if (this.gameData.roomData.room_name || this.user.profile.game_name) {
-      console.log("tetsst");
-      if (this.user.profile.game_name)
+    if (this.user.profile.tournament_name)
+    {
+      this.connectToLobby(tournament_name);
+      this.user.profile.tournament_name = null;
+    }
+    if (this.gameData.roomData || this.user.profile.game_name) {
+      if (this.user.profile.game_name && !this.pongGame.socketRef)
       {
-        this.pongGame.connectToRoom(this.roomData.room_name);
+        this.gameData.waiting = false;
+        await this.pongGame.connectToRoom(this.user.profile.game_name);
+        this.user.profile.game_name = null;
       }
       this.router.transitionTo('pong-game');
     }
