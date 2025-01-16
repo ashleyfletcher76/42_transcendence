@@ -466,7 +466,7 @@ class TournamentConsumer(AsyncWebsocketConsumer):
     async def match(self, event):
         tournament = get_tournamnet_state(self.room_name)
         player = next((p for p in tournament["players"] if p["name"] == self.nickname), None)
-        if player["score"] < 1:
+        if player["score"] < 1 or not player["opponent"]:
             return
         player2 = player["opponent"]
         roomname = player["room"]
