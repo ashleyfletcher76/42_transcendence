@@ -12,7 +12,7 @@ User = get_user_model()
 @permission_classes([IsAuthenticated])
 def get_single_user_data(request, user_id):
 	try:
-		print(f"Recived request for user ID: {user_id}")
+		# print(f"Recived request for user ID: {user_id}")
 		user = User.objects.get(id=user_id)
 		profile = user.profile
 
@@ -180,9 +180,10 @@ def get_all_profiles(request):
 			)
 			if match_response.status_code == 200:
 				trophies_map = match_response.json()
-				print(f"[DEBUG] Trophies map received: {trophies_map}")
+				# print(f"[DEBUG] Trophies map received: {trophies_map}")
 			else:
-				print(f"[DEBUG] Match-history-service returned: {match_response.status_code}, {match_response.text}")
+				pass
+				# print(f"[DEBUG] Match-history-service returned: {match_response.status_code}, {match_response.text}")
 		except requests.RequestException as e:
 			print(f"[ERROR] Exception contacting match-history-service: {str(e)}")
 
