@@ -67,7 +67,7 @@ class TwoFAService():
 		try:
 			# connect to Gmail SMTP server
 			with smtplib.SMTP("smtp.gmail.com", 587) as server:
-				server.starttls()  # upgrade connection to SSL/TLS
+				server.starttls()
 				server.login(sender_email, app_password)
 				server.sendmail(sender_email, email, message.as_string())
 
@@ -135,4 +135,3 @@ class ValidateTwoFAView(APIView):
 		# generate tokens and update status
 		tokens = generate_tokens_and_status(user_data)
 		return tokens
-
