@@ -12,19 +12,19 @@ export default class MessageComponent extends Component {
   @action
   acceptFriend(event) {
     event.preventDefault();
-    console.log(`${this.args.message.from} accepted as a friend!`);
+    ////console.log(`${this.args.message.from} accepted as a friend!`);
     this.makeFriends();
   }
 
   @action
   select(user) {
-      this.user.selectUser(user); // Passing the selected user to the parent action
+    this.user.selectUser(user); // Passing the selected user to the parent action
   }
 
   @action
   acceptGame(event) {
     event.preventDefault();
-    console.log(`${this.args.message.from} accepted game`);
+    //console.log(`${this.args.message.from} accepted game`);
     this.createPrivateRoom('private');
   }
 
@@ -51,9 +51,9 @@ export default class MessageComponent extends Component {
 
       if (data.room_name) {
         if (data.player2 != 'remote') this.gameData.waiting = false;
-        console.log('data:', data);
+        //console.log('data:', data);
         this.gameData.setGameData(gameType, data);
-        console.log('gameData:', this.gameData.roomData.room_name);
+        //console.log('gameData:', this.gameData.roomData.room_name);
         this.chat.sendGameAccept(data, this.args.message.from);
         this.router.transitionTo('pong-game');
       }
@@ -84,7 +84,7 @@ export default class MessageComponent extends Component {
       }
 
       const result = await response.json();
-      console.log(result.message);
+      //console.log(result.message);
     } catch (error) {
       console.error('Error adding friend:', error.message);
     }

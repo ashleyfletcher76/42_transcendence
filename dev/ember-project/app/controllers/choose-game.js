@@ -36,11 +36,11 @@ export default class ChooseGameController extends Controller {
       const data = await response.json();
 
       if (data.room_name) {
-        if (data.player2 != 'remote') 
+        if (data.player2 != 'remote')
           this.gameData.waiting = false;
-        console.log('data:', data);
+        //console.log('data:', data);
         this.gameData.setGameData(gameType, data);
-        console.log('gameData:', this.gameData.roomData.room_name);
+        //console.log('gameData:', this.gameData.roomData.room_name);
         this.router.transitionTo('pong-game');
       }
     } catch (error) {

@@ -1,40 +1,35 @@
 <div class="container-row chat-container">
-<div class="btn-group" role="group" aria-label="Basic checkbox toggle button group">
-  <input type="checkbox" class="btn-check" id="btncheck1" autocomplete="off" checked={{this.showGeneral}} {{on "change" (fn this.toggleCheckbox "all")}}>
-  <label class="btn btn-outline-secondary btn-sm" for="btncheck1">General</label>
+  <div class="btn-group" role="group" aria-label="Basic checkbox toggle button group">
+    <input type="checkbox" class="btn-check" id="btncheck1" autocomplete="off" checked={{this.showGeneral}}
+      {{on "change" (fn this.toggleCheckbox "all" )}}>
+    <label class="btn btn-outline-secondary btn-sm" for="btncheck1">General</label>
 
-  <input type="checkbox" class="btn-check" id="btncheck2" autocomplete="off" checked={{this.showWhisper}} {{on "change" (fn this.toggleCheckbox "whisper")}}>
-  <label class="btn btn-outline-secondary btn-sm" for="btncheck2">Whisper</label>
+    <input type="checkbox" class="btn-check" id="btncheck2" autocomplete="off" checked={{this.showWhisper}}
+      {{on "change" (fn this.toggleCheckbox "whisper" )}}>
+    <label class="btn btn-outline-secondary btn-sm" for="btncheck2">Whisper</label>
 
-  <input type="checkbox" class="btn-check" id="btncheck3" autocomplete="off" checked={{this.showTournament}} {{on "change" (fn this.toggleCheckbox "tournament")}}>
-  <label class="btn btn-outline-secondary btn-sm" for="btncheck3">Tournament</label>
+    <input type="checkbox" class="btn-check" id="btncheck3" autocomplete="off" checked={{this.showTournament}}
+      {{on "change" (fn this.toggleCheckbox "tournament" )}}>
+    <label class="btn btn-outline-secondary btn-sm" for="btncheck3">Tournament</label>
 
-  <input type="checkbox" class="btn-check" id="btncheck4" autocomplete="off" checked={{this.showSystem}} {{on "change" (fn this.toggleCheckbox "system")}}>
-  <label class="btn btn-outline-secondary btn-sm" for="btncheck4">System</label>
-</div>
-
-<div class="scrollable-list chat" >
-  {{#each this.filteredMessages as |message|}}
-    <Message @message={{message}} @ownNickname={{this.chat.user.profile.nickname}}/>
-  {{/each}}
-</div>
-
-{{!-- Corrected template --}}
-<div class="input-group">
-  <input
-    type="text"
-    class="form-control"
-    placeholder="Put your message here"
-    style="color: {{this.chat.inputColor}};"
-    aria-label="Recipient's username"
-    aria-describedby="basic-addon2"
-    value={{this.chat.messageInput}}
-    {{on "input" this.updateInputValue}}
-    {{on "keydown" this.handleKeyDown}}
-    {{did-insert this.setInputRef}}
-  >
-  <div class="input-group-append">
-    <button class="btn btn-outline-secondary" type="button" {{on "click" this.sendMessage}}>Send</button>
+    <input type="checkbox" class="btn-check" id="btncheck4" autocomplete="off" checked={{this.showSystem}} {{on "change"
+      (fn this.toggleCheckbox "system" )}}>
+    <label class="btn btn-outline-secondary btn-sm" for="btncheck4">System</label>
   </div>
-</div>
+
+  <div class="scrollable-list chat">
+    {{#each this.filteredMessages as |message|}}
+    <Message @message={{message}} @ownNickname={{this.chat.user.profile.nickname}} />
+    {{/each}}
+  </div>
+
+  {{!-- Corrected template --}}
+  <div class="input-group">
+    <input type="text" class="form-control" placeholder="Put your message here" style="color: {{this.chat.inputColor}};"
+      aria-label="Recipient's username" aria-describedby="basic-addon2" value={{this.chat.messageInput}} {{on "input"
+      this.updateInputValue}} {{on "keydown" this.handleKeyDown}} {{did-insert this.setInputRef}}>
+    <div class="input-group-append">
+      <button class="btn btn-outline-secondary" type="button" {{on "click" this.sendMessage}}>Send</button>
+    </div>
+  </div>
 </div>

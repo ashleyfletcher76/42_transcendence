@@ -159,7 +159,7 @@ export default class PongGameService extends Service {
     if (this.winner && !this.winnerSend) {
       this.winnerSend = true;
       if (this.tournament.currentLobby) {
-        console.log('trans to tournament');
+        //console.log('trans to tournament');
         //if (this.winner !== this.user.profile.nickname)
         //  this.tournament.playerInTournament = false;
         this.router.transitionTo('tournament');
@@ -178,12 +178,12 @@ export default class PongGameService extends Service {
   }
 
   async connectToRoom(roomName) {
-    console.log("testsss")
+    //console.log("testsss")
     const token = this.session.data.access;
     const wsUrl = `wss://${window.location.hostname}/ws/pong-game/${roomName}/?token=${encodeURIComponent(token)}`;
-    console.log('connect to:', wsUrl);
+    //console.log('connect to:', wsUrl);
     if (this.socketRef) {
-      console.log('disconnect');
+      //console.log('disconnect');
       this.disconnectFromGame(roomName);
     }
     const socket = this.websockets.socketFor(wsUrl);
@@ -197,9 +197,9 @@ export default class PongGameService extends Service {
   async disconnectFromGame(roomName) {
     const token = this.session.data.access;
     const wsUrl = `wss://${window.location.hostname}/ws/pong-game/${roomName}/?token=${encodeURIComponent(token)}`;
-    console.log('websocket to close:', roomName);
+    //console.log('websocket to close:', roomName);
     this.websockets.closeSocketFor(wsUrl);
-    console.log('websocket closed', this.websockets.sockets);
+    //console.log('websocket closed', this.websockets.sockets);
 
     // Remove event handlers
     this.socketRef.off('open', this.onOpen, this);
@@ -212,9 +212,9 @@ export default class PongGameService extends Service {
   }
 
   onMessage(event) {
-    console.log('WebSocket message received:', event.data);
+    //console.log('WebSocket message received:', event.data);
     const parsedMessage = JSON.parse(event.data);
-    console.log("t1", this.gameData.roomData);
+    //console.log("t1", this.gameData.roomData);
     if (!this.gameData.roomData)
       this.gameData.reconnect(parsedMessage);
     else if (this.gameData.waiting)
@@ -223,12 +223,12 @@ export default class PongGameService extends Service {
   }
 
   onClose(event) {
-    console.log('close:', event);
+    //console.log('close:', event);
   }
 
   sendMessage(data) {
     if (this.socketRef) {
-      console.log('WebSocket message send:', JSON.stringify(data));
+      //console.log('WebSocket message send:', JSON.stringify(data));
       this.socketRef.send(JSON.stringify(data));
     } else {
       console.error('WebSocket is not connected.');

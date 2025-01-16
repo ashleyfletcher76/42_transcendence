@@ -23,7 +23,7 @@ export default class TournamentService extends Service {
     const token = this.session.data.access;
     const wsUrl = `wss://${window.location.hostname}/ws/tournament/${tournamentName}/?token=${encodeURIComponent(token)}`;
     if (this.socketRef) {
-      console.log('disconnect');
+      //console.log('disconnect');
       this.disconnectFromLobby(this.currentLobby);
     }
     const socket = this.websockets.socketFor(wsUrl);
@@ -38,9 +38,9 @@ export default class TournamentService extends Service {
   async disconnectFromLobby(tournamentName) {
     const token = this.session.data.access;
     const wsUrl = `wss://${window.location.hostname}/ws/tournament/${tournamentName}/?token=${encodeURIComponent(token)}`;
-    console.log('websocket to close:', tournamentName);
+    //console.log('websocket to close:', tournamentName);
     this.websockets.closeSocketFor(wsUrl);
-    console.log('websocket closed', this.websockets.sockets);
+    //console.log('websocket closed', this.websockets.sockets);
 
     // Remove event handlers
     this.socketRef.off('open', this.onOpen, this);
@@ -66,7 +66,7 @@ export default class TournamentService extends Service {
 
   sendMessage(data) {
     if (this.socketRef) {
-      console.log('WebSocket message send:', JSON.stringify(data));
+      //console.log('WebSocket message send:', JSON.stringify(data));
       this.socketRef.send(JSON.stringify(data));
     } else {
       console.error('WebSocket is not connected.');
@@ -79,7 +79,7 @@ export default class TournamentService extends Service {
   }
 
   onMessage(event) {
-    console.log('WebSocket message received:', event.data);
+    //console.log('WebSocket message received:', event.data);
     const parsedMessage = JSON.parse(event.data);
     switch (parsedMessage.type) {
       case 'create':
@@ -200,12 +200,12 @@ export default class TournamentService extends Service {
     this.router.transitionTo('pong-game');
   }
 
-  handleTournamentWinner(parsedMessage) {}
+  handleTournamentWinner(parsedMessage) { }
 
   onClose(event) {
     this.disconnectFromLobby(this.tournamentName);
 
-    console.log('onClose event triggered:', event);
+    //console.log('onClose event triggered:', event);
     //		this.currentLobby = null;
     //		this.player_in_tournament = false;
     //		this.currentPlayers = [];

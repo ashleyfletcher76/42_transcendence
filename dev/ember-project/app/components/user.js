@@ -9,7 +9,7 @@ export default class UserCardComponent extends Component {
 
   @action
   select() {
-    console.log('User clicked!');
+    //console.log('User clicked!');
     // Call the parent action passed via @selectUser
     this.user.selectUser(this.args.user.nickname); // Passing the selected user to the parent action
   }

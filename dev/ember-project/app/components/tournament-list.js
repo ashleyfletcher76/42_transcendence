@@ -28,22 +28,25 @@ export default class TournamentListComponent extends Component {
    */
   @action
   async fetchTournaments() {
-    try {
-      const response = await fetch('/lobby/list/', {
-        method: 'GET',
-        headers: {
-          Authorization: `Bearer ${this.session.data.access}`,
-          'Content-Type': 'application/json',
-        },
-      });
-
-      if (!response.ok) {
-        throw new Error('Failed to fetch lobby list');
+    if (this.session.isAuthenticated)
+    {
+      try {
+        const response = await fetch('/lobby/list/', {
+          method: 'GET',
+          headers: {
+            Authorization: `Bearer ${this.session.data.access}`,
+            'Content-Type': 'application/json',
+          },
+        });
+  
+        if (!response.ok) {
+          throw new Error('Failed to fetch lobby list');
+        }
+        const data = await response.json();
+        this.tournaments = data.tournaments;
+      } catch (error) {
+        console.error('Error fetching tournaments:', error);
       }
-      const data = await response.json();
-      this.tournaments = data.tournaments;
-    } catch (error) {
-      console.error('Error fetching tournaments:', error);
     }
   }
 

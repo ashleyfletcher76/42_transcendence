@@ -1,37 +1,37 @@
 <div class="pong-game">
   {{#if this.gameData.waiting}}
   <div class="waiting-container d-flex flex-column align-items-center">
-  <!-- Row for the text and spinner -->
-  <div class="d-flex align-items-center">
-    <h2 class="white mb-0">Waiting for Player</h2>
-    <div class="spinner-border text-light ms-3" role="status">
-      <span class="visually-hidden"></span>
+    <!-- Row for the text and spinner -->
+    <div class="d-flex align-items-center">
+      <h2 class="white mb-0">Waiting for Player</h2>
+      <div class="spinner-border text-light ms-3" role="status">
+        <span class="visually-hidden"></span>
+      </div>
+    </div>
+    <!-- Row for the Leave button -->
+    <div class="game-buttons mt-5">
+      <button type="button" class="btn btn-danger" {{on "click" this.leaveGame}}>Leave</button>
     </div>
   </div>
-  <!-- Row for the Leave button -->
-  <div class="game-buttons mt-5">
-    <button type="button" class="btn btn-danger" {{on "click" this.leaveGame}}>Leave</button>
-  </div>
-</div>
 
 
 
   {{else}}
-    {{#if this.pongGame.winner}}
-    <div class="waiting-container d-flex flex-column align-items-center">
-      <h1 class="white">Winner: {{this.pongGame.winner}}</h1>
+  {{#if this.pongGame.winner}}
+  <div class="waiting-container d-flex flex-column align-items-center">
+    <h1 class="white">Winner: {{this.pongGame.winner}}</h1>
     <div class="game-buttons mt-5">
-    <button type="button" class="btn btn-danger" {{on "click" this.leaveGame}}>Leave</button>
+      <button type="button" class="btn btn-danger" {{on "click" this.leaveGame}}>Leave</button>
+    </div>
   </div>
-</div>
-    {{else}}
-      {{#if (not-eq this.pongGame.status 0)}}
-        <h1 class="white">{{this.pongGame.status}}</h1>
-      {{else}}
-        <Ball @positionX={{this.pongGame.ballPositionX}} @positionY={{this.pongGame.ballPositionY}} />
-      {{/if}}
-      <Paddle @position={{this.pongGame.leftPaddlePosition}} @side="paddle-left" />
-      <Paddle @position={{this.pongGame.rightPaddlePosition}} @side="paddle-right" />
-    {{/if}}
+  {{else}}
+  {{#if (not-eq this.pongGame.status 0)}}
+  <h1 class="white">{{this.pongGame.status}}</h1>
+  {{else}}
+  <Ball @positionX={{this.pongGame.ballPositionX}} @positionY={{this.pongGame.ballPositionY}} />
+  {{/if}}
+  <Paddle @position={{this.pongGame.leftPaddlePosition}} @side="paddle-left" />
+  <Paddle @position={{this.pongGame.rightPaddlePosition}} @side="paddle-right" />
+  {{/if}}
   {{/if}}
 </div>

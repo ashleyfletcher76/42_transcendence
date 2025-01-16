@@ -38,26 +38,29 @@ export default class UserService extends Service {
   }
 
   async fetchUserData(nickname, profile) {
-    try {
-      const response = await fetch('/users/users/profile-info/', {
-        method: 'POST',
-        headers: {
-          Authorization: `Bearer ${this.session.data.access}`,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ nickname }),
-      });
-
-      if (!response.ok) {
-        throw new Error('Failed to fetch user profile');
+    if (this.session.isAuthenticated)
+    {
+      try {
+        const response = await fetch('/users/users/profile-info/', {
+          method: 'POST',
+          headers: {
+            Authorization: `Bearer ${this.session.data.access}`,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ nickname }),
+        });
+  
+        if (!response.ok) {
+          throw new Error('Failed to fetch user profile');
+        }
+        const data = await response.json();
+        if (profile === "ownProfile")
+          this.setProfile(data); // Store user data for use in the template
+        else
+          this.selectedUser = data;
+      } catch (error) {
+        console.error('Error fetching user profile:', error);
       }
-      const data = await response.json();
-      if (profile === "ownProfile")
-        this.setProfile(data); // Store user data for use in the template
-      else
-        this.selectedUser= data;
-    } catch (error) {
-      console.error('Error fetching user profile:', error);
     }
   }
 }

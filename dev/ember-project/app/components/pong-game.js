@@ -12,5 +12,5 @@ export default class PongGameComponent extends Component {
       this.pongGame.disconnectFromGame(this.gameData.roomData.room_name);
     this.router.transitionTo('choose-game');
   };
-  
+
 }

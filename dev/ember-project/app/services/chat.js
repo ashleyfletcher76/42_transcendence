@@ -41,7 +41,7 @@ export default class ChatService extends Service {
     super(...arguments);
 
     // Initialize the WebSocket connection
-    console.log('connect ...');
+    //console.log('connect ...');
     const token = this.session.data.access;
     const url = `wss://${window.location.hostname}/ws/chat/lobby/?token=${encodeURIComponent(token)}`;
     const socket = this.websockets.socketFor(url);
@@ -54,9 +54,6 @@ export default class ChatService extends Service {
   }
 
   myOpenHandler(event) {
-    console.log(
-      `On open event has been called token: ${this.session.data.access}`,
-    );
   }
 
   isBlocked(nickname) {
@@ -79,7 +76,7 @@ export default class ChatService extends Service {
   }
 
   myCloseHandler(event) {
-    console.log(`On close event has been called: ${event}`);
+    //console.log(`On close event has been called: ${event}`);
   }
 
   updateInputValue(input) {
@@ -126,7 +123,7 @@ export default class ChatService extends Service {
       };
       this.tournament.sendMessage(data);
     } else if (messageContent && this.to_user !== this.user.profile.nickname) {
-      console.log(messageContent);
+      //console.log(messageContent);
       this.socketRef.send(
         JSON.stringify({
           type: this.type,
@@ -142,11 +139,11 @@ export default class ChatService extends Service {
   }
 
   sendGameAccept(data, user) {
-    console.log("asdas");
+    //console.log("asdas");
     this.messages = this.messages.filter(
       message => !(message.type === "invite" && message.from === user)
     );
-    console.log(this.messages);
+    //console.log(this.messages);
     this.socketRef.send(
       JSON.stringify({
         type: 'invite',

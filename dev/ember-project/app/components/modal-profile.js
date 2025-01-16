@@ -55,30 +55,30 @@ export default class ModalProfileComponent extends Component {
   }
 
   async updateProfile() {
-      const formData = new FormData();
-      formData.append('nickname', this.newNickname);
-      formData.append('email', this.newEmail);
-      formData.append('twofa_enabled', this.twofa_enabled);
+    const formData = new FormData();
+    formData.append('nickname', this.newNickname);
+    formData.append('email', this.newEmail);
+    formData.append('twofa_enabled', this.twofa_enabled);
 
-      if (this.newAvatar) {
-        formData.append('avatar', this.newAvatar); // Append the avatar file
-      }
+    if (this.newAvatar) {
+      formData.append('avatar', this.newAvatar); // Append the avatar file
+    }
 
-      const response = await fetch('/users/users/update-profile/', {
-        method: 'PUT',
-        headers: {
-          Authorization: `Bearer ${this.session.data.access}`, // Add authentication token
-        },
-        body: formData, // Send FormData
-      });
+    const response = await fetch('/users/users/update-profile/', {
+      method: 'PUT',
+      headers: {
+        Authorization: `Bearer ${this.session.data.access}`, // Add authentication token
+      },
+      body: formData, // Send FormData
+    });
 
-      const data = await response.json();
+    const data = await response.json();
 
-      if (data.success) {
-        this.user.fetchUserData(this.newNickname, "ownProfile");
-        this.error = null;
-      }
-      else
-        this.error = data.message;
+    if (data.success) {
+      this.user.fetchUserData(this.newNickname, "ownProfile");
+      this.error = null;
+    }
+    else
+      this.error = data.message;
   }
 }

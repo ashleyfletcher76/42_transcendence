@@ -14,10 +14,10 @@ export default class ModalProfileComponent extends Component {
 
   @action
   openModal() {
-    //console.log(this.args.user);
+    ////console.log(this.args.user);
     this.parseHistory(this.args.user.history);
     this.isModalOpen = true;
-    //console.log(this.games);
+    ////console.log(this.games);
   }
 
   parseHistory(history) {

@@ -72,7 +72,7 @@ export default class GameDataService extends Service {
   }
 
   async setPlayer2(nickname) {
-    console.log('setPlayer2', nickname);
+    //console.log('setPlayer2', nickname);
     this.player_2 = await this.fetchUserData(nickname);
     this.waiting = false;
   }

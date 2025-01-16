@@ -1,29 +1,32 @@
 {{#if (eq @message.type "tournament")}}
-  <div class="message-item message-tournament"> <a href="#" class="badge bg-warning" style="color: rgb(24, 22, 22);" {{on "click" (fn this.select @message.from)}}>{{@message.from}}</a>  {{@message.content}}</div>
+<div class="message-item message-tournament"> <a href="#" class="badge bg-warning" style="color: rgb(24, 22, 22);"
+    {{on "click" (fn this.select @message.from)}}>{{@message.from}}</a> {{@message.content}}</div>
 {{else if (eq @message.type "whisper")}}
-  <div class="message-item message-whisper"> <a href="#" class="badge bg-warning" style="color: rgb(24, 22, 22);" {{on "click" (fn this.select @message.from)}}>{{@message.from}}</a>  {{@message.content}}</div>
+<div class="message-item message-whisper"> <a href="#" class="badge bg-warning" style="color: rgb(24, 22, 22);"
+    {{on "click" (fn this.select @message.from)}}>{{@message.from}}</a> {{@message.content}}</div>
 {{else if (eq @message.type "add")}}
   {{#if (eq @message.from @ownNickname)}}
-    <div class="alert alert-success p-2 mt-1 mb-1" role="alert">
-      You sent a friend request to {{@message.to}}.
-    </div>
+  <div class="alert alert-success p-2 mt-1 mb-1" role="alert">
+    You sent a friend request to {{@message.to}}.
+  </div>
   {{else}}
-    <div class="alert alert-success p-2 mt-1 mb-1" role="alert">
-      {{@message.from}} wants to add you as a friend 
-      <a href="#" class="alert-link" {{on "click" this.acceptFriend}}>ACCEPT</a>
-    </div>
+  <div class="alert alert-success p-2 mt-1 mb-1" role="alert">
+    {{@message.from}} wants to add you as a friend
+    <a href="#" class="alert-link" {{on "click" this.acceptFriend}}>ACCEPT</a>
+  </div>
   {{/if}}
 {{else if (eq @message.type "invite")}}
   {{#if (eq @message.from @ownNickname)}}
-    <div class="alert alert-danger p-2 mt-1 mb-1" role="alert">
-      You invited {{@message.to}} to a game.
-    </div>
+  <div class="alert alert-danger p-2 mt-1 mb-1" role="alert">
+    You invited {{@message.to}} to a game.
+  </div>
   {{else}}
-    <div class="alert alert-danger p-2 mt-1 mb-1" role="alert">
-      {{@message.from}} invited you to a game
-      <a href="#" class="alert-link" {{on "click" this.acceptGame}}>PLAY</a>
-    </div>
+  <div class="alert alert-danger p-2 mt-1 mb-1" role="alert">
+    {{@message.from}} invited you to a game
+    <a href="#" class="alert-link" {{on "click" this.acceptGame}}>PLAY</a>
+  </div>
   {{/if}}
 {{else}}
-  <div class="message-item message-default"> <a href="#" class="badge bg-warning" style="color: rgb(24, 22, 22);" {{on "click" (fn this.select @message.from)}}>{{@message.from}}</a>  {{@message.content}}</div>
+<div class="message-item message-default"> <a href="#" class="badge bg-warning" style="color: rgb(24, 22, 22);"
+    {{on "click" (fn this.select @message.from)}}>{{@message.from}}</a> {{@message.content}}</div>
 {{/if}}

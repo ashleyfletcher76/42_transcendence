@@ -9,31 +9,30 @@
     {{!-- First row of profile details --}}
     <div class="profile-details">
       {{#if this.isAuthenticated}}
-        {{#if this.user.profile}} {{!-- Access the user directly from the service --}}
-          <h2 class="name">{{this.user.profile.nickname}}</h2>
-          <ModalProfile/>
-        {{else}}
-          <p>Loading user...</p> {{!-- Or another fallback message --}}
-        {{/if}}
-        <button class="logout-button" type="button" {{on "click" this.logout}}>Logout</button>
+      {{#if this.user.profile}} {{!-- Access the user directly from the service --}}
+      <h2 class="name">{{this.user.profile.nickname}}</h2>
+      <ModalProfile />
+      {{else}}
+      <p>Loading user...</p> {{!-- Or another fallback message --}}
+      {{/if}}
+      <button class="logout-button" type="button" {{on "click" this.logout}}>Logout</button>
       {{/if}}
       <h2 class="points info">{{this.user.profile.trophies}} 🏆</h2>
     </div>
 
     {{!-- Second row of profile details --}}
     <div class="profile-details">
-      <ModalGameHistory @user={{this.user.profile}}/>
+      <ModalGameHistory @user={{this.user.profile}} />
       <h2 class="info">Wins: {{this.user.profile.wins}}</h2>
     </div>
 
     <div class="profile-details">
-      {{#if this.isOnline}} 
-        <h2 class="info">🟢 online</h2>
+      {{#if this.isOnline}}
+      <h2 class="info">🟢 online</h2>
       {{else}}
-        <h2 class="info">🔴 offline</h2>
+      <h2 class="info">🔴 offline</h2>
       {{/if}}
       <h2 class="info">Losses: {{this.user.profile.losses}}</h2>
     </div>
   </div>
 </div>
-

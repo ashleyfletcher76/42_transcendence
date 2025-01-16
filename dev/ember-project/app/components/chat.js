@@ -10,7 +10,7 @@ export default class ChatComponent extends Component {
   @tracked showSystem = true;
 
   @service chat;
-  
+
   // Computed property to filter messages
   get filteredMessages() {
     return this.chat.messages.filter((message) => {

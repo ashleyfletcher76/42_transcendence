@@ -2,7 +2,8 @@
   {{!-- Profile picture column (1 part) --}}
   <div class="col center no-padding position-relative">
     <button type="button" class="btn-close top-left" onclick={{this.onCloseClick}}></button>
-    <img src="https://localhost/users/users{{this.user.selectedUser.avatar}}/" alt="Profile Picture" class="profile-pic" />
+    <img src="https://localhost/users/users{{this.user.selectedUser.avatar}}/" alt="Profile Picture"
+      class="profile-pic" />
   </div>
 
   {{!-- Profile details column (3 parts) --}}
@@ -21,23 +22,23 @@
         </button>
         {{#if this.isFriend}}
         <button class="emoji-button info" data-bs-toggle="tooltip" data-bs-placement="top" title="Add Friend"
-          type="button" {{on "click" (fn this.addFriend "remove")}}>
-          ➖ 
+          type="button" {{on "click" (fn this.addFriend "remove" )}}>
+          ➖
         </button>
         {{else}}
         <button class="emoji-button info" data-bs-toggle="tooltip" data-bs-placement="top" title="Add Friend"
-          type="button" {{on "click" (fn this.addFriend "add")}}>
+          type="button" {{on "click" (fn this.addFriend "add" )}}>
           ➕
         </button>
         {{/if}}
         {{#if this.isBlocked}}
         <button class="emoji-button info" data-bs-toggle="tooltip" data-bs-placement="top" title="Block User"
-          type="button" {{on "click" (fn this.blockUser "remove")}}>
-          ✅ 
+          type="button" {{on "click" (fn this.blockUser "remove" )}}>
+          ✅
         </button>
         {{else}}
         <button class="emoji-button info" data-bs-toggle="tooltip" data-bs-placement="top" title="Block User"
-          type="button" {{on "click" (fn this.blockUser "add")}}>
+          type="button" {{on "click" (fn this.blockUser "add" )}}>
           🚫
         </button>
         {{/if}}
@@ -47,7 +48,7 @@
 
     {{!-- Second row of profile details --}}
     <div class="profile-details">
-      <ModalGameHistory @user={{this.user.selectedUser}}/>
+      <ModalGameHistory @user={{this.user.selectedUser}} />
       <h2 class="info">Wins: {{this.user.selectedUser.wins}}</h2>
     </div>
 

@@ -3,21 +3,21 @@ const WebSocket = require('ws');
 const PORT = process.env.PORT || 8888;
 
 const wss = new WebSocket.Server({ port: PORT }, () => {
-    console.log(`WebSocket mock server is running on ws://localhost:${PORT}`);
+    //console.log(`WebSocket mock server is running on ws://localhost:${PORT}`);
 });
 
 // Store all connected clients
 const clients = [];
 
 wss.on('connection', (ws) => {
-    console.log('Client connected');
+    //console.log('Client connected');
 
     // Add new client to the clients array
     clients.push(ws);
 
     // Listen for messages from clients
     ws.on('message', (message) => {
-        console.log(`Received from client: ${message}`);
+        //console.log(`Received from client: ${message}`);
     
         try {
             // Parse the message if it's a JSON string
@@ -50,7 +50,7 @@ wss.on('connection', (ws) => {
 
     // Remove the client from the clients array when they disconnect
     ws.on('close', () => {
-        console.log('Client disconnected');
+        //console.log('Client disconnected');
         const index = clients.indexOf(ws);
         if (index !== -1) {
             clients.splice(index, 1);

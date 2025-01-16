@@ -8,8 +8,8 @@ export default class ProfileOtherComponent extends Component {
   @service user;
 
   get isFriend() {
-      const friendsList = this.user.profile.friends || [];
-      return friendsList.includes(this.user.selectedUser.nickname);
+    const friendsList = this.user.profile.friends || [];
+    return friendsList.includes(this.user.selectedUser.nickname);
   }
 
   get isBlocked() {
@@ -19,22 +19,21 @@ export default class ProfileOtherComponent extends Component {
 
   @action
   startLiveChat() {
-    console.log('Live chat started');
+    //console.log('Live chat started');
     this.chat.updateInputValue('/' + this.user.selectedUser.nickname + ' ');
     this.chat.focusInput();
   }
 
   @action
   playGame() {
-    console.log('Game initiated');
+    //console.log('Game initiated');
     this.chat.updateInputValue('/*invite ' + this.user.selectedUser.nickname);
     this.chat.sendMessage();
   }
 
   @action
   addFriend(type) {
-    if (type === "add")
-    {
+    if (type === "add") {
       this.chat.updateInputValue('/*add ' + this.user.selectedUser.nickname);
       this.chat.sendMessage();
     }
@@ -92,9 +91,9 @@ export default class ProfileOtherComponent extends Component {
         const errorData = await response.json();
         throw new Error(errorData.message || 'Failed to block user');
       }
-      
+
       const result = await response.json();
-      console.log(result.message);
+      //console.log(result.message);
     } catch (error) {
       console.error('Error blocking user:', error.message);
       throw error;
@@ -103,7 +102,7 @@ export default class ProfileOtherComponent extends Component {
 
   @action
   onCloseClick() {
-    console.log('Close clicked!');
+    //console.log('Close clicked!');
     this.user.selectUser(null);
   }
 }

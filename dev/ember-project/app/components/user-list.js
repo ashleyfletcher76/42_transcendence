@@ -50,30 +50,33 @@ export default class UserListComponent extends Component {
 
   setFilter = (type) => {
     this.filter = type;
-    console.log('filter:', type);
+    //console.log('filter:', type);
   };
 
   @action
   async fetchUsers() {
-    try {
-      const response = await fetch('/users/users/profile-list/', {
-        method: 'GET',
-        headers: {
-          Authorization: `Bearer ${this.session.data.access}`,
-          'Content-Type': 'application/json',
-        },
-      });
-
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
+    if (this.session.isAuthenticated)
+    {
+      try {
+        const response = await fetch('/users/users/profile-list/', {
+          method: 'GET',
+          headers: {
+            Authorization: `Bearer ${this.session.data.access}`,
+            'Content-Type': 'application/json',
+          },
+        });
+  
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+  
+        this.users = await response.json();
+      } catch (error) {
+        console.error('Failed to fetch users:', error);
       }
-
-      this.users = await response.json();
-    } catch (error) {
-      console.error('Failed to fetch users:', error);
     }
-  }
-
+    }
+  
   willDestroy() {
     super.willDestroy(...arguments);
     window.removeEventListener('keydown', this.handleKeyDown);

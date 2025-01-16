@@ -1,13 +1,13 @@
-{{#if @user}} 
-    <div class="user-card" role="button" onclick={{this.select}}>
-        <img src="https://localhost/users/users{{@user.avatar}}/" alt="Profile Picture" class="user-pic user" />
-        <div class="profile-details">
-            {{#if this.isOnline}} 
-            <h2 class="info">{{@user.nickname}} 🟢</h2>
-            {{else}}
-            <h2 class="info">{{@user.nickname}} 🔴</h2>
-            {{/if}}
-            <h2 class="points info">{{@user.trophies}} 🏆</h2>        
-        </div>
+{{#if @user}}
+<div class="user-card" role="button" onclick={{this.select}}>
+    <img src="https://localhost/users/users{{@user.avatar}}/" alt="Profile Picture" class="user-pic user" />
+    <div class="profile-details">
+        {{#if this.isOnline}}
+        <h2 class="info">{{@user.nickname}} 🟢</h2>
+        {{else}}
+        <h2 class="info">{{@user.nickname}} 🔴</h2>
+        {{/if}}
+        <h2 class="points info">{{@user.trophies}} 🏆</h2>
     </div>
+</div>
 {{/if}}

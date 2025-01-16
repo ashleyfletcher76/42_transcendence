@@ -100,9 +100,9 @@ export default class LoginController extends Controller {
         throw new Error('Failed to fetch user profile');
       }
       const data = await response.json();
-      console.log(data);
+      //console.log(data);
       this.user.setProfile(data); // Store user data for use in the template
-      console.log(this.user.profile);
+      //console.log(this.user.profile);
     } catch (error) {
       console.error('Error fetching user profile:', error);
     }

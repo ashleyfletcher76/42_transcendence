@@ -12,14 +12,12 @@ export default class ChooseGameRoute extends Route {
     if (!this.session.isAuthenticated) {
       this.session.requireAuthentication(transition, 'login');
     }
-    if (this.user.profile.tournament_name)
-    {
+    if (this.user.profile.tournament_name) {
       this.connectToLobby(tournament_name);
       this.user.profile.tournament_name = null;
     }
     if (this.gameData.roomData || this.user.profile.game_name) {
-      if (this.user.profile.game_name && !this.pongGame.socketRef)
-      {
+      if (this.user.profile.game_name && !this.pongGame.socketRef) {
         this.gameData.waiting = false;
         await this.pongGame.connectToRoom(this.user.profile.game_name);
         this.user.profile.game_name = null;

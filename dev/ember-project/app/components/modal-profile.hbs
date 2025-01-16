@@ -2,54 +2,34 @@
   Edit Profile
 </button>
 
-<BsModal
-  @open={{this.isModalOpen}}
-  as |modal|
->
+<BsModal @open={{this.isModalOpen}} as |modal|>
   <modal.header style="background-color: #706363;">
     <h4 class="modal-title">
       Edit Profile
     </h4>
   </modal.header>
   <modal.body style="background-color: #706363;">
-    <div class="form-group" >
+    <div class="form-group">
       <label>Choose Avatar:</label>
-      <input 
-        type="file" 
-        class="form-control"
-        style="background-color: #706363;"
-        placeholder="Choose Avatar" 
-        {{on "change" this.updateAvatar}}
-      >
+      <input type="file" class="form-control" style="background-color: #706363;" placeholder="Choose Avatar"
+        {{on "change" this.updateAvatar}}>
       <small>This is the visible Avatar on this Site</small>
     </div>
 
-    <div class="form-group mt-3" >
+    <div class="form-group mt-3">
       <label>Nickname:</label>
-      <input 
-        type="name" 
-        class="form-control"
-        style="background-color: #706363;"
-        value={{this.newNickname}}
-        {{on "input" this.updateNewNickname}}
-      >
+      <input type="name" class="form-control" style="background-color: #706363;" value={{this.newNickname}} {{on "input"
+        this.updateNewNickname}}>
       <small>This is the visible Name on this Site</small>
     </div>
 
-    <div class="form-group mt-3" >
+    <div class="form-group mt-3">
       <label>E-Mail:</label>
-      <input 
-        type="name" 
-        class="form-control"
-        style="background-color: #706363;"
-        value={{this.newEmail}}
-        {{on "input" this.updateNewEmail}}
-      >
-      <input type="checkbox" 
-       aria-label="Checkbox for following text input" 
-       checked={{this.twofa_enabled}} 
-       {{on "change" this.toggle2fa}}>
-      <small>Enable Email for 2-FA</small>  
+      <input type="name" class="form-control" style="background-color: #706363;" value={{this.newEmail}} {{on "input"
+        this.updateNewEmail}}>
+      <input type="checkbox" aria-label="Checkbox for following text input" checked={{this.twofa_enabled}} {{on "change"
+        this.toggle2fa}}>
+      <small>Enable Email for 2-FA</small>
     </div>
 
 
