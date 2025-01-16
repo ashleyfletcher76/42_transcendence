@@ -203,7 +203,7 @@ class GameConsumer(AsyncWebsocketConsumer):
         self.disconnection_task = asyncio.create_task(self._disconnection_handler())
 
     async def _disconnection_handler(self):
-        await asyncio.sleep(15)
+        await asyncio.sleep(20)
         game = get_game_state(self.room_name)
         if game["player1"] == self.nickname and not game["p1_connected"]:
             game["winner"] = game["player2"]

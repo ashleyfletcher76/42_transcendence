@@ -15,7 +15,6 @@ class TournamentConsumer(AsyncWebsocketConsumer):
     async def connect(self):
         self.room_name = self.scope['url_route']['kwargs']['room_name']
         self.room_group_name = f'game_{self.room_name}'
-
         self.token = self.get_jwt_from_headers(self.scope["headers"])
         if not self.token:
             print("No token found in headers")
@@ -41,17 +40,35 @@ class TournamentConsumer(AsyncWebsocketConsumer):
         if not tournamnent:
             await self.init_tournament()
         else:
-            if not tournamnent["ongoing"] or tournamnent["active"]:
-                await self.join_tournamnet()
+            tournament = get_tournamnet_state(self.room_name)
+            if not tournament:
+                print(f"Tournament {self.room_name} not found")
+                return
+            print(tournament["players"])
+            for player in tournament["players"]:
+                if player["name"] == self.nickname:
+                    print(f"Player trying to reconnect to lobby {self.nickname}")
+                    print(player)
+                    if not player["connection"]:
+                        player["connection"] = True
+                        set_tournament_state(self.room_name, tournament)
+                    return
+
+            if not tournament["ongoing"] or tournament["active"]:
+                await self.join_tournament()
             else:
                 self.close(code=4001)
 
     async def disconnect(self, close_code):
+        print(f"---------------------------")
+        print(f"disconnection for {self.nickname}")
         await self.handle_leave()
         await self.channel_layer.group_discard(
             self.room_group_name,
             self.channel_name
         )
+        print(f"---------------------------")
+        print(f"disconnection for {self.nickname}")
 
 
     async def receive(self, text_data):
@@ -76,12 +93,14 @@ class TournamentConsumer(AsyncWebsocketConsumer):
                 print("Cannot start the tournament: Admin check failed or not enough players")
                 return
             asyncio.create_task(self.start_tournament())
-            await self.channel_layer.group_send(
-                self.room_group_name,
-                {
-                    "type": "start_tournament_user_service",
-                }
-            )
+            if tournament and "players" in tournament:
+                for player in tournament["players"]:
+                    token = player.get("token")
+                    if token:
+                        asyncio.create_task(self.start_tournament_user_service(token=token, room_name=self.room_name))
+                        # await self.start_tournament_user_service(token=token, room_name=self.room_name)
+                        print("sending start tournamnnet info to the user servvvice")
+            
 
 
 
@@ -92,7 +111,9 @@ class TournamentConsumer(AsyncWebsocketConsumer):
             "opponent" : "",
             "room" : "",
             "score" : 1,
-            "admin" : True
+            "admin" : True,
+            "connection" : True,
+            "token" : self.token,
         }
         players = []
         players.append(player)
@@ -114,19 +135,26 @@ class TournamentConsumer(AsyncWebsocketConsumer):
             self.room_group_name,
             {
                 "type": "create",
-                "tournamnet": tournament,
+                "tournament": tournament,
                 "player" : self.nickname,
             }
         )
     
-    async def join_tournamnet(self):
+    async def join_tournament(self):
         tournament = get_tournamnet_state(self.room_name)
+        for player in tournament["players"]:
+            if player["name"] == self.nickname:
+                await self.close(code=4001)
+                return
+
         player = {
             "name" : self.nickname,
             "opponent" : "",
             "room" : "",
             "score" : 1,
-            "admin" : False
+            "admin" : False,
+            "connection" : True,
+            "token" : self.token,
         }
         tournament["players"].append(player)
         tournament["num_players"] += 1
@@ -135,7 +163,7 @@ class TournamentConsumer(AsyncWebsocketConsumer):
             self.room_group_name,
             {
                 "type": "join",
-                "tournamnet": tournament,
+                "tournament": tournament,
                 "player": self.nickname,
             }
         )
@@ -146,34 +174,40 @@ class TournamentConsumer(AsyncWebsocketConsumer):
             print(f"Tournament {self.room_name} not found")
             return
 
-        player_to_remove = None
+        player_to_update = None
         for player in tournament["players"]:
             if player["name"] == self.nickname:
-                player_to_remove = player
+                player_to_update = player
                 break
 
-        tournament["num_players"] -= 1
-        if player_to_remove:
-            tournament["players"].remove(player_to_remove)
-            if player_to_remove.get("admin"):
-                if tournament["players"]:
-                    tournament["players"][0]["admin"] = True
-                    tournament["admin"] = tournament["players"][0]["name"]
-                else:
-                    tournament["active"] = False
-                    delete_tournament_state(self.room_name)
-                    return
-            set_tournament_state(self.room_name, tournament)
-            await self.channel_layer.group_send(
-                self.room_group_name,
-                {
-                    "type": "leave",
-                    "tournamnet": tournament,
-                    "player" : self.nickname,
-                }
-            )
-        else:
+        if not player_to_update:
             print(f"Player {self.nickname} not found in tournament {self.room_name}")
+            return
+
+        if tournament["ongoing"]:
+            player_to_update["connection"] = False
+        else:
+            tournament["players"].remove(player_to_update)
+            tournament["num_players"] -= 1
+
+        if player_to_update.get("admin"):
+            if tournament["players"]:
+                tournament["players"][0]["admin"] = True
+                tournament["admin"] = tournament["players"][0]["name"]
+            else:
+                tournament["active"] = False
+                delete_tournament_state(self.room_name)
+                return
+
+        set_tournament_state(self.room_name, tournament)
+        await self.channel_layer.group_send(
+            self.room_group_name,
+            {
+                "type": "leave",
+                "tournament": tournament,
+                "player": self.nickname,
+            }
+        )
         
 
 
@@ -195,12 +229,12 @@ class TournamentConsumer(AsyncWebsocketConsumer):
                     "winner" : active_players[0]["name"],
                 }
             )
-            await self.channel_layer.group_send(
-                self.room_group_name,
-                {
-                    "type": "end_tournament_user_sercive"
-                }
-            )
+            if tournament and "players" in tournament:
+                for player in tournament["players"]:
+                    token = player.get("token")
+                    if token:
+                        asyncio.create_task(self.end_tournament_user_sercive(token=token))
+                        print("sending end tournament info to the user service")
             await sleep(1)
             self.reset_players(tournament)
             return
@@ -209,10 +243,18 @@ class TournamentConsumer(AsyncWebsocketConsumer):
 
     def reset_players(self, tournament):
         players = tournament["players"]
+        
+        active_players = []
         for pl in players:
-            pl["opponent"] = ""
-            pl["room"] = ""
-            pl["score"] = 1
+            if pl["connection"]:
+                pl["opponent"] = ""
+                pl["room"] = ""
+                pl["score"] = 1
+                active_players.append(pl)
+            else:
+                print(f"Removing player {pl['name']} due to inactive connection.")
+        
+        tournament["players"] = active_players
         tournament["ongoing"] = False
         set_tournament_state(self.room_name, tournament)
 
@@ -358,46 +400,44 @@ class TournamentConsumer(AsyncWebsocketConsumer):
 
         return None
     
-    
-    
-    
+
     # sending messages to gruop
     async def join(self, event):
-        tournamnet = event["tournamnet"]
+        tournament = event["tournament"]
         player = event["player"]
-        player_list = [player["name"] for player in tournamnet["players"]]
+        player_list = [player["name"] for player in tournament["players"]]
         print(player_list)
         await self.send(text_data=json.dumps({
             "type": "join",
             "players": player_list,
             "player": player,
-            "admin": tournamnet["admin"],
+            "admin": tournament["admin"],
             "message": f"{player} joined the lobby!"
         }))
     
 
     async def create(self, event):
-        tournamnet = event["tournamnet"]
+        tournament = event["tournament"]
         player = event["player"]
-        player_list = [player["name"] for player in tournamnet["players"]]
+        player_list = [player["name"] for player in tournament["players"]]
         await self.send(text_data=json.dumps({
             "type": "create",
             "players": player_list,
             "player": player,
-            "admin": tournamnet["admin"],
+            "admin": tournament["admin"],
             "message" : f"{player} created the lobby!"
         }))
 
 
     async def leave(self, event):
-        tournamnet = event["tournamnet"]
+        tournament = event["tournament"]
         player = event["player"]
-        player_list = [player["name"] for player in tournamnet["players"]]
+        player_list = [player["name"] for player in tournament["players"]]
         await self.send(text_data=json.dumps({
             "type": "leave",
             "players": player_list,
             "player": player,
-            "admin": tournamnet["admin"],
+            "admin": tournament["admin"],
             "message" : f"{player} left the lobby!"
         }))
 
@@ -442,17 +482,17 @@ class TournamentConsumer(AsyncWebsocketConsumer):
             "winner": winner
         }))
 
-    async def start_tournament_user_service(self, event):
+    async def start_tournament_user_service(self, token, room_name):
         try:
             async with httpx.AsyncClient() as client:
                 url = "http://user-service:8000/users/tournament-active/"
                 headers = {
-                    "Authorization": f"Bearer {self.token}",
+                    "Authorization": f"Bearer {token}",
                     "Content-Type": "application/json"
                 }
                 payload = {
                     "action_type": "start",
-                    "tournament_name" : self.room_name
+                    "tournament_name" : room_name
                 }
                 response = await client.post(url, headers=headers, json=payload)
             if response.status_code == 200:
@@ -472,12 +512,12 @@ class TournamentConsumer(AsyncWebsocketConsumer):
             print(f"Unexpected error: {str(e)}")
             return {"error": "An unexpected error occurred"}
 
-    async def end_tournament_user_sercive(self, event):
+    async def end_tournament_user_sercive(self, token):
         try:
             print("end game info send")
             url = "http://user-service:8000/users/tournament-active/"
             headers = {
-                "Authorization": f"Bearer {self.token}",
+                "Authorization": f"Bearer {token}",
                 "Content-Type": "application/json"
             }
             payload = {

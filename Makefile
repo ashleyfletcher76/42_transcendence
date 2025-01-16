@@ -123,7 +123,7 @@ exec-%:
 		docker exec -it $* bash; \
 	else \
 		echo "You are about to enter the $* container."; \
-		docker exec -it $* bash; \
+		docker exec -it $* sh; \
 	fi
 
 # to run unit testing for all

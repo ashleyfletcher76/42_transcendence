@@ -63,6 +63,9 @@ class TournamentActive(APIView):
 			user_profile.tournament_active = False
 			user_profile.tournament_name = None
 
+		print("------------")
+		print(f"for user {user_profile.nickname} tournament name = {user_profile.tournament_name} and game name = {user_profile.game_name}")
+		print("------------")
 		# save updates
 		user_profile.save()
 

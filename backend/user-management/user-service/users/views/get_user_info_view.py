@@ -125,6 +125,9 @@ def get_profile_info(request):
 			match_history = {"error": str(e)}
 
 		# print(f"------------- Game Active: {profile.game_active} -------------")
+		print("-----------------")
+		print(f"Tourname name: {profile.tournament_name}")
+		print("-----------------")
 
 		# response
 		profile_response = {
