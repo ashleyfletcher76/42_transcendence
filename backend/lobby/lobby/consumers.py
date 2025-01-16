@@ -104,7 +104,6 @@ class TournamentConsumer(AsyncWebsocketConsumer):
                     token = player.get("token")
                     if token:
                         asyncio.create_task(self.start_tournament_user_service(token=token, room_name=self.room_name))
-                        # await self.start_tournament_user_service(token=token, room_name=self.room_name)
                         print("sending start tournamnnet info to the user servvvice")
             
 
@@ -193,21 +192,40 @@ class TournamentConsumer(AsyncWebsocketConsumer):
         if tournament["ongoing"]:
             player_to_update["connection"] = False
             tournament["num_players"] -= 1
+
+            if player_to_update.get("name") == tournament["admin"]:
+                player_to_update["admin"] = False
+
+                next_admin = None
+                for player in tournament["players"]:
+                    if player["connection"]:
+                        next_admin = player
+                        break
+
+                if next_admin:
+                    next_admin["admin"] = True
+                    tournament["admin"] = next_admin["name"]
         else:
             tournament["players"].remove(player_to_update)
             tournament["num_players"] -= 1
+            if player_to_update.get("name") == tournament["admin"]:
+                player_to_update["admin"] = False
+                if tournament["players"]:
+                    tournament["players"][0]["admin"] = True
+                    tournament["admin"] = tournament["players"][0]["name"]
 
-        if player_to_update.get("name") == tournament["admin"]:
-            player_to_update["admin"] = False
-            if tournament["players"]:
-                tournament["players"][0]["admin"] = True
-                tournament["admin"] = tournament["players"][0]["name"]
-            else:
-                tournament["active"] = False
-                delete_tournament_state(self.room_name)
-                return
+        if tournament["num_players"] == 0:
+            for player in tournament["players"]:
+                token = player.get("token")
+                if token:
+                    asyncio.create_task(self.end_tournament_user_sercive(token=token))
+                    print("sending end tournamnnet info to the user servvvice")
+            tournament["active"] = False
+            delete_tournament_state(self.room_name)
+            return
 
         set_tournament_state(self.room_name, tournament)
+
         await self.channel_layer.group_send(
             self.room_group_name,
             {
@@ -271,12 +289,17 @@ class TournamentConsumer(AsyncWebsocketConsumer):
 
     async def matchmaking(self):
         tournament = get_tournamnet_state(self.room_name)
+        if not tournament:
+            return
         players = tournament["players"]
         active_players = [player for player in players if player["score"] > 0]
         random.shuffle(active_players)
         matches = []
 
         while len(active_players) >= 2:
+            tournament = get_tournamnet_state(self.room_name)
+            if not tournament:
+                return
             player1 = active_players.pop(0)
             player2 = active_players.pop(0)
 
@@ -321,6 +344,8 @@ class TournamentConsumer(AsyncWebsocketConsumer):
         while matches:
             for match in matches[:]:
                 tournament = get_tournamnet_state(self.room_name)
+                if not tournament:
+                    return
                 player1 = match["player1"]
                 player2 = match["player2"]
                 room_name = match["room_name"]
@@ -417,7 +442,6 @@ class TournamentConsumer(AsyncWebsocketConsumer):
         tournament = event["tournament"]
         player = event["player"]
         player_list = [player["name"] for player in tournament["players"]]
-        print(player_list)
         await self.send(text_data=json.dumps({
             "type": "join",
             "players": player_list,
