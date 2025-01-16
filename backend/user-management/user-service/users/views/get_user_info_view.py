@@ -106,7 +106,7 @@ def get_profile_info(request):
 		friends = list(profile.friends.values_list('nickname', flat=True))
 		blocked = list(profile.blocked_users.values_list('nickname', flat=True))
 
-		print(f"[DEBUG] Sending request to match-history-service with user_id: {user.id}")
+		# print(f"[DEBUG] Sending request to match-history-service with user_id: {user.id}")
 
 		# fetch match history details
 		match_history = {}

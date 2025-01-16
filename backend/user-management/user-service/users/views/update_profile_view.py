@@ -82,12 +82,19 @@ def update_profile(request):
 	new_avatar = data.get("avatar")
 
 	# normalize input values to handle "null"
-	if isinstance(new_email, str) and new_email.strip().lower() == "null":
+	if isinstance(new_email, str) and new_email.strip().lower() in ["null", ""]:
 		new_email = None
 	if isinstance(new_nickname, str) and new_nickname.strip().lower() == "null":
 		new_nickname = None
 	if new_avatar == "null":
 		new_avatar = None
+
+	print(f"[DEBUG] old_email: {old_email}, new_email: {new_email}")
+	print(f"[DEBUG] old_nickname: {old_nickname}, new_nickname: {new_nickname}")
+	print(f"[DEBUG] After normalization -> new_email: {new_email}")
+	print(f"[DEBUG] old_twofa: {old_twofa}, new_twofa: {new_twofa}")
+	print(f"[DEBUG] new_avatar: {new_avatar}")
+
 
 	if isinstance(new_twofa, str):
 		if new_twofa.lower() in ("true", "1"):
@@ -104,10 +111,11 @@ def update_profile(request):
 
 	no_changes_detected = (
 		(new_nickname == old_nickname or not new_nickname) and
-		(new_email == old_email or not new_email) and
+		(new_email == old_email or (new_email is None and old_email is None)) and
 		(new_twofa == old_twofa or new_twofa is None) and
 		(not new_avatar)
 	)
+
 
 	if no_changes_detected:
 		print("[DEBUG] No changes detected. Exiting early.")
@@ -153,8 +161,11 @@ def update_profile(request):
 				status=400
 			)
 		try:
+			if new_email is None and old_email:
+				profile.email = None
+				updated_fields.append("email")
 			# validate email
-			if new_email and new_email.strip().lower() != "null" and new_email != old_email:
+			elif new_email and new_email.strip().lower() != "null" and new_email != old_email:
 				validator = EmailValidator()
 				try:
 					validator(new_email)
@@ -202,6 +213,11 @@ def update_profile(request):
 				},
 				status=200,
 			)
+		print("[ERROR] Update attempted, but no response was returned.")
+		return Response(
+			{"success": False, "message": "No valid updates were detected, or an internal error occurred."},
+			status=400
+		)
 
 	except Exception as e:
 		print(f"[ERROR] Unexpected error: {e}")
