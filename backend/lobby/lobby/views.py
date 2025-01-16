@@ -27,7 +27,7 @@ def listLobby(request):
 
         # for t in tournaments:
         #     delete_tournament_state(t.get("name"))
-        
+
         if tournaments:
             tournaments_list = [
                 {

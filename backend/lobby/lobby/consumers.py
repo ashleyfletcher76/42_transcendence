@@ -53,6 +53,14 @@ class TournamentConsumer(AsyncWebsocketConsumer):
                         player["connection"] = True
                         tournament["num_players"] += 1
                         set_tournament_state(self.room_name, tournament)
+                        await self.channel_layer.group_send(
+                            self.room_group_name,
+                            {
+                                "type": "join",
+                                "tournament": tournament,
+                                "player": self.nickname,
+                            }
+                    )
                     return
 
             if not tournament["ongoing"] or tournament["active"]:
@@ -189,7 +197,8 @@ class TournamentConsumer(AsyncWebsocketConsumer):
             tournament["players"].remove(player_to_update)
             tournament["num_players"] -= 1
 
-        if player_to_update.get("admin"):
+        if player_to_update.get("name") == tournament["admin"]:
+            player_to_update["admin"] = False
             if tournament["players"]:
                 tournament["players"][0]["admin"] = True
                 tournament["admin"] = tournament["players"][0]["name"]
