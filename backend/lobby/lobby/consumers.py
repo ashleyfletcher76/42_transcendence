@@ -51,6 +51,7 @@ class TournamentConsumer(AsyncWebsocketConsumer):
                     print(player)
                     if not player["connection"]:
                         player["connection"] = True
+                        tournament["num_players"] += 1
                         set_tournament_state(self.room_name, tournament)
                     return
 
@@ -67,9 +68,6 @@ class TournamentConsumer(AsyncWebsocketConsumer):
             self.room_group_name,
             self.channel_name
         )
-        print(f"---------------------------")
-        print(f"disconnection for {self.nickname}")
-
 
     async def receive(self, text_data):
         data = json.loads(text_data)
@@ -186,6 +184,7 @@ class TournamentConsumer(AsyncWebsocketConsumer):
 
         if tournament["ongoing"]:
             player_to_update["connection"] = False
+            tournament["num_players"] -= 1
         else:
             tournament["players"].remove(player_to_update)
             tournament["num_players"] -= 1
@@ -214,11 +213,11 @@ class TournamentConsumer(AsyncWebsocketConsumer):
 
     # matchmaking functions
     async def start_tournament(self):
-        tournament = get_tournamnet_state(self.room_name)
 
-        await self.matchmaking(tournament)
+        await self.matchmaking()
         await sleep(3)
-        await self.result_getter(tournament)
+        await self.result_getter()
+        tournament = get_tournamnet_state(self.room_name)
         players = tournament["players"]
         active_players = [player for player in players if player["score"] > 0]
         if len(active_players) == 1:
@@ -229,6 +228,7 @@ class TournamentConsumer(AsyncWebsocketConsumer):
                     "winner" : active_players[0]["name"],
                 }
             )
+            tournament = get_tournamnet_state(self.room_name)
             if tournament and "players" in tournament:
                 for player in tournament["players"]:
                     token = player.get("token")
@@ -236,12 +236,13 @@ class TournamentConsumer(AsyncWebsocketConsumer):
                         asyncio.create_task(self.end_tournament_user_sercive(token=token))
                         print("sending end tournament info to the user service")
             await sleep(1)
-            self.reset_players(tournament)
+            self.reset_players()
             return
         await self.start_tournament()
 
 
-    def reset_players(self, tournament):
+    def reset_players(self):
+        tournament = get_tournamnet_state(self.room_name)
         players = tournament["players"]
         
         active_players = []
@@ -259,7 +260,8 @@ class TournamentConsumer(AsyncWebsocketConsumer):
         set_tournament_state(self.room_name, tournament)
 
 
-    async def matchmaking(self, tournament):
+    async def matchmaking(self):
+        tournament = get_tournamnet_state(self.room_name)
         players = tournament["players"]
         active_players = [player for player in players if player["score"] > 0]
         random.shuffle(active_players)
@@ -303,12 +305,13 @@ class TournamentConsumer(AsyncWebsocketConsumer):
 
 
 
-    async def result_getter(self, tournament):
+    async def result_getter(self):
+        tournament = get_tournamnet_state(self.room_name)
         matches = tournament["matches"]
-        players = tournament["players"]
 
         while matches:
             for match in matches[:]:
+                tournament = get_tournamnet_state(self.room_name)
                 player1 = match["player1"]
                 player2 = match["player2"]
                 room_name = match["room_name"]
@@ -322,18 +325,17 @@ class TournamentConsumer(AsyncWebsocketConsumer):
                     player_2["room"] = ""
                     if player_1["name"] == winner:
                         player_1["score"] += 1
-                        player_2["score"] = 0
+                        player_2["score"] = -1
                         winner_name = player_1["name"]
                         loser_name = player_2["name"]
                     else:
-                        player_1["score"] = 0
+                        player_1["score"] = -1
                         player_2["score"] += 1
                         winner_name = player_2["name"]
                         loser_name = player_1["name"]
                     
                     matches.remove(match)
                     tournament["matches"] = matches
-                    tournament["players"] = players
                     set_tournament_state(self.room_name, tournament)
 
                     await self.channel_layer.group_send(
