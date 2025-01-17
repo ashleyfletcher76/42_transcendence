@@ -6,6 +6,7 @@ import { inject as service } from '@ember/service';
 export default class UserCardComponent extends Component {
   @tracked isActive = false;
   @service user;
+  @tracked hostname = window.location.hostname;
 
   @action
   select() {

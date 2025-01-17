@@ -2,7 +2,7 @@
   {{!-- Profile picture column (1 part) --}}
   <div class="col center no-padding position-relative">
     <button type="button" class="btn-close top-left" onclick={{this.onCloseClick}}></button>
-    <img src="https://localhost/users/users{{this.user.selectedUser.avatar}}/" alt="Profile Picture"
+    <img src="https://{{this.hostname}}{{this.user.selectedUser.avatar}}/" alt="Profile Picture"
       class="profile-pic" />
   </div>
 

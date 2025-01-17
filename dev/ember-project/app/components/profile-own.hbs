@@ -1,7 +1,7 @@
 <div class="container-fluid row fill p-2">
   {{!-- Profile picture column (1 part) --}}
   <div class="col center">
-    <img src="https://localhost/users/users{{this.user.profile.avatar}}/" alt="Profile Picture" class="profile-pic" />
+    <img src="https://{{this.hostname}}{{this.user.profile.avatar}}/" alt="Profile Picture" class="profile-pic" />
   </div>
 
   {{!-- Profile details column (3 parts) --}}

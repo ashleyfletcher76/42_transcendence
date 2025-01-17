@@ -1,11 +1,13 @@
 import Component from '@glimmer/component';
 import { action } from '@ember/object';
 import { inject as service } from '@ember/service';
+import { tracked } from '@glimmer/tracking';
 
 export default class ProfileOtherComponent extends Component {
   @service chat;
   @service session;
   @service user;
+  @tracked hostname = window.location.hostname;
 
   get isFriend() {
     const friendsList = this.user.profile.friends || [];

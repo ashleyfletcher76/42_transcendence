@@ -5,6 +5,7 @@ export default class ChooseGameRoute extends Route {
   @service session;
   @service gameData;
   @service pongGame;
+  @service tournament;
   @service user;
   @service router;
 
@@ -13,7 +14,7 @@ export default class ChooseGameRoute extends Route {
       this.session.requireAuthentication(transition, 'login');
     }
     if (this.user.profile.tournament_name) {
-      this.connectToLobby(tournament_name);
+      this.tournament.connectToLobby(this.user.profile.tournament_name);
       this.user.profile.tournament_name = null;
     }
     if (this.gameData.roomData || this.user.profile.game_name) {
