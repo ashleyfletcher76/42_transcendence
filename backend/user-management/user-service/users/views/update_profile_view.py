@@ -10,6 +10,7 @@ import json, re, os, uuid
 from django.db.models import Q
 from ..models import UserProfile
 from ..redis_client import get_redis_client
+from PIL import Image
 
 ##########################################
 # ---------- HELPER FUNCTIONS ---------- #
@@ -25,6 +26,15 @@ def validate_nickname(new_nickname):
 
 def update_avatar(new_avatar, user_directory, profile):
 	"""Update the avatar file, keeping the default one but replacing the previous custom one"""
+
+	try:
+		with Image.open(new_avatar) as img:
+			img_format = img.format.lower()
+
+			if img_format not in ["jpeg", "png"]:
+				raise ValueError("Only JPEG and PNG images are allowed.")
+	except Exception:
+		raise ValueError("Uploaded file is not a valid PNG/JPEG image.")
 
 	# define relative paths
 	default_avatar_rel_path = f"avatars/{profile.user.username}/default_avatar.png"
@@ -67,7 +77,6 @@ def update_avatar(new_avatar, user_directory, profile):
 	print(f"[DEBUG] Stored Avatar Name: {profile.avatar.name}")
 	print(f"[DEBUG] Generated Avatar URL: {profile.avatar.url}")
 	return profile.avatar.name
-
 
 
 def publish_nickname_change(redis_client, old_nickname, new_nickname):
