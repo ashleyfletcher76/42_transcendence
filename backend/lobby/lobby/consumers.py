@@ -61,12 +61,15 @@ class TournamentConsumer(AsyncWebsocketConsumer):
                                 "player": self.nickname,
                             }
                     )
+                    else:
+                        print(f"Player already connected to the lobby {self.nickname}")
+                        await self.close(code=4001)
                     return
 
             if not tournament["ongoing"] or tournament["active"]:
                 await self.join_tournament()
             else:
-                self.close(code=4001)
+                await self.close(code=4001)
 
     async def disconnect(self, close_code):
         print(f"---------------------------")
@@ -246,7 +249,8 @@ class TournamentConsumer(AsyncWebsocketConsumer):
         await self.result_getter()
         tournament = get_tournamnet_state(self.room_name)
         players = tournament["players"]
-        active_players = [player for player in players if player["score"] > 0]
+        active_players = [player for player in players if player["score"] > 0 and player["connection"]]
+        print(active_players)
         if len(active_players) == 1:
             await self.channel_layer.group_send(
                 self.room_group_name,
@@ -265,6 +269,17 @@ class TournamentConsumer(AsyncWebsocketConsumer):
             await sleep(1)
             self.reset_players()
             return
+        if len(active_players) == 0:
+            await sleep(1)
+            self.reset_players()
+            if tournament and "players" in tournament:
+                for player in tournament["players"]:
+                    token = player.get("token")
+                    if token:
+                        asyncio.create_task(self.end_tournament_user_sercive(token=token))
+                        print("sending end tournament info to the user service")
+            return
+
         await self.start_tournament()
 
 
@@ -292,7 +307,7 @@ class TournamentConsumer(AsyncWebsocketConsumer):
         if not tournament:
             return
         players = tournament["players"]
-        active_players = [player for player in players if player["score"] > 0]
+        active_players = [player for player in players if player["score"] > 0 and player["connection"]]
         random.shuffle(active_players)
         matches = []
 
@@ -538,7 +553,7 @@ class TournamentConsumer(AsyncWebsocketConsumer):
                 return {"error": "Endpoint not found"}
             else:
                 print(f"Request failed with status {response.status_code}: {response.text}")
-                self.close(10001)
+                await self.close(10001)
                 return {"error": f"Request failed with status {response.status_code}"}
         except httpx.RequestError as e:
             print(f"HTTP request error: {str(e)}")
@@ -614,7 +629,7 @@ class TournamentConsumer(AsyncWebsocketConsumer):
         game = event["game_state"]
         tournament = get_tournamnet_state(self.room_name)
         flag = False
-        active_players = [player for player in tournament["players"] if player["score"] > 0]
+        active_players = [player for player in tournament["players"] if player["score"] > 0 and player["connection"]]
         if len(active_players) == 1 and active_players[0]["name"] == self.nickname:
             flag = True
         player = next((p for p in tournament["players"] if p["name"] == self.nickname), None)
