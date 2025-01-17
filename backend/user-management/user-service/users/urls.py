@@ -44,7 +44,3 @@ urlpatterns = [
 	path("2fa-status/", check_2fa_status, name="2fa-status"),
 	path("get-data-without-token/", get_single_user_data_without_token, name="get-data-without-token")
 ]
-
-# serve media files during development
-if settings.DEBUG:
-	urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

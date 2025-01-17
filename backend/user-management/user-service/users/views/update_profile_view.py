@@ -24,27 +24,51 @@ def validate_nickname(new_nickname):
 		raise ValueError("Nickname is already taken.")
 
 def update_avatar(new_avatar, user_directory, profile):
-	"""Update the avatar file, replace the old one and save the new path"""
-	 # Check file size
+	"""Update the avatar file, keeping the default one but replacing the previous custom one"""
+
+	# define relative paths
+	default_avatar_rel_path = f"avatars/{profile.user.username}/default_avatar.png"
+	custom_avatar_rel_path = f"avatars/{profile.user.username}/avatar.png"
+
+	# absolute paths for internal file handling
+	default_avatar_abs_path = os.path.join(settings.MEDIA_ROOT, default_avatar_rel_path)
+	custom_avatar_abs_path = os.path.join(settings.MEDIA_ROOT, custom_avatar_rel_path)
+
+	print(f"[DEBUG] Default Avatar Path: {default_avatar_rel_path}")
+	print(f"[DEBUG] Custom Avatar Path: {custom_avatar_rel_path}")
+
+	# if no new avatar is provided
+	if not new_avatar:
+		if profile.avatar.name == default_avatar_rel_path:
+			print("[DEBUG] Avatar is already default, no change needed.")
+
+	# check file size limit
 	max_size_bytes = 5 * 1024 * 1024
 	if new_avatar.size > max_size_bytes:
 		raise ValueError(f"Avatar file size exceeds {5}MB limit.")
 
+	# ensure user directory exists
 	os.makedirs(user_directory, exist_ok=True)
 
-	# remove old avatar
-	if profile.avatar:
-		old_avatar_path = profile.avatar.path
-		if os.path.exists(old_avatar_path):
-			os.remove(old_avatar_path)
+	# remove old custom avatar
+	if os.path.exists(custom_avatar_abs_path):
+		os.remove(custom_avatar_abs_path)
 
-	# save new avatar with unique filename
-	avatar_filename = f"{uuid.uuid4()}_{new_avatar.name}"
-	avatar_path = os.path.join(user_directory, avatar_filename)
-	with default_storage.open(avatar_path, "wb+") as destination:
+	# save new avatar as avatar.png
+	with default_storage.open(custom_avatar_abs_path, "wb+") as destination:
 		for chunk in new_avatar.chunks():
 			destination.write(chunk)
-	return os.path.relpath(avatar_path, settings.MEDIA_ROOT)
+
+	profile.avatar_default.name = default_avatar_rel_path
+
+	profile.avatar.name = custom_avatar_rel_path
+	profile.save()
+
+	print(f"[DEBUG] Stored Avatar Name: {profile.avatar.name}")
+	print(f"[DEBUG] Generated Avatar URL: {profile.avatar.url}")
+	return profile.avatar.name
+
+
 
 def publish_nickname_change(redis_client, old_nickname, new_nickname):
 	"""Publish the nickname change event to Redis"""

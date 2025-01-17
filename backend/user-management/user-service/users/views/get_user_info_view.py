@@ -4,7 +4,8 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.response import Response
 from ..models import UserProfile
-import requests
+import requests, os
+from django.conf import settings
 
 User = get_user_model()
 
@@ -126,14 +127,22 @@ def get_profile_info(request):
 
 		# print(f"------------- Game Active: {profile.game_active} -------------")
 		print("-----------------")
-		print(f"Tourname name: {profile.tournament_name}")
+		print(f"Avatar url: {profile.avatar.url}")
+		print(f"Avatar: {profile.avatar}")
 		print("-----------------")
+
+		avatar_path = os.path.join(settings.MEDIA_ROOT, str(profile.avatar)) if profile.avatar else None
+
+		cache_buster = 0
+		if avatar_path and os.path.exists(avatar_path):
+		# generate cache timestamp to enforce new avatars
+			cache_buster = int(os.path.getmtime(avatar_path))
 
 		# response
 		profile_response = {
 			"username": user.username,
 			"nickname": profile.nickname,
-			"avatar": profile.avatar.url if profile.avatar else None,
+			"avatar": f"{profile.avatar.url}?v={cache_buster}" if profile.avatar else profile.avatar_default,
 			"trophies": match_history.get("trophies", 0),
 			"games_total": match_history.get("games_total", 0),
 			"wins": match_history.get("wins", 0),

@@ -22,6 +22,12 @@ class UserProfile(models.Model):
 		null=False,
 		default="default_photo/default_photo.png",
 	)
+	avatar_default = models.ImageField(
+		upload_to="avatars/",
+		blank=False,
+		null=False,
+		default="default_photo/default_photo.png",
+	)
 	bio = models.TextField(blank=True)
 
 	friends = models.ManyToManyField('self', symmetrical=True, blank=True, related_name='friend_profile')

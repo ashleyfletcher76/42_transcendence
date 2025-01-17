@@ -96,6 +96,8 @@ services:
   user-service:
     build: ./../backend/user-management/user-service
     container_name: user-service
+    volumes:
+      - media_data:/app/media
     environment:
       DJANGO_SECRET_KEY: ${DJANGO_SECRET_KEY}
       DJANGO_DEBUG: ${DJANGO_DEBUG}
@@ -239,6 +241,8 @@ services:
   nginx:
     build: ./../frontend
     container_name: nginx
+    volumes:
+      - media_data:/usr/share/nginx/media
     depends_on:
       auth-service:
         condition: service_healthy
@@ -267,3 +271,4 @@ volumes:
   auth_data:
   redis_data:
   match_history_data:
+  media_data:
