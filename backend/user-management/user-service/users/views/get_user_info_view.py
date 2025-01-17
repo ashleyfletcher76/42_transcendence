@@ -198,15 +198,27 @@ def get_all_profiles(request):
 
 		profile_list = []
 		for profile in profiles:
+			avatar_url = None
+			if profile.avatar:
+				avatar_path = os.path.join(settings.MEDIA_ROOT, str(profile.avatar))
+				if os.path.exists(avatar_path):
+					cache_buster = int(os.path.getmtime(avatar_path))
+					avatar_url = f"{profile.avatar.url}?v={cache_buster}"
+				else:
+					avatar_url = profile.avatar_default.url if profile.avatar_default else None
+			else:
+				avatar_url = profile.avatar_default.url if profile.avatar_default else None
+
 			profile_list.append({
 				"username": profile.user.username,
 				"nickname": profile.nickname,
-				"avatar": profile.avatar.url if profile.avatar else None,
+				"avatar": avatar_url,
 				"trophies": trophies_map.get(str(profile.user.id), 0),
 				"status": "online" if profile.online else "offline",
 			})
 
 		return Response(profile_list, status=200)
+
 
 	except Exception as e:
 		return Response({"error": str(e)}, status=500)

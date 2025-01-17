@@ -6,7 +6,7 @@ from django.core.files.base import ContentFile
 from django.conf import settings
 from django.core.validators import EmailValidator
 from django.core.exceptions import ValidationError
-import json, re, os, uuid
+import json, re, os, uuid, random
 from django.db.models import Q
 from ..models import UserProfile
 from ..redis_client import get_redis_client
@@ -38,7 +38,12 @@ def update_avatar(new_avatar, user_directory, profile):
 
 	# define relative paths
 	default_avatar_rel_path = f"avatars/{profile.user.username}/default_avatar.png"
-	custom_avatar_rel_path = f"avatars/{profile.user.username}/avatar.png"
+	# custom_avatar_rel_path = f"avatars/{profile.user.username}/avatar.png"
+
+	# generate a UUID for new filename
+	unique_id = uuid.uuid4().hex
+	custom_filename = f"avatar_{unique_id}.png"
+	custom_avatar_rel_path = f"avatars/{profile.user.username}/{custom_filename}"
 
 	# absolute paths for internal file handling
 	default_avatar_abs_path = os.path.join(settings.MEDIA_ROOT, default_avatar_rel_path)
