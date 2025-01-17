@@ -1,8 +1,8 @@
 FROM nginx:latest
 
 # Copy custom Nginx configuration
-#COPY nginx.conf /etc/nginx/nginx.conf
-COPY nginx_dev.conf /etc/nginx/nginx.conf
+COPY nginx.conf /etc/nginx/nginx.conf
+# COPY nginx_dev.conf /etc/nginx/nginx.conf
 
 # generate a self signed SSL certificate
 RUN mkdir -p /etc/nginx/ssl && \
