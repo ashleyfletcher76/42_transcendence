@@ -27,6 +27,10 @@ def validate_nickname(new_nickname):
 def update_avatar(new_avatar, user_directory, profile):
 	"""Update the avatar file, keeping the default one but replacing the previous custom one"""
 
+	original_filename = os.path.basename(new_avatar.name)
+	if len(original_filename) > 30:
+		raise ValueError("Filename is too long (exceeds 30 characters).")
+
 	try:
 		with Image.open(new_avatar) as img:
 			img_format = img.format.lower()
