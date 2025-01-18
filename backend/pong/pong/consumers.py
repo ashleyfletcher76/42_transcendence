@@ -40,7 +40,6 @@ class GameConsumer(AsyncWebsocketConsumer):
         await self.accept()
 
         game = get_game_state(self.room_name)
-        print(game)
         if game["started"]:
             print(f"Reconnentction for {self.nickname}")
             game["connections"] += 1
@@ -189,7 +188,6 @@ class GameConsumer(AsyncWebsocketConsumer):
 
     async def handle_disconnect(self):
         game = get_game_state(self.room_name)
-        game["paused"] = True
         if game["player1"] == self.nickname:
             game["p1_connected"] = False
         if game["player2"] == self.nickname:
