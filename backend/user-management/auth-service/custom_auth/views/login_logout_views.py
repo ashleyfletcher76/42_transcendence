@@ -37,8 +37,8 @@ class LoginView(APIView):
 		print("Verification Response JSON:", response.json())
 		if response.status_code != 200:
 			# failed verification
-			print("Invalid credentials provided for username:", username)
-			return Response({"error": "Invalid credentials"}, status=status.HTTP_401_UNAUTHORIZED)
+			print("Invalid login provided for username:", username)
+			return Response({"error": "Invalid login"}, status=status.HTTP_401_UNAUTHORIZED)
 
 		twofa_status_url = "http://user-service:8000/users/2fa-status/"
 		twofa_response = requests.post(twofa_status_url, json={"username": username})

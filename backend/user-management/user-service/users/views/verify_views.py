@@ -34,6 +34,11 @@ def verify_user(request):
 		# fetch user info
 		user_profile = user.profile
 		nickname = user_profile.nickname
+		if user_profile.online:
+			return Response(
+				{"error": "User already logged in."},
+				status=status.HTTP_401_UNAUTHORIZED
+			)
 		return Response(
 			{
 				"user_id": user.id,

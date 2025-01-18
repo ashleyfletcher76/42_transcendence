@@ -1,6 +1,6 @@
 from django.test import TestCase
 from rest_framework.test import APIClient
-from unittest.mock import patch
+from unittest.mock import patch, Mock
 
 class AuthServiceSecurityTests(TestCase):
 	def setUp(self):
@@ -12,7 +12,7 @@ class AuthServiceSecurityTests(TestCase):
 		"""Test SQL injection attempts in username field"""
 		# mock the user-service response
 		mock_post.return_value.status_code = 401
-		mock_post.return_value.json.return_value = {"error": "Invalid credentials"}
+		mock_post.return_value.json.return_value = {"error": "Invalid login"}
 
 		username_injection_payloads = [
 			{
@@ -39,13 +39,13 @@ class AuthServiceSecurityTests(TestCase):
 
 			response = self.client.post(self.login_url, payload)
 			self.assertEqual(response.status_code, 401)
-			self.assertEqual(response.json()["error"], "Invalid credentials")
+			self.assertEqual(response.json()["error"], "Invalid login")
 
 	@patch('custom_auth.views.login_logout_views.requests.post')
 	def test_sql_injection_password_attempts(self, mock_post):
 		"""Test SQL injection attempts in password field"""
 		mock_post.return_value.status_code = 401
-		mock_post.return_value.json.return_value = {"error": "Invalid credentials"}
+		mock_post.return_value.json.return_value = {"error": "Invalid login"}
 
 		password_injection_payloads = [
 			{
@@ -71,13 +71,13 @@ class AuthServiceSecurityTests(TestCase):
 			print(f"\nTesting password payload: {payload['password']}")
 			response = self.client.post(self.login_url, payload)
 			self.assertEqual(response.status_code, 401)
-			self.assertEqual(response.json()["error"], "Invalid credentials")
+			self.assertEqual(response.json()["error"], "Invalid login")
 
 	@patch('custom_auth.views.login_logout_views.requests.post')
 	def test_sql_injection_combined_attempts(self, mock_post):
 		"""Test SQL injection attempts in both username and password fields"""
 		mock_post.return_value.status_code = 401
-		mock_post.return_value.json.return_value = {"error": "Invalid credentials"}
+		mock_post.return_value.json.return_value = {"error": "Invalid login"}
 
 		combined_injection_payloads = [
 			{
@@ -101,7 +101,7 @@ class AuthServiceSecurityTests(TestCase):
 			print(f"Password: {payload['password']}")
 			response = self.client.post(self.login_url, payload)
 			self.assertEqual(response.status_code, 401)
-			self.assertEqual(response.json()["error"], "Invalid credentials")
+			self.assertEqual(response.json()["error"], "Invalid login")
 
 	#######################
 	## VALID LOGIN TESTS ##
@@ -109,17 +109,23 @@ class AuthServiceSecurityTests(TestCase):
 
 	@patch('custom_auth.views.login_logout_views.requests.post')
 	def test_valid_login(self, mock_post):
-		"""Test that valid login still works"""
-		mock_post.return_value.status_code = 200
-		mock_post.return_value.json.return_value = {
-			"user_id": 1,
-			"nickname": "testuser"
-		}
+		"""Test that valid login still works, ensuring twofa_enabled is False"""
+
+		mock_post.side_effect = [
+			Mock(status_code=200, json=lambda: {"user_id": 1, "nickname": "testuser"}),
+
+			Mock(status_code=200, json=lambda: {"twofa_enabled": False}),
+
+			Mock(status_code=200, json=lambda: {"message": "User is online"})
+		]
 
 		payload = {
 			"username": "validuser",
 			"password": "validpass123"
 		}
+
 		response = self.client.post(self.login_url, payload)
+
 		self.assertEqual(response.status_code, 200)
 		self.assertIn("access", response.json())
+

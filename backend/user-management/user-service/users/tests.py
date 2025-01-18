@@ -600,7 +600,7 @@ class EmailAndTwoFATests(TestCase):
 		# check the response
 		self.assertEqual(response.status_code, 200)
 		self.assertEqual(response.data["success"], True)
-		self.assertEqual(response.data["message"], "Twofa_enabled updated successfully.")
+		self.assertEqual(response.data["message"], "Email and twofa_enabled updated successfully.")
 
 		# check the database
 		self.user_profile.refresh_from_db()
@@ -660,7 +660,7 @@ class EmailAndTwoFATests(TestCase):
 		# check the response
 		self.assertEqual(response.status_code, 200)
 		self.assertEqual(response.data["success"], True)
-		self.assertEqual(response.data["message"], "Twofa_enabled updated successfully.")
+		self.assertEqual(response.data["message"], "Email and twofa_enabled updated successfully.")
 
 		# check the database
 		self.user_profile.refresh_from_db()
