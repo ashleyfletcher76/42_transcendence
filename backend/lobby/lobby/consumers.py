@@ -154,6 +154,9 @@ class TournamentConsumer(AsyncWebsocketConsumer):
             if player["name"] == self.nickname:
                 await self.close(code=4001)
                 return
+        if tournament["num_players"] == 10:
+            await self.close(code=4001)
+            return
 
         player = {
             "name" : self.nickname,
