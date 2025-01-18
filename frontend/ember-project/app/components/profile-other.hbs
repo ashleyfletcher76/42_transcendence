@@ -1,0 +1,65 @@
+<div class="container-fluid row fill p-2">
+  {{!-- Profile picture column (1 part) --}}
+  <div class="col center no-padding position-relative">
+    <button type="button" class="btn-close top-left" onclick={{this.onCloseClick}}></button>
+    <img src="https://{{this.hostname}}{{this.user.selectedUser.avatar}}/" alt="Profile Picture"
+      class="profile-pic" />
+  </div>
+
+  {{!-- Profile details column (3 parts) --}}
+  <div class="col-10">
+    {{!-- First row of profile details --}}
+    <div class="profile-details">
+      <h2 class="name">{{this.user.selectedUser.nickname}}</h2>
+      <div class="actions">
+        <button class="emoji-button info" data-bs-toggle="tooltip" data-bs-placement="top" title="Live Chat"
+          type="button" {{on "click" this.startLiveChat}}>
+          💬
+        </button>
+        <button class="emoji-button info" data-bs-toggle="tooltip" data-bs-placement="top" title="Play Game"
+          type="button" {{on "click" this.playGame}}>
+          🎮
+        </button>
+        {{#if this.isFriend}}
+        <button class="emoji-button info" data-bs-toggle="tooltip" data-bs-placement="top" title="Add Friend"
+          type="button" {{on "click" (fn this.addFriend "remove" )}}>
+          ➖
+        </button>
+        {{else}}
+        <button class="emoji-button info" data-bs-toggle="tooltip" data-bs-placement="top" title="Add Friend"
+          type="button" {{on "click" (fn this.addFriend "add" )}}>
+          ➕
+        </button>
+        {{/if}}
+        {{#if this.isBlocked}}
+        <button class="emoji-button info" data-bs-toggle="tooltip" data-bs-placement="top" title="Block User"
+          type="button" {{on "click" (fn this.blockUser "remove" )}}>
+          ✅
+        </button>
+        {{else}}
+        <button class="emoji-button info" data-bs-toggle="tooltip" data-bs-placement="top" title="Block User"
+          type="button" {{on "click" (fn this.blockUser "add" )}}>
+          🚫
+        </button>
+        {{/if}}
+      </div>
+      <h2 class="points">{{this.user.selectedUser.trophies}}🏆</h2>
+    </div>
+
+    {{!-- Second row of profile details --}}
+    <div class="profile-details">
+      <ModalGameHistory @user={{this.user.selectedUser}} />
+      <h2 class="info">Wins: {{this.user.selectedUser.wins}}</h2>
+    </div>
+
+    <div class="profile-details">
+      {{#if this.isOnline}}
+      <h2 class="info">🟢 online</h2>
+      {{else}}
+      <h2 class="info">🔴 offline</h2>
+      {{/if}}
+      <h2 class="info">Losses: {{this.user.selectedUser.losses}}</h2>
+    </div>
+
+  </div>
+</div>

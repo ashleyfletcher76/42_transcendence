@@ -1,0 +1,9 @@
+<nav class="navigation-bar">
+    <button class="nav-button" type="button" {{on "click" (fn this.setFilter "friends" )}}>Friends</button>
+    <button class="nav-button" type="button" {{on "click" (fn this.setFilter "all" )}}>All</button>
+</nav>
+<div class="scrollable-list middle-scroll">
+    {{#each this.filteredUsers as |user|}}
+    <User @user={{user}} />
+    {{/each}}
+</div>

@@ -1,0 +1,26 @@
+<button class="btn btn-success p-1 mb-1" type="button" {{on "click" this.openModal}}>
+  Games: {{@user.games_total}}
+</button>
+
+<BsModal @open={{this.isModalOpen}} as |modal|>
+  <modal.header style="background-color: #706363;">
+    <h4 class="score history center">
+      Match History
+    </h4>
+  </modal.header>
+
+  <modal.body style="background-color: #706363;">
+    <div class="container-fluid row" style="height: 50vh; overflow-y: auto; margin: 0; padding: 0;">
+      <div class="scrollable-list history-scroll">
+
+        {{#each this.games as |game|}}
+        <HistoryItem @game={{game}} />
+        {{/each}}
+
+      </div>
+    </div>
+
+
+  </modal.body>
+
+</BsModal>

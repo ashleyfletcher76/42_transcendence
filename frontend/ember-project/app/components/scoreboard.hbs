@@ -1,0 +1,18 @@
+<div class="container-fluid row border">
+  {{!-- Profile picture column (1 part) --}}
+  <div class="col-5">
+
+    <User @user={{this.gameData.player_1}} />
+  </div>
+
+  {{!-- Profile details column (3 parts) --}}
+  {{#if this.gameData.player_1}}
+  <div class="col-2">
+    <div class="score center">{{this.gameData.left_score}}:{{this.gameData.right_score}}</div>
+  </div>
+  {{/if}}
+
+  <div class="col-5">
+    <User @user={{this.gameData.player_2}} />
+  </div>
+</div>

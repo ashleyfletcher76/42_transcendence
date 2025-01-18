@@ -1,0 +1,47 @@
+{{!-- app/templates/application.hbs --}}
+<main>
+{{this.isAuthenticated}}
+<div class="container-fluid body">
+  <div class="container-fluid row">
+    <div class="col header">
+     <ProfileOwn />
+    </div>
+    <div class="col header">
+      {{#if this.user.selectedUser}}
+        <ProfileOther />
+      {{else}}
+        <TitleAnimation />
+      {{/if}}
+    </div>
+  </div>
+  <div class="container-fluid row">
+    <div class="container-fluid col-3 middle">
+        <TournamentList />
+    </div>
+    <div class="container-fluid col-6 middle custom-bg-black">
+		{{outlet}}
+    </div>
+    <div class="container-fluid col-3 middle">
+      <UserList/>
+    </div>
+  </div>
+  <div class="container-fluid row">
+    <div class="container-fluid col-3 footer">
+            <LinkTo @route="choose-game" class="nav-button">Game</LinkTo>
+            <LinkTo @route="chat" class="nav-button">Chat</LinkTo>            
+            <LinkTo @route="tournament" class="nav-button">Tournament</LinkTo>
+    </div>
+    <div class="container-fluid col-6 footer">
+      <Scoreboard />
+    </div>
+    <div class="container-fluid col-3 footer p-1">
+      {{#if this.session.isAuthenticated}}
+        {{#unless (eq this.activeRoute "chat")}}
+          <Chat />
+        {{/unless}}
+      {{/if}}
+    </div>
+  </div>    
+</div>
+
+</main>

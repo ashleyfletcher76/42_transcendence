@@ -1,0 +1,9 @@
+<nav class="navigation-bar">
+    <h1 class="white">Tournaments</h1>
+    <button class="tournament-button update" onclick={{this.fetchTournaments}} type="button">↻</button>
+</nav>
+<div class="scrollable-list middle-scroll">
+    {{#each this.tournaments as |tournament|}}
+    <TournamentItem @creator={{tournament.name}} @current_players={{tournament.num_players}} @max_players="10" />
+    {{/each}}
+</div>

@@ -1,0 +1,11 @@
+<div class="user-card">
+    <p class="mb-0">
+    <h2 class="info">{{@creator}}'s</h2>
+    <h3 class="tournament-info">Tournament</h3>
+    </p>
+    <div class="actions left">
+        <button class="tournament-button join" {{on "click" (fn this.onJoinClick @creator)}} type="button">Join</button>
+        <button class="tournament-button" {{on "click" (fn this.onLeaveClick @creator)}} type="button">Leave</button>
+    </div>
+    <h2 class="points info">👥 {{@current_players}}/{{@max_players}}</h2>
+</div>

@@ -1,0 +1,27 @@
+<div class="container-fluid row">
+	{{#if this.tournament.currentLobby}}
+		<div class="col-7">
+			<h2 class="points center">👥 {{this.tournament.currentPlayers.length}}/10</h2>
+			<UserListTournament/>
+		</div>
+		<div class="button-container col-5">
+			{{#if (and (eq this.tournament.admin this.user.profile.nickname) this.tournament.playerInTournament)}}
+  				<button class="nav-button start" type="button" {{on "click" this.tournament.startTournament}}>
+    				Start Tournament
+  				</button>
+			{{/if}}
+
+		<button class="nav-button cancel" type="button" {{on "click" (fn this.tournament.disconnectFromLobby this.tournament.currentLobby)}}>Leave</button> 
+		</div>
+	{{else}}
+		<div class="d-flex justify-content-center align-items-center">
+			<button 
+				class="nav-button mt-5" 
+				type="button" 
+				{{on "click" (fn this.tournament.connectToLobby this.user.profile.nickname)}}
+			>
+			Create Tournament
+			</button>
+			</div>
+	{{/if}}
+</div>
