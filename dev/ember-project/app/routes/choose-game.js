@@ -8,6 +8,7 @@ export default class ChooseGameRoute extends Route {
   @service tournament;
   @service user;
   @service router;
+  @service tournament;
 
   async beforeModel(transition) {
     if (!this.session.isAuthenticated) {

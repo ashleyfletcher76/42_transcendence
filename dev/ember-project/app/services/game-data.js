@@ -26,7 +26,7 @@ export default class GameDataService extends Service {
   async setGameData(gameType, roomData) {
     this.gameType = gameType;
     this.roomData = roomData;
-
+	console.log("roomData", roomData);
     this.pongGame.winner = null;
     if (roomData.player1 !== 'AI' && roomData.player1 !== 'local')
       this.player_1 = await this.fetchUserData(roomData.player1);
@@ -60,6 +60,8 @@ export default class GameDataService extends Service {
         trophies: 0,
         status: 'online',
       };
+	console.log("player1", this.player_1);
+	console.log("player2", this.player_2);
     if (this.gameType !== "reconnect")
       this.pongGame.connectToRoom(this.roomData.room_name);
   }

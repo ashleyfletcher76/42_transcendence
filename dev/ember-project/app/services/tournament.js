@@ -66,7 +66,7 @@ export default class TournamentService extends Service {
 
   sendMessage(data) {
     if (this.socketRef) {
-      //console.log('WebSocket message send:', JSON.stringify(data));
+      console.log('WebSocket message send:', JSON.stringify(data));
       this.socketRef.send(JSON.stringify(data));
     } else {
       console.error('WebSocket is not connected.');
@@ -79,7 +79,7 @@ export default class TournamentService extends Service {
   }
 
   onMessage(event) {
-    //console.log('WebSocket message received:', event.data);
+    console.log('WebSocket message received:', event.data);
     const parsedMessage = JSON.parse(event.data);
     switch (parsedMessage.type) {
       case 'create':
@@ -131,7 +131,7 @@ export default class TournamentService extends Service {
       type: 'tournament',
       from: 'System',
       content:
-        parsedMessage.winner + 'won against ' + parsedMessage.loser + '!',
+        parsedMessage.winner + ' won against ' + parsedMessage.loser + '!',
     };
     this.chat.messages = [...this.chat.messages, data];
   }
@@ -179,6 +179,7 @@ export default class TournamentService extends Service {
   }
 
   handleMatch(parsedMessage) {
+	console.log("handleMatch:", parsedMessage);
     let opponent = parsedMessage.player1;
     if (parsedMessage.player1 === this.user.profile.nickname)
       opponent = parsedMessage.player2;
@@ -197,6 +198,7 @@ export default class TournamentService extends Service {
       player2: parsedMessage.player2,
     };
     this.gameData.setGameData('tournament', roomdata);
+	this.gameData.waiting = false;
     this.router.transitionTo('pong-game');
   }
 

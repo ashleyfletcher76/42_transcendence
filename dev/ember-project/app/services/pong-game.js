@@ -212,7 +212,9 @@ export default class PongGameService extends Service {
   }
 
   onMessage(event) {
-    //console.log('WebSocket message received:', event.data);
+    console.log('WebSocket message received:', event.data);
+	console.log(this.gameData.player_2);
+	console.log(this.gameData.player_1);
     const parsedMessage = JSON.parse(event.data);
     //console.log("t1", this.gameData.roomData);
     if (!this.gameData.roomData)
